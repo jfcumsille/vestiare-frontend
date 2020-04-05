@@ -15,7 +15,7 @@
           </a>
         </p>
       </div>
-      <form @submit.prevent="onSubmit" method="POST">
+      <form @submit.prevent="onSubmit" method="POST" class="mt-6">
         <div class="rounded-md shadow-sm">
           <input aria-label="Email address" name="email" type="email"
                   required
