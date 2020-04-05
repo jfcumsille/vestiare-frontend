@@ -16,6 +16,22 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    logIn({ commit }, formData) {
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+      };
+      const url = process.env.SIGN_IN_ROUTE;
+      axiosAuth.post(url, payload)
+        .then((response) => {
+          const userData = {
+            idToken: response.data.idToken,
+            userId: response.data.localId,
+          };
+          commit('authUser', userData);
+        })
+        .catch((error) => console.log(error));
+    },
     signUp({ commit }, formData) {
       const payload = {
         name: formData.name,
