@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar></Navbar>
+    <Navbar v-if="loggedIn"></Navbar>
     <router-view></router-view>
   </div>
 </template>
@@ -11,6 +11,11 @@ import Navbar from './components/navbar.vue';
 export default {
   components: {
     Navbar,
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.getters.isUserLoggedIn;
+    },
   },
 };
 </script>
