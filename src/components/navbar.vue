@@ -8,16 +8,17 @@
           </div>
           <div>
             <div class="ml-10 flex items-baseline">
-              <router-link to="/links"
-                           class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900
-                                  focus:outline-none focus:text-white focus:bg-gray-700">
+              <router-link to="/links" active-class="bg-gray-900"
+                           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300
+                                  hover:text-white hover:bg-gray-700 focus:outline-none">
                 Links
               </router-link>
-              <a href="/api-key"
-                 class="ml-4 px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white
-                        hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
-                Api key
-              </a>
+              <router-link to="/api-keys" active-class="bg-gray-900"
+                           class="ml-4
+                                  px-3 py-2 rounded-md text-sm font-medium text-gray-300
+                                  hover:text-white hover:bg-gray-700 focus:outline-none">
+                Api keys
+              </router-link>
             </div>
           </div>
         </div>

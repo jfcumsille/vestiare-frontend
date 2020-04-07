@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import LogIn from '../views/LogIn.vue';
 import SignUp from '../views/SignUp.vue';
 import Links from '../components/links.vue';
+import ApiKeys from '../components/api-keys.vue';
 
 Vue.use(VueRouter);
 
@@ -18,6 +19,10 @@ const routes = [
   {
     path: '/links',
     component: Links,
+  },
+  {
+    path: '/api-keys',
+    component: ApiKeys,
   },
 ];
 
