@@ -9,6 +9,11 @@ export default new Vuex.Store({
     idToken: null,
     userId: null,
   },
+  getters: {
+    isUserLoggedIn(state) {
+      return !!state.idToken && !!state.userId;
+    },
+  },
   mutations: {
     authUser(state, userData) {
       state.idToken = userData.idToken;
