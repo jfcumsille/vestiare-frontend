@@ -16,14 +16,6 @@
           type="text"
           class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-3
                  rounded-md mb-4 focus:outline-none"
-          name="last name"
-          required
-          placeholder="Apellido"
-          v-model="lastName" />
-      <input
-          type="text"
-          class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-3
-                 rounded-md mb-4 focus:outline-none"
           name="email"
           required
           placeholder="Email"
@@ -79,7 +71,6 @@ export default {
   data() {
     return {
       name: '',
-      lastName: '',
       email: '',
       password: '',
     };
@@ -88,7 +79,6 @@ export default {
     onSubmit() {
       const formData = {
         name: this.name,
-        lastName: this.lastName,
         email: this.email,
         password: this.password,
       };
