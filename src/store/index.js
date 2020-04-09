@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axiosAuth from '../axios-auth';
+import router from '../router/index';
 
 Vue.use(Vuex);
 
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     authUser(state, userData) {
       state.idToken = userData.idToken;
       state.userId = userData.userId;
+      if (!!state.idToken && !!state.userId) {
+        router.push('/dashboard');
+      }
     },
   },
   actions: {
