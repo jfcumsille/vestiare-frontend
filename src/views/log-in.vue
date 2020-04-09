@@ -18,14 +18,16 @@
       <form @submit.prevent="onSubmit" method="POST" class="mt-6">
         <div class="rounded-md shadow-sm">
           <input aria-label="Email address" name="email" type="email"
-                  required
-                  class="appearance-none block w-full px-3 py-3 border
+                 required
+                 v-model="email"
+                 class="appearance-none block w-full px-3 py-3 border
                         border-gray-400 placeholder-gray-500 text-gray-900 rounded-t-md
                         focus:outline-none focus:shadow-outline-blue focus:border-blue-300
                         focus:z-10 sm:text-sm sm:leading-5" placeholder="Email" />
           <input aria-label="Password" name="password" type="password"
-                  required
-                  class="appearance-none relative block w-full px-3 py-3 border border-t-0
+                 required
+                 v-model="password"
+                 class="appearance-none relative block w-full px-3 py-3 border border-t-0
                         border-gray-400 placeholder-gray-500 text-gray-900 rounded-b-md
                         focus:outline-none focus:shadow-outline-blue focus:border-blue-300
                         focus:z-10 sm:text-sm sm:leading-5" placeholder="Password" />
