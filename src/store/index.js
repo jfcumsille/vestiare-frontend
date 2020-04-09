@@ -26,12 +26,12 @@ export default new Vuex.Store({
         email: formData.email,
         password: formData.password,
       };
-      const url = process.env.SIGN_IN_ROUTE;
+      const url = process.env.VUE_APP_SIGN_IN_ROUTE;
       axiosAuth.post(url, payload)
         .then((response) => {
           const userData = {
-            idToken: response.data.idToken,
-            userId: response.data.localId,
+            idToken: response.data.authentication_token,
+            userId: response.data.id,
           };
           commit('authUser', userData);
         })
@@ -40,14 +40,16 @@ export default new Vuex.Store({
     signUp({ commit }, formData) {
       const payload = {
         name: formData.name,
-        lastName: formData.lastName,
         email: formData.email,
         password: formData.password,
       };
-      const url = process.env.SIGN_UP_ROUTE;
+      const url = process.env.VUE_APP_SIGN_UP_ROUTE;
       axiosAuth.post(url, payload)
         .then((response) => {
-          const userData = { idToken: response.data.idToken, userId: response.data.localId };
+          const userData = {
+            idToken: response.data.authentication_token,
+            userId: response.data.id,
+          };
           commit('authUser', userData);
         })
         .catch((error) => console.log(error));
