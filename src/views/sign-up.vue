@@ -57,10 +57,11 @@
     </div>
     <div class="text-gray-900 mt-6">
     ¿Ya tienes una cuenta?
-    <a class="font-medium text-indigo-600 hover:text-indigo-800 focus:outline-none
-              focus:underline transition ease-in-out duration-150" href="../login/">
+    <router-link to="../login/"
+                 class="font-medium text-indigo-600 hover:text-indigo-800 focus:outline-none
+                        focus:underline transition ease-in-out duration-150">
         Log in
-    </a>
+    </router-link>
   </div>
   </div>
 </div>
