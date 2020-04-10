@@ -9,10 +9,12 @@
         </h2>
         <p class="mt-2 text-center text-sm leading-5 text-gray-600">
           O
-          <a href="/signup" class="font-medium text-indigo-600 hover:text-indigo-800
-                            focus:outline-none focus:underline transition ease-in-out duration-150">
+          <router-link to="/signup"
+                       class="font-medium text-indigo-600 hover:text-indigo-800
+                              focus:outline-none focus:underline transition ease-in-out
+                              duration-150">
             Registrate acá
-          </a>
+          </router-link>
         </p>
       </div>
       <form @submit.prevent="onSubmit" method="POST" class="mt-6">
