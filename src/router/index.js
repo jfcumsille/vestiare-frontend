@@ -1,5 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+
+import store from '../store';
+
 import LogIn from '../views/log-in.vue';
 import SignUp from '../views/sign-up.vue';
 import Links from '../components/links.vue';
@@ -10,10 +13,6 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/dashboard',
-    component: Dashboard,
-  },
-  {
     path: '/login',
     component: LogIn,
   },
@@ -22,12 +21,37 @@ const routes = [
     component: SignUp,
   },
   {
+    path: '/dashboard',
+    component: Dashboard,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next();
+      } else {
+        next('login');
+      }
+    },
+  },
+  {
     path: '/links',
     component: Links,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next();
+      } else {
+        next('login');
+      }
+    },
   },
   {
     path: '/api-keys',
     component: ApiKeys,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next();
+      } else {
+        next('login');
+      }
+    },
   },
 ];
 
