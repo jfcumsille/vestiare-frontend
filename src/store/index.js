@@ -6,21 +6,41 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    idToken: null,
-    userId: null,
+    idToken: localStorage.getItem('idToken') || '',
+    userId: localStorage.getItem('userId') || '',
   },
   getters: {
     isUserLoggedIn(state) {
       return !!state.idToken && !!state.userId;
     },
+    retrieveSessionFromStorage() {
+      return {
+        idToken: localStorage.getItem('idToken'),
+        userId: localStorage.getItem('userId'),
+      };
+    },
   },
   mutations: {
-    authUser(state, userData) {
+    saveSessionToStorage(userData) {
+      localStorage.setItem('idToken', userData.idToken);
+      localStorage.setItem('userId', userData.userId);
+    },
+    saveSessionToStore(state, userData) {
       state.idToken = userData.idToken;
       state.userId = userData.userId;
     },
+    saveSession(state, userData) {
+      this.commit('saveSessionToStore', userData);
+      this.commit('saveSessionToStorage', userData);
+    },
   },
   actions: {
+    tryToLoginFromStorage({ commit }) {
+      const userData = this.getters.retrieveSessionFromStorage;
+      if (userData) {
+        commit('saveSessionToStore', userData);
+      }
+    },
     logIn({ commit }, formData) {
       return new Promise((resolve, reject) => {
         const payload = {
@@ -34,7 +54,7 @@ export default new Vuex.Store({
               idToken: response.data.authentication_token,
               userId: response.data.id,
             };
-            commit('authUser', userData);
+            commit('saveSession', userData);
             resolve();
           })
           .catch((error) => reject(error));
@@ -54,7 +74,7 @@ export default new Vuex.Store({
               idToken: response.data.authentication_token,
               userId: response.data.id,
             };
-            commit('authUser', userData);
+            commit('saveSession', userData);
             resolve();
           })
           .catch((error) => reject(error));
