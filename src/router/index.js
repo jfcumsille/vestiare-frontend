@@ -15,10 +15,24 @@ const routes = [
   {
     path: '/login',
     component: LogIn,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next('dashboard');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/signup',
     component: SignUp,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next('dashboard');
+      } else {
+        next();
+      }
+    },
   },
   {
     path: '/dashboard',
