@@ -82,7 +82,14 @@ export default {
         email: this.email,
         password: this.password,
       };
-      this.$store.dispatch('logIn', formData);
+      this.$store.dispatch('logIn', formData).then(() => {
+        this.afterSuccess();
+      });
+    },
+    afterSuccess() {
+      if (this.$store.getters.isUserLoggedIn) {
+        this.$router.push('/dashboard');
+      }
     },
   },
 };

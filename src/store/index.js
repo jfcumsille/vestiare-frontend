@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axiosAuth from '../axios-auth';
-import router from '../router/index';
 
 Vue.use(Vuex);
 
@@ -19,44 +18,47 @@ export default new Vuex.Store({
     authUser(state, userData) {
       state.idToken = userData.idToken;
       state.userId = userData.userId;
-      if (!!state.idToken && !!state.userId) {
-        router.push('/dashboard');
-      }
     },
   },
   actions: {
     logIn({ commit }, formData) {
-      const payload = {
-        email: formData.email,
-        password: formData.password,
-      };
-      const url = process.env.VUE_APP_SIGN_IN_ROUTE;
-      axiosAuth.post(url, payload)
-        .then((response) => {
-          const userData = {
-            idToken: response.data.authentication_token,
-            userId: response.data.id,
-          };
-          commit('authUser', userData);
-        })
-        .catch((error) => console.log(error));
+      return new Promise((resolve, reject) => {
+        const payload = {
+          email: formData.email,
+          password: formData.password,
+        };
+        const url = process.env.VUE_APP_SIGN_IN_ROUTE;
+        axiosAuth.post(url, payload)
+          .then((response) => {
+            const userData = {
+              idToken: response.data.authentication_token,
+              userId: response.data.id,
+            };
+            commit('authUser', userData);
+            resolve();
+          })
+          .catch((error) => reject(error));
+      });
     },
     signUp({ commit }, formData) {
-      const payload = {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      };
-      const url = process.env.VUE_APP_SIGN_UP_ROUTE;
-      axiosAuth.post(url, payload)
-        .then((response) => {
-          const userData = {
-            idToken: response.data.authentication_token,
-            userId: response.data.id,
-          };
-          commit('authUser', userData);
-        })
-        .catch((error) => console.log(error));
+      return new Promise((resolve, reject) => {
+        const payload = {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        };
+        const url = process.env.VUE_APP_SIGN_UP_ROUTE;
+        axiosAuth.post(url, payload)
+          .then((response) => {
+            const userData = {
+              idToken: response.data.authentication_token,
+              userId: response.data.id,
+            };
+            commit('authUser', userData);
+            resolve();
+          })
+          .catch((error) => reject(error));
+      });
     },
   },
   modules: {
