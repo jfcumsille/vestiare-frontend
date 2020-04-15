@@ -5,7 +5,7 @@ import store from '../store';
 
 import LogIn from '../views/log-in.vue';
 import SignUp from '../views/sign-up.vue';
-import Links from '../components/links.vue';
+import Links from '../views/links.vue';
 import ApiKeys from '../components/api-keys.vue';
 import Dashboard from '../components/dashboard.vue';
 

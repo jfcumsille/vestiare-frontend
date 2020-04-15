@@ -11,7 +11,7 @@
               <router-link to="/links" active-class="bg-gray-900"
                            class="px-3 py-2 rounded-md text-sm font-medium text-gray-300
                                   hover:text-white hover:bg-gray-700 focus:outline-none">
-                Links
+                Credenciales
               </router-link>
               <router-link to="/api-keys" active-class="bg-gray-900"
                            class="ml-4
