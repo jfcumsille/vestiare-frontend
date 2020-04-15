@@ -59,6 +59,17 @@ export default new Vuex.Store({
       const userData = this.getters.retrieveSessionFromStorage;
       if (userData) { commit('saveSessionToStore', userData); }
     },
+    createUserLink(context, formData) {
+      return new Promise((resolve, reject) => {
+        const url = process.env.VUE_APP_CREATE_USER_LINKS_ROUTE;
+        axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
+          .then((response) => {
+            this.dispatch('getUserLinks');
+            resolve(response);
+          })
+          .catch((error) => reject(error));
+      });
+    },
     getUserLinks({ commit }) {
       const url = process.env.VUE_APP_USER_LINKS_ROUTE;
       axiosAuth.get(url, { headers: this.getters.authHeaders })
