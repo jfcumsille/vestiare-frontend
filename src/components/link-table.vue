@@ -18,7 +18,7 @@
     </tr>
   </thead>
   <tbody class="bg-white">
-    <tr v-for='link in this.$store.getters.userLinks' v-bind:key='link.id'>
+    <tr v-for='link in this.$store.getters.userLinks' v-bind:key='link.linkId'>
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
         <div class="flex items-center">
           <div class="flex-shrink-0 h-10 w-10">
@@ -44,7 +44,7 @@
       </td>
       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5
                  font-medium">
-        <a href="#"
+        <a href="#" @click="destroyLink(link.linkId)"
            class="ml-6 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-red-200
                      text-red-900 hover:bg-red-300">
           <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
@@ -54,3 +54,13 @@
   </tbody>
 </table>
 </template>
+
+<script>
+export default {
+  methods: {
+    destroyLink(linkId) {
+      this.$store.dispatch('destroyUserLink', linkId);
+    },
+  },
+};
+</script>

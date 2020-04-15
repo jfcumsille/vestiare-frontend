@@ -55,6 +55,15 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    destroyUserLink(context, linkId) {
+      const url = `${process.env.VUE_APP_USER_LINKS_ROUTE}/${linkId}`;
+      axiosAuth.delete(url, { headers: this.getters.authHeaders })
+        .then(() => {
+          // TODO: notify link deletion.
+          this.dispatch('getUserLinks');
+        })
+        .catch((error) => console.log(error.response.data));
+    },
     tryToLoginFromStorage({ commit }) {
       const userData = this.getters.retrieveSessionFromStorage;
       if (userData) { commit('saveSessionToStore', userData); }
