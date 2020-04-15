@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     idToken: localStorage.getItem('idToken') || '',
     userId: localStorage.getItem('userId') || '',
+    email: localStorage.getItem('email') || '',
   },
   getters: {
     isUserLoggedIn(state) {
@@ -17,6 +18,7 @@ export default new Vuex.Store({
       return {
         idToken: localStorage.getItem('idToken'),
         userId: localStorage.getItem('userId'),
+        email: localStorage.getItem('email'),
       };
     },
   },
@@ -24,12 +26,14 @@ export default new Vuex.Store({
     saveSessionToStorage(userData) {
       localStorage.setItem('idToken', userData.idToken);
       localStorage.setItem('userId', userData.userId);
+      localStorage.setItem('email', userData.email);
     },
     saveSessionToStore(state, userData) {
       state.idToken = userData.idToken;
       state.userId = userData.userId;
+      state.email = userData.email;
     },
-    saveSession(state, userData) {
+    saveSession(context, userData) {
       this.commit('saveSessionToStore', userData);
       this.commit('saveSessionToStorage', userData);
     },
@@ -53,6 +57,7 @@ export default new Vuex.Store({
             const userData = {
               idToken: response.data.authentication_token,
               userId: response.data.id,
+              email: response.data.email,
             };
             commit('saveSession', userData);
             resolve();
@@ -73,6 +78,7 @@ export default new Vuex.Store({
             const userData = {
               idToken: response.data.authentication_token,
               userId: response.data.id,
+              email: response.data.email,
             };
             commit('saveSession', userData);
             resolve();
