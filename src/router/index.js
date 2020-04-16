@@ -5,7 +5,8 @@ import store from '../store';
 
 import LogIn from '../views/log-in.vue';
 import SignUp from '../views/sign-up.vue';
-import Links from '../components/links.vue';
+import Links from '../views/links.vue';
+import NewLink from '../views/new-link.vue';
 import ApiKeys from '../components/api-keys.vue';
 import Dashboard from '../components/dashboard.vue';
 
@@ -48,6 +49,17 @@ const routes = [
   {
     path: '/links',
     component: Links,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next();
+      } else {
+        next('login');
+      }
+    },
+  },
+  {
+    path: '/links/new',
+    component: NewLink,
     beforeEnter(to, from, next) {
       if (store.getters.isUserLoggedIn) {
         next();
