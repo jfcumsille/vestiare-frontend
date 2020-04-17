@@ -131,22 +131,24 @@ export default {
     },
   },
   methods: {
-    onSubmit() {
-      if (this.$v.$invalid) { return; }
-
-      const formData = {
+    getFormData() {
+      return {
         institution_id: this.bankName,
         account_holder_type: this.holderType,
         username: this.rut,
         password: this.password,
       };
+    },
+    onSubmit() {
+      if (this.$v.$invalid) { return; }
+
+      const formData = this.getFormData();
       this.$store.dispatch('createUserLink', formData).then((response) => {
         const newLinkData = {
           bankName: response.data.institution.name,
           holderType: response.data.holder_type,
           numberOfAccounts: response.data.accounts.length,
           accessToken: response.data.access_token,
-          showForm: false,
         };
         this.$emit('newLinkSuccess', newLinkData);
       });
