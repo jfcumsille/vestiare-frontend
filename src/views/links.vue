@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import LinkTable from '../components/link-table.vue';
+import LinkTable from '../components/links/link-table.vue';
 
 export default {
   created() {

@@ -37,8 +37,8 @@
 </div>
 </template>
 <script>
-import LinkDetail from '../components/link-detail.vue';
-import LinkForm from '../components/link-form.vue';
+import LinkDetail from '../components/links/link-detail.vue';
+import LinkForm from '../components/links/link-form.vue';
 
 export default {
   data() {
