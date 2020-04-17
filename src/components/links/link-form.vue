@@ -1,5 +1,17 @@
 <template>
 <div class="bg-white rounded px-8 py-6 relative">
+  <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
+              shadow-md mb-6"
+       role="alert"
+       v-if='showTextError'>
+    <div class="flex">
+      <div class="py-1"><svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
+      <div>
+        <p class="font-bold">Tuvimos un problema con tus credenciales</p>
+        <p class="text-sm">{{ textError }}</p>
+      </div>
+    </div>
+  </div>
   <div v-if="showSpinner">
     <div class="w-full h-full absolute top-0 left-0 z-20 flex flex-col
                 items-center justify-center">
@@ -128,6 +140,8 @@ export default {
       rut: '',
       password: '',
       showSpinner: false,
+      showTextError: false,
+      textError: '',
       textList: [
         'estamos validando tus datos...',
         'ahora preguntándole al banco si está todo bien...',
@@ -187,8 +201,23 @@ export default {
           this.$emit('newLinkSuccess', newLinkData);
         })
         .catch((error) => {
-          console.log(error);
+          const errorCode = error.response.data.error.code;
+          this.showCredentialsError(errorCode);
+          this.showSpinner = false;
         });
+    },
+    showCredentialsError(errorCode) {
+      switch (errorCode) {
+        case 'invalid_username':
+          this.textError = 'Por favor utiliza un rut Chileno válido';
+          break;
+        case 'invalid_credentials':
+          this.textError = 'Credenciales inválidas';
+          break;
+        default:
+          this.textError = 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
+      }
+      this.showTextError = true;
     },
     rotateText() {
       const first = this.textList.shift();
