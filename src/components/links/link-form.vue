@@ -18,7 +18,11 @@
       <div class="spinner ease-linear rounded-full border-8 border-t-8 border-gray-200
                   h-32 w-32">
       </div>
-      <p class="text-gray-900 font-bold text-5xl mt-6">{{ loadingText }}</p>
+      <transition name="slide-fade" mode="out-in">
+        <p class="text-gray-900 font-bold text-5xl mt-6" :key='loadingText'>
+          {{ loadingText }}
+        </p>
+      </transition>
     </div>
     <div class="w-full h-full bg-white absolute top-0 left-0 z-10 opacity-75">
     </div>
@@ -142,9 +146,11 @@ export default {
       showSpinner: false,
       showTextError: false,
       textError: '',
-      textList: [
+      loadingText: 'estamos validando tus datos...',
+      loadingTextList: [
         'estamos validando tus datos...',
         'ahora preguntándole al banco si está todo bien...',
+        'todo en orden por ahora...',
         'ya casi...',
         'paciencia...',
         'un poco más...',
@@ -156,11 +162,6 @@ export default {
     window.setInterval(() => {
       this.rotateText();
     }, 5000);
-  },
-  computed: {
-    loadingText() {
-      return this.textList[0];
-    },
   },
   validations: {
     bankName: {
@@ -220,12 +221,31 @@ export default {
       this.showTextError = true;
     },
     rotateText() {
-      const first = this.textList.shift();
-      this.textList = this.textList.concat(first);
+      const first = this.loadingTextList.shift();
+      this.loadingTextList = this.loadingTextList.concat(first);
+      [this.loadingText] = this.loadingTextList;
     },
   },
 };
 </script>
+
+<style scoped>
+
+.slide-fade-enter {
+  opacity: 0;
+  transform: translateX(-150px);
+}
+
+.slide-fade-enter-active, .slide-fade-leave-active{
+  transition: all .8s ease;
+}
+
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(150px);
+}
+
+</style>
 
 <style>
 .spinner {
