@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import apiKeys from './apiKeys';
 import auth from './auth';
 import links from './links';
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    apiKeys,
     auth,
     links,
   },

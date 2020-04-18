@@ -7,7 +7,7 @@ import LogIn from '../views/log-in.vue';
 import SignUp from '../views/sign-up.vue';
 import Links from '../views/links.vue';
 import NewLink from '../views/new-link.vue';
-import ApiKeys from '../components/api-keys.vue';
+import ApiKeys from '../views/api-keys.vue';
 import Dashboard from '../components/dashboard.vue';
 
 Vue.use(VueRouter);
