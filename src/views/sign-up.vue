@@ -120,7 +120,7 @@ export default {
     },
     afterSuccess() {
       if (this.$store.getters.isUserLoggedIn) {
-        this.$router.push('/dashboard');
+        this.$router.push('/links');
       }
     },
   },

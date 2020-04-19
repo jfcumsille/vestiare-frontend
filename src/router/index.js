@@ -8,7 +8,6 @@ import SignUp from '../views/sign-up.vue';
 import Links from '../views/links.vue';
 import NewLink from '../views/new-link.vue';
 import ApiKeys from '../views/api-keys.vue';
-import Dashboard from '../components/dashboard.vue';
 
 Vue.use(VueRouter);
 
@@ -18,7 +17,7 @@ const routes = [
     component: LogIn,
     beforeEnter(to, from, next) {
       if (store.getters.isUserLoggedIn) {
-        next('dashboard');
+        next('links');
       } else {
         next();
       }
@@ -29,20 +28,9 @@ const routes = [
     component: SignUp,
     beforeEnter(to, from, next) {
       if (store.getters.isUserLoggedIn) {
-        next('dashboard');
+        next('links');
       } else {
         next();
-      }
-    },
-  },
-  {
-    path: '/dashboard',
-    component: Dashboard,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next();
-      } else {
-        next('login');
       }
     },
   },
