@@ -26,6 +26,15 @@ const actions = {
       .then((response) => { commit('updateUserApiKeys', response.data); })
       .catch((error) => console.log(error));
   },
+  destroyUserApiKey(context, apiKeyId) {
+    const url = `${process.env.VUE_APP_USER_API_KEYS_ROUTE}/${apiKeyId}`;
+    axiosAuth.delete(url, { headers: this.getters.authHeaders })
+      .then(() => {
+        // TODO: notify api key deletion.
+        this.dispatch('getUserApiKeys');
+      })
+      .catch((error) => console.log(error));
+  },
   createUserApiKey() {
     return new Promise((resolve, reject) => {
       const url = process.env.VUE_APP_USER_API_KEYS_ROUTE;

@@ -10,6 +10,7 @@
                  font-medium text-gray-600 uppercase tracking-wider">
         Key
       </th>
+      <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
     </tr>
   </thead>
   <tbody class="bg-white">
@@ -20,7 +21,24 @@
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
         <div class="text-lg leading-5 text-gray-900">{{ apiKey.key }}</div>
       </td>
+      <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5
+                 font-medium">
+        <a href="#" @click="destroyApiKey(apiKey.id)"
+           class="ml-6 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-red-200
+                     text-red-900 hover:bg-red-300">
+          <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
+        </a>
+      </td>
     </tr>
   </tbody>
 </table>
 </template>
+<script>
+export default {
+  methods: {
+    destroyApiKey(linkId) {
+      this.$store.dispatch('destroyUserApiKey', linkId);
+    },
+  },
+};
+</script>
