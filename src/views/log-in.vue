@@ -17,6 +17,9 @@
           </router-link>
         </p>
       </div>
+      <transition name="slide-fade">
+        <p class="text-red-700 mt-6" v-if='showloginError'>Credenciales inválidas 👮🏽‍♀️</p>
+      </transition>
       <form @submit.prevent="onSubmit" method="POST" class="mt-6">
         <div class="rounded-md shadow-sm">
           <input aria-label="Email address" name="email" type="email"
@@ -74,6 +77,7 @@ export default {
     return {
       email: '',
       password: '',
+      showloginError: false,
     };
   },
   methods: {
@@ -84,6 +88,11 @@ export default {
       };
       this.$store.dispatch('logIn', formData).then(() => {
         this.afterSuccess();
+      }).catch((error) => {
+        const codeError = error.response.data.error.type;
+        if (codeError === 'invalid_request_error') {
+          this.showloginError = true;
+        }
       });
     },
     afterSuccess() {
@@ -94,3 +103,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.slide-fade-enter {
+  opacity: 0;
+  transform: translateX(15px);
+}
+
+.slide-fade-enter-active{
+  transition: all .5s ease;
+}
+
+</style>
