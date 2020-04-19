@@ -26,6 +26,17 @@ const actions = {
       .then((response) => { commit('updateUserApiKeys', response.data); })
       .catch((error) => console.log(error));
   },
+  createUserApiKey() {
+    return new Promise((resolve, reject) => {
+      const url = process.env.VUE_APP_USER_API_KEYS_ROUTE;
+      axiosAuth.post(url, {}, { headers: this.getters.authHeaders })
+        .then((response) => {
+          this.dispatch('getUserApiKeys');
+          resolve(response);
+        })
+        .catch((error) => reject(error.response.data));
+    });
+  },
 };
 
 export default {

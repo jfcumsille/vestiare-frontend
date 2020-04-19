@@ -16,6 +16,13 @@
                         sm:rounded-md border-gray-200">
               <api-key-table></api-key-table>
             </div>
+            <div class="mt-4 text-right">
+              <button @click="createApiKey"
+                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-200
+                        text-gray-900 hover:bg-gray-300">
+                <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar API Key
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -33,6 +40,11 @@ export default {
   },
   components: {
     ApiKeyTable,
+  },
+  methods: {
+    createApiKey() {
+      this.$store.dispatch('createUserApiKey');
+    },
   },
 };
 </script>
