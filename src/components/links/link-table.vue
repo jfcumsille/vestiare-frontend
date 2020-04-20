@@ -31,7 +31,9 @@
           </div>
           <div class="ml-4">
             <div class="text-sm leading-5 font-medium text-gray-900">{{ link.bankName }}</div>
-            <div class="text-sm leading-5 text-gray-600">{{ link.holderType }}</div>
+            <div class="text-sm leading-5 text-gray-600">
+              {{ translatedHolderType(link.holderType) }}
+            </div>
           </div>
         </div>
       </td>
@@ -60,6 +62,9 @@ export default {
   methods: {
     destroyLink(linkId) {
       this.$store.dispatch('destroyUserLink', linkId);
+    },
+    translatedHolderType(holderType) {
+      return holderType === 'business' ? 'Empresas' : 'Personas';
     },
   },
 };
