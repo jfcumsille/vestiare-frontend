@@ -39,7 +39,7 @@
             <select class="block appearance-none w-full bg-grey-lighter border
                           border-grey-lighter leading-tight focus:outline-none
                           text-gray-900 py-3 px-4 pr-8 rounded"
-                    v-model="bankName">
+                    v-model.trim.lazy="$v.bankName.$model">
               <option value='' disabled>Selecciona un banco</option>
               <option value='cl_banco_de_chile'>Banco de Chile</option>
               <option value='cl_banco_santander'>Banco Santander</option>
@@ -54,7 +54,9 @@
               </svg>
             </div>
           </div>
-          <div v-if="!$v.bankName.required">Este campo es obligatorio</div>
+          <div class='text-red-700' v-if="!$v.bankName.required && $v.bankName.$error">
+            Este campo es obligatorio
+          </div>
         </div>
         <div class="md:w-1/2 px-3">
           <label class="block uppercase tracking-wide text-gray-900 text-xs
@@ -65,7 +67,7 @@
             <select class="block appearance-none w-full bg-grey-lighter border
                           border-grey-lighter leading-tight focus:outline-none
                           text-gray-900 py-3 px-4 pr-8 rounded"
-                    v-model="holderType">
+                    v-model.trim.lazy="$v.holderType.$model">
               <option value='' disabled>Selecciona un tipo de cuenta</option>
               <option value='individual'>Personas</option>
               <option value='business'>Empresas</option>
@@ -80,7 +82,9 @@
               </svg>
             </div>
           </div>
-          <div v-if="!$v.holderType.required">Este campo es obligatorio</div>
+          <div class='text-red-700' v-if="!$v.holderType.required && $v.holderType.$error">
+            Este campo es obligatorio
+          </div>
         </div>
       </div>
       <div class="-mx-2 md:flex mb-6">
@@ -94,8 +98,10 @@
                         focus:outline-none"
                   type="text"
                   placeholder="11111111-1"
-                  v-model="rut">
-          <div v-if="!$v.rut.required">Este campo es obligatorio</div>
+                  v-model.trim.lazy="$v.rut.$model">
+          <div class='text-red-700' v-if="!$v.rut.required && $v.rut.$error">
+            Este campo es obligatorio
+          </div>
         </div>
         <div class="md:w-1/2 px-3">
           <label class="block uppercase tracking-wide text-grey-900 text-xs font-bold
@@ -107,8 +113,10 @@
                         focus:outline-none"
                   type="password"
                   placeholder="••••••••••••"
-                  v-model="password">
-          <div v-if="!$v.password.required">Este campo es obligatorio</div>
+                  v-model.trim.lazy="$v.password.$model">
+          <div class='text-red-700' v-if="!$v.password.required && $v.password.$error">
+            Este campo es obligatorio
+          </div>
         </div>
       </div>
       <div class="-mx-2 md:flex md:flex-row-reverse">
