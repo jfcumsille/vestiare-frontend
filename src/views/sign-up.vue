@@ -41,7 +41,7 @@
                   rounded-md mt-4 focus:outline-none mb-1"
             name="password"
             placeholder="Password"
-            v-model.trim.lazy="$v.password.$model">
+            v-model.trim="$v.password.$model">
         <div class='text-red-700' v-if="!$v.password.required && $v.password.$error">
           Este campo es obligatorio
         </div>

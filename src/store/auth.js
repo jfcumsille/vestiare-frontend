@@ -43,7 +43,7 @@ const actions = {
         email: formData.email,
         password: formData.password,
       };
-      const url = '/api/v1/users';
+      const url = '/api/v1/sessions';
       axiosAuth.post(url, payload)
         .then((response) => {
           const userData = {
@@ -64,7 +64,7 @@ const actions = {
         email: formData.email,
         password: formData.password,
       };
-      const url = '/api/v1/sessions';
+      const url = '/api/v1/users';
       axiosAuth.post(url, payload)
         .then((response) => {
           const userData = {
