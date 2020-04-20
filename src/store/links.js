@@ -23,6 +23,12 @@ const mutations = {
 };
 
 const actions = {
+  getUserLinks({ commit }) {
+    const url = process.env.VUE_APP_USER_LINKS_ROUTE;
+    axiosAuth.get(url, { headers: this.getters.authHeaders })
+      .then((response) => { commit('updateUserLinks', response.data); })
+      .catch((error) => console.log(error));
+  },
   destroyUserLink(context, linkId) {
     const url = `${process.env.VUE_APP_USER_LINKS_ROUTE}/${linkId}`;
     axiosAuth.delete(url, { headers: this.getters.authHeaders })
@@ -34,7 +40,7 @@ const actions = {
   },
   createUserLink(context, formData) {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_CREATE_USER_LINKS_ROUTE;
+      const url = process.env.VUE_APP_USER_LINKS_ROUTE;
       axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
         .then((response) => {
           this.dispatch('getUserLinks');
@@ -42,12 +48,6 @@ const actions = {
         })
         .catch((error) => reject(error));
     });
-  },
-  getUserLinks({ commit }) {
-    const url = process.env.VUE_APP_USER_LINKS_ROUTE;
-    axiosAuth.get(url, { headers: this.getters.authHeaders })
-      .then((response) => { commit('updateUserLinks', response.data); })
-      .catch((error) => console.log(error));
   },
 };
 
