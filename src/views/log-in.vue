@@ -17,6 +17,9 @@
           </router-link>
         </p>
       </div>
+      <transition name="slide-fade">
+        <p class="text-red-700 mt-6" v-if='showloginError'>Credenciales inválidas 👮🏽‍♀️</p>
+      </transition>
       <form @submit.prevent="onSubmit" method="POST" class="mt-6">
         <div class="rounded-md shadow-sm">
           <input aria-label="Email address" name="email" type="email"
@@ -45,12 +48,14 @@
         </div>
 
         <div class="mt-6">
-          <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border
-                                      border-transparent text-sm leading-5 font-medium rounded-md
-                                      text-white bg-indigo-600 hover:bg-indigo-500
-                                      focus:outline-none
-                                      focus:border-indigo-700 focus:shadow-outline-indigo
-                                      active:bg-indigo-700 transition duration-150 ease-in-out">
+          <button type="submit"
+                  class="group relative w-full flex justify-center py-2 px-4 border
+                         border-transparent text-sm leading-5 font-medium rounded-md
+                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                         focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150
+                         ease-in-out"
+                  :class="{ 'hover:bg-indigo-500': !$v.$invalid,
+                            'cursor-not-allowed': $v.$invalid }">
             <span class="absolute left-0 inset-y-0 flex items-center pl-3">
               <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400 transition ease-in-out
                           duration-150" fill="currentColor" viewBox="0 0 20 20">
@@ -69,28 +74,60 @@
 </template>
 
 <script>
+import { required, email } from 'vuelidate/lib/validators';
+
 export default {
   data() {
     return {
       email: '',
       password: '',
+      showloginError: false,
     };
   },
   methods: {
     onSubmit() {
+      if (this.$v.$invalid) { return; }
+
       const formData = {
         email: this.email,
         password: this.password,
       };
       this.$store.dispatch('logIn', formData).then(() => {
         this.afterSuccess();
+      }).catch((error) => {
+        const codeError = error.response.data.error.type;
+        if (codeError === 'invalid_request_error') {
+          this.showloginError = true;
+        }
       });
     },
     afterSuccess() {
       if (this.$store.getters.isUserLoggedIn) {
-        this.$router.push('/dashboard');
+        this.$router.push('/links');
       }
+    },
+  },
+  validations: {
+    email: {
+      email,
+      required,
+    },
+    password: {
+      required,
     },
   },
 };
 </script>
+
+<style scoped>
+
+.slide-fade-enter {
+  opacity: 0;
+  transform: translateX(15px);
+}
+
+.slide-fade-enter-active{
+  transition: all .5s ease;
+}
+
+</style>
