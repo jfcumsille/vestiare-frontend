@@ -21,13 +21,13 @@ const mutations = {
 
 const actions = {
   getUserApiKeys({ commit }) {
-    const url = process.env.VUE_APP_USER_API_KEYS_ROUTE;
+    const url = '/api/v1/api_keys';
     axiosAuth.get(url, { headers: this.getters.authHeaders })
       .then((response) => { commit('updateUserApiKeys', response.data); })
       .catch((error) => console.log(error));
   },
   destroyUserApiKey(context, apiKeyId) {
-    const url = `${process.env.VUE_APP_USER_API_KEYS_ROUTE}/${apiKeyId}`;
+    const url = `/api/v1/api_keys/${apiKeyId}`;
     axiosAuth.delete(url, { headers: this.getters.authHeaders })
       .then(() => {
         // TODO: notify api key deletion.
@@ -37,7 +37,7 @@ const actions = {
   },
   createUserApiKey() {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_USER_API_KEYS_ROUTE;
+      const url = '/api/v1/api_keys';
       axiosAuth.post(url, {}, { headers: this.getters.authHeaders })
         .then((response) => {
           this.dispatch('getUserApiKeys');
