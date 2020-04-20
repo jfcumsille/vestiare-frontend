@@ -24,13 +24,13 @@ const mutations = {
 
 const actions = {
   getUserLinks({ commit }) {
-    const url = process.env.VUE_APP_USER_LINKS_ROUTE;
+    const url = '/api/v1/links';
     axiosAuth.get(url, { headers: this.getters.authHeaders })
       .then((response) => { commit('updateUserLinks', response.data); })
       .catch((error) => console.log(error));
   },
   destroyUserLink(context, linkId) {
-    const url = `${process.env.VUE_APP_USER_LINKS_ROUTE}/${linkId}`;
+    const url = `/api/v1/links/${linkId}`;
     axiosAuth.delete(url, { headers: this.getters.authHeaders })
       .then(() => {
         // TODO: notify link deletion.
@@ -40,7 +40,7 @@ const actions = {
   },
   createUserLink(context, formData) {
     return new Promise((resolve, reject) => {
-      const url = process.env.VUE_APP_USER_LINKS_ROUTE;
+      const url = '/api/v1/links';
       axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
         .then((response) => {
           this.dispatch('getUserLinks');
