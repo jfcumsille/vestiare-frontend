@@ -95,6 +95,9 @@
           <div class='text-red-700' v-if="!$v.rut.required && $v.rut.$error">
             Este campo es obligatorio
           </div>
+          <div class='text-red-700' v-if="!$v.rut.rutValidator && $v.rut.$error">
+            Ingresa un rut válido
+          </div>
         </div>
         <div class="md:w-1/2 px-3">
           <label class="block uppercase tracking-wide text-grey-900 text-xs font-bold
@@ -136,6 +139,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
+import { rutValidator } from 'vue-dni';
 import Spinner from '../spinner.vue';
 
 export default {
@@ -177,6 +181,7 @@ export default {
     },
     rut: {
       required,
+      rutValidator,
     },
     password: {
       required,
