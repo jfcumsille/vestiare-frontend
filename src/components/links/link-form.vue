@@ -90,6 +90,7 @@
                         focus:outline-none"
                   type="text"
                   placeholder="11111111-1"
+                  v-rut
                   v-model.trim="$v.rut.$model">
           <div class='text-red-700' v-if="!$v.rut.required && $v.rut.$error">
             Este campo es obligatorio
