@@ -12,21 +12,13 @@
       </div>
     </div>
   </div>
-  <div v-if="showSpinner">
-    <div class="w-full h-full absolute top-0 left-0 z-20 flex flex-col
-                items-center justify-center">
-      <div class="spinner ease-linear rounded-full border-8 border-t-8 border-gray-200
-                  h-32 w-32">
-      </div>
-      <transition name="slide-fade" mode="out-in">
-        <p class="text-gray-900 font-bold text-5xl mt-6" :key='loadingText'>
-          {{ loadingText }}
-        </p>
-      </transition>
-    </div>
-    <div class="w-full h-full bg-white absolute top-0 left-0 z-10 opacity-75">
-    </div>
-  </div>
+  <spinner v-if="showSpinner">
+    <transition name="slide-fade" mode="out-in">
+      <p class="text-gray-900 font-bold text-5xl mt-6" :key='loadingText'>
+        {{ loadingText }}
+      </p>
+    </transition>
+  </spinner>
   <div>
     <form @submit.prevent="onSubmit" method="POST">
       <div class="-mx-2 md:flex mb-6">
@@ -143,6 +135,7 @@
 
 <script>
 import { required } from 'vuelidate/lib/validators';
+import Spinner from '../spinner.vue';
 
 export default {
   data() {
@@ -170,6 +163,9 @@ export default {
     window.setInterval(() => {
       this.rotateText();
     }, 5000);
+  },
+  components: {
+    Spinner,
   },
   validations: {
     bankName: {
@@ -251,25 +247,5 @@ export default {
 .slide-fade-leave-to {
   opacity: 0;
   transform: translateX(150px);
-}
-
-</style>
-
-<style>
-.spinner {
-  z-index: 1;
-  border-top-color: #3498db;
-  -webkit-animation: spinner 1.5s linear infinite;
-  animation: spinner 1.5s linear infinite;
-}
-
-@-webkit-keyframes spinner {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 </style>
