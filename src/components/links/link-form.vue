@@ -225,6 +225,12 @@ export default {
         case 'invalid_credentials':
           this.textError = 'Credenciales inválidas';
           break;
+        case 'institution_unavailable':
+          this.textError = 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
+          break;
+        case 'not_implemented_institution':
+          this.textError = 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
+          break;
         default:
           this.textError = 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
       }
