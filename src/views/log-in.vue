@@ -17,6 +17,12 @@
           </router-link>
         </p>
       </div>
+      <div class="text-center mt-6">
+        <p v-if="showHelloBackMessage"
+           class="text-3xl font-semibold text-gray-900 border-indigo-500">
+          Hola nuevamente 👋
+        </p>
+      </div>
       <transition name="slide-fade">
         <p class="text-red-700 mt-6" v-if='showloginError'>Credenciales inválidas 👮🏽‍♀️</p>
       </transition>
@@ -82,7 +88,11 @@ export default {
       email: '',
       password: '',
       showloginError: false,
+      showHelloBackMessage: false,
     };
+  },
+  created() {
+    this.fillInputIfEmailInQueryParam();
   },
   methods: {
     onSubmit() {
@@ -104,6 +114,12 @@ export default {
     afterSuccess() {
       if (this.$store.getters.isUserLoggedIn) {
         this.$router.push('/links');
+      }
+    },
+    fillInputIfEmailInQueryParam() {
+      if (this.$route.query.email) {
+        this.showHelloBackMessage = true;
+        this.email = this.$route.query.email;
       }
     },
   },

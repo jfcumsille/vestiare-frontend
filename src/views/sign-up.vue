@@ -114,8 +114,13 @@ export default {
       };
       this.$store.dispatch('signUp', formData).then(() => {
         this.afterSuccess();
-      }).catch(() => {
-        this.showFormError = true;
+      }).catch((error) => {
+        const errorCode = error.response.data.error.code;
+        if (errorCode === 'email_taken') {
+          this.$router.push({ path: 'login', query: { email: this.email } });
+        } else {
+          this.showFormError = true;
+        }
       });
     },
     afterSuccess() {
