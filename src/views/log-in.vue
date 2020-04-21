@@ -1,6 +1,7 @@
 <template>
 <div class="bg-gray-100 min-h-screen flex flex-col">
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+    <spinner v-if='showSpinner'></spinner>
     <div class="max-w-md w-full">
       <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
       <div>
@@ -81,6 +82,7 @@
 
 <script>
 import { required, email } from 'vuelidate/lib/validators';
+import Spinner from '../components/spinner.vue';
 
 export default {
   data() {
@@ -89,10 +91,14 @@ export default {
       password: '',
       showloginError: false,
       showHelloBackMessage: false,
+      showSpinner: false,
     };
   },
   created() {
     this.fillInputIfEmailInQueryParam();
+  },
+  components: {
+    Spinner,
   },
   methods: {
     onSubmit() {
@@ -102,9 +108,11 @@ export default {
         email: this.email,
         password: this.password,
       };
+      this.showSpinner = true;
       this.$store.dispatch('logIn', formData).then(() => {
         this.afterSuccess();
       }).catch((error) => {
+        this.showSpinner = false;
         const codeError = error.response.data.error.type;
         if (codeError === 'invalid_request_error') {
           this.showloginError = true;
