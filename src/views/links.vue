@@ -8,7 +8,8 @@
     </div>
   </header>
   <main class="h-screen">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 relative">
+      <spinner v-if="shouldShowSpinner"></spinner>
       <div class="px-4 py-6 sm:px-0">
         <div class="flex flex-col">
           <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -33,13 +34,28 @@
 
 <script>
 import LinkTable from '../components/links/link-table.vue';
+import Spinner from '../components/spinner.vue';
 
 export default {
+  data() {
+    return {
+      retrievingUserLinks: false,
+    };
+  },
   created() {
-    this.$store.dispatch('getUserLinks');
+    this.retrievingUserLinks = true;
+    this.$store.dispatch('getUserLinks').then(() => {
+      this.retrievingUserLinks = false;
+    });
+  },
+  computed: {
+    shouldShowSpinner() {
+      return this.$store.getters.userLinks.length === 0 && this.retrievingUserLinks;
+    },
   },
   components: {
     LinkTable,
+    Spinner,
   },
 };
 </script>

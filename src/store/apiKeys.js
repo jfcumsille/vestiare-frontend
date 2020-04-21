@@ -21,10 +21,15 @@ const mutations = {
 
 const actions = {
   getUserApiKeys({ commit }) {
-    const url = '/api/v1/api_keys';
-    axiosAuth.get(url, { headers: this.getters.authHeaders })
-      .then((response) => { commit('updateUserApiKeys', response.data); })
-      .catch((error) => console.log(error));
+    return new Promise((resolve, reject) => {
+      const url = '/api/v1/api_keys';
+      axiosAuth.get(url, { headers: this.getters.authHeaders })
+        .then((response) => {
+          commit('updateUserApiKeys', response.data);
+          resolve();
+        })
+        .catch((error) => reject(error));
+    });
   },
   destroyUserApiKey(context, apiKeyId) {
     const url = `/api/v1/api_keys/${apiKeyId}`;

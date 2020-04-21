@@ -76,7 +76,7 @@ export default {
   props: {
     bankName: String,
     holderType: String,
-    numberOfAccounts: String,
+    numberOfAccounts: Number,
     accessToken: String,
   },
   computed: {
