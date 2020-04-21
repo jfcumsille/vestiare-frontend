@@ -49,7 +49,7 @@
                             role="menuitem"
                             @click='signOut'>
                       Salir
-                    </a>
+                    </button>
                   </div>
                 </div>
               </transition>
@@ -102,11 +102,12 @@
       </div>
       <div class="pt-3 pb-3 border-t border-gray-700">
         <div class="px-2">
-          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
+          <button href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
                              hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
-                             focus:bg-gray-700">
+                             focus:bg-gray-700"
+                           @click='signOut'>
             Salir
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -124,6 +125,11 @@ export default {
   methods: {
     toggleShowDropDown() {
       this.showDropDown = !this.showDropDown;
+    },
+    signOut() {
+      this.$store.dispatch('signOut').then(() => {
+        this.$router.push('/login');
+      });
     },
   },
 };

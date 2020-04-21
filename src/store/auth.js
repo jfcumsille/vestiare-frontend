@@ -34,6 +34,15 @@ const mutations = {
     this.commit('saveSessionToStorage', userData);
     this.commit('saveSessionToStore', userData);
   },
+  clearAuthData() {
+    const clearAuthData = {
+      idToken: '',
+      userId: '',
+      email: '',
+    };
+    this.commit('saveSessionToStore', clearAuthData);
+    this.commit('saveSessionToStorage', clearAuthData);
+  },
 };
 
 const actions = {
@@ -55,6 +64,12 @@ const actions = {
           resolve();
         })
         .catch((error) => reject(error));
+    });
+  },
+  signOut({ commit }) {
+    return new Promise((resolve) => {
+      commit('clearAuthData');
+      resolve();
     });
   },
   signUp({ commit }, formData) {
