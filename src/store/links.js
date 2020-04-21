@@ -24,10 +24,15 @@ const mutations = {
 
 const actions = {
   getUserLinks({ commit }) {
-    const url = '/api/v1/links';
-    axiosAuth.get(url, { headers: this.getters.authHeaders })
-      .then((response) => { commit('updateUserLinks', response.data); })
-      .catch((error) => console.log(error));
+    return new Promise((resolve, reject) => {
+      const url = '/api/v1/links';
+      axiosAuth.get(url, { headers: this.getters.authHeaders })
+        .then((response) => {
+          commit('updateUserLinks', response.data);
+          resolve();
+        })
+        .catch((error) => reject(error));
+    });
   },
   destroyUserLink(context, linkId) {
     const url = `/api/v1/links/${linkId}`;
