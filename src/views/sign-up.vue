@@ -1,5 +1,6 @@
 <template>
 <div class="bg-gray-100 min-h-screen flex flex-col">
+  <spinner v-if='showSpinner'></spinner>
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
     <h1 class="mt-2 text-4xl text-center font-semibold text-gray-900">
@@ -93,6 +94,7 @@
 
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators';
+import Spinner from '../components/spinner.vue';
 
 export default {
   data() {
@@ -101,6 +103,7 @@ export default {
       email: '',
       password: '',
       showFormError: false,
+      showSpinner: false,
     };
   },
   methods: {
@@ -112,9 +115,11 @@ export default {
         email: this.email,
         password: this.password,
       };
+      this.showSpinner = true;
       this.$store.dispatch('signUp', formData).then(() => {
         this.afterSuccess();
       }).catch((error) => {
+        this.showSpinner = false;
         const errorCode = error.response.data.error.code;
         if (errorCode === 'email_taken') {
           this.$router.push({ path: 'login', query: { email: this.email } });
@@ -128,6 +133,9 @@ export default {
         this.$router.push('/links');
       }
     },
+  },
+  components: {
+    Spinner,
   },
   validations: {
     email: {
