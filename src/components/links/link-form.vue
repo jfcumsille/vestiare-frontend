@@ -90,7 +90,7 @@
                         focus:outline-none"
                   type="text"
                   placeholder="11111111-1"
-                  v-model.trim.lazy="$v.rut.$model">
+                  v-model.trim="$v.rut.$model">
           <div class='text-red-700' v-if="!$v.rut.required && $v.rut.$error">
             Este campo es obligatorio
           </div>
@@ -105,7 +105,7 @@
                         focus:outline-none"
                   type="password"
                   placeholder="••••••••••••"
-                  v-model.trim.lazy="$v.password.$model">
+                  v-model.trim="$v.password.$model">
           <div class='text-red-700' v-if="!$v.password.required && $v.password.$error">
             Este campo es obligatorio
           </div>
