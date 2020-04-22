@@ -25,7 +25,7 @@ const mutations = {
 const actions = {
   getUserLinks({ commit }) {
     return new Promise((resolve, reject) => {
-      const url = '/api/v1/links';
+      const url = '/v1/links';
       axiosAuth.get(url, { headers: this.getters.authHeaders })
         .then((response) => {
           commit('updateUserLinks', response.data);
@@ -35,7 +35,7 @@ const actions = {
     });
   },
   destroyUserLink(context, linkId) {
-    const url = `/api/v1/links/${linkId}`;
+    const url = `/v1/links/${linkId}`;
     axiosAuth.delete(url, { headers: this.getters.authHeaders })
       .then(() => {
         // TODO: notify link deletion.
@@ -45,7 +45,7 @@ const actions = {
   },
   createUserLink(context, formData) {
     return new Promise((resolve, reject) => {
-      const url = '/api/v1/links';
+      const url = '/v1/links';
       axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
         .then((response) => {
           this.dispatch('getUserLinks');
