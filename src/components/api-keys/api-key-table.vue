@@ -19,20 +19,38 @@
         <div class="text-sm leading-5 font-medium text-gray-900">{{ apiKey.id }}</div>
       </td>
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="text-lg leading-5 text-gray-900">{{ apiKey.key }}</div>
+        <div class="flex">
+          <div class="api-key
+                      bg-teal-200 py-3 px-4 rounded-md text-lg text-gray-900
+                      rounded-r-none tracking-wider">
+            {{ apiKey.key }}
+          </div>
+          <div class="flex-none bg-teal-200 rounded-r-md h-full">
+            <button v-clipboard:copy='apiKey.key'
+                    class="hover:bg-teal-300 text-lg py-3 px-3">
+              <font-awesome-icon icon="copy"/>
+            </button>
+          </div>
+        </div>
       </td>
       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5
                  font-medium">
-        <a href="#" @click="destroyApiKey(apiKey.id)"
+        <button @click="destroyApiKey(apiKey.id)"
            class="ml-6 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-red-200
-                     text-red-900 hover:bg-red-300">
+                  text-red-900 hover:bg-red-300">
           <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
-        </a>
+        </button>
       </td>
     </tr>
   </tbody>
 </table>
 </template>
+
+<style scoped>
+.api-key {
+  width: 800px;
+}
+</style>
 <script>
 export default {
   methods: {
