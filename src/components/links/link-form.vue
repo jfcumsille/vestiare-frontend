@@ -204,10 +204,11 @@ export default {
       this.$store.dispatch('createUserLink', formData)
         .then((response) => {
           const newLinkData = {
+            // TODO: Data must be parsed on links actions.
             bankName: response.data.institution.name,
             holderType: response.data.holder_type,
             numberOfAccounts: response.data.accounts.length,
-            accessToken: response.data.access_token,
+            linkToken: response.data.link_token,
           };
           this.$emit('newLinkSuccess', newLinkData);
         })
