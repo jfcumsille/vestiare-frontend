@@ -58,7 +58,7 @@
                   <span class="ml-2 flex-1 w-0 truncate tracking-widest
                                 font-semibold">
                     <font-awesome-icon icon="lock" class="mt-1 mr-1"/>
-                    {{ accessToken }}
+                    {{ linkToken }}
                   </span>
                 </div>
               </li>
