@@ -10,7 +10,7 @@
           <p class="font-bold">Credenciales guardadas con éxito</p>
           <p class="text-sm">
             Está información solo será mostrada una vez.
-            Asegurate de copiar el <b>Access Token</b>
+            Asegurate de copiar el <b>Link Token</b>
             </p>
         </div>
       </div>
@@ -48,7 +48,7 @@
         </div>
         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
           <dt class="text-sm leading-5 font-medium font-semibold text-gray-900">
-            Access token
+            Link token
           </dt>
           <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
             <ul class="border border-gray-200 rounded-md">
@@ -77,7 +77,7 @@ export default {
     bankName: String,
     holderType: String,
     numberOfAccounts: Number,
-    accessToken: String,
+    linkToken: String,
   },
   computed: {
     translatedHolderType() {

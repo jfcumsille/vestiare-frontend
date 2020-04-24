@@ -20,7 +20,7 @@
                 :bankName='bankName'
                 :holderType='holderType'
                 :numberOfAccounts='numberOfAccounts'
-                :accessToken='accessToken'>
+                :linkToken='linkToken'>
             </link-detail>
             <div class="mt-4 text-right">
               <router-link to="/links"
@@ -47,7 +47,7 @@ export default {
       bankName: '',
       holderType: '',
       numberOfAccounts: '',
-      accessToken: '',
+      linkToken: '',
     };
   },
   methods: {
@@ -55,7 +55,7 @@ export default {
       this.bankName = responseData.bankName;
       this.holderType = responseData.holderType;
       this.numberOfAccounts = responseData.numberOfAccounts;
-      this.accessToken = responseData.accessToken;
+      this.linkToken = responseData.linkToken;
       this.showForm = false;
     },
   },
