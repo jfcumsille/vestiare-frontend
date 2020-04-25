@@ -7,7 +7,7 @@
       ¡Bienvenido!
     </h1>
     <h2 class="mb-2 text-4xl text-center font-semibold text-gray-900">
-      Registrate acá
+      Regístrate acá
     </h2>
     <div class="w-full">
       <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
