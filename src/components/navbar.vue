@@ -5,7 +5,9 @@
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
           <div class="flex-shrink-0">
-            <img class="h-12" src="../assets/images/fintoc-logo-white.png" alt="Fintoc" />
+            <router-link to="/">
+              <img class="h-12" src="../assets/images/fintoc-logo-white.png" alt="Fintoc" />
+            </router-link>
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline">
@@ -25,6 +27,12 @@
         </div>
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
+            <a href="https://fintoc.com/docs"
+               target="blank"
+               class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white
+                      hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+               Documentación
+            </a>
             <!-- Profile dropdown -->
             <div class="ml-3 relative">
               <div>
@@ -34,7 +42,7 @@
                         aria-label="User menu"
                         aria-haspopup="true"
                         @click="toggleShowDropDown">
-                  <font-awesome-icon icon="cog" class="mt-1 mr-1 text-xl"/>
+                  <font-awesome-icon icon="cog" class="mr-1 text-xl"/>
                 </button>
               </div>
               <transition name='drop-down-ease-out'>
@@ -102,12 +110,21 @@
       </div>
       <div class="pt-3 pb-3 border-t border-gray-700">
         <div class="px-2">
-          <button href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
-                             hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
-                             focus:bg-gray-700"
-                           @click='signOut'>
+          <a href="https://fintoc.com/docs"
+             target="blank"
+             class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
+                    hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
+                    focus:bg-gray-700"
+                  @click='signOut'>
+            Documentación
+          </a>
+          <a href='#'
+             class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
+                    hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
+                    focus:bg-gray-700"
+             @click='signOut'>
             Salir
-          </button>
+          </a>
         </div>
       </div>
     </div>
