@@ -48,6 +48,9 @@ export default {
       this.retrievingUserLinks = false;
     });
   },
+  mounted() {
+    window.analytics.page('Links');
+  },
   computed: {
     shouldShowSpinner() {
       return this.$store.getters.userLinks.length === 0 && this.retrievingUserLinks;

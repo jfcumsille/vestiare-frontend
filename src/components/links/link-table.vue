@@ -61,7 +61,11 @@
 export default {
   methods: {
     destroyLink(linkId) {
-      this.$store.dispatch('destroyUserLink', linkId);
+      this.$store.dispatch('destroyUserLink', linkId).then(() => {
+        window.analytics.track('Link Deleted', {
+          linkId,
+        });
+      });
     },
     translatedHolderType(holderType) {
       return holderType === 'business' ? 'Empresas' : 'Personas';
