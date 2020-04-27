@@ -191,7 +191,7 @@ export default {
     getFormData() {
       return {
         institution_id: this.bankName,
-        account_holder_type: this.holderType,
+        holder_type: this.holderType,
         username: this.rut,
         password: this.password,
       };
