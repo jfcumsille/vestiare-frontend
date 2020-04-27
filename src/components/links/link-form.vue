@@ -191,7 +191,7 @@ export default {
     getFormData() {
       return {
         institution_id: this.bankName,
-        account_holder_type: this.holderType,
+        holder_type: this.holderType,
         username: this.rut,
         password: this.password,
       };
@@ -203,6 +203,7 @@ export default {
       this.showSpinner = true;
       this.$store.dispatch('createUserLink', formData)
         .then((response) => {
+          this.trackLinkCreatedEvent(response.data);
           const newLinkData = {
             // TODO: Data must be parsed on links actions.
             bankName: response.data.institution.name,
@@ -217,6 +218,14 @@ export default {
           this.showCredentialsError(errorCode);
           this.showSpinner = false;
         });
+    },
+    trackLinkCreatedEvent(responseData) {
+      window.analytics.track('Link Created', {
+        linkId: responseData.id,
+        institutionId: responseData.institution.public_id,
+        holderType: responseData.holder_type,
+        username: responseData.username,
+      });
     },
     showCredentialsError(errorCode) {
       switch (errorCode) {

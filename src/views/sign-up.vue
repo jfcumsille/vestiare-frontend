@@ -106,6 +106,9 @@ export default {
       showSpinner: false,
     };
   },
+  mounted() {
+    window.analytics.page('Signup');
+  },
   methods: {
     onSubmit() {
       if (this.$v.$invalid) { return; }
@@ -130,8 +133,16 @@ export default {
     },
     afterSuccess() {
       if (this.$store.getters.isUserLoggedIn) {
+        this.trackUserSignedUpEvent();
         this.$router.push('/links');
       }
+    },
+    trackUserSignedUpEvent() {
+      const userData = this.$store.getters.retrieveSessionFromStorage;
+      window.analytics.identify(userData.userId, {
+        email: userData.email,
+      });
+      window.analytics.track('User Signed Up');
     },
   },
   components: {

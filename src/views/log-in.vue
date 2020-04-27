@@ -97,6 +97,9 @@ export default {
   created() {
     this.fillInputIfEmailInQueryParam();
   },
+  mounted() {
+    window.analytics.page('Login');
+  },
   components: {
     Spinner,
   },
@@ -121,8 +124,16 @@ export default {
     },
     afterSuccess() {
       if (this.$store.getters.isUserLoggedIn) {
+        this.trackUserLoggedInEvent();
         this.$router.push('/links');
       }
+    },
+    trackUserLoggedInEvent() {
+      const userData = this.$store.getters.retrieveSessionFromStorage;
+      window.analytics.identify(userData.userId, {
+        email: userData.email,
+      });
+      window.analytics.track('User Logged In');
     },
     fillInputIfEmailInQueryParam() {
       if (this.$route.query.email) {

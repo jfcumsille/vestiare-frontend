@@ -50,6 +50,9 @@ export default {
       linkToken: '',
     };
   },
+  mounted() {
+    window.analytics.page('New Link');
+  },
   methods: {
     showLinkDetail(responseData) {
       this.bankName = responseData.bankName;

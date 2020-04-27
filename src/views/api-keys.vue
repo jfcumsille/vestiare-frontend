@@ -48,6 +48,9 @@ export default {
       this.retrievingUserApiKeys = false;
     });
   },
+  mounted() {
+    window.analytics.page('API Keys');
+  },
   components: {
     ApiKeyTable,
     Spinner,
@@ -59,7 +62,11 @@ export default {
   },
   methods: {
     createApiKey() {
-      this.$store.dispatch('createUserApiKey');
+      this.$store.dispatch('createUserApiKey').then((response) => {
+        window.analytics.track('API Key Created', {
+          apiKeyId: response.data.id,
+        });
+      });
     },
   },
 };
