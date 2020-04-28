@@ -14,7 +14,7 @@
     </tr>
   </thead>
   <tbody class="bg-white">
-    <tr v-for='apiKey in this.$store.getters.userApiKeys' v-bind:key='apiKey.id'>
+    <tr v-for='apiKey in userApiKeys' v-bind:key='apiKey.id'>
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
         <div class="text-sm leading-5 font-medium text-gray-900">{{ apiKey.id }}</div>
       </td>
@@ -52,7 +52,14 @@
 }
 </style>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
+  computed: {
+    ...mapGetters([
+      'userApiKeys',
+    ]),
+  },
   methods: {
     destroyApiKey(apiKeyId) {
       this.$store.dispatch('destroyUserApiKey', apiKeyId).then(() => {
