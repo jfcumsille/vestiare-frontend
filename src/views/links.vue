@@ -15,11 +15,17 @@
           <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
             <div class="align-middle inline-block min-w-full overflow-hidden
                         sm:rounded-md border-gray-200">
-              <link-table></link-table>
+              <link-table v-if="shouldShowTable"></link-table>
+              <div v-if="!shouldShowTable" class="text-center">
+                <h1 class="text-4xl mt-4">
+                  Todavía no agregaste ninguna credencial 👀
+                </h1>
+              </div>
             </div>
             <div class="mt-4 text-right">
               <router-link to="/links/new"
-                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-200
+                :class="{ 'text-xs': shouldShowTable }"
+                class="px-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
                         text-gray-900 hover:bg-gray-300">
                 <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar credenciales
               </router-link>
@@ -33,6 +39,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import LinkTable from '../components/links/link-table.vue';
 import Spinner from '../components/spinner.vue';
 
@@ -52,6 +59,12 @@ export default {
     window.analytics.page('Links');
   },
   computed: {
+    ...mapGetters([
+      'userLinks',
+    ]),
+    shouldShowTable() {
+      return this.userLinks.length !== 0;
+    },
     shouldShowSpinner() {
       return this.$store.getters.userLinks.length === 0 && this.retrievingUserLinks;
     },
