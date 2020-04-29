@@ -62,8 +62,11 @@
                           text-gray-900 py-3 px-4 pr-8 rounded"
                     v-model.trim.lazy="$v.holderType.$model">
               <option value='' disabled>Selecciona un tipo de cuenta</option>
-              <option value='individual'>Personas</option>
-              <option value='business'>Empresas</option>
+              <option v-for='holderType in holderTypes'
+                      v-bind:key='holderType.value'
+                      :value='holderType.value'>
+                {{ holderType.label }}
+              </option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center
                         px-2 text-gray-700">
@@ -186,6 +189,24 @@ export default {
     },
     password: {
       required,
+    },
+  },
+  computed: {
+    holderTypes() {
+      const individual = {
+        value: 'individual',
+        label: 'Personas',
+      };
+      const business = {
+        value: 'business',
+        label: 'Empresas',
+      };
+      const holderTypes = [];
+      holderTypes.push(business);
+      if (this.bankName === 'cl_banco_de_chile') {
+        holderTypes.push(individual);
+      }
+      return holderTypes;
     },
   },
   methods: {
