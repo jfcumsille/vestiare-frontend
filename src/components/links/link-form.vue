@@ -215,6 +215,7 @@ export default {
           this.$emit('newLinkSuccess', newLinkData);
         })
         .catch((error) => {
+          this.trackLinkCreationFailedEvent(formData, error.response.data.error);
           const errorCode = error.response.data.error.code;
           this.showCredentialsError(errorCode);
           this.showSpinner = false;
@@ -226,6 +227,14 @@ export default {
         institutionId: responseData.institution.public_id,
         holderType: responseData.holder_type,
         username: responseData.username,
+      });
+    },
+    trackLinkCreationFailedEvent(formData, errorData) {
+      window.analytics.track('Link Creation Failed', {
+        errorCode: errorData.code,
+        institutionId: formData.institution_id,
+        holderType: formData.holder_type,
+        username: formData.username,
       });
     },
     showCredentialsError(errorCode) {
