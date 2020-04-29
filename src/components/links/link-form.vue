@@ -46,6 +46,7 @@
               </svg>
             </div>
           </div>
+          <p>*(Estamos trabajando para agregar más bancos. Escríbenos si necesitas uno urgente)</p>
           <div class='text-red-700' v-if="!$v.bankName.required && $v.bankName.$error">
             Este campo es obligatorio
           </div>
