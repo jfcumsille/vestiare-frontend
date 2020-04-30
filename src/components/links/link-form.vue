@@ -9,6 +9,29 @@
       <div>
         <p class="font-bold">Tuvimos un problema con tus credenciales</p>
         <p class="text-sm">{{ textError }}</p>
+        <div v-if="showDebugRequest">
+          <p class="text-sm mt-2">
+            Para evitar estos problemas en el futuro, nos ayudarías mucho si nos permites
+            hacer un debug con esta cuenta. Permitenos hacer esto haciendo click en "Autorizar".
+          </p>
+          <button @click='sendFeedback' class="bg-red-200 py-1 px-2 rounded-sm mt-4">
+            Autorizar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3
+              shadow-md mb-6"
+       role="alert"
+       v-if='showFeedbackMessage'>
+    <div class="flex">
+      <div class="py-1"><svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
+      <div>
+        <p class="font-bold">Gracias por ayudar a mejorar Fintoc 🙌</p>
+        <p class="text-sm">
+          Esto será muy útil para nosotros. Serás el primero en saber cuando esté solucionado.
+        </p>
       </div>
     </div>
   </div>
@@ -155,6 +178,8 @@ export default {
       password: '',
       showSpinner: false,
       showTextError: false,
+      showDebugRequest: false,
+      showFeedbackMessage: false,
       textError: '',
       loadingText: 'estamos validando tus datos...',
       loadingTextList: [
@@ -258,6 +283,17 @@ export default {
         username: formData.username,
       });
     },
+    sendFeedback() {
+      if (this.$v.$invalid) { return; }
+
+      const formData = this.getFormData();
+      this.$store.dispatch('sendLinksErrorFeedback', formData)
+        .then(() => {
+          this.showTextError = false;
+          this.showDebugRequest = false;
+          this.showFeedbackMessage = true;
+        });
+    },
     showCredentialsError(errorCode) {
       switch (errorCode) {
         case 'invalid_username':
@@ -267,12 +303,14 @@ export default {
           this.textError = 'Credenciales inválidas';
           break;
         case 'institution_unavailable':
+          this.showDebugRequest = true;
           this.textError = 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
           break;
         case 'not_implemented_institution':
           this.textError = 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
           break;
         default:
+          this.showDebugRequest = true;
           this.textError = 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
       }
       this.showTextError = true;

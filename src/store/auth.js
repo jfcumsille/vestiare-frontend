@@ -17,6 +17,9 @@ const getters = {
       email: localStorage.getItem('email'),
     };
   },
+  getUser() {
+    return state.userId;
+  },
 };
 
 const mutations = {
