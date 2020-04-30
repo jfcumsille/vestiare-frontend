@@ -215,10 +215,10 @@ export default {
           this.$emit('newLinkSuccess', newLinkData);
         })
         .catch((error) => {
-          this.trackLinkCreationFailedEvent(formData, error.response.data.error);
-          const errorCode = error.response.data.error.code;
+          const errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.showCredentialsError(errorCode);
           this.showSpinner = false;
+          this.trackLinkCreationFailedEvent(formData, errorCode);
         });
     },
     trackLinkCreatedEvent(responseData) {
@@ -229,9 +229,9 @@ export default {
         username: responseData.username,
       });
     },
-    trackLinkCreationFailedEvent(formData, errorData) {
+    trackLinkCreationFailedEvent(formData, errorCode) {
       window.analytics.track('Link Creation Failed', {
-        errorCode: errorData.code,
+        errorCode,
         institutionId: formData.institution_id,
         holderType: formData.holder_type,
         username: formData.username,
