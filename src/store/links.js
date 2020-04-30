@@ -54,6 +54,16 @@ const actions = {
         .catch((error) => reject(error));
     });
   },
+  sendLinksErrorFeedback(context, formData) {
+    return new Promise((resolve, reject) => {
+      const url = '/v1/user_credentials';
+      axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => reject(error));
+    });
+  },
 };
 
 export default {
