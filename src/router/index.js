@@ -7,6 +7,7 @@ import LogIn from '../views/log-in.vue';
 import SignUp from '../views/sign-up.vue';
 import Links from '../views/links.vue';
 import NewLink from '../views/new-link.vue';
+import RequestNewBank from '../views/request-new-bank.vue';
 import ApiKeys from '../views/api-keys.vue';
 
 Vue.use(VueRouter);
@@ -48,6 +49,17 @@ const routes = [
   {
     path: '/links/new',
     component: NewLink,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next();
+      } else {
+        next('login');
+      }
+    },
+  },
+  {
+    path: '/request-new-bank',
+    component: RequestNewBank,
     beforeEnter(to, from, next) {
       if (store.getters.isUserLoggedIn) {
         next();
