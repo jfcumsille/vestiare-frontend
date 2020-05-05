@@ -287,7 +287,7 @@ export default {
       if (this.$v.$invalid) { return; }
 
       const formData = this.getFormData();
-      this.$store.dispatch('sendLinksErrorFeedback', formData)
+      this.$store.dispatch('sendNewLinkRequest', formData)
         .then(() => {
           this.showTextError = false;
           this.showDebugRequest = false;

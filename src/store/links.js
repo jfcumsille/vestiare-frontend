@@ -54,7 +54,7 @@ const actions = {
         .catch((error) => reject(error));
     });
   },
-  sendLinksErrorFeedback(context, formData) {
+  sendNewLinkRequest(context, formData) {
     return new Promise((resolve, reject) => {
       const url = '/v1/user_credentials';
       axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
