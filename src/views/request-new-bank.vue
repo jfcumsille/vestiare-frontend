@@ -235,7 +235,7 @@ export default {
     },
   },
   mounted() {
-    window.analytics.page('New Link request');
+    window.analytics.page('New Bank Request');
   },
   components: {
     Spinner,

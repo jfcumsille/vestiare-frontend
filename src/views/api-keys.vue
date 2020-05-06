@@ -77,7 +77,7 @@ export default {
     createApiKey() {
       this.$store.dispatch('createUserApiKey').then((response) => {
         window.analytics.track('API Key Created', {
-          apiKeyId: response.data.id,
+          api_key_id: response.data.id,
         });
       });
     },

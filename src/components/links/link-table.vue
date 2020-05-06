@@ -63,7 +63,7 @@ export default {
     destroyLink(linkId) {
       this.$store.dispatch('destroyUserLink', linkId).then(() => {
         window.analytics.track('Link Deleted', {
-          linkId,
+          link_id: linkId,
         });
       });
     },
