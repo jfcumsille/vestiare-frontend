@@ -269,17 +269,18 @@ export default {
     },
     trackLinkCreatedEvent(responseData) {
       window.analytics.track('Link Created', {
-        linkId: responseData.id,
-        institutionId: responseData.institution.public_id,
-        holderType: responseData.holder_type,
+        link_id: responseData.id,
+        institution_id: responseData.institution.public_id,
+        holder_type: responseData.holder_type,
         username: responseData.username,
+        created_through: 'dashboard',
       });
     },
     trackLinkCreationFailedEvent(formData, errorCode) {
       window.analytics.track('Link Creation Failed', {
-        errorCode,
-        institutionId: formData.institution_id,
-        holderType: formData.holder_type,
+        error_code: errorCode,
+        institution_id: formData.institution_id,
+        holder_type: formData.holder_type,
         username: formData.username,
       });
     },

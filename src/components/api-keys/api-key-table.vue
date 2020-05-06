@@ -64,7 +64,7 @@ export default {
     destroyApiKey(apiKeyId) {
       this.$store.dispatch('destroyUserApiKey', apiKeyId).then(() => {
         window.analytics.track('API Key Deleted', {
-          apiKeyId,
+          api_key_id: apiKeyId,
         });
       });
     },
