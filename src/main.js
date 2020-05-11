@@ -5,7 +5,7 @@ import VueClipboard from 'vue-clipboard2';
 import { rutFilter, rutInputDirective } from 'vue-dni';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faEye, faEdit, faTrash, faPlus, faLock, faCog, faCopy,
+  faEye, faEdit, faTrash, faPlus, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -13,7 +13,9 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-library.add(faEye, faEdit, faPlus, faTrash, faLock, faCog, faCopy);
+library.add(
+  faEye, faEdit, faPlus, faTrash, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
+);
 
 Vue.use(VueClipboard);
 Vue.use(Vuelidate);
