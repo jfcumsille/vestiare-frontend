@@ -1,210 +1,222 @@
 <template>
-<div class="bg-white rounded px-8 py-6 relative">
-  <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
-              shadow-md mb-6"
-       role="alert"
-       v-if='showTextError'>
-    <div class="flex">
-      <div class="py-1"><svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
-      <div>
-        <p class="font-bold">Tuvimos un problema con tus credenciales</p>
-        <p class="text-sm">{{ textError }}</p>
-        <div v-if="showDebugRequest">
-          <p class="text-sm mt-2">
-            Para evitar estos problemas en el futuro, nos ayudarías mucho si nos permites
-            hacer un debug con esta cuenta. Permitenos hacer esto haciendo click en "Autorizar".
-          </p>
-          <button @click='sendFeedback' class="bg-red-200 py-1 px-2 rounded-sm mt-4">
-            Autorizar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3
-              shadow-md mb-6"
-       role="alert"
-       v-if='showFeedbackMessage'>
-    <div class="flex">
-      <div class="py-1"><svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
-      <div>
-        <p class="font-bold">Gracias por ayudar a mejorar Fintoc 🙌</p>
-        <p class="text-sm">
-          Esto será muy útil para nosotros. Serás el primero en saber cuando esté solucionado.
-        </p>
-      </div>
-    </div>
-  </div>
-  <spinner v-if="showSpinner">
-    <transition name="slide-fade" mode="out-in">
-      <p class="text-gray-900 font-bold text-5xl mt-6" :key='loadingText'>
-        {{ loadingText }}
-      </p>
-    </transition>
-  </spinner>
-  <div>
-    <form @submit.prevent="onSubmit" method="POST">
-      <div class="-mx-2 md:flex mb-6">
-        <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-          <label class="block uppercase tracking-wide text-gray-900 text-xs
-                        font-bold mb-2">
-            Banco
-          </label>
-          <div class="relative">
-            <select class="block appearance-none w-full bg-grey-lighter border
-                          border-grey-lighter leading-tight focus:outline-none
-                          text-gray-900 py-3 px-4 pr-8 rounded"
-                    v-model.trim.lazy="$v.bankName.$model">
-              <option value='' disabled>Selecciona un banco</option>
-              <option value='cl_banco_de_chile'>Banco de Chile</option>
-              <option value='cl_banco_santander'>Banco Santander</option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center
-                        px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757
-                          6.586 4.343 8z"/>
-              </svg>
+<div>
+  <div class="bg-white shadow-lg rounded link-frame mx-auto">
+    <div class="w-full h-full">
+      <transition name="component-fade" mode="out-in">
+        <div v-if='step==="intro"' class="h-full flex flex-col justify-between p-8" :key="step">
+          <div>
+            <img class="mx-auto h-16 w-auto rounded-full shadow"
+                src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
+            <h1 class="text-2xl mt-4 text-center leading-tight">
+              Fintoc se conectará con tu banco
+            </h1>
+            <div class="text-gray-800">
+              <div class="text-base font-light mt-2 flex flex-wrap items-center h-16">
+                <div class="w-2/12">
+                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
+                    <font-awesome-icon icon="bolt"/>
+                  </div>
+                </div>
+                <div class="w-10/12">
+                  Tomará menos de un minuto
+                </div>
+              </div>
+              <div class="text-base font-light flex flex-wrap items-center h-16">
+                <div class="w-2/12">
+                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
+                    <font-awesome-icon icon="shield-alt"/>
+                  </div>
+                </div>
+                <div class="w-10/12">
+                  La conexión está encriptada de extremo a extremo
+                </div>
+              </div>
+              <div class="text-base font-light flex flex-wrap items-center h-16">
+                <div class="w-2/12">
+                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
+                    <font-awesome-icon icon="lock"/>
+                  </div>
+                </div>
+                <div class="w-10/12">
+                  Tus credenciales no son compartidas con nadie
+                </div>
+              </div>
             </div>
           </div>
-          <p>*(Estamos trabajando para agregar más bancos. Escríbenos si necesitas uno urgente)</p>
-          <div class='text-red-700' v-if="!$v.bankName.required && $v.bankName.$error">
-            Este campo es obligatorio
-          </div>
-        </div>
-        <div class="md:w-1/2 px-3">
-          <label class="block uppercase tracking-wide text-gray-900 text-xs
-                        font-bold mb-2">
-            Tipo de cuenta
-          </label>
-          <div class="relative">
-            <select class="block appearance-none w-full bg-grey-lighter border
-                          border-grey-lighter leading-tight focus:outline-none
-                          text-gray-900 py-3 px-4 pr-8 rounded"
-                    v-model.trim.lazy="$v.holderType.$model">
-              <option value='' disabled>Selecciona un tipo de cuenta</option>
-              <option v-for='holderType in holderTypes'
-                      v-bind:key='holderType.value'
-                      :value='holderType.value'>
-                {{ holderType.label }}
-              </option>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center
-                        px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757
-                          6.586 4.343 8z"/>
-              </svg>
-            </div>
-          </div>
-          <div class='text-red-700' v-if="!$v.holderType.required && $v.holderType.$error">
-            Este campo es obligatorio
-          </div>
-        </div>
-      </div>
-      <div class="-mx-2 md:flex mb-6">
-        <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-          <label class="block uppercase tracking-wide text-grey-900 text-xs
-                        font-bold mb-2">
-            Rut
-          </label>
-          <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                        border border-grey-lighter rounded py-3 px-4 leading-tight
-                        focus:outline-none"
-                  type="text"
-                  placeholder="11111111-1"
-                  v-rut
-                  v-model.trim="$v.rut.$model">
-          <div class='text-red-700' v-if="!$v.rut.required && $v.rut.$error">
-            Este campo es obligatorio
-          </div>
-          <div class='text-red-700' v-if="!$v.rut.rutValidator && $v.rut.$error">
-            Ingresa un rut válido
-          </div>
-        </div>
-        <div class="md:w-1/2 px-3">
-          <label class="block uppercase tracking-wide text-grey-900 text-xs font-bold
-                        mb-2">
-            Password
-          </label>
-          <input class="appearance-none block w-full bg-grey-lighter text-gray-900
-                        border border-grey-lighter rounded py-3 px-4 leading-tight
-                        focus:outline-none"
-                  type="password"
-                  placeholder="••••••••••••"
-                  v-model.trim="$v.password.$model">
-          <div class='text-red-700' v-if="!$v.password.required && $v.password.$error">
-            Este campo es obligatorio
-          </div>
-        </div>
-      </div>
-      <div class="-mx-2 md:flex md:flex-row-reverse">
-        <div class="md:w-1/4 px-3 mb-6 md:mb-0">
-
-          <button type="submit"
-                  :disabled="$v.$invalid"
-                  :class="{ 'hover:bg-indigo-500': !$v.$invalid,
-                            'cursor-not-allowed': $v.$invalid
-                          }"
-                  class="group relative w-full flex justify-center py-2 px-4
-                        border border-transparent text-sm leading-5 font-medium rounded-md
-                        text-white bg-indigo-600
-                        focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo
-                        active:bg-indigo-700 transition duration-200 ease-in-out">
-            Crear credencial
+          <button @click="moveTo('select-bank')"
+                  type="submit"
+                  class="group relative w-full flex justify-center py-3 px-4 border
+                        border-transparent text-l leading-5 rounded-md
+                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                        focus:shadow-outline-indigo active:bg-indigo-700 transition
+                        duration-150 ease-in-out mt-6 hover:bg-indigo-500 tracking-wide">
+              Continuar
           </button>
         </div>
-      </div>
-    </form>
+        <div v-if='step==="select-bank"' class='h-full flex flex-col' :key="step">
+          <div class="pt-6 px-6 text-gray-800">
+            <button @click="moveTo('intro')" class="self-start text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l mt-2">Selecciona tu banco</h1>
+          </div>
+          <hr class="mt-1">
+          <div class="flex-1 p-4">
+            <div class="h-full">
+              <div class="grid grid-cols-2 gap-2 p-2">
+                <button v-for="bank in supportedBanks"
+                        v-bind:key='bank.code'
+                        @click='selectBank(bank)'
+                        class="border-gray-200 shadow-xs hover:shadow-md py-3 px-1 rounded
+                        transition ease-in-out duration-150">
+                  <img class="bank-logo h-16 w-auto rounded object-cover mx-auto"
+                      :src="bank.logo" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if='step==="bank-log-in"' class='h-full flex flex-col' :key="step">
+          <div class="pt-6 px-6 text-gray-800">
+            <button @click="moveTo('select-bank')" class="self-start text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l mt-2 text-center">Ingresa</h1>
+          </div>
+          <hr class="mt-1">
+          <div class="relative">
+            <spinner v-if="showSpinner">
+            </spinner>
+            <div class="flex-1 p-6">
+              <img class="bank-logo h-24 rounded object-cover mx-auto"
+                  :src="this.bank.logo" />
+              <div class="mt-6">
+                <div class="rounded-md shadow-sm">
+                  <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                border border-grey-lighter rounded py-3 px-4 leading-tight
+                                focus:outline-none focus:shadow-sm mt-4"
+                        type="text"
+                        :class="{ 'border-red-500': $v.rut.$error }"
+                        placeholder="Rut"
+                        v-rut
+                        v-model.trim.lazy="$v.rut.$model">
+                  <input class="appearance-none block w-full bg-grey-lighter text-gray-900
+                                border border-grey-lighter rounded py-3 px-4 leading-tight
+                                focus:outline-none focus:shadow-sm mt-4"
+                        type="password"
+                        placeholder="Contraseña"
+                        v-model.trim="$v.password.$model">
+                </div>
+                <div class="mt-4">
+                  <button type="submit"
+                          class="group relative w-full flex justify-center py-3 px-4 border
+                                border-transparent text-sm leading-5 font-medium rounded-md
+                                text-white bg-indigo-600 focus:outline-none
+                                focus:border-indigo-700 focus:shadow-outline-indigo
+                                active:bg-indigo-700 transition duration-150
+                                ease-in-out"
+                          @click="onSubmit"
+                          :class="{ 'hover:bg-indigo-500': !$v.$invalid,
+                                    'cursor-not-allowed': $v.$invalid }">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                      <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400
+                                  transition ease-in-out duration-150"
+                          fill="currentColor"
+                          viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0
+                                01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                              clip-rule="evenodd" />
+                      </svg>
+                    </span>
+                    Ingresar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if='step==="error"' class='h-full flex flex-col' :key="step">
+          <div class="pt-6 px-6 text-gray-800">
+            <button @click="moveTo('bank-log-in')" class="self-start text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l mt-2 text-center">Error</h1>
+          </div>
+          <hr class="mt-1">
+          <div class="flex-1 p-6 flex flex-col justify-between">
+            <div>
+              <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
+                          shadow-md mb-6"
+                   role="alert">
+                <div class="flex">
+                  <div class="py-1">
+                    <svg class="fill-current h-6 w-6 text-red-500 mr-4"
+                         xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 20 20">
+                      <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93
+                               17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32
+                               11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="font-bold">Tuvimos un problema con tus credenciales</p>
+                    <p class="text-sm">{{ textError }}</p>
+                  </div>
+                </div>
+              </div>
+              <img class="bank-logo h-24 rounded object-cover mx-auto"
+                  :src="this.bank.logo"/>
+            </div>
+            <button @click="moveTo('bank-log-in')"
+                  type="submit"
+                  class="group relative w-full flex justify-center py-3 px-4 border
+                        border-transparent text-l leading-5 rounded-md
+                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                        focus:shadow-outline-indigo active:bg-indigo-700 transition
+                        duration-150 ease-in-out mt-6 hover:bg-indigo-500 tracking-wide">
+              Volver a intentar
+            </button>
+          </div>
+        </div>
+      </transition>
+    </div>
+  </div>
+  <div class="mt-4 w-64 text-sm font-light text-gray-500 mx-auto text-center">
+    Este es el widget que tus usuarios verán en tu aplicación
   </div>
 </div>
 </template>
 
 <script>
+
 import { required } from 'vuelidate/lib/validators';
 import { rutValidator } from 'vue-dni';
 import Spinner from '../spinner.vue';
+import availableBanks from '../../banks-helper';
+
+const PERMITTED_STEPS = [
+  'intro',
+  'select-bank',
+  'bank-log-in',
+  'error',
+];
 
 export default {
   data() {
     return {
-      bankName: '',
-      holderType: '',
+      step: 'intro',
+      bank: '',
       rut: '',
       password: '',
       showSpinner: false,
-      showTextError: false,
-      showDebugRequest: false,
-      showFeedbackMessage: false,
       textError: '',
-      loadingText: 'estamos validando tus datos...',
-      loadingTextList: [
-        'estamos validando tus datos...',
-        'ahora preguntándole al banco si está todo bien...',
-        'todo en orden por ahora...',
-        'ya casi...',
-        'paciencia...',
-        'un poco más...',
-      ],
     };
-  },
-  mounted() {
-    // TODO: destroy interval.
-    window.setInterval(() => {
-      this.rotateText();
-    }, 5000);
   },
   components: {
     Spinner,
   },
   validations: {
-    bankName: {
-      required,
-    },
     holderType: {
       required,
     },
@@ -217,28 +229,28 @@ export default {
     },
   },
   computed: {
-    holderTypes() {
-      const individual = {
-        value: 'individual',
-        label: 'Personas',
-      };
-      const business = {
-        value: 'business',
-        label: 'Empresas',
-      };
-      const holderTypes = [];
-      holderTypes.push(business);
-      if (this.bankName === 'cl_banco_de_chile') {
-        holderTypes.push(individual);
-      }
-      return holderTypes;
+    holderType() {
+      return this.$route.query['holder-type'];
+    },
+    supportedBanks() {
+      return availableBanks.filter((bank) => bank.holderTypes[this.holderType] === true);
     },
   },
   methods: {
+    moveTo(step) {
+      if (!PERMITTED_STEPS.includes(step)) {
+        throw Error('Unrecognized step');
+      }
+      this.step = step;
+    },
+    selectBank(bank) {
+      this.bank = bank;
+      this.moveTo('bank-log-in');
+    },
     getFormData() {
       return {
-        institution_id: this.bankName,
         holder_type: this.holderType,
+        institution_id: this.bank.code,
         username: this.rut,
         password: this.password,
       };
@@ -253,8 +265,7 @@ export default {
           this.trackLinkCreatedEvent(response.data);
           const newLinkData = {
             // TODO: Data must be parsed on links actions.
-            bankName: response.data.institution.name,
-            holderType: response.data.holder_type,
+            bankCode: response.data.institution.name,
             numberOfAccounts: response.data.accounts.length,
             linkToken: response.data.link_token,
           };
@@ -265,6 +276,7 @@ export default {
           this.showCredentialsError(errorCode);
           this.showSpinner = false;
           this.trackLinkCreationFailedEvent(formData, errorCode);
+          this.moveTo('error');
         });
     },
     trackLinkCreatedEvent(responseData) {
@@ -284,17 +296,6 @@ export default {
         username: formData.username,
       });
     },
-    sendFeedback() {
-      if (this.$v.$invalid) { return; }
-
-      const formData = this.getFormData();
-      this.$store.dispatch('sendNewLinkRequest', formData)
-        .then(() => {
-          this.showTextError = false;
-          this.showDebugRequest = false;
-          this.showFeedbackMessage = true;
-        });
-    },
     showCredentialsError(errorCode) {
       switch (errorCode) {
         case 'invalid_username':
@@ -304,40 +305,30 @@ export default {
           this.textError = 'Credenciales inválidas';
           break;
         case 'institution_unavailable':
-          this.showDebugRequest = true;
           this.textError = 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
           break;
         case 'not_implemented_institution':
           this.textError = 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
           break;
         default:
-          this.showDebugRequest = true;
           this.textError = 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
       }
-      this.showTextError = true;
-    },
-    rotateText() {
-      const first = this.loadingTextList.shift();
-      this.loadingTextList = this.loadingTextList.concat(first);
-      [this.loadingText] = this.loadingTextList;
     },
   },
 };
 </script>
 
 <style scoped>
+  .link-frame {
+    height: 500px;
+    max-width: 360px;
+    width: 100%;
+  }
 
-.slide-fade-enter {
-  opacity: 0;
-  transform: translateX(-150px);
-}
-
-.slide-fade-enter-active, .slide-fade-leave-active{
-  transition: all .8s ease;
-}
-
-.slide-fade-leave-to {
-  opacity: 0;
-  transform: translateX(150px);
-}
+  .component-fade-enter-active, .component-fade-leave-active {
+    transition: opacity .2s ease;
+  }
+  .component-fade-enter, .component-fade-leave-to {
+    opacity: 0;
+  }
 </style>
