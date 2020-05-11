@@ -10,25 +10,20 @@
   <main class="h-screen">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="px-4 sm:px-0">
-        <div class="flex flex-col">
-          <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-            <div class="align-middle inline-block min-w-full overflow-hidden
-                        sm:rounded-md border-gray-200">
-            </div>
-            <link-form v-if="showForm" @newLinkSuccess='showLinkDetail'></link-form>
-            <link-detail v-if="!showForm"
-                :bankName='bankName'
-                :holderType='holderType'
-                :numberOfAccounts='numberOfAccounts'
-                :linkToken='linkToken'>
-            </link-detail>
-            <div class="mt-4 text-right">
-              <router-link to="/links"
-                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-200
-                       text-gray-900 hover:bg-gray-300">
-                Volver
-              </router-link>
-            </div>
+        <div class="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 flex flex-col">
+          <link-form v-if="showForm" @newLinkSuccess='showLinkDetail'></link-form>
+          <link-detail v-if="!showForm"
+              :bankName='bankName'
+              :holderType='holderType'
+              :numberOfAccounts='numberOfAccounts'
+              :linkToken='linkToken'>
+          </link-detail>
+          <div class="mt-4 text-right">
+            <router-link to="/links"
+              class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-200
+                      text-gray-900 hover:bg-gray-300">
+              Volver
+            </router-link>
           </div>
         </div>
       </div>
