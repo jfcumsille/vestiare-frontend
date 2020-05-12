@@ -3,6 +3,9 @@ import bancoChileLogo from './assets/images/banco-chile-complete.png';
 import bciLogo from './assets/images/bci-complete.png';
 import itauLogo from './assets/images/itau.png';
 import bancoEstadoLogo from './assets/images/banco-estado-complete.png';
+import falabellaLogo from './assets/images/falabella-complete.png';
+import scotiabankLogo from './assets/images/scotiabank-complete.png';
+
 
 const availableBanks = [
   {
@@ -33,6 +36,18 @@ const availableBanks = [
     code: 'cl_banco_itau',
     label: 'Banco Itaú',
     logo: itauLogo,
+    holderTypes: { business: false, individual: false },
+  },
+  {
+    code: 'cl_banco_falabella',
+    label: 'Banco Falabella',
+    logo: falabellaLogo,
+    holderTypes: { business: false, individual: false },
+  },
+  {
+    code: 'cl_banco_scotiabank',
+    label: 'Banco Scotiabank',
+    logo: scotiabankLogo,
     holderTypes: { business: false, individual: false },
   },
 ];
