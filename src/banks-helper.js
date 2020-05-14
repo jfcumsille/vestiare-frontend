@@ -1,11 +1,11 @@
-import santanderLogo from './assets/images/santander-complete.png';
-import bancoChileLogo from './assets/images/banco-chile-complete.png';
-import bciLogo from './assets/images/bci-complete.png';
-import itauLogo from './assets/images/itau.png';
-import bancoEstadoLogo from './assets/images/banco-estado-complete.png';
-import falabellaLogo from './assets/images/falabella-complete.png';
-import scotiabankLogo from './assets/images/scotiabank-complete.png';
-import securityLogo from './assets/images/security-complete.png';
+import bancoChileLogo from 'chilean-bank-images/banco-chile/banco-chile-complete.png';
+import santanderLogo from 'chilean-bank-images/santander/santander-complete.png';
+import bciLogo from 'chilean-bank-images/bci/bci-complete.png';
+import itauLogo from 'chilean-bank-images/itau/itau.png';
+import bancoEstadoLogo from 'chilean-bank-images/banco-estado/banco-estado-complete.png';
+import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
+import scotiabankLogo from 'chilean-bank-images/scotiabank/scotiabank-complete.png';
+import securityLogo from 'chilean-bank-images/banco-security/security-complete.png';
 
 
 const availableBanks = [

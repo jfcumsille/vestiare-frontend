@@ -24,10 +24,10 @@
           <div class="flex-shrink-0 h-10 w-10">
             <img v-if='link.bankName === "Banco Santander"'
                  class="h-10 w-10 rounded-full"
-                 src="../../assets/images/santander.png" />
+                 src="chilean-bank-images/santander/santander.png" />
             <img v-if='link.bankName === "Banco de Chile"'
                  class="h-10 w-10 rounded-full"
-                 src="../../assets/images/banco-chile.png" />
+                 src="chilean-bank-images/banco-chile/banco-chile.png" />
           </div>
           <div class="ml-4">
             <div class="text-sm leading-5 font-medium text-gray-900">{{ link.bankName }}</div>
