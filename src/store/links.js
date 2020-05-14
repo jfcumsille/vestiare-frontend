@@ -1,4 +1,5 @@
 import axiosAuth from '../axios-auth';
+import { findBankByCode } from '../banks-helper';
 
 const state = {
   userLinks: [],
@@ -13,7 +14,7 @@ const getters = {
 const mutations = {
   updateUserLinks(context, userLinks) {
     state.userLinks = userLinks.map((link) => ({
-      bankName: link.institution.name,
+      bank: findBankByCode(link.institution.id),
       holderType: link.holder_type,
       rut: link.username,
       numberOfAccounts: link.accounts.length,

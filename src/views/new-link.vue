@@ -13,7 +13,7 @@
         <div class="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 flex flex-col">
           <link-form v-if="showForm" @newLinkSuccess='showLinkDetail'></link-form>
           <link-detail v-if="!showForm"
-              :bankName='bankName'
+              :bank='bank'
               :holderType='holderType'
               :numberOfAccounts='numberOfAccounts'
               :linkToken='linkToken'>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       showForm: true,
-      bankName: '',
+      bank: null,
       holderType: '',
       numberOfAccounts: '',
       linkToken: '',
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     showLinkDetail(responseData) {
-      this.bankName = responseData.bankName;
+      this.bank = responseData.bank;
       this.holderType = responseData.holderType;
       this.numberOfAccounts = responseData.numberOfAccounts;
       this.linkToken = responseData.linkToken;
