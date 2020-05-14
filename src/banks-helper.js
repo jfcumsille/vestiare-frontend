@@ -19,7 +19,7 @@ const availableBanks = [
     code: 'cl_banco_santander',
     label: 'Banco Santander',
     logo: santanderLogo,
-    holderTypes: { business: true, individual: true },
+    holderTypes: { business: true, individual: false },
   },
   {
     code: 'cl_banco_estado',
