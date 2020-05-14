@@ -193,7 +193,7 @@
 import { required } from 'vuelidate/lib/validators';
 import { rutValidator } from 'vue-dni';
 import Spinner from '../spinner.vue';
-import availableBanks from '../../banks-helper';
+import { availableBanks, findBankByCode } from '../../banks-helper';
 
 const PERMITTED_STEPS = [
   'intro',
@@ -264,8 +264,7 @@ export default {
         .then((response) => {
           this.trackLinkCreatedEvent(response.data);
           const newLinkData = {
-            // TODO: Data must be parsed on links actions.
-            bankCode: response.data.institution.name,
+            bank: findBankByCode(response.data.institution.id),
             numberOfAccounts: response.data.accounts.length,
             linkToken: response.data.link_token,
           };

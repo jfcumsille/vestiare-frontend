@@ -22,15 +22,10 @@
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
         <div class="flex items-center">
           <div class="flex-shrink-0 h-10 w-10">
-            <img v-if='link.bankName === "Banco Santander"'
-                 class="h-10 w-10 rounded-full"
-                 src="chilean-bank-images/santander/santander.png" />
-            <img v-if='link.bankName === "Banco de Chile"'
-                 class="h-10 w-10 rounded-full"
-                 src="chilean-bank-images/banco-chile/banco-chile.png" />
+            <img class="h-10 w-10 rounded-full" :src="link.bank.smallLogo" />
           </div>
           <div class="ml-4">
-            <div class="text-sm leading-5 font-medium text-gray-900">{{ link.bankName }}</div>
+            <div class="text-sm leading-5 font-medium text-gray-900">{{ link.bank.label }}</div>
             <div class="text-sm leading-5 text-gray-600">
               {{ translatedHolderType(link.holderType) }}
             </div>
