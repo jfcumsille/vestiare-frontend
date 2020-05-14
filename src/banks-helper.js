@@ -75,4 +75,11 @@ const availableBanks = [
   },
 ];
 
-export default availableBanks;
+function findBankByCode(code) {
+  return availableBanks.find((bank) => bank.code === code);
+}
+
+export {
+  availableBanks,
+  findBankByCode,
+};
