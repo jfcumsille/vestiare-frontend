@@ -298,12 +298,12 @@ export default {
     showCredentialsError(errorCode) {
       switch (errorCode) {
         case 'invalid_username':
-          this.textError = 'Por favor utiliza un rut Chileno válido';
+          this.textError = 'Por favor utiliza un rut chileno válido';
           break;
         case 'invalid_credentials':
           this.textError = 'Credenciales inválidas';
           break;
-        case 'institution_unavailable':
+        case 'unavailable_institution':
           this.textError = 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
           break;
         case 'not_implemented_institution':
