@@ -44,16 +44,21 @@ const actions = {
       })
       .catch((error) => console.log(error));
   },
-  createUserLink(context, formData) {
-    return new Promise((resolve, reject) => {
-      const url = '/v1/links';
-      axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
-        .then((response) => {
-          this.dispatch('getUserLinks');
-          resolve(response);
-        })
-        .catch((error) => reject(error));
-    });
+  createUserLinkFromWidget(context, payload) {
+    const url = 'internal/v1/links/widget';
+    return axiosAuth.post(
+      url,
+      payload.formData,
+      { headers: { ...payload.headers } },
+    );
+  },
+  createUserLinkFromDashboard(context, formData) {
+    const url = 'internal/v1/links/dashboard';
+    return axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
+      .then((response) => {
+        this.dispatch('getUserLinks');
+        return response;
+      });
   },
   sendNewLinkRequest(context, formData) {
     return new Promise((resolve, reject) => {
