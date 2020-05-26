@@ -36,9 +36,6 @@ export default {
     return {
     };
   },
-  mounted() {
-    window.analytics.page('New Link');
-  },
   props: {
     isWidget: {
       type: Boolean,
