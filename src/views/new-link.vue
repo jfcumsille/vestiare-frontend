@@ -11,15 +11,10 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="px-4 sm:px-0">
         <div class="my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 flex flex-col">
-          <link-form v-if="showForm" @newLinkSuccess='showLinkDetail'></link-form>
-          <link-detail v-if="!showForm"
-              :bank='bank'
-              :holderType='holderType'
-              :numberOfAccounts='numberOfAccounts'
-              :linkToken='linkToken'>
-          </link-detail>
+          <widget-link-form v-if='isWidget'></widget-link-form>
+          <dashboard-link-form v-else></dashboard-link-form>
           <div class="mt-4 text-right">
-            <router-link to="/links"
+            <router-link v-if="!isWidget" to="/links"
               class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-200
                       text-gray-900 hover:bg-gray-300">
               Volver
@@ -32,34 +27,24 @@
 </div>
 </template>
 <script>
-import LinkDetail from '../components/links/link-detail.vue';
-import LinkForm from '../components/links/link-form.vue';
+
+import WidgetLinkForm from '../components/links/widget-link-form.vue';
+import DashboardLinkForm from '../components/links/dashboard-link-form.vue';
 
 export default {
   data() {
     return {
-      showForm: true,
-      bank: null,
-      holderType: '',
-      numberOfAccounts: '',
-      linkToken: '',
     };
   },
-  mounted() {
-    window.analytics.page('New Link');
-  },
-  methods: {
-    showLinkDetail(responseData) {
-      this.bank = responseData.bank;
-      this.holderType = responseData.holderType;
-      this.numberOfAccounts = responseData.numberOfAccounts;
-      this.linkToken = responseData.linkToken;
-      this.showForm = false;
+  props: {
+    isWidget: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
-    LinkDetail,
-    LinkForm,
+    DashboardLinkForm,
+    WidgetLinkForm,
   },
 };
 </script>

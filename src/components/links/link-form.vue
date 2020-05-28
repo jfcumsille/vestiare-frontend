@@ -3,7 +3,9 @@
   <div class="bg-white shadow-lg rounded link-frame mx-auto">
     <div class="w-full h-full">
       <transition name="component-fade" mode="out-in">
-        <div v-if='step==="intro"' class="h-full flex flex-col justify-between p-8" :key="step">
+        <div v-if='currentStep==="intro"'
+          class="h-full flex flex-col justify-between p-8"
+          :key="currentStep">
           <div>
             <img class="mx-auto h-16 w-auto rounded-full shadow"
                 src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
@@ -53,7 +55,7 @@
               Continuar
           </button>
         </div>
-        <div v-if='step==="select-bank"' class='h-full flex flex-col' :key="step">
+        <div v-if='currentStep==="select-bank"' class='h-full flex flex-col' :key="currentStep">
           <div class="pt-6 px-6 text-gray-800">
             <button @click="moveTo('intro')" class="self-start text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
@@ -76,7 +78,7 @@
             </div>
           </div>
         </div>
-        <div v-if='step==="bank-log-in"' class='h-full flex flex-col' :key="step">
+        <div v-if='currentStep==="bank-log-in"' class='h-full flex flex-col' :key="currentStep">
           <div class="pt-6 px-6 text-gray-800">
             <button @click="moveTo('select-bank')" class="self-start text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
@@ -136,7 +138,7 @@
             </div>
           </div>
         </div>
-        <div v-if='step==="error"' class='h-full flex flex-col' :key="step">
+        <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
           <div class="pt-6 px-6 text-gray-800">
             <button @click="moveTo('bank-log-in')" class="self-start text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
@@ -193,7 +195,7 @@
 import { required } from 'vuelidate/lib/validators';
 import { rutValidator } from 'vue-dni';
 import Spinner from '../spinner.vue';
-import { availableBanks, findBankByCode } from '../../banks-helper';
+import { availableBanks } from '../../banks-helper';
 
 const PERMITTED_STEPS = [
   'intro',
@@ -205,13 +207,31 @@ const PERMITTED_STEPS = [
 export default {
   data() {
     return {
-      step: 'intro',
       bank: '',
       rut: '',
       password: '',
+      currentStep: 'intro',
+      errorCode: '',
       showSpinner: false,
-      textError: '',
     };
+  },
+  props: {
+    createdThrough: {
+      type: String,
+      default: 'dashboard',
+    },
+    submitAction: {
+      type: String,
+      default: 'createUserLinkFromDashboard',
+    },
+    headers: {
+      type: Object,
+      default: () => ({}),
+    },
+    extraFields: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   components: {
     Spinner,
@@ -235,47 +255,61 @@ export default {
     supportedBanks() {
       return availableBanks.filter((bank) => bank.holderTypes[this.holderType] === true);
     },
+    textError() {
+      switch (this.errorCode) {
+        case 'invalid_username':
+          return 'Por favor utiliza un rut chileno válido';
+        case 'invalid_credentials':
+          return 'Credenciales inválidas';
+        case 'unavailable_institution':
+          return 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
+        case 'not_implemented_institution':
+          return 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
+        default:
+          return 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
+      }
+    },
   },
   methods: {
     moveTo(step) {
       if (!PERMITTED_STEPS.includes(step)) {
         throw Error('Unrecognized step');
       }
-      this.step = step;
+
+      this.currentStep = step;
     },
     selectBank(bank) {
       this.bank = bank;
       this.moveTo('bank-log-in');
     },
     getFormData() {
-      return {
+      const formFields = {
         holder_type: this.holderType,
         institution_id: this.bank.code,
         username: this.rut,
         password: this.password,
       };
+
+      return { ...formFields, ...this.extraFields };
     },
     onSubmit() {
       if (this.$v.$invalid) { return; }
 
-      const formData = this.getFormData();
       this.showSpinner = true;
-      this.$store.dispatch('createUserLink', formData)
+      const formData = this.getFormData();
+      const payload = { formData: this.getFormData(), headers: this.headers };
+
+      this.$store.dispatch(this.submitAction, payload)
         .then((response) => {
           this.trackLinkCreatedEvent(response.data);
-          const newLinkData = {
-            bank: findBankByCode(response.data.institution.id),
-            numberOfAccounts: response.data.accounts.length,
-            linkToken: response.data.link_token,
-          };
-          this.$emit('newLinkSuccess', newLinkData);
+          this.$emit('createSuccess', response);
+          this.showSpinner = false;
         })
         .catch((error) => {
-          const errorCode = error.response != null ? error.response.data.error.code : 'unknown';
-          this.showCredentialsError(errorCode);
+          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.trackLinkCreationFailedEvent(formData, this.errorCode);
+          this.currentStep = 'error';
           this.showSpinner = false;
-          this.trackLinkCreationFailedEvent(formData, errorCode);
-          this.moveTo('error');
         });
     },
     trackLinkCreatedEvent(responseData) {
@@ -284,7 +318,7 @@ export default {
         institution_id: responseData.institution.public_id,
         holder_type: responseData.holder_type,
         username: responseData.username,
-        created_through: 'dashboard',
+        created_through: this.createdThrough,
       });
     },
     trackLinkCreationFailedEvent(formData, errorCode) {
@@ -293,25 +327,8 @@ export default {
         institution_id: formData.institution_id,
         holder_type: formData.holder_type,
         username: formData.username,
+        created_through: this.createdThrough,
       });
-    },
-    showCredentialsError(errorCode) {
-      switch (errorCode) {
-        case 'invalid_username':
-          this.textError = 'Por favor utiliza un rut chileno válido';
-          break;
-        case 'invalid_credentials':
-          this.textError = 'Credenciales inválidas';
-          break;
-        case 'unavailable_institution':
-          this.textError = 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
-          break;
-        case 'not_implemented_institution':
-          this.textError = 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
-          break;
-        default:
-          this.textError = 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
-      }
     },
   },
 };
@@ -324,10 +341,13 @@ export default {
     width: 100%;
   }
 
-  .component-fade-enter-active, .component-fade-leave-active {
+  .component-fade-enter-active,
+  .component-fade-leave-active {
     transition: opacity .2s ease;
   }
-  .component-fade-enter, .component-fade-leave-to {
+
+  .component-fade-enter,
+  .component-fade-leave-to {
     opacity: 0;
   }
 </style>

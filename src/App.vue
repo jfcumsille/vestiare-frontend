@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Navbar v-if="loggedIn"></Navbar>
+    <Navbar v-if="showNavbar"></Navbar>
     <router-view></router-view>
   </div>
 </template>
@@ -13,8 +13,14 @@ export default {
     Navbar,
   },
   computed: {
+    showNavbar() {
+      return this.loggedIn && !this.isExternalCall;
+    },
     loggedIn() {
       return this.$store.getters.isUserLoggedIn;
+    },
+    isExternalCall() {
+      return this.$route.path === '/widget';
     },
   },
 };

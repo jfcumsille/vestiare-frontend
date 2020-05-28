@@ -9,6 +9,7 @@ import Links from '../views/links.vue';
 import NewLink from '../views/new-link.vue';
 import RequestNewBank from '../views/request-new-bank.vue';
 import ApiKeys from '../views/api-keys.vue';
+import { validateQueryParams, redirectUrl } from '../helpers/widget_helper';
 
 Vue.use(VueRouter);
 
@@ -76,6 +77,23 @@ const routes = [
         next();
       } else {
         next('login');
+      }
+    },
+  },
+  {
+    path: '/widget',
+    component: NewLink,
+    props: { isWidget: true },
+    beforeEnter(to, from, next) {
+      if (validateQueryParams(to.query)) {
+        next();
+      } else {
+        const url = redirectUrl(to.query);
+        if (url) {
+          window.location = url;
+        } else {
+          next('/');
+        }
       }
     },
   },
