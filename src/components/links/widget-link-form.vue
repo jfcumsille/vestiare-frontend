@@ -36,7 +36,7 @@ export default {
       return { Authorization: this.apiKey };
     },
     extraFields() {
-      return { callbackUrl: this.callbackUrl };
+      return { callback_url: this.callbackUrl };
     },
   },
   methods: {
