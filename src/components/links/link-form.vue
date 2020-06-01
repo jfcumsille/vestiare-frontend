@@ -290,7 +290,7 @@ export default {
         password: this.password,
       };
 
-      return { ...formFields, ...this.extraFields };
+      return { link_data: formFields, ...this.extraFields };
     },
     onSubmit() {
       if (this.$v.$invalid) { return; }

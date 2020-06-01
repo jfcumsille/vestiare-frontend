@@ -46,15 +46,11 @@ const actions = {
   },
   createUserLinkFromWidget(context, payload) {
     const url = 'internal/v1/links/widget';
-    return axiosAuth.post(
-      url,
-      payload.formData,
-      { headers: { ...payload.headers } },
-    );
+    return axiosAuth.post(url, payload.formData, { headers: { ...payload.headers } });
   },
-  createUserLinkFromDashboard(context, formData) {
+  createUserLinkFromDashboard(context, payload) {
     const url = 'internal/v1/links/dashboard';
-    return axiosAuth.post(url, formData, { headers: this.getters.authHeaders })
+    return axiosAuth.post(url, payload.formData, { headers: { ...payload.headers } })
       .then((response) => {
         this.dispatch('getUserLinks');
         return response;
