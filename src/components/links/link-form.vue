@@ -102,6 +102,15 @@
                         placeholder="Rut"
                         v-rut
                         v-model.trim.lazy="$v.rut.$model">
+                  <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                border border-grey-lighter rounded py-3 px-4 leading-tight
+                                focus:outline-none focus:shadow-sm mt-4"
+                        type="text"
+                        :class="{ 'border-red-500': $v.holderId.$error }"
+                        placeholder="Rut empresa"
+                        v-if="isBusiness"
+                        v-rut
+                        v-model.trim.lazy="$v.holderId.$model">
                   <input class="appearance-none block w-full bg-grey-lighter text-gray-900
                                 border border-grey-lighter rounded py-3 px-4 leading-tight
                                 focus:outline-none focus:shadow-sm mt-4"
@@ -192,7 +201,7 @@
 
 <script>
 
-import { required } from 'vuelidate/lib/validators';
+import { required, requiredIf } from 'vuelidate/lib/validators';
 import { rutValidator } from 'vue-dni';
 import Spinner from '../spinner.vue';
 import { availableBanks } from '../../banks-helper';
@@ -210,6 +219,7 @@ export default {
       bank: '',
       rut: '',
       password: '',
+      holderId: '',
       currentStep: 'intro',
       errorCode: '',
       showSpinner: false,
@@ -244,6 +254,10 @@ export default {
       required,
       rutValidator,
     },
+    holderId: {
+      required: requiredIf('isBusiness'),
+      rutValidator: (value) => rutValidator(value) || value === '',
+    },
     password: {
       required,
     },
@@ -251,6 +265,9 @@ export default {
   computed: {
     holderType() {
       return this.$route.query['holder-type'];
+    },
+    isBusiness() {
+      return this.holderType === 'business';
     },
     supportedBanks() {
       return availableBanks.filter((bank) => bank.holderTypes[this.holderType] === true);
@@ -285,6 +302,7 @@ export default {
     getFormData() {
       const formFields = {
         holder_type: this.holderType,
+        holder_id: this.holderId,
         institution_id: this.bank.code,
         username: this.rut,
         password: this.password,
