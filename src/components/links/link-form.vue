@@ -100,7 +100,7 @@
                         type="text"
                         :class="{ 'border-red-500': $v.rut.$error }"
                         placeholder="Rut"
-                        v-rut
+                        v-rut:live
                         v-model.trim.lazy="$v.rut.$model">
                   <input class="appearance-none block w-full bg-grey-lighter text-grey-900
                                 border border-grey-lighter rounded py-3 px-4 leading-tight
@@ -109,7 +109,7 @@
                         :class="{ 'border-red-500': $v.holderId.$error }"
                         placeholder="Rut empresa"
                         v-if="isBusiness"
-                        v-rut
+                        v-rut:live
                         v-model.trim.lazy="$v.holderId.$model">
                   <input class="appearance-none block w-full bg-grey-lighter text-gray-900
                                 border border-grey-lighter rounded py-3 px-4 leading-tight
