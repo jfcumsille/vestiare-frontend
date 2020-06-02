@@ -15,14 +15,14 @@ function getValidUrl(url) {
 }
 
 function validateQueryParams(params) {
-  const requiredParams = ['callback-url', 'public-api-key', 'holder-type', 'return-result-to'];
+  const requiredParams = ['webhook_url', 'public_key', 'holder_type', 'redirect_to'];
 
   return requiredParams.every((key) => Object.prototype.hasOwnProperty.call(params, key));
 }
 
 function redirectUrl(params) {
-  if (Object.prototype.hasOwnProperty.call(params, 'return-result-to')) {
-    return getValidUrl(params['return-result-to']);
+  if (Object.prototype.hasOwnProperty.call(params, 'redirect_to')) {
+    return getValidUrl(params.redirect_to);
   }
 
   return 'login';

@@ -24,13 +24,13 @@ export default {
   },
   computed: {
     apiKey() {
-      return this.$route.query['public-api-key'];
+      return this.$route.query.public_key;
     },
     callbackUrl() {
-      return this.$route.query['callback-url'];
+      return this.$route.query.webhook_url;
     },
     returnUrl() {
-      return this.$route.query['return-result-to'];
+      return this.$route.query.redirect_to;
     },
     formHeaders() {
       return { Authorization: this.apiKey };
