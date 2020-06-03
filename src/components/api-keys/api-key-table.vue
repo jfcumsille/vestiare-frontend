@@ -10,6 +10,10 @@
                  font-medium text-gray-600 uppercase tracking-wider">
         Key
       </th>
+      <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
+                 font-medium text-gray-600 uppercase tracking-wider">
+        Tipo
+      </th>
       <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
     </tr>
   </thead>
@@ -33,6 +37,13 @@
           </div>
         </div>
       </td>
+      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <div class="text-sm leading-5 font-medium text-gray-900">
+          <div class="bg-gray-200 py-2 px-4 rounded-md">
+            {{ mapApiKeyType(apiKey.isPublic) }}
+          </div>
+        </div>
+      </td>
       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5
                  font-medium">
         <button @click="destroyApiKey(apiKey.id)"
@@ -51,6 +62,7 @@
   width: 800px;
 }
 </style>
+
 <script>
 import { mapGetters } from 'vuex';
 
@@ -67,6 +79,16 @@ export default {
           api_key_id: apiKeyId,
         });
       });
+    },
+    mapApiKeyType(isPublic) {
+      switch (isPublic) {
+        case true:
+          return 'Pública';
+        case false:
+          return 'Privada';
+        default:
+          return '';
+      }
     },
   },
 };
