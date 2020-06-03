@@ -184,9 +184,6 @@
       </transition>
     </div>
   </div>
-  <div class="mt-4 w-64 text-sm font-light text-gray-500 mx-auto text-center">
-    Este es el widget que tus usuarios verán en tu aplicación
-  </div>
 </div>
 </template>
 
