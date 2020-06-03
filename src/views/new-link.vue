@@ -1,12 +1,13 @@
 <template>
 <div class="bg-gray-200">
-  <header class="bg-white">
+  <header v-if='!isWidget' class="bg-white">
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
       <h1 class="text-3xl font-medium leading-tight text-gray-900">
         Nuevas credenciales
       </h1>
     </div>
   </header>
+  <header v-else class="py-10"></header>
   <main class="h-screen">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <div class="px-4 sm:px-0">
