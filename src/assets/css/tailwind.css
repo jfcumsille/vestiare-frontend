@@ -1,5 +1,66 @@
 /* purgecss start ignore */
 @tailwind base;
+
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 300;
+  src: url(../fonts/Rubik-Light.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 300;
+  font-style: italic;
+  src: url(../fonts/Rubik-LightItalic.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 400;
+  src: url(../fonts/Rubik-Regular.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 500;
+  src: url(../fonts/Rubik-Medium.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 500;
+  font-style: italic;
+  src: url(../fonts/Rubik-MediumItalic.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 600;
+  src: url(../fonts/Rubik-Bold.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 600;
+  font-style: italic;
+  src: url(../fonts/Rubik-BoldItalic.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "Rubik";
+  font-weight: 900;
+  src: url(../fonts/Rubik-Black.ttf)
+       format("truetype");
+}
+
 @tailwind components;
 /* purgecss end ignore */
 @tailwind utilities;
