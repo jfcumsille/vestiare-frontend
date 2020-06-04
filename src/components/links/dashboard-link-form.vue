@@ -59,6 +59,7 @@ export default {
         bank: findBankByCode(response.data.institution.id),
         numberOfAccounts: response.data.accounts.length,
         linkToken: response.data.link_token,
+        holderType: response.data.type,
       };
 
       this.showLinkDetail(newLinkData);
