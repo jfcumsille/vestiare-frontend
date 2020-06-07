@@ -23,7 +23,7 @@
     <div>
       <dl>
         <div class="bg-gray-100 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm leading-5 font-medium font-semibold text-gray-900">
+          <dt class="text-sm leading-5 font-medium text-gray-900">
             Banco
           </dt>
           <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
@@ -31,7 +31,7 @@
           </dd>
         </div>
         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm leading-5 font-medium font-semibold text-gray-900">
+          <dt class="text-sm leading-5 font-medium text-gray-900">
             Tipo de cuenta
           </dt>
           <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
@@ -39,7 +39,7 @@
           </dd>
         </div>
         <div class="bg-gray-100 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm leading-5 font-medium font-semibold text-gray-900">
+          <dt class="text-sm leading-5 font-medium text-gray-900">
             Número de cuentas
           </dt>
           <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
@@ -47,7 +47,7 @@
           </dd>
         </div>
         <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-          <dt class="text-sm leading-5 font-medium font-semibold text-gray-900">
+          <dt class="text-sm leading-5 font-medium text-gray-900">
             Link token
           </dt>
           <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
@@ -56,7 +56,7 @@
                           leading-5 bg-teal-200">
                 <div class="w-0 flex-1 flex items-center">
                   <span class="ml-2 flex-1 w-0 truncate tracking-widest
-                                font-semibold">
+                                font-medium">
                     <font-awesome-icon icon="lock" class="mt-1 mr-1"/>
                     {{ linkToken }}
                   </span>

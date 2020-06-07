@@ -171,7 +171,7 @@
             </div>
             <div class="mt-4 text-right">
               <router-link to="/links"
-                class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-gray-200
+                class="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-gray-200
                        text-gray-900 hover:bg-gray-300">
                 Volver
               </router-link>

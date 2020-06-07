@@ -42,7 +42,7 @@
       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5
                  font-medium">
         <a href="#" @click="destroyLink(link.linkId)"
-           class="ml-6 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-md bg-red-200
+           class="ml-6 px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-red-200
                      text-red-900 hover:bg-red-300">
           <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
         </a>
