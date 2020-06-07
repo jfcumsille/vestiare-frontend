@@ -261,7 +261,7 @@ export default {
   },
   computed: {
     holderType() {
-      return this.$route.query['holder-type'];
+      return this.$route.query['holder-type'] || this.$route.query.holder_type;
     },
     isBusiness() {
       return this.holderType === 'business';
