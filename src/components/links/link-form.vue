@@ -330,8 +330,9 @@ export default {
     trackLinkCreatedEvent(responseData) {
       window.analytics.track('Link Created', {
         link_id: responseData.id,
-        institution_id: responseData.institution.public_id,
+        institution_id: responseData.institution.id,
         holder_type: responseData.holder_type,
+        holder_id: responseData.holder_id,
         username: responseData.username,
         created_through: this.createdThrough,
       });
@@ -339,9 +340,10 @@ export default {
     trackLinkCreationFailedEvent(formData, errorCode) {
       window.analytics.track('Link Creation Failed', {
         error_code: errorCode,
-        institution_id: formData.institution_id,
-        holder_type: formData.holder_type,
-        username: formData.username,
+        institution_id: formData.link_data.institution_id,
+        holder_type: formData.link_data.holder_type,
+        username: formData.link_data.username,
+        holder_id: formData.link_data.holder_id,
         created_through: this.createdThrough,
       });
     },
