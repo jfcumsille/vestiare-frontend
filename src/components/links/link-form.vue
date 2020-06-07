@@ -13,7 +13,7 @@
               Fintoc se conectará con tu banco
             </h1>
             <div class="text-gray-800">
-              <div class="text-base font-light mt-2 flex flex-wrap items-center h-16">
+              <div class="text-base font-regular mt-2 flex flex-wrap items-center h-16">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
                     <font-awesome-icon icon="bolt"/>
@@ -23,7 +23,7 @@
                   Tomará menos de un minuto
                 </div>
               </div>
-              <div class="text-base font-light flex flex-wrap items-center h-16">
+              <div class="text-base font-regular flex flex-wrap items-center h-16">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
                     <font-awesome-icon icon="shield-alt"/>
@@ -33,7 +33,7 @@
                   La conexión está encriptada de extremo a extremo
                 </div>
               </div>
-              <div class="text-base font-light flex flex-wrap items-center h-16">
+              <div class="text-base font-regular flex flex-wrap items-center h-16">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
                     <font-awesome-icon icon="lock"/>
