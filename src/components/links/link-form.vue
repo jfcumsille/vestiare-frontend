@@ -4,9 +4,14 @@
     <div class="w-full h-full">
       <transition name="component-fade" mode="out-in">
         <div v-if='currentStep==="intro"'
-          class="h-full flex flex-col justify-between p-8"
+          class="h-full flex flex-col"
           :key="currentStep">
-          <div>
+          <div class="pt-6 px-6 flex justify-end">
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <div class="px-8 pb-8 flex flex-col justify-between">
             <img class="mx-auto h-16 w-auto rounded-full shadow"
                 src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
             <h1 class="text-2xl mt-4 text-center leading-tight">
@@ -15,7 +20,8 @@
             <div class="text-gray-800">
               <div class="text-base font-regular mt-2 flex flex-wrap items-center h-16">
                 <div class="w-2/12">
-                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
+                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                              rounded-full">
                     <font-awesome-icon icon="bolt"/>
                   </div>
                 </div>
@@ -25,7 +31,8 @@
               </div>
               <div class="text-base font-regular flex flex-wrap items-center h-16">
                 <div class="w-2/12">
-                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
+                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                              rounded-full">
                     <font-awesome-icon icon="shield-alt"/>
                   </div>
                 </div>
@@ -35,7 +42,8 @@
               </div>
               <div class="text-base font-regular flex flex-wrap items-center h-16">
                 <div class="w-2/12">
-                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle rounded-full">
+                  <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                              rounded-full">
                     <font-awesome-icon icon="lock"/>
                   </div>
                 </div>
@@ -44,25 +52,28 @@
                 </div>
               </div>
             </div>
+            <button @click="moveTo('select-bank')"
+                    type="submit"
+                    class="group relative w-full justify-center py-3 px-4 border
+                          border-transparent text-l leading-5 rounded-md
+                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                          focus:shadow-outline-indigo active:bg-indigo-700 transition
+                          duration-150 ease-in-out mt-6 hover:bg-indigo-500 tracking-wide">
+                Continuar
+            </button>
           </div>
-          <button @click="moveTo('select-bank')"
-                  type="submit"
-                  class="group relative w-full flex justify-center py-3 px-4 border
-                        border-transparent text-l leading-5 rounded-md
-                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                        focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out mt-6 hover:bg-indigo-500 tracking-wide">
-              Continuar
-          </button>
         </div>
         <div v-if='currentStep==="select-bank"' class='h-full flex flex-col' :key="currentStep">
-          <div class="pt-6 px-6 text-gray-800">
-            <button @click="moveTo('intro')" class="self-start text-gray-700">
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('intro')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l mt-2">Selecciona tu banco</h1>
+            <h1 class="text-l">Selecciona tu banco</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
           </div>
-          <hr class="mt-1">
+          <hr>
           <div class="flex-1 p-4">
             <div class="h-full">
               <div class="grid grid-cols-2 gap-2 p-2">
@@ -79,20 +90,23 @@
           </div>
         </div>
         <div v-if='currentStep==="bank-log-in"' class='h-full flex flex-col' :key="currentStep">
-          <div class="pt-6 px-6 text-gray-800">
-            <button @click="moveTo('select-bank')" class="self-start text-gray-700">
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('select-bank')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l mt-2 text-center">Ingresa</h1>
+            <h1 class="text-l">Ingresa</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
           </div>
-          <hr class="mt-1">
+          <hr>
           <div class="relative">
             <spinner v-if="showSpinner">
             </spinner>
             <div class="flex-1 p-6">
               <img class="bank-logo h-24 rounded object-cover mx-auto"
                   :src="this.bank.logo" />
-              <div class="mt-6">
+              <div class="mt-4">
                 <div class="rounded-md shadow-sm">
                   <input class="appearance-none block w-full bg-grey-lighter text-grey-900
                                 border border-grey-lighter rounded py-3 px-4 leading-tight
@@ -154,7 +168,7 @@
             </button>
             <h1 class="text-l mt-2 text-center">Error</h1>
           </div>
-          <hr class="mt-1">
+          <hr>
           <div class="flex-1 p-6 flex flex-col justify-between">
             <div>
               <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
@@ -202,6 +216,7 @@ import { required, requiredIf } from 'vuelidate/lib/validators';
 import { rutValidator } from 'vue-dni';
 import Spinner from '../spinner.vue';
 import { availableBanks } from '../../banks-helper';
+import { getValidUrl } from '../../helpers/widget_helper';
 
 const PERMITTED_STEPS = [
   'intro',
@@ -209,6 +224,7 @@ const PERMITTED_STEPS = [
   'bank-log-in',
   'error',
 ];
+const FIRST_STEP = PERMITTED_STEPS[0];
 
 export default {
   data() {
@@ -217,7 +233,7 @@ export default {
       rut: '',
       password: '',
       holderId: '',
-      currentStep: 'intro',
+      currentStep: FIRST_STEP,
       errorCode: '',
       showSpinner: false,
     };
@@ -285,6 +301,16 @@ export default {
     },
   },
   methods: {
+    cancelLinkCreation() {
+      const redirectToUrl = this.$route.query.redirect_to;
+      if (redirectToUrl) {
+        const validRedirectToURL = getValidUrl(redirectToUrl);
+        const resultIsUserExited = 'result=user_exited';
+        window.location = `${validRedirectToURL}?${resultIsUserExited}`;
+      } else {
+        this.$router.push('/links');
+      }
+    },
     moveTo(step) {
       if (!PERMITTED_STEPS.includes(step)) {
         throw Error('Unrecognized step');

@@ -6,6 +6,7 @@ import { rutFilter, rutInputDirective } from 'vue-dni';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faEye, faEdit, faTrash, faPlus, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -15,6 +16,7 @@ import store from './store';
 
 library.add(
   faEye, faEdit, faPlus, faTrash, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
+  faTimes,
 );
 
 Vue.use(VueClipboard);
