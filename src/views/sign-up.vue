@@ -3,10 +3,10 @@
   <spinner v-if='showSpinner'></spinner>
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
-    <h1 class="mt-2 text-4xl text-center font-semibold text-gray-900">
+    <h1 class="mt-2 text-4xl text-center font-medium text-gray-900">
       ¡Bienvenido!
     </h1>
-    <h2 class="mb-2 text-4xl text-center font-semibold text-gray-900">
+    <h2 class="mb-2 text-4xl text-center font-medium text-gray-900">
       Regístrate acá
     </h2>
     <div class="w-full">

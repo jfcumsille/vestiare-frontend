@@ -5,13 +5,13 @@
     <div class="max-w-md w-full">
       <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
       <div>
-        <h2 class="mt-6 text-center text-4xl leading-9 font-semibold text-gray-900">
+        <h2 class="mt-6 text-center text-4xl leading-9 font-medium text-gray-900">
           Ingresa a tu cuenta
         </h2>
         <p class="mt-2 text-center text-sm leading-5 text-gray-600">
           O
           <router-link to="/signup"
-                       class="font-medium text-indigo-600 hover:text-indigo-800
+                       class="font-regular text-indigo-600 hover:text-indigo-800
                               focus:outline-none focus:underline transition ease-in-out
                               duration-150">
             Regístrate acá
@@ -20,7 +20,7 @@
       </div>
       <div class="text-center mt-6">
         <p v-if="showHelloBackMessage"
-           class="text-3xl font-semibold text-gray-900 border-indigo-500">
+           class="text-3xl font-medium text-gray-900 border-indigo-500">
           Hola nuevamente 👋
         </p>
       </div>
@@ -47,7 +47,7 @@
 
         <div class="mt-6 flex items-center justify-between">
           <div class="text-sm leading-5 flex items-end">
-            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-800 focus:outline-none
+            <a href="#" class="font-regular text-indigo-600 hover:text-indigo-800 focus:outline-none
                               focus:underline transition ease-in-out duration-150">
               ¿Olvidaste tu contraseña?
             </a>
