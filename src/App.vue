@@ -14,13 +14,16 @@ export default {
   },
   computed: {
     showNavbar() {
-      return this.loggedIn && !this.isExternalCall;
+      return this.loggedIn && !this.isExternalCall && !this.errorPage;
     },
     loggedIn() {
       return this.$store.getters.isUserLoggedIn;
     },
     isExternalCall() {
       return this.$route.path === '/widget';
+    },
+    errorPage() {
+      return this.$route.path === '/error';
     },
   },
 };
