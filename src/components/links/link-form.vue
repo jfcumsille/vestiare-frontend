@@ -295,6 +295,8 @@ export default {
           return 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
         case 'not_implemented_institution':
           return 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
+        case 'invalid_api_key':
+          return 'La API Key ingresada no es válida';
         default:
           return 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
       }
