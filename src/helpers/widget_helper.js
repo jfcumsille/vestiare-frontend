@@ -28,8 +28,15 @@ function redirectUrl(params) {
   return 'login';
 }
 
+function queryize(params) {
+  return Object.keys(params)
+    .map((key) => `${key}=${params[key]}`)
+    .join('&');
+}
+
 module.exports = {
   validateQueryParams,
   redirectUrl,
   getValidUrl,
+  queryize,
 };

@@ -13,7 +13,7 @@
 <script>
 
 import LinkForm from './link-form.vue';
-import { getValidUrl } from '../../helpers/widget_helper';
+import { getValidUrl, queryize } from '../../helpers/widget_helper';
 
 export default {
   mounted() {
@@ -40,8 +40,19 @@ export default {
     },
   },
   methods: {
-    onCreateSuccess() {
-      window.location = getValidUrl(this.returnUrl);
+    onCreateSuccess(response) {
+      const {
+        // eslint-disable-next-line camelcase
+        id: link_id, username, holder_type, institution: { id: institution_id },
+      } = response.data;
+      const params = {
+        result: 'link_created',
+        link_id,
+        username,
+        holder_type,
+        institution_id,
+      };
+      window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
     },
   },
 };
