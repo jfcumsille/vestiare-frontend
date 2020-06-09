@@ -217,6 +217,7 @@ import { rutValidator } from 'vue-dni';
 import Spinner from '../spinner.vue';
 import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
+import errorObject from '../../helpers/error_object';
 
 const PERMITTED_STEPS = [
   'intro',
@@ -295,8 +296,6 @@ export default {
           return 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
         case 'not_implemented_institution':
           return 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
-        case 'invalid_api_key':
-          return 'La API Key ingresada no es válida';
         default:
           return 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
       }
@@ -350,6 +349,7 @@ export default {
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.redirectIfApiKeyError(error.response);
           this.trackLinkCreationFailedEvent(formData, this.errorCode);
           this.currentStep = 'error';
           this.showSpinner = false;
@@ -374,6 +374,21 @@ export default {
         holder_id: formData.link_data.holder_id,
         created_through: this.createdThrough,
       });
+    },
+    redirectIfApiKeyError(errorResponse) {
+      if (this.errorCode === 'invalid_api_key') {
+        const error = errorObject;
+        // TODO: redirect to 401 with errorResponse.data.error.type
+        error.type = 'invalid_request_error';
+        error.code = this.errorCode;
+        error.message = errorResponse.data.error.message;
+        error.param = 'public_key';
+
+        this.$router.push({
+          name: 'error',
+          params: { error },
+        });
+      }
     },
   },
 };
