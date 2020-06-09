@@ -69,6 +69,13 @@ const actions = {
         .catch((error) => reject(error));
     });
   },
+  sendPasswordRecovery(context, formData) {
+    const payload = {
+      email: formData.email,
+    };
+    const url = 'internal/v1/users/password';
+    axiosAuth.post(url, payload);
+  },
   signOut({ commit }) {
     return new Promise((resolve) => {
       commit('clearAuthData');

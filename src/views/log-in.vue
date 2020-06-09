@@ -47,10 +47,12 @@
 
         <div class="mt-6 flex items-center justify-between">
           <div class="text-sm leading-5 flex items-end">
-            <a href="#" class="font-regular text-indigo-600 hover:text-indigo-800 focus:outline-none
-                              focus:underline transition ease-in-out duration-150">
+            <router-link
+              to="/recover-password"
+              class="font-regular text-indigo-600 hover:text-indigo-800 focus:outline-none
+                     focus:underline transition ease-in-out duration-150">
               ¿Olvidaste tu contraseña?
-            </a>
+            </router-link>
           </div>
         </div>
 
