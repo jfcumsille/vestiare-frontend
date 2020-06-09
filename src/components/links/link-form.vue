@@ -185,7 +185,7 @@
                     </svg>
                   </div>
                   <div>
-                    <p class="font-bold">Tuvimos un problema con tus credenciales</p>
+                    <p class="font-semibold">Tuvimos un problema con tus credenciales</p>
                     <p class="text-sm">{{ textError }}</p>
                   </div>
                 </div>

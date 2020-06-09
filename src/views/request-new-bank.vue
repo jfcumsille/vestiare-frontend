@@ -30,7 +30,7 @@
                 <div class="flex">
                   <div class="py-1"><svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
                   <div>
-                    <p class="font-bold">Gracias por ayudar a mejorar Fintoc 🙌</p>
+                    <p class="font-semibold">Gracias por ayudar a mejorar Fintoc 🙌</p>
                     <p class="text-sm">
                       Esto será muy útil para nosotros.
                       Serás el primero en saber cuando tengamos este banco integrado.
@@ -44,7 +44,7 @@
                   <div class="-mx-2 md:flex mb-6">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                       <label class="block uppercase tracking-wide text-gray-900 text-xs
-                                    font-bold mb-2">
+                                    font-semibold mb-2">
                         Banco
                       </label>
                       <div class="relative">
@@ -75,7 +75,7 @@
                     </div>
                     <div class="md:w-1/2 px-3">
                       <label class="block uppercase tracking-wide text-gray-900 text-xs
-                                    font-bold mb-2">
+                                    font-semibold mb-2">
                         Tipo de cuenta
                       </label>
                       <div class="relative">
@@ -106,7 +106,7 @@
                   <div class="-mx-2 md:flex mb-6">
                     <div class="md:w-1/2 px-3 mb-6 md:mb-0">
                       <label class="block uppercase tracking-wide text-grey-900 text-xs
-                                    font-bold mb-2">
+                                    font-semibold mb-2">
                         Rut
                       </label>
                       <input class="appearance-none block w-full bg-grey-lighter text-grey-900
@@ -124,8 +124,8 @@
                       </div>
                     </div>
                     <div class="md:w-1/2 px-3">
-                      <label class="block uppercase tracking-wide text-grey-900 text-xs font-bold
-                                    mb-2">
+                      <label class="block uppercase tracking-wide text-grey-900 text-xs
+                                    font-semibold mb-2">
                         Password
                       </label>
                       <input class="appearance-none block w-full bg-grey-lighter text-gray-900

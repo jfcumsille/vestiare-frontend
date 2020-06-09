@@ -49,6 +49,23 @@ const mutations = {
 };
 
 const actions = {
+  changePassword({ commit }, formData) {
+    const payload = {
+      reset_password_token: formData.resetPasswordToken,
+      password: formData.password,
+      password_confirmation: formData.passwordConfirmation,
+    };
+    const url = 'internal/v1/users/password';
+    axiosAuth.put(url, payload)
+      .then((response) => {
+        const userData = {
+          idToken: response.data.authentication_token,
+          userId: response.data.id,
+          email: response.data.email,
+        };
+        commit('saveSession', userData);
+      });
+  },
   logIn({ commit }, formData) {
     return new Promise((resolve, reject) => {
       const payload = {
@@ -68,6 +85,13 @@ const actions = {
         })
         .catch((error) => reject(error));
     });
+  },
+  sendPasswordRecovery(context, formData) {
+    const payload = {
+      email: formData.email,
+    };
+    const url = 'internal/v1/users/password';
+    axiosAuth.post(url, payload);
   },
   signOut({ commit }) {
     return new Promise((resolve) => {
