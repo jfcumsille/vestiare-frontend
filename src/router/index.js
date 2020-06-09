@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import store from '../store';
 
+import ChangePassword from '../views/change-password.vue';
 import LogIn from '../views/log-in.vue';
 import SignUp from '../views/sign-up.vue';
 import RecoverPassword from '../views/recover-password.vue';
@@ -40,6 +41,17 @@ const routes = [
   {
     path: '/recover-password',
     component: RecoverPassword,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next('links');
+      } else {
+        next();
+      }
+    },
+  },
+  {
+    path: '/change-password',
+    component: ChangePassword,
     beforeEnter(to, from, next) {
       if (store.getters.isUserLoggedIn) {
         next('links');
