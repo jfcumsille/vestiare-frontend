@@ -6,8 +6,8 @@
     <h1 class="mt-2 text-4xl text-center font-medium text-gray-900">
       ¡Bienvenido!
     </h1>
-    <h2 class="mb-2 text-4xl text-center font-medium text-gray-900">
-      Regístrate acá
+    <h2 class="mb-2 text-4xl text-center font-regular text-gray-900">
+      Regístrate acá 👇
     </h2>
     <div class="w-full">
       <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
@@ -17,7 +17,7 @@
         <div class="flex">
           <div class="py-1"><svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/></svg></div>
           <div>
-            <p class="font-bold">Tuvimos un problema con el registro</p>
+            <p class="font-semibold">Tuvimos un problema con el registro</p>
             <p class="text-sm">
               Si el problema persiste escríbenos a sos@fintoc.com. Respondemos muy rápido
             </p>
@@ -53,7 +53,7 @@
                 :disabled="$v.$invalid"
                 :class="{ 'hover:bg-indigo-500': !$v.$invalid,
                           'cursor-not-allowed': $v.$invalid }"
-                class="group relative w-full flex justify-center py-2 px-4 border
+                class="group relative w-full flex justify-center py-3 px-4 border
                        border-transparent text-sm leading-5 font-medium rounded-md
                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                        focus:shadow-outline-indigo active:bg-indigo-700 transition
@@ -80,7 +80,7 @@
             Politica de Privacidad
         </a>
     </div>
-    <div class="text-gray-900 mt-6">
+    <div class="text-gray-900 mt-4">
     ¿Ya tienes una cuenta?
     <router-link to="../login/"
                  class="font-medium text-indigo-600 hover:text-indigo-800 focus:outline-none

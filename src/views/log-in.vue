@@ -45,20 +45,9 @@
                         focus:z-10 sm:text-sm sm:leading-5" placeholder="Password" />
         </div>
 
-        <div class="mt-6 flex items-center justify-between">
-          <div class="text-sm leading-5 flex items-end">
-            <router-link
-              to="/recover-password"
-              class="font-regular text-indigo-600 hover:text-indigo-800 focus:outline-none
-                     focus:underline transition ease-in-out duration-150">
-              ¿Olvidaste tu contraseña?
-            </router-link>
-          </div>
-        </div>
-
         <div class="mt-6">
           <button type="submit"
-                  class="group relative w-full flex justify-center py-2 px-4 border
+                  class="group relative w-full flex justify-center py-3 px-4 border
                          border-transparent text-sm leading-5 font-medium rounded-md
                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                          focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150
@@ -75,6 +64,17 @@
             </span>
             Login
           </button>
+        </div>
+
+        <div class="mt-6 flex items-center justify-between">
+          <div class="text-sm leading-5 flex items-end">
+            <router-link
+              to="/recover-password"
+              class="font-regular text-indigo-600 hover:text-indigo-800 focus:outline-none
+                     focus:underline transition ease-in-out duration-150">
+              ¿Olvidaste tu contraseña?
+            </router-link>
+          </div>
         </div>
       </form>
     </div>
