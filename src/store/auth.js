@@ -56,7 +56,7 @@ const actions = {
       password_confirmation: formData.passwordConfirmation,
     };
     const url = 'internal/v1/users/password';
-    axiosAuth.put(url, payload)
+    return axiosAuth.put(url, payload)
       .then((response) => {
         const userData = {
           idToken: response.data.authentication_token,
@@ -91,7 +91,7 @@ const actions = {
       email: formData.email,
     };
     const url = 'internal/v1/users/password';
-    axiosAuth.post(url, payload);
+    return axiosAuth.post(url, payload);
   },
   signOut({ commit }) {
     return new Promise((resolve) => {
