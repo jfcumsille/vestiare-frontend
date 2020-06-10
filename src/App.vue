@@ -20,7 +20,7 @@ export default {
       return this.$store.getters.isUserLoggedIn;
     },
     isExternalCall() {
-      return this.$route.path === '/widget';
+      return this.$route.path === '/widget' || this.$route.path === '/widget-iframe';
     },
     errorPage() {
       return this.$route.path === '/error';

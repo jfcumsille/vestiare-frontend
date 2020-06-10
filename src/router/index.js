@@ -9,6 +9,7 @@ import SignUp from '../views/sign-up.vue';
 import RecoverPassword from '../views/recover-password.vue';
 import Links from '../views/links.vue';
 import NewLink from '../views/new-link.vue';
+import WidgetIframe from '../views/widget-iframe.vue';
 import RequestNewBank from '../views/request-new-bank.vue';
 import ApiKeys from '../views/api-keys.vue';
 import Error from '../views/error.vue';
@@ -109,6 +110,18 @@ const routes = [
     path: '/widget',
     component: NewLink,
     props: { isWidget: true },
+    beforeEnter(to, from, next) {
+      const validationResult = validateQueryParams(to.query);
+      if (validationResult.valid) {
+        next();
+      } else {
+        next({ name: 'error', params: { isWidget: true, error: validationResult.error } });
+      }
+    },
+  },
+  {
+    path: '/widget-iframe',
+    component: WidgetIframe,
     beforeEnter(to, from, next) {
       const validationResult = validateQueryParams(to.query);
       if (validationResult.valid) {
