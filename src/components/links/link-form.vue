@@ -397,8 +397,7 @@ export default {
 <style scoped>
   .link-frame {
     height: 500px;
-    max-width: 360px;
-    width: 100%;
+    width: 360px;
   }
 
   .component-fade-enter-active,
