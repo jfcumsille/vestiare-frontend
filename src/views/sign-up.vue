@@ -73,10 +73,16 @@
     </div>
     <div class="text-center text-sm text-gray-900 mt-4">
         Al registrarte, aceptas los
-        <a class="no-underline border-b border-gray-900 text-gray-900" href="#">
+        <a
+          class="no-underline border-b border-gray-900 text-gray-900"
+          href="documents/terms-and-conditions.pdf"
+          target="_blank">
             Terminos y Condiciones
         </a> y la
-        <a class="no-underline border-b border-gray-900 text-gray-900" href="#">
+        <a
+          class="no-underline border-b border-gray-900 text-gray-900"
+          href="documents/privacy-policies.pdf"
+          target="_blank">
             Politica de Privacidad
         </a>
     </div>
@@ -95,6 +101,9 @@
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators';
 import Spinner from '../components/spinner.vue';
+
+// import termsAndConditions from '../assets/documents/terminos.pdf';
+// import privacyPolicy from '../assets/documents/politica.pdf';
 
 export default {
   data() {
