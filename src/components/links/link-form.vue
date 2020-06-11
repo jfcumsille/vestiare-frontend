@@ -17,8 +17,8 @@
             <h1 class="text-2xl mt-4 text-center leading-tight">
               Fintoc se conectará con tu banco
             </h1>
-            <div class="text-gray-800">
-              <div class="text-base font-regular mt-2 flex flex-wrap items-center h-16">
+            <div class="text-gray-800 mt-1">
+              <div class="text-base font-regular flex flex-wrap items-center h-12">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
                               rounded-full">
@@ -29,7 +29,7 @@
                   Tomará menos de un minuto
                 </div>
               </div>
-              <div class="text-base font-regular flex flex-wrap items-center h-16">
+              <div class="text-base font-regular flex flex-wrap items-center h-12 mt-2">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
                               rounded-full">
@@ -40,7 +40,7 @@
                   La conexión está encriptada de extremo a extremo
                 </div>
               </div>
-              <div class="text-base font-regular flex flex-wrap items-center h-16">
+              <div class="text-base font-regular flex flex-wrap items-center h-12 mt-2">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
                               rounded-full">
@@ -58,9 +58,24 @@
                           border-transparent text-l leading-5 rounded-md
                           text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                           focus:shadow-outline-indigo active:bg-indigo-700 transition
-                          duration-150 ease-in-out mt-6 hover:bg-indigo-500 tracking-wide">
+                          duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide">
                 Continuar
             </button>
+              <div class="text-center text-sm text-gray-800 mt-4">
+                Al continuar aceptas los
+                <a
+                  class="no-underline border-b border-gray-800 text-gray-800"
+                  href="documents/terms-and-conditions.pdf"
+                  target="_blank">
+                    Terminos y Condiciones
+                </a> y la
+                <a
+                  class="no-underline border-b border-gray-800 text-gray-800"
+                  href="documents/privacy-policies.pdf"
+                  target="_blank">
+                    Politica de Privacidad
+                </a>
+            </div>
           </div>
         </div>
         <div v-if='currentStep==="select-bank"' class='h-full flex flex-col' :key="currentStep">
