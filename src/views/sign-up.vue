@@ -75,13 +75,13 @@
         Al registrarte, aceptas los
         <a
           class="no-underline border-b border-gray-900 text-gray-900"
-          href="documents/terms-and-conditions.pdf"
+          href="documents/dev-terms-and-conditions.pdf"
           target="_blank">
             Terminos y Condiciones
         </a> y la
         <a
           class="no-underline border-b border-gray-900 text-gray-900"
-          href="documents/privacy-policies.pdf"
+          href="documents/dev-privacy-policies.pdf"
           target="_blank">
             Politica de Privacidad
         </a>
