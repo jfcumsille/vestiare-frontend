@@ -55,7 +55,7 @@ const actions = {
       password: formData.password,
       password_confirmation: formData.passwordConfirmation,
     };
-    const url = 'internal/v1/users/password';
+    const url = '/internal/v1/users/password';
     return axiosAuth.put(url, payload)
       .then((response) => {
         const userData = {
@@ -90,7 +90,7 @@ const actions = {
     const payload = {
       email: formData.email,
     };
-    const url = 'internal/v1/users/password';
+    const url = '/internal/v1/users/password';
     return axiosAuth.post(url, payload);
   },
   signOut({ commit }) {
