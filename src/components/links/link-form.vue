@@ -61,19 +61,19 @@
                           duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide">
                 Continuar
             </button>
-              <div class="text-center text-sm text-gray-800 mt-4">
+              <div class="text-center text-sm text-gray-600 mt-4">
                 Al continuar aceptas los
                 <a
-                  class="no-underline border-b border-gray-800 text-gray-800"
+                  class="no-underline border-b border-gray-400"
                   href="documents/terms-and-conditions.pdf"
                   target="_blank">
-                    Terminos y Condiciones
+                    Términos y Condiciones
                 </a> y la
                 <a
-                  class="no-underline border-b border-gray-800 text-gray-800"
+                  class="no-underline border-b border-gray-400"
                   href="documents/privacy-policies.pdf"
                   target="_blank">
-                    Politica de Privacidad
+                    Política de Privacidad
                 </a>
             </div>
           </div>

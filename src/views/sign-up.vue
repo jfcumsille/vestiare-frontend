@@ -71,19 +71,19 @@
         </button>
       </form>
     </div>
-    <div class="text-center text-sm text-gray-900 mt-4">
+    <div class="text-center text-sm text-gray-600 mt-4">
         Al registrarte, aceptas los
         <a
-          class="no-underline border-b border-gray-900 text-gray-900"
+          class="no-underline border-b border-gray-400"
           href="documents/dev-terms-and-conditions.pdf"
           target="_blank">
-            Terminos y Condiciones
+            Términos y Condiciones
         </a> y la
         <a
-          class="no-underline border-b border-gray-900 text-gray-900"
+          class="no-underline border-b border-gray-400"
           href="documents/dev-privacy-policies.pdf"
           target="_blank">
-            Politica de Privacidad
+            Política de Privacidad
         </a>
     </div>
     <div class="text-gray-900 mt-4">
