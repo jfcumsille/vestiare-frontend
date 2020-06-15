@@ -27,16 +27,11 @@
         </div>
         <div class="hidden md:block">
           <div class="ml-4 flex items-center md:ml-6">
-            <router-link to="/request-new-bank"
-               class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white
-                      hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700
-                      bg-gray-600">
-               Solicitar nuevo banco
-            </router-link>
             <a href="https://fintoc.com/docs"
                target="blank"
                class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white
-                      hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+                      hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700
+                      bg-gray-600">
                Documentación
             </a>
             <!-- Profile dropdown -->
@@ -116,14 +111,6 @@
       </div>
       <div class="pt-3 pb-3 border-t border-gray-700">
         <div class="px-2">
-          <router-link
-             to="/request-new-bank"
-             class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
-                    hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
-                    focus:bg-gray-700"
-                  @click='signOut'>
-            Solicitar nuevo banco
-          </router-link>
           <a href="https://fintoc.com/docs"
              target="blank"
              class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
