@@ -19,6 +19,7 @@ const mutations = {
       rut: link.username,
       numberOfAccounts: link.accounts.length,
       linkId: link.id,
+      mode: link.mode,
     }));
   },
 };
