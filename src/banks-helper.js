@@ -46,7 +46,7 @@ const availableBanks = [
     label: 'Banco Estado',
     logo: bancoEstadoLogo,
     smallLogo: bancoEstadoSmallLogo,
-    holderTypes: { business: false, individual: false },
+    holderTypes: { business: true, individual: false },
   },
   {
     code: 'cl_banco_itau',
