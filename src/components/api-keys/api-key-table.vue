@@ -4,10 +4,6 @@
     <tr>
       <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
                  font-medium text-gray-600 uppercase tracking-wider">
-        ID
-      </th>
-      <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                 font-medium text-gray-600 uppercase tracking-wider">
         Key
       </th>
       <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
@@ -19,9 +15,6 @@
   </thead>
   <tbody class="bg-white">
     <tr v-for='apiKey in userApiKeys' v-bind:key='apiKey.id'>
-      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="text-sm leading-5 font-medium text-gray-900">{{ apiKey.id }}</div>
-      </td>
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
         <div class="flex">
           <div class="api-key
