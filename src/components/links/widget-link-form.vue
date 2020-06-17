@@ -1,11 +1,12 @@
 <template>
 <div>
   <link-wizard
-    @createSuccess='onCreateSuccess'
+    @createSuccess='onLinkCreateSuccess'
     :createdThrough="'widget'"
     :submitAction="'createUserLinkFromWidget'"
     :headers="formHeaders"
-    :extraFields="extraFields">
+    :extraFields="extraFields"
+    :requestType="requestType">
   </link-wizard>
 </div>
 </template>
@@ -23,6 +24,9 @@ export default {
     LinkWizard,
   },
   computed: {
+    requestType() {
+      return this.$route.query.product;
+    },
     apiKey() {
       return this.$route.query.public_key;
     },
@@ -40,11 +44,18 @@ export default {
     },
   },
   methods: {
-    onCreateSuccess(response) {
+    onLinkCreateSuccess(response) {
+      if (this.requestType === 'movements') {
+        this.redirectFromMovementCreation(response.data);
+      }
+    },
+
+    redirectFromMovementCreation(data) {
       const {
         // eslint-disable-next-line camelcase
         id: link_id, username, holder_type, institution: { id: institution_id },
-      } = response.data;
+      } = data;
+
       const params = {
         result: 'link_created',
         link_id,
@@ -52,6 +63,7 @@ export default {
         holder_type,
         institution_id,
       };
+
       window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
     },
   },

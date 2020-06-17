@@ -225,6 +225,48 @@
             </div>
           </div>
         </div>
+        <div v-if='currentStep==="select-account"' class='h-full flex flex-col' :key="currentStep">
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('intro')" class="text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l">Selecciona una cuenta</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <hr>
+          <div class="relative">
+            <div class="flex-1 p-6">
+              <div class="h-full">
+                <img class="bank-logo h-24 rounded object-cover mx-auto"
+                    :src="bank.logo" />
+                <div class="grid grid-cols-1 gap-4 p-4">
+                  <button v-for="account in accounts"
+                          :key='account.id'
+                          @click='handleAccountSelection(account)'
+                          class="border-gray-200 shadow-xs hover:shadow-md py-2 px-1 rounded
+                          transition ease-in-out duration-150">
+                    <div class="flex items-center text-sm">
+                      <div class="flex w-3/5 text-left items-center">
+                        <div class="w-1/5 px-2">
+                          <input type="checkbox">
+                        </div>
+                        <div class="w-4/5 px-0">
+                          <p> {{ account.name }}</p>
+                          <p class="text-gray-800"> {{ account.number }}</p>
+                        </div>
+                      </div>
+                      <div class="w-2/5">
+                        <p class="text-gray-800"> ${{ account.balance.available }}</p>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
           <div class="pt-6 px-6 text-gray-800">
             <button @click="moveTo('bank-log-in')" class="self-start text-gray-700">
@@ -282,12 +324,19 @@ import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
 import errorObject from '../../helpers/error_object';
 
-const PERMITTED_STEPS = [
+const LINK_STEPS = [
   'intro',
   'select-bank',
   'bank-log-in',
   'error',
 ];
+const SUBSCRIPTION_STEPS = [
+  'select-account',
+  'select-max-amount',
+  'enter-second-factor',
+  'error',
+];
+const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
 
 export default {
@@ -300,6 +349,8 @@ export default {
       currentStep: FIRST_STEP,
       errorCode: '',
       showSpinner: false,
+      accounts: [],
+      selectedAccount: {},
     };
   },
   props: {
@@ -318,6 +369,10 @@ export default {
     extraFields: {
       type: Object,
       default: () => ({}),
+    },
+    requestType: {
+      type: String,
+      default: '',
     },
   },
   components: {
@@ -407,8 +462,14 @@ export default {
       this.$store.dispatch(this.submitAction, payload)
         .then((response) => {
           this.trackLinkCreatedEvent(response.data);
+          this.accounts = response.data.accounts;
           this.$emit('createSuccess', response);
           this.showSpinner = false;
+          if (this.requestType === 'subscription') {
+            this.accounts = response.data.accounts;
+            this.linkToken = response.data.link_token;
+            this.moveTo('select-account');
+          }
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
@@ -417,6 +478,10 @@ export default {
           this.currentStep = 'error';
           this.showSpinner = false;
         });
+    },
+    handleAccountSelection(account) {
+      this.selectedAccount = account;
+      this.moveTo('select-max-amount');
     },
     trackLinkCreatedEvent(responseData) {
       window.analytics.track('Link Created', {
