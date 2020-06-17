@@ -31,10 +31,11 @@
         </div>
       </td>
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="text-sm leading-5 font-medium text-gray-900">
-          <div class="bg-gray-200 py-2 px-4 rounded-md">
-            {{ mapApiKeyType(apiKey.isPublic) }}
-          </div>
+        <div
+          class="text-lg font-regular text-gray-900 w-24
+                 text-center bg-gray-200 py-3 px-4 rounded-md"
+        >
+          {{ mapApiKeyType(apiKey.isPublic) }}
         </div>
       </td>
       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5
