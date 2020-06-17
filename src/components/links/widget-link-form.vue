@@ -1,18 +1,18 @@
 <template>
 <div>
-  <link-form
+  <link-wizard
     @createSuccess='onCreateSuccess'
     :createdThrough="'widget'"
     :submitAction="'createUserLinkFromWidget'"
     :headers="formHeaders"
     :extraFields="extraFields">
-  </link-form>
+  </link-wizard>
 </div>
 </template>
 
 <script>
 
-import LinkForm from './link-form.vue';
+import LinkWizard from './link-wizard.vue';
 import { getValidUrl, queryize } from '../../helpers/widget_helper';
 
 export default {
@@ -20,7 +20,7 @@ export default {
     window.analytics.page('New widget Link');
   },
   components: {
-    LinkForm,
+    LinkWizard,
   },
   computed: {
     apiKey() {
