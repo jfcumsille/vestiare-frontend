@@ -16,6 +16,7 @@
     "autoprefixer": "^9.7.5",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "humps": "^2.0.1",
     "link-module-alias": "^1.2.0",
     "tailwind": "^4.0.0",
     "tailwindcss": "^1.2.0",
