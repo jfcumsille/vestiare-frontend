@@ -22,13 +22,24 @@
                 </h1>
               </div>
             </div>
-            <div class="mt-4 text-right">
-              <button @click="createApiKey"
-                :class="{ 'text-xs': shouldShowTable }"
-                class="px-2 py-1 inline-flex text-l leading-5 font-medium rounded-md bg-gray-200
-                        text-gray-900 hover:bg-gray-300">
-                <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar API Key
-              </button>
+            <div class="mt-4 flex justify-between">
+              <div>
+                <p>
+                  Public: La usarás en el
+                  <a href="https://fintoc.com/docs#integrando-el-widget" target="_blank" class="underline">
+                    Widget
+                  </a>
+                </p>
+                <p>Secret: La usarás para llamar la API</p>
+              </div>
+              <div>
+                <button @click="createApiKey"
+                  :class="{ 'text-xs': shouldShowTable }"
+                  class="px-2 py-1 inline-flex text-l font-medium rounded-md bg-gray-200
+                        text-gray-900 hover:bg-gray-300 focus:outline-none">
+                  <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar API Key
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -4,10 +4,6 @@
     <tr>
       <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
                  font-medium text-gray-600 uppercase tracking-wider">
-        ID
-      </th>
-      <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                 font-medium text-gray-600 uppercase tracking-wider">
         Key
       </th>
       <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
@@ -19,9 +15,6 @@
   </thead>
   <tbody class="bg-white">
     <tr v-for='apiKey in userApiKeys' v-bind:key='apiKey.id'>
-      <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="text-sm leading-5 font-medium text-gray-900">{{ apiKey.id }}</div>
-      </td>
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
         <div class="flex">
           <div class="api-key
@@ -38,10 +31,11 @@
         </div>
       </td>
       <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-        <div class="text-sm leading-5 font-medium text-gray-900">
-          <div class="bg-gray-200 py-2 px-4 rounded-md">
-            {{ mapApiKeyType(apiKey.isPublic) }}
-          </div>
+        <div
+          class="text-lg font-regular text-gray-900 w-24
+                 text-center bg-gray-200 py-3 px-4 rounded-md"
+        >
+          {{ mapApiKeyType(apiKey.isPublic) }}
         </div>
       </td>
       <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5
@@ -83,9 +77,9 @@ export default {
     mapApiKeyType(isPublic) {
       switch (isPublic) {
         case true:
-          return 'Pública';
+          return 'Public';
         case false:
-          return 'Privada';
+          return 'Secret';
         default:
           return '';
       }
