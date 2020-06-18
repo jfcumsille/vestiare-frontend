@@ -77,9 +77,9 @@ export default {
     mapApiKeyType(isPublic) {
       switch (isPublic) {
         case true:
-          return 'Pública';
+          return 'Public';
         case false:
-          return 'Privada';
+          return 'Secret';
         default:
           return '';
       }

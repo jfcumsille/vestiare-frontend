@@ -25,12 +25,12 @@
             <div class="mt-4 flex justify-between">
               <div>
                 <p>
-                  Pública: La usarás en el
+                  Public: La usarás en el
                   <a href="https://fintoc.com/docs#integrando-el-widget" target="_blank" class="underline">
                     Widget
                   </a>
                 </p>
-                <p>Privada: La usarás para llamar la API</p>
+                <p>Secret: La usarás para llamar la API</p>
               </div>
               <div>
                 <button @click="createApiKey"
