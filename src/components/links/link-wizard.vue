@@ -281,7 +281,7 @@
           <div class="relative">
             <spinner v-if="showSpinner">
             </spinner>
-            <div class="flex-1 p-6">
+            <div class="flex-1 px-6 py-2">
               <div class="h-full">
                 <img class="bank-logo h-24 rounded object-cover mx-auto"
                     :src="bank.logo" />
@@ -308,14 +308,18 @@
                       El monto máximo varía según tu cuenta
                     </div>
                   </div>
-                  <div class="px-2 py-4">
+                  <div class=" px-2 font-regular flex flex-wrap items-center
+                    text-gray-700 py-2 text-sm">
+                    Se usará esta cuenta:
+                  </div>
+                  <div class="px-2 py-2">
                     <button @click='moveTo("select-account")'
                       class="w-full border-gray-200 shadow-xs hover:shadow-md py-2 px-1 rounded
                       transition ease-in-out duration-150">
-                    <div class="items-center text-sm text-gray-800 mt-1">
+                    <div class="items-center text-sm mt-1">
                         <div class="flex text-left items-center">
                           <div class="w-1/5 px-2">
-                            <input type="checkbox" checked>
+                            <input type="radio" class="form-radio h-4 w-4" checked>
                           </div>
                           <div class="w-4/5 px-1">
                             <p> {{ selectedAccount.name }}</p>
@@ -455,21 +459,23 @@ export default {
   components: {
     Spinner,
   },
-  validations: {
-    holderType: {
-      required,
-    },
-    rut: {
-      required,
-      rutValidator: individualRut,
-    },
-    holderId: {
-      required: requiredIf('isBusiness'),
-      rutValidator: (value) => businessRut(value) || value === '',
-    },
-    password: {
-      required,
-    },
+  validations() {
+    return {
+      holderType: {
+        required,
+      },
+      rut: {
+        required,
+        rutValidator: individualRut,
+      },
+      holderId: {
+        required: requiredIf('isBusiness'),
+        rutValidator: (value) => businessRut(value) || value === '',
+      },
+      password: {
+        required,
+      },
+    };
   },
   computed: {
     holderType() {
