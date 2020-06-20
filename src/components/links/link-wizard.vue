@@ -267,6 +267,80 @@
             </div>
           </div>
         </div>
+        <div v-if='currentStep==="confirm-subscription"'>
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('intro')" class="text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l">Confirmación</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <hr>
+          <div class="relative">
+            <spinner v-if="showSpinner">
+            </spinner>
+            <div class="flex-1 p-6">
+              <div class="h-full">
+                <img class="bank-logo h-24 rounded object-cover mx-auto"
+                    :src="bank.logo" />
+                <div class="flex flex-col justify-between py-2">
+                  <div class="text-base font-regular flex flex-wrap items-center py-2">
+                    <div class="w-2/12">
+                      <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                  rounded-full">
+                        <font-awesome-icon icon="building"/>
+                      </div>
+                    </div>
+                    <div class="w-10/12">
+                       Vas a conectar tu cuenta Fintual
+                    </div>
+                  </div>
+                  <div class="text-base font-regular flex flex-wrap items-center py-2">
+                    <div class="w-2/12">
+                      <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                  rounded-full">
+                        <font-awesome-icon icon="dollar-sign"/>
+                      </div>
+                    </div>
+                    <div class="w-10/12">
+                      El monto máximo varía según tu cuenta
+                    </div>
+                  </div>
+                  <div class="px-2 py-4">
+                    <button @click='moveTo("select-account")'
+                      class="w-full border-gray-200 shadow-xs hover:shadow-md py-2 px-1 rounded
+                      transition ease-in-out duration-150">
+                    <div class="items-center text-sm text-gray-800 mt-1">
+                        <div class="flex text-left items-center">
+                          <div class="w-1/5 px-2">
+                            <input type="checkbox" checked>
+                          </div>
+                          <div class="w-4/5 px-1">
+                            <p> {{ selectedAccount.name }}</p>
+                            <p> {{ selectedAccount.number }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                  <button @click="handleConfirmSubscription"
+                    type="submit"
+                    class="group relative w-full justify-center py-3 px-4 border
+                          border-transparent text-l leading-5 rounded-md
+                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                          focus:shadow-outline-indigo active:bg-indigo-700 transition
+                          duration-150 ease-in-out mt-4 tracking-wide 'hover:bg-indigo-500'">
+                    Continuar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if='currentStep==="enter-second-factor"'>
+        </div>
         <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
           <div class="pt-6 px-6 text-gray-800">
             <button @click="moveTo('bank-log-in')" class="self-start text-gray-700">
@@ -323,6 +397,7 @@ import Spinner from '../spinner.vue';
 import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
 import errorObject from '../../helpers/error_object';
+import apiClient from '../../api';
 
 const LINK_STEPS = [
   'intro',
@@ -331,13 +406,13 @@ const LINK_STEPS = [
   'error',
 ];
 const SUBSCRIPTION_STEPS = [
+  'confirm-subscription',
   'select-account',
-  'select-max-amount',
-  'enter-second-factor',
+  'second-factor',
   'error',
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
-const FIRST_STEP = PERMITTED_STEPS[0];
+const FIRST_STEP = LINK_STEPS[0];
 
 export default {
   data() {
@@ -351,6 +426,8 @@ export default {
       showSpinner: false,
       accounts: [],
       selectedAccount: {},
+      linkToken: '',
+      secondFactorStep: {},
     };
   },
   props: {
@@ -398,11 +475,18 @@ export default {
     holderType() {
       return this.$route.query['holder-type'] || this.$route.query.holder_type;
     },
+    customerId() {
+      return this.$route.query.holder_type;
+    },
     isBusiness() {
       return this.holderType === 'business';
     },
     supportedBanks() {
       return availableBanks.filter((bank) => bank.holderTypes[this.holderType] === true);
+    },
+    currentWizard() {
+      if (LINK_STEPS.includes(this.currentStep)) return 'link';
+      return 'subscription';
     },
     textError() {
       switch (this.errorCode) {
@@ -462,13 +546,12 @@ export default {
       this.$store.dispatch(this.submitAction, payload)
         .then((response) => {
           this.trackLinkCreatedEvent(response.data);
-          this.accounts = response.data.accounts;
           this.$emit('createSuccess', response);
           this.showSpinner = false;
           if (this.requestType === 'subscription') {
-            this.accounts = response.data.accounts;
+            this.handleFetchedAccounts(response.data.accounts);
             this.linkToken = response.data.link_token;
-            this.moveTo('select-account');
+            this.moveTo('confirm-subscription');
           }
         })
         .catch((error) => {
@@ -479,9 +562,48 @@ export default {
           this.showSpinner = false;
         });
     },
+    handleFetchedAccounts(accounts) {
+      const permittedAccountTypes = ['checking_account', 'sight_account'];
+      this.accounts = this.sortAccounts(
+        accounts.filter((account) => permittedAccountTypes.includes(account.type)),
+      );
+
+      [this.selectedAccount] = this.accounts;
+    },
     handleAccountSelection(account) {
       this.selectedAccount = account;
-      this.moveTo('select-max-amount');
+      this.moveTo('confirm-subscription');
+    },
+    handleConfirmSubscription() {
+      this.showSpinner = true;
+      apiClient.subscriptions.create(this.selectedAccount.id,
+        this.customerId,
+        this.linkToken)
+        .then((response) => {
+          this.secondFactorStep = response.data.next_action;
+          this.showSpinner = false;
+          this.moveTo('second-factor');
+        })
+        .catch((error) => {
+          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.currentStep = 'error';
+          this.showSpinner = false;
+        });
+    },
+    sortAccounts(accounts) {
+      let orderedAccounts = this.orderAccountsByName(accounts);
+      orderedAccounts = this.orderAccountsByAmount(orderedAccounts);
+
+      return orderedAccounts;
+    },
+    orderAccountsByAmount(accounts) {
+      return accounts.sort((a, b) => b.balance.available - a.balance.available);
+    },
+    orderAccountsByName(accounts) {
+      return accounts.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        return a.name > b.name ? 1 : 0;
+      });
     },
     trackLinkCreatedEvent(responseData) {
       window.analytics.track('Link Created', {
@@ -530,40 +652,45 @@ export default {
 </script>
 
 <style scoped>
-  .link-frame {
-    height: 500px;
-    width: 360px;
-  }
+.link-frame {
+  height: 500px;
+  width: 360px;
+}
 
-  .component-fade-enter-active,
-  .component-fade-leave-active {
-    transition: opacity .2s ease;
-  }
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity .2s ease;
+}
 
-  .component-fade-enter,
-  .component-fade-leave-to {
-    opacity: 0;
-  }
+.component-fade-enter,
+.component-fade-leave-to {
+  opacity: 0;
+}
 
-  .slide-fade-enter,
-  .slide-fade-leave-to {
-    opacity: 0;
-    transform: translateX(15px);
-  }
+.slide-fade-enter,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateX(15px);
+}
 
-  .slide-fade-enter-active,
-  .slide-fade-leave-active {
-    transition: all .5s ease;
-  }
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all .5s ease;
+}
 
-  .vertical-slide-fade-enter,
-  .vertical-slide-fade-leave-to {
-    opacity: 0;
-    transform: translateY(-18px);
-  }
+.vertical-slide-fade-enter,
+.vertical-slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-18px);
+}
 
-  .vertical-slide-fade-enter-active,
-  .vertical-slide-fade-leave-active {
-    transition: all .5s ease;
-  }
+.vertical-slide-fade-enter-active,
+.vertical-slide-fade-leave-active {
+  transition: all .5s ease;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  appearance: none;
+}
 </style>

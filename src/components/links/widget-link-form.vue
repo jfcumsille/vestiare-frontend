@@ -2,6 +2,7 @@
 <div>
   <link-wizard
     @createSuccess='onLinkCreateSuccess'
+    @subscriptionCreateSuccess='onSubscriptionCreateSuccess'
     :createdThrough="'widget'"
     :submitAction="'createUserLinkFromWidget'"
     :headers="formHeaders"
@@ -62,6 +63,26 @@ export default {
         username,
         holder_type,
         institution_id,
+      };
+
+      window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
+    },
+
+    onSubscriptionCreateSuccess(response) {
+      this.redirectFromSubscriptionCreation(response.data);
+    },
+
+    redirectFromSubscriptionCreation(data) {
+      const {
+        subscriptionId, linkId, accountId, username,
+      } = data;
+
+      const params = {
+        result: 'subscription_created',
+        subscriptionId,
+        linkId,
+        accountId,
+        username,
       };
 
       window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
