@@ -64,6 +64,7 @@ const actions = {
           email: response.data.email,
         };
         commit('saveSession', userData);
+        return userData;
       });
   },
   logIn({ commit }, formData) {
