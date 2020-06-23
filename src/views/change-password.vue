@@ -101,7 +101,7 @@ export default {
       });
       window.analytics.track('User Logged In');
     },
-    async submitForm() {
+    submitForm() {
       if (this.$v.$invalid) {
         throw Error('Invalid form');
       }
@@ -111,7 +111,7 @@ export default {
         passwordConfirmation: this.passwordConfirmation,
       };
       this.showSpinner = true;
-      return this.$store.dispatch('changePassword', formData)
+      this.$store.dispatch('changePassword', formData)
         .then(() => {
           this.showSpinner = false;
           this.trackUserLoggedInEvent();
