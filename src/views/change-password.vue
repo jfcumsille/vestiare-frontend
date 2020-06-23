@@ -27,14 +27,14 @@
         <input
             type="password"
             class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-3
-                  rounded-md focus:outline-none mb-1"
+                  rounded-t-md focus:outline-none"
             name="password"
             placeholder="Contraseña"
             v-model.trim="$v.password.$model">
         <input
             type="password"
             class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-3
-                  rounded-md mt-4 focus:outline-none mb-1"
+                  rounded-b-md focus:outline-none border border-t-0"
             name="passwordConfirmation"
             placeholder="Confirma contraseña"
             v-model.trim="$v.passwordConfirmation.$model">
