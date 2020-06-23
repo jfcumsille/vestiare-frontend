@@ -64,28 +64,25 @@ const actions = {
           email: response.data.email,
         };
         commit('saveSession', userData);
-        return userData;
-      });
+      })
+      .catch((error) => { throw error; });
   },
   logIn({ commit }, formData) {
-    return new Promise((resolve, reject) => {
-      const payload = {
-        email: formData.email,
-        password: formData.password,
-      };
-      const url = '/v1/sessions';
-      axiosAuth.post(url, payload)
-        .then((response) => {
-          const userData = {
-            idToken: response.data.authentication_token,
-            userId: response.data.id,
-            email: response.data.email,
-          };
-          commit('saveSession', userData);
-          resolve();
-        })
-        .catch((error) => reject(error));
-    });
+    const payload = {
+      email: formData.email,
+      password: formData.password,
+    };
+    const url = '/v1/sessions';
+    return axiosAuth.post(url, payload)
+      .then((response) => {
+        const userData = {
+          idToken: response.data.authentication_token,
+          userId: response.data.id,
+          email: response.data.email,
+        };
+        commit('saveSession', userData);
+      })
+      .catch((error) => { throw error; });
   },
   sendPasswordRecovery(context, formData) {
     const payload = {

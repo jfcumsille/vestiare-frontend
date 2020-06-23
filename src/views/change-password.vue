@@ -23,7 +23,7 @@
           </div>
         </div>
       </div>
-      <form @submit.prevent="onSubmit" class="mt-6">
+      <form @submit.prevent="submitForm" class="mt-6">
         <input
             type="password"
             class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-3
@@ -94,15 +94,10 @@ export default {
     Spinner,
   },
   methods: {
-    afterSuccess() {
-      if (this.$store.getters.isUserLoggedIn) {
-        this.trackUserLoggedInEvent();
-        this.$router.push('/links');
+    submitForm() {
+      if (this.$v.$invalid) {
+        throw Error('Invalid form');
       }
-    },
-    onSubmit() {
-      if (this.$v.$invalid) { return; }
-
       const formData = {
         resetPasswordToken: this.$route.query.reset_password_token,
         password: this.password,
@@ -111,7 +106,8 @@ export default {
       this.showSpinner = true;
       this.$store.dispatch('changePassword', formData).then(() => {
         this.showSpinner = false;
-        this.afterSuccess();
+        this.trackUserLoggedInEvent();
+        this.$router.push('/links');
       }).catch(() => {
         this.showSpinner = false;
         this.showError = true;

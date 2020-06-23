@@ -27,7 +27,7 @@
       <transition name="slide-fade">
         <p class="text-red-700 mt-6" v-if='showloginError'>Credenciales inválidas 👮🏽‍♀️</p>
       </transition>
-      <form @submit.prevent="onSubmit" method="POST" class="mt-6">
+      <form @submit.prevent="submitForm" class="mt-6">
         <div class="rounded-md shadow-sm">
           <input aria-label="Email address" name="email" type="email"
                  required
@@ -106,29 +106,27 @@ export default {
     Spinner,
   },
   methods: {
-    onSubmit() {
-      if (this.$v.$invalid) { return; }
-
+    async submitForm() {
+      if (this.$v.$invalid) {
+        throw Error('Invalid form');
+      }
       const formData = {
         email: this.email,
         password: this.password,
       };
       this.showSpinner = true;
-      this.$store.dispatch('logIn', formData).then(() => {
-        this.afterSuccess();
-      }).catch((error) => {
-        this.showSpinner = false;
-        const codeError = error.response.data.error.type;
-        if (codeError === 'invalid_request_error') {
-          this.showloginError = true;
-        }
-      });
-    },
-    afterSuccess() {
-      if (this.$store.getters.isUserLoggedIn) {
-        this.trackUserLoggedInEvent();
-        this.$router.push('/links');
-      }
+      return this.$store.dispatch('logIn', formData)
+        .then(() => {
+          this.showSpinner = false;
+          this.trackUserLoggedInEvent();
+          this.$router.push('/links');
+        }).catch((error) => {
+          this.showSpinner = false;
+          const codeError = error.response.data.error.type;
+          if (codeError === 'invalid_request_error') {
+            this.showloginError = true;
+          }
+        });
     },
     trackUserLoggedInEvent() {
       const userData = this.$store.getters.retrieveSessionFromStorage;
