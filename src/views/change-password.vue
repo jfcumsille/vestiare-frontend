@@ -94,7 +94,7 @@ export default {
     Spinner,
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       if (this.$v.$invalid) {
         throw Error('Invalid form');
       }
@@ -104,14 +104,15 @@ export default {
         passwordConfirmation: this.passwordConfirmation,
       };
       this.showSpinner = true;
-      this.$store.dispatch('changePassword', formData).then(() => {
-        this.showSpinner = false;
-        this.trackUserLoggedInEvent();
-        this.$router.push('/links');
-      }).catch(() => {
-        this.showSpinner = false;
-        this.showError = true;
-      });
+      return this.$store.dispatch('changePassword', formData)
+        .then(() => {
+          this.showSpinner = false;
+          this.trackUserLoggedInEvent();
+          this.$router.push('/links');
+        }).catch(() => {
+          this.showSpinner = false;
+          this.showError = true;
+        });
     },
   },
   validations: {
