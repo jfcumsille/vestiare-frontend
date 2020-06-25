@@ -124,14 +124,26 @@
               <div class="">
                 <div class="rounded-md shadow-sm">
                   <div class="h-20">
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                border border-grey-lighter rounded py-4 px-4 leading-tight
-                                focus:outline-none focus:shadow-sm"
-                        type="text"
-                        :class="{ 'border-red-500': $v.rut.$error }"
-                        placeholder="Rut"
-                        v-rut:live
-                        v-model.trim.lazy="$v.rut.$model">
+                    <div class="w-full flex flex-col">
+                      <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                    border border-grey-lighter rounded py-4 px-4 leading-tight
+                                    focus:outline-none focus:shadow-sm"
+                             type="text"
+                             :class="{ 'border-red-500': $v.rut.$error }"
+                             placeholder="Rut"
+                             v-rut:live
+                             v-model.trim="rut"
+                             @blur='touchIfPresentElseReset($v.rut)'
+                      >
+                      <transition name="vertical-slide-fade">
+                        <p
+                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                          v-if="rut !== ''"
+                        >
+                          Rut
+                        </p>
+                      </transition>
+                    </div>
                     <transition name="slide-fade">
                       <p class="text-sm text-red-700" v-if="$v.rut.$error">
                         No parece un rut de <b class="font-medium">persona</b> válido
@@ -139,15 +151,27 @@
                     </transition>
                   </div>
                   <div class="h-20">
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                  border border-grey-lighter rounded py-4 px-4 leading-tight
-                                  focus:outline-none focus:shadow-sm"
-                          type="text"
-                          :class="{ 'border-red-500': $v.holderId.$error }"
-                          placeholder="Rut empresa"
-                          v-if="isBusiness"
-                          v-rut:live
-                          v-model.trim.lazy="$v.holderId.$model">
+                    <div class="w-full flex flex-col">
+                      <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                    border border-grey-lighter rounded py-4 px-4 leading-tight
+                                    focus:outline-none focus:shadow-sm"
+                            type="text"
+                            :class="{ 'border-red-500': $v.holderId.$error }"
+                            placeholder="Rut empresa"
+                            v-if="isBusiness"
+                            v-rut:live
+                            v-model.trim="holderId"
+                            @blur='touchIfPresentElseReset($v.holderId)'
+                      >
+                      <transition name="vertical-slide-fade">
+                        <p
+                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                          v-if="holderId !== ''"
+                        >
+                          Rut empresa
+                        </p>
+                      </transition>
+                    </div>
                     <transition name="slide-fade">
                       <p class="text-sm text-red-700" v-if="$v.holderId.$error">
                         No parece un rut de <b class="font-medium">empresa</b> válido
@@ -155,12 +179,22 @@
                     </transition>
                   </div>
                   <div class="h-20">
-                    <input class="appearance-none block w-full bg-grey-lighter text-gray-900
-                                  border border-grey-lighter rounded py-4 px-4 leading-tight
-                                  focus:outline-none focus:shadow-sm"
-                          type="password"
-                          placeholder="Contraseña"
-                          v-model.trim="$v.password.$model">
+                    <div class="w-full flex flex-col">
+                      <input class="appearance-none block w-full bg-grey-lighter text-gray-900
+                                    border border-grey-lighter rounded py-4 px-4 leading-tight
+                                    focus:outline-none focus:shadow-sm"
+                            type="password"
+                            placeholder="Contraseña"
+                            v-model.trim="$v.password.$model">
+                      <transition name="vertical-slide-fade">
+                        <p
+                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                          v-if="password !== ''"
+                        >
+                          Contraseña
+                        </p>
+                      </transition>
+                    </div>
                   </div>
                 </div>
                 <div>
@@ -420,6 +454,13 @@ export default {
         });
       }
     },
+    touchIfPresentElseReset(field) {
+      if (field.$model !== '') {
+        field.$touch();
+      } else {
+        field.$reset();
+      }
+    },
   },
 };
 </script>
@@ -448,6 +489,17 @@ export default {
 
   .slide-fade-enter-active,
   .slide-fade-leave-active {
+    transition: all .5s ease;
+  }
+
+  .vertical-slide-fade-enter,
+  .vertical-slide-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+
+  .vertical-slide-fade-enter-active,
+  .vertical-slide-fade-leave-active {
     transition: all .5s ease;
   }
 </style>
