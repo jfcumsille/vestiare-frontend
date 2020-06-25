@@ -118,38 +118,54 @@
           <div class="relative">
             <spinner v-if="showSpinner">
             </spinner>
-            <div class="flex-1 p-6">
+            <div class="flex-1 px-6">
               <img class="bank-logo h-24 rounded object-cover mx-auto"
                   :src="this.bank.logo" />
-              <div class="mt-4">
+              <div class="">
                 <div class="rounded-md shadow-sm">
-                  <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                border border-grey-lighter rounded py-3 px-4 leading-tight
-                                focus:outline-none focus:shadow-sm mt-4"
+                  <div class="h-20">
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                border border-grey-lighter rounded py-4 px-4 leading-tight
+                                focus:outline-none focus:shadow-sm"
                         type="text"
                         :class="{ 'border-red-500': $v.rut.$error }"
                         placeholder="Rut"
                         v-rut:live
                         v-model.trim.lazy="$v.rut.$model">
-                  <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                border border-grey-lighter rounded py-3 px-4 leading-tight
-                                focus:outline-none focus:shadow-sm mt-4"
-                        type="text"
-                        :class="{ 'border-red-500': $v.holderId.$error }"
-                        placeholder="Rut empresa"
-                        v-if="isBusiness"
-                        v-rut:live
-                        v-model.trim.lazy="$v.holderId.$model">
-                  <input class="appearance-none block w-full bg-grey-lighter text-gray-900
-                                border border-grey-lighter rounded py-3 px-4 leading-tight
-                                focus:outline-none focus:shadow-sm mt-4"
-                        type="password"
-                        placeholder="Contraseña"
-                        v-model.trim="$v.password.$model">
+                    <transition name="slide-fade">
+                      <p class="text-sm text-red-700" v-if="$v.rut.$error">
+                        No parece un rut de <b class="font-medium">persona</b> válido
+                      </p>
+                    </transition>
+                  </div>
+                  <div class="h-20">
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                  border border-grey-lighter rounded py-4 px-4 leading-tight
+                                  focus:outline-none focus:shadow-sm"
+                          type="text"
+                          :class="{ 'border-red-500': $v.holderId.$error }"
+                          placeholder="Rut empresa"
+                          v-if="isBusiness"
+                          v-rut:live
+                          v-model.trim.lazy="$v.holderId.$model">
+                    <transition name="slide-fade">
+                      <p class="text-sm text-red-700" v-if="$v.holderId.$error">
+                        No parece un rut de <b class="font-medium">empresa</b> válido
+                      </p>
+                    </transition>
+                  </div>
+                  <div class="h-20">
+                    <input class="appearance-none block w-full bg-grey-lighter text-gray-900
+                                  border border-grey-lighter rounded py-4 px-4 leading-tight
+                                  focus:outline-none focus:shadow-sm"
+                          type="password"
+                          placeholder="Contraseña"
+                          v-model.trim="$v.password.$model">
+                  </div>
                 </div>
-                <div class="mt-4">
+                <div>
                   <button type="submit"
-                          class="group relative w-full flex justify-center py-3 px-4 border
+                          class="group relative w-full flex justify-center py-4 px-4 border
                                 border-transparent text-sm leading-5 font-medium rounded-md
                                 text-white bg-indigo-600 focus:outline-none
                                 focus:border-indigo-700 focus:shadow-outline-indigo
@@ -224,7 +240,6 @@
   </div>
 </div>
 </template>
-
 <script>
 
 import { required, requiredIf } from 'vuelidate/lib/validators';
@@ -423,5 +438,16 @@ export default {
   .component-fade-enter,
   .component-fade-leave-to {
     opacity: 0;
+  }
+
+  .slide-fade-enter,
+  .slide-fade-leave-to {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+
+  .slide-fade-enter-active,
+  .slide-fade-leave-active {
+    transition: all .5s ease;
   }
 </style>
