@@ -118,38 +118,89 @@
           <div class="relative">
             <spinner v-if="showSpinner">
             </spinner>
-            <div class="flex-1 p-6">
-              <img class="bank-logo h-24 rounded object-cover mx-auto"
+            <div class="flex-1 px-6">
+              <img
+                  :class="{ 'mt-6' : !isBusiness}"
+                  class="bank-logo h-24 rounded object-cover mx-auto"
                   :src="this.bank.logo" />
-              <div class="mt-4">
+              <div :class="{ 'mt-6' : !isBusiness}">
                 <div class="rounded-md shadow-sm">
-                  <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                border border-grey-lighter rounded py-3 px-4 leading-tight
-                                focus:outline-none focus:shadow-sm mt-4"
-                        type="text"
-                        :class="{ 'border-red-500': $v.rut.$error }"
-                        placeholder="Rut"
-                        v-rut:live
-                        v-model.trim.lazy="$v.rut.$model">
-                  <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                border border-grey-lighter rounded py-3 px-4 leading-tight
-                                focus:outline-none focus:shadow-sm mt-4"
-                        type="text"
-                        :class="{ 'border-red-500': $v.holderId.$error }"
-                        placeholder="Rut empresa"
-                        v-if="isBusiness"
-                        v-rut:live
-                        v-model.trim.lazy="$v.holderId.$model">
-                  <input class="appearance-none block w-full bg-grey-lighter text-gray-900
-                                border border-grey-lighter rounded py-3 px-4 leading-tight
-                                focus:outline-none focus:shadow-sm mt-4"
-                        type="password"
-                        placeholder="Contraseña"
-                        v-model.trim="$v.password.$model">
+                  <div class="h-20">
+                    <div class="w-full flex flex-col">
+                      <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                    border border-grey-lighter rounded py-4 px-4 leading-tight
+                                    focus:outline-none focus:shadow-sm"
+                             type="text"
+                             :class="{ 'border-red-500': $v.rut.$error }"
+                             placeholder="Rut personal"
+                             v-rut:live
+                             v-model.trim="rut"
+                             @blur='touchIfPresentElseReset($v.rut)'
+                      >
+                      <transition name="vertical-slide-fade">
+                        <p
+                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                          v-if="rut !== ''"
+                        >
+                          Rut personal
+                        </p>
+                      </transition>
+                    </div>
+                    <transition name="slide-fade">
+                      <p class="text-sm text-red-700" v-if="$v.rut.$error">
+                        No parece un rut de <b class="font-medium">persona</b> válido
+                      </p>
+                    </transition>
+                  </div>
+                  <div class="h-20" v-if="isBusiness">
+                    <div class="w-full flex flex-col">
+                      <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                    border border-grey-lighter rounded py-4 px-4 leading-tight
+                                    focus:outline-none focus:shadow-sm"
+                            type="text"
+                            :class="{ 'border-red-500': $v.holderId.$error }"
+                            placeholder="Rut empresa"
+                            v-rut:live
+                            v-model.trim="holderId"
+                            @blur='touchIfPresentElseReset($v.holderId)'
+                      >
+                      <transition name="vertical-slide-fade">
+                        <p
+                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                          v-if="holderId !== ''"
+                        >
+                          Rut empresa
+                        </p>
+                      </transition>
+                    </div>
+                    <transition name="slide-fade">
+                      <p class="text-sm text-red-700" v-if="$v.holderId.$error">
+                        No parece un rut de <b class="font-medium">empresa</b> válido
+                      </p>
+                    </transition>
+                  </div>
+                  <div class="h-20">
+                    <div class="w-full flex flex-col">
+                      <input class="appearance-none block w-full bg-grey-lighter text-gray-900
+                                    border border-grey-lighter rounded py-4 px-4 leading-tight
+                                    focus:outline-none focus:shadow-sm"
+                            type="password"
+                            placeholder="Contraseña"
+                            v-model.trim="$v.password.$model">
+                      <transition name="vertical-slide-fade">
+                        <p
+                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                          v-if="password !== ''"
+                        >
+                          Contraseña
+                        </p>
+                      </transition>
+                    </div>
+                  </div>
                 </div>
-                <div class="mt-4">
+                <div>
                   <button type="submit"
-                          class="group relative w-full flex justify-center py-3 px-4 border
+                          class="group relative w-full flex justify-center py-4 px-4 border
                                 border-transparent text-sm leading-5 font-medium rounded-md
                                 text-white bg-indigo-600 focus:outline-none
                                 focus:border-indigo-700 focus:shadow-outline-indigo
@@ -224,11 +275,10 @@
   </div>
 </div>
 </template>
-
 <script>
 
 import { required, requiredIf } from 'vuelidate/lib/validators';
-import { rutValidator } from 'vue-dni';
+import { individualRut, businessRut } from '../../validators/rut_validator';
 import Spinner from '../spinner.vue';
 import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
@@ -281,11 +331,11 @@ export default {
     },
     rut: {
       required,
-      rutValidator,
+      rutValidator: individualRut,
     },
     holderId: {
       required: requiredIf('isBusiness'),
-      rutValidator: (value) => rutValidator(value) || value === '',
+      rutValidator: businessRut || '',
     },
     password: {
       required,
@@ -405,6 +455,13 @@ export default {
         });
       }
     },
+    touchIfPresentElseReset(field) {
+      if (field.$model !== '') {
+        field.$touch();
+      } else {
+        field.$reset();
+      }
+    },
   },
 };
 </script>
@@ -423,5 +480,27 @@ export default {
   .component-fade-enter,
   .component-fade-leave-to {
     opacity: 0;
+  }
+
+  .slide-fade-enter,
+  .slide-fade-leave-to {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+
+  .slide-fade-enter-active,
+  .slide-fade-leave-active {
+    transition: all .5s ease;
+  }
+
+  .vertical-slide-fade-enter,
+  .vertical-slide-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+
+  .vertical-slide-fade-enter-active,
+  .vertical-slide-fade-leave-active {
+    transition: all .5s ease;
   }
 </style>
