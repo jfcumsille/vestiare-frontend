@@ -119,9 +119,11 @@
             <spinner v-if="showSpinner">
             </spinner>
             <div class="flex-1 px-6">
-              <img class="bank-logo h-24 rounded object-cover mx-auto"
+              <img
+                  :class="{ 'mt-6' : !isBusiness}"
+                  class="bank-logo h-24 rounded object-cover mx-auto"
                   :src="this.bank.logo" />
-              <div class="">
+              <div :class="{ 'mt-6' : !isBusiness}">
                 <div class="rounded-md shadow-sm">
                   <div class="h-20">
                     <div class="w-full flex flex-col">
@@ -130,7 +132,7 @@
                                     focus:outline-none focus:shadow-sm"
                              type="text"
                              :class="{ 'border-red-500': $v.rut.$error }"
-                             placeholder="Rut"
+                             placeholder="Rut personal"
                              v-rut:live
                              v-model.trim="rut"
                              @blur='touchIfPresentElseReset($v.rut)'
@@ -140,7 +142,7 @@
                           class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
                           v-if="rut !== ''"
                         >
-                          Rut
+                          Rut personal
                         </p>
                       </transition>
                     </div>
@@ -150,7 +152,7 @@
                       </p>
                     </transition>
                   </div>
-                  <div class="h-20">
+                  <div class="h-20" v-if="isBusiness">
                     <div class="w-full flex flex-col">
                       <input class="appearance-none block w-full bg-grey-lighter text-grey-900
                                     border border-grey-lighter rounded py-4 px-4 leading-tight
@@ -158,7 +160,6 @@
                             type="text"
                             :class="{ 'border-red-500': $v.holderId.$error }"
                             placeholder="Rut empresa"
-                            v-if="isBusiness"
                             v-rut:live
                             v-model.trim="holderId"
                             @blur='touchIfPresentElseReset($v.holderId)'
