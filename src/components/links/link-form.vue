@@ -228,7 +228,7 @@
 <script>
 
 import { required, requiredIf } from 'vuelidate/lib/validators';
-import { rutValidator } from 'vue-dni';
+import { individualRut, businessRut } from '../../validators/rut_validator';
 import Spinner from '../spinner.vue';
 import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
@@ -281,11 +281,11 @@ export default {
     },
     rut: {
       required,
-      rutValidator,
+      rutValidator: individualRut,
     },
     holderId: {
       required: requiredIf('isBusiness'),
-      rutValidator: (value) => rutValidator(value) || value === '',
+      rutValidator: businessRut || '',
     },
     password: {
       required,
