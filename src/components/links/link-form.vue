@@ -118,111 +118,109 @@
           <div class="relative">
             <spinner v-if="showSpinner">
             </spinner>
-            <div class="flex-1 px-6">
-              <img
-                  :class="{ 'mt-6' : !isBusiness}"
-                  class="bank-logo h-24 rounded object-cover mx-auto"
-                  :src="this.bank.logo" />
+            <div class="flex-1 px-6 flex flex-col justify-between">
+              <div class="py-2">
+                <img
+                    :class="{ 'mt-6' : !isBusiness}"
+                    class="bank-logo h-24 rounded object-cover mx-auto"
+                    :src="this.bank.logo" />
+              </div>
               <div :class="{ 'mt-6' : !isBusiness}">
-                <div class="rounded-md shadow-sm">
-                  <div class="h-20">
-                    <div class="w-full flex flex-col">
-                      <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                    border border-grey-lighter rounded py-4 px-4 leading-tight
-                                    focus:outline-none focus:shadow-sm"
-                             type="text"
-                             :class="{ 'border-red-500': $v.rut.$error }"
-                             placeholder="Rut personal"
-                             v-rut:live
-                             v-model.trim="rut"
-                             @blur='touchIfPresentElseReset($v.rut)'
-                      >
-                      <transition name="vertical-slide-fade">
-                        <p
-                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
-                          v-if="rut !== ''"
-                        >
-                          Rut personal
-                        </p>
-                      </transition>
-                    </div>
-                    <transition name="slide-fade">
-                      <p class="text-sm text-red-700" v-if="$v.rut.$error">
-                        No parece un rut de <b class="font-medium">persona</b> válido
-                      </p>
-                    </transition>
-                  </div>
-                  <div class="h-20" v-if="isBusiness">
-                    <div class="w-full flex flex-col">
-                      <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                    border border-grey-lighter rounded py-4 px-4 leading-tight
-                                    focus:outline-none focus:shadow-sm"
+                <div class="h-20">
+                  <div class="w-full flex flex-col">
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                  border border-grey-lighter rounded py-4 px-4 leading-tight
+                                  focus:outline-none focus:shadow-sm"
                             type="text"
-                            :class="{ 'border-red-500': $v.holderId.$error }"
-                            placeholder="Rut empresa"
+                            :class="{ 'border-red-500': $v.rut.$error }"
+                            placeholder="Rut personal"
                             v-rut:live
-                            v-model.trim="holderId"
-                            @blur='touchIfPresentElseReset($v.holderId)'
+                            v-model.trim="rut"
+                            @blur='touchIfPresentElseReset($v.rut)'
+                    >
+                    <transition name="vertical-slide-fade">
+                      <p
+                        class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                        v-if="rut !== ''"
                       >
-                      <transition name="vertical-slide-fade">
-                        <p
-                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
-                          v-if="holderId !== ''"
-                        >
-                          Rut empresa
-                        </p>
-                      </transition>
-                    </div>
-                    <transition name="slide-fade">
-                      <p class="text-sm text-red-700" v-if="$v.holderId.$error">
-                        No parece un rut de <b class="font-medium">empresa</b> válido
+                        Rut personal
                       </p>
                     </transition>
                   </div>
-                  <div class="h-20">
-                    <div class="w-full flex flex-col">
-                      <input class="appearance-none block w-full bg-grey-lighter text-gray-900
-                                    border border-grey-lighter rounded py-4 px-4 leading-tight
-                                    focus:outline-none focus:shadow-sm"
-                            type="password"
-                            placeholder="Contraseña"
-                            v-model.trim="$v.password.$model">
-                      <transition name="vertical-slide-fade">
-                        <p
-                          class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
-                          v-if="password !== ''"
-                        >
-                          Contraseña
-                        </p>
-                      </transition>
-                    </div>
+                  <transition name="slide-fade">
+                    <p class="text-sm text-red-700" v-if="$v.rut.$error">
+                      No parece un rut de <b class="font-medium">persona</b> válido
+                    </p>
+                  </transition>
+                </div>
+                <div class="h-20" v-if="isBusiness">
+                  <div class="w-full flex flex-col">
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                  border border-grey-lighter rounded py-4 px-4 leading-tight
+                                  focus:outline-none focus:shadow-sm"
+                          type="text"
+                          :class="{ 'border-red-500': $v.holderId.$error }"
+                          placeholder="Rut empresa"
+                          v-rut:live
+                          v-model.trim="holderId"
+                          @blur='touchIfPresentElseReset($v.holderId)'
+                    >
+                    <transition name="vertical-slide-fade">
+                      <p
+                        class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                        v-if="holderId !== ''"
+                      >
+                        Rut empresa
+                      </p>
+                    </transition>
+                  </div>
+                  <transition name="slide-fade">
+                    <p class="text-sm text-red-700" v-if="$v.holderId.$error">
+                      No parece un rut de <b class="font-medium">empresa</b> válido
+                    </p>
+                  </transition>
+                </div>
+                <div class="h-20">
+                  <div class="w-full flex flex-col">
+                    <input class="appearance-none block w-full bg-grey-lighter text-gray-900
+                                  border border-grey-lighter rounded py-4 px-4 leading-tight
+                                  focus:outline-none focus:shadow-sm"
+                          type="password"
+                          placeholder="Contraseña"
+                          v-model.trim="$v.password.$model">
+                    <transition name="vertical-slide-fade">
+                      <p
+                        class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                        v-if="password !== ''"
+                      >
+                        Contraseña
+                      </p>
+                    </transition>
                   </div>
                 </div>
-                <div>
-                  <button type="submit"
-                          class="group relative w-full flex justify-center py-4 px-4 border
-                                border-transparent text-sm leading-5 font-medium rounded-md
-                                text-white bg-indigo-600 focus:outline-none
-                                focus:border-indigo-700 focus:shadow-outline-indigo
-                                active:bg-indigo-700 transition duration-150
-                                ease-in-out"
-                          @click="onSubmit"
-                          :class="{ 'hover:bg-indigo-500': !$v.$invalid,
-                                    'cursor-not-allowed': $v.$invalid }">
-                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                      <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400
-                                  transition ease-in-out duration-150"
-                          fill="currentColor"
-                          viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0
-                                01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                              clip-rule="evenodd" />
-                      </svg>
-                    </span>
-                    Ingresar
-                  </button>
-                </div>
+                <button type="submit"
+                        class="group relative w-full flex justify-center py-4 px-4 border
+                              border-transparent text-sm leading-5 font-medium rounded-md
+                              text-white bg-indigo-600 focus:outline-none
+                              focus:border-indigo-700 focus:shadow-outline-indigo
+                              active:bg-indigo-700 transition duration-150
+                              ease-in-out"
+                        @click="onSubmit"
+                        :class="{ 'hover:bg-indigo-500': !$v.$invalid,
+                                  'cursor-not-allowed': $v.$invalid }">
+                  <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400
+                                transition ease-in-out duration-150"
+                        fill="currentColor"
+                        viewBox="0 0 20 20">
+                      <path fill-rule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0
+                              01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                  Ingresar
+                </button>
               </div>
             </div>
           </div>
