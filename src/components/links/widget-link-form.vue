@@ -75,10 +75,10 @@ export default {
     redirectFromSubscriptionCreation(data) {
       const {
         subscriptionId, linkId, accountId, username,
-      } = data;
+      } = data.subscription;
 
       const params = {
-        result: 'subscription_created',
+        result: data.result,
         subscriptionId,
         linkId,
         accountId,
