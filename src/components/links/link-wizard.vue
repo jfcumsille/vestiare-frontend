@@ -241,7 +241,7 @@
               <div class="h-full">
                 <img class="bank-logo h-24 rounded object-cover mx-auto"
                     :src="bank.logo" />
-                <div class="grid grid-cols-1 gap-4 p-4">
+                <div class="grid grid-cols-1 gap-4 p-4 h-56 overflow-auto">
                   <button v-for="account in accounts"
                           :key='account.id'
                           @click='handleAccountSelection(account)'
@@ -250,9 +250,10 @@
                     <div class="flex items-center text-sm">
                       <div class="flex w-3/5 text-left items-center">
                         <div class="w-1/5 px-2">
-                          <input type="checkbox">
+                          <input type="radio" class="form-radio h-4 w-4"
+                          :checked="account.id === selectedAccount.id">
                         </div>
-                        <div class="w-4/5 px-0">
+                        <div class="w-4/5 px-1">
                           <p> {{ account.name }}</p>
                           <p class="text-gray-800"> {{ account.number }}</p>
                         </div>
