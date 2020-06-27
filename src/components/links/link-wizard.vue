@@ -344,6 +344,72 @@
             </div>
           </div>
         </div>
+        <div v-if='currentStep==="second-factor"'>
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('intro')" class="text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l">Segundo Factor</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <hr>
+          <div class="relative">
+            <spinner v-if="showSpinner">
+            </spinner>
+            <div class="flex-1 px-6 py-2">
+              <div class="h-full">
+                <img class="bank-logo h-24 rounded object-cover mx-auto"
+                    :src="bank.logo" />
+                <div class="flex flex-col justify-between py-2">
+                  <div>
+                    <div class="text-base font-regular flex flex-wrap items-center py-2">
+                      <div class="w-2/12">
+                        <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                    rounded-full">
+                          <font-awesome-icon icon="handshake"/>
+                        </div>
+                      </div>
+                      <div class="w-10/12">
+                        Sólo falta ingresar el segundo factor
+                      requerido por tu banco
+                      </div>
+                    </div>
+                    <div class="text-base font-regular flex flex-wrap items-center py-2">
+                      <div class="w-2/12">
+                        <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                    rounded-full">
+                          <font-awesome-icon icon="lock"/>
+                        </div>
+                      </div>
+                      <div class="w-10/12">
+                        Por favor ingresa el código {{ secondFactorTypeText }}
+                      </div>
+                    </div>
+
+                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
+                                  border border-grey-lighter rounded py-3 px-4 leading-tight
+                                  focus:outline-none focus:shadow-sm mt-4"
+                          type="password"
+                          :class="{ 'border-red-500': $v.secondFactor.$error }"
+                          placeholder="Código segundo factor"
+                          v-model.trim.lazy="$v.secondFactor.$model">
+                  </div>
+                  <button @click="submitSecondFactor"
+                    type="submit"
+                    class="group relative w-full justify-center py-3 px-4 border
+                          border-transparent text-l leading-5 rounded-md
+                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                          focus:shadow-outline-indigo active:bg-indigo-700 transition
+                          duration-150 ease-in-out mt-4 tracking-wide 'hover:bg-indigo-500'">
+                    Autorizar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div v-if='currentStep==="enter-second-factor"'>
         </div>
         <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
@@ -417,7 +483,7 @@ const SUBSCRIPTION_STEPS = [
   'error',
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
-const FIRST_STEP = LINK_STEPS[0];
+const FIRST_STEP = PERMITTED_STEPS[0];
 
 export default {
   data() {
@@ -432,7 +498,9 @@ export default {
       accounts: [],
       selectedAccount: {},
       linkToken: '',
-      secondFactorStep: {},
+      secondFactor: '',
+      subscription: {},
+      subscriptionResult: '',
     };
   },
   props: {
@@ -461,19 +529,27 @@ export default {
     Spinner,
   },
   validations() {
+    if (this.currentWizard === 'link') {
+      return {
+        holderType: {
+          required,
+        },
+        rut: {
+          required,
+          rutValidator: individualRut,
+        },
+        holderId: {
+          required: requiredIf('isBusiness'),
+          rutValidator: (value) => businessRut(value) || value === '',
+        },
+        password: {
+          required,
+        },
+      };
+    }
+
     return {
-      holderType: {
-        required,
-      },
-      rut: {
-        required,
-        rutValidator: individualRut,
-      },
-      holderId: {
-        required: requiredIf('isBusiness'),
-        rutValidator: (value) => businessRut(value) || value === '',
-      },
-      password: {
+      secondFactor: {
         required,
       },
     };
@@ -507,6 +583,23 @@ export default {
           return 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
         default:
           return 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
+      }
+    },
+    secondFactorAction() {
+      return this.subscription.next_action || '';
+    },
+    secondFactorTypeText() {
+      switch (this.secondFactorAction.type) {
+        case 'device_code':
+          return 'de tu digipass';
+        case 'sms_code':
+          return 'que fue enviado a tu teléfono';
+        case 'enter_card_code':
+          return 'Unsupported yet';
+        case 'in_app':
+          return 'Unsupported yet';
+        default:
+          return '';
       }
     },
   },
@@ -585,9 +678,10 @@ export default {
       this.showSpinner = true;
       apiClient.subscriptions.create(this.selectedAccount.id,
         this.customerId,
-        this.linkToken)
+        this.linkToken,
+        this.headers)
         .then((response) => {
-          this.secondFactorStep = response.data.next_action;
+          this.subscription = response.data;
           this.showSpinner = false;
           this.moveTo('second-factor');
         })
@@ -596,6 +690,30 @@ export default {
           this.currentStep = 'error';
           this.showSpinner = false;
         });
+    },
+    submitSecondFactor() {
+      if (this.$v.$invalid) { return; }
+
+      this.showSpinner = true;
+      const data = { code: this.secondFactor, linktoken: this.linkToken };
+      apiClient.subscriptions.update(this.selectedAccount.id,
+        this.subscription.id,
+        data,
+        this.headers)
+        .then((response) => {
+          this.subscriptionResult = response.data.result;
+          this.showSpinner = false;
+          this.moveTo('subscription-completed');
+        })
+        .catch((error) => {
+          this.showSpinner = false;
+          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.currentStep = 'error';
+        });
+    },
+    handleSubscriptionExit() {
+      const payload = { result: '', subscription: this.subscription };
+      this.$emit('subscriptionCreateSuccess', payload);
     },
     sortAccounts(accounts) {
       let orderedAccounts = this.orderAccountsByName(accounts);
