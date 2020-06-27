@@ -410,7 +410,50 @@
             </div>
           </div>
         </div>
-        <div v-if='currentStep==="enter-second-factor"'>
+        <div v-if='currentStep==="subscription-completed"'>
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('intro')" class="text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l">Confirmación</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <hr>
+          <div class="relative">
+            <spinner v-if="showSpinner">
+            </spinner>
+            <div class="flex-1 px-6 py-2">
+              <div class="h-full">
+                <img class="bank-logo h-24 rounded object-cover mx-auto"
+                    :src="bank.logo" />
+                <div class="flex flex-col content-center text-center my-2">
+                  <div class="mb-4">
+                    <div class="bg-gray-100 shadow w-24 h-24 p-1
+                                rounded-full m-auto justify-center flex">
+                      <font-awesome-icon class="m-auto fa-2x" icon="check"/>
+                    </div>
+                  </div>
+                  <div class="text-2xl my-3 text-center leading-tight">
+                    Te conectaste exitosamente con Fintual
+                  </div>
+
+                  <div class="h-full">
+                    <button @click="handleSubscriptionExit"
+                      type="submit"
+                      class="group relative w-full justify-center py-3 px-4 border
+                            border-transparent text-l leading-5 rounded-md
+                            text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                            focus:shadow-outline-indigo active:bg-indigo-700 transition
+                            duration-150 ease-in-out mt-4 tracking-wide hover:bg-indigo-500">
+                      Continuar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
           <div class="pt-6 px-6 text-gray-800">
@@ -480,6 +523,7 @@ const SUBSCRIPTION_STEPS = [
   'confirm-subscription',
   'select-account',
   'second-factor',
+  'subscription-completed',
   'error',
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
