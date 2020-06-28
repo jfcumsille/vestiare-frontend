@@ -333,7 +333,7 @@ export default {
     },
     holderId: {
       required: requiredIf('isBusiness'),
-      rutValidator: businessRut || '',
+      rutValidator: (value) => businessRut(value) || value === '',
     },
     password: {
       required,
