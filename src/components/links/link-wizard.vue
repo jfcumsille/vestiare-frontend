@@ -227,7 +227,7 @@
         </div>
         <div v-if='currentStep==="select-account"' class='h-full flex flex-col' :key="currentStep">
           <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l">Selecciona una cuenta</h1>
@@ -237,11 +237,14 @@
           </div>
           <hr>
           <div class="relative">
-            <div class="flex-1 p-6">
+            <div class="flex-1 px-6 py-2">
               <div class="h-full">
                 <img class="bank-logo h-24 rounded object-cover mx-auto"
                     :src="bank.logo" />
-                <div class="grid grid-cols-1 gap-4 p-4 h-56 overflow-auto">
+                <div class="text-center px-4">
+                  Selecciona la cuenta con la que quieres conectarte
+                </div>
+                <div class="grid grid-cols-1 gap-4 px-2 py-3 my-5 h-56 overflow-auto">
                   <button v-for="account in accounts"
                           :key='account.id'
                           @click='handleAccountSelection(account)'
@@ -255,11 +258,11 @@
                         </div>
                         <div class="w-4/5 px-1">
                           <p> {{ account.name }}</p>
-                          <p class="text-gray-800"> {{ account.number }}</p>
+                          <p class="text-gray-700"> {{ account.number }}</p>
                         </div>
                       </div>
                       <div class="w-2/5">
-                        <p class="text-gray-800"> ${{ account.balance.available }}</p>
+                        <p class="text-gray-700"> ${{ account.balance.available }}</p>
                       </div>
                     </div>
                   </button>
