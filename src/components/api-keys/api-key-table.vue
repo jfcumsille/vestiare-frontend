@@ -22,9 +22,9 @@
                       rounded-r-none tracking-wider">
             {{ apiKey.key }}
           </div>
-          <div class="flex-none bg-teal-200 rounded-r-md h-full">
+          <div class="flex-none bg-teal-200 hover:bg-teal-300 rounded-r-md h-full">
             <button v-clipboard:copy='apiKey.key'
-                    class="hover:bg-teal-300 text-lg py-3 px-3">
+                    class="text-lg py-3 px-3">
               <font-awesome-icon icon="copy"/>
             </button>
           </div>
