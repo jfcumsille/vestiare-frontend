@@ -390,18 +390,34 @@
                         Por favor ingresa el código {{ secondFactorTypeText }}
                       </div>
                     </div>
-
-                    <input class="appearance-none block w-full bg-grey-lighter text-grey-900
-                                  border border-grey-lighter rounded py-3 px-4 leading-tight
-                                  focus:outline-none focus:shadow-sm mt-4"
-                          type="password"
-                          :class="{ 'border-red-500': $v.secondFactor.$error }"
-                          placeholder="Código segundo factor"
-                          v-model.trim.lazy="$v.secondFactor.$model">
+                    <div v-if='secondFactorAction.type === "enter_card_code"'
+                      class="flex mx-12">
+                      <input
+                        v-for="(v, index) in $v.cardCoordinates.$each.$iter"
+                        :key="index"
+                        type="password"
+                        maxlength="2"
+                        class="w-1/3 appearance-none block w-full bg-grey-lighter text-grey-900
+                          border border-grey-lighter rounded py-3 px-2 mx-2 leading-tight
+                          focus:outline-none focus:shadow-sm mt-4 text-center"
+                        :class="{ 'border-red-500': $v.secondFactor.$error }"
+                        :placeholder="secondFactorAction.coordinates[index]"
+                        v-model.trim.lazy="v.value.$model">
+                    </div>
+                    <div v-else>
+                      <input
+                        type="password"
+                        class="appearance-none block w-full bg-grey-lighter text-grey-900
+                          border border-grey-lighter rounded py-3 px-4 leading-tight
+                          focus:outline-none focus:shadow-sm mt-4"
+                        :class="{ 'border-red-500': $v.secondFactor.$error }"
+                        placeholder="Código segundo factor"
+                        v-model.trim.lazy="$v.secondFactor.$model">
+                    </div>
                   </div>
                   <button @click="submitSecondFactor"
                     type="submit"
-                    class="group relative w-full justify-center py-3 px-4 border
+                    class="group relative w-full justify-center mt-6 py-3 px-4 border
                           border-transparent text-l leading-5 rounded-md
                           text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                           focus:shadow-outline-indigo active:bg-indigo-700 transition
@@ -546,6 +562,7 @@ export default {
       selectedAccount: {},
       linkToken: '',
       secondFactor: '',
+      cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
       subscriptionResult: '',
     };
@@ -597,7 +614,16 @@ export default {
 
     return {
       secondFactor: {
-        required,
+        required: requiredIf(() => !this.cardCodeAction),
+      },
+      cardCoordinates: {
+        $each: {
+          value:
+          {
+            required: requiredIf('cardCodeAction'),
+            lenghtValidator: (value) => value.length === 2,
+          },
+        },
       },
     };
   },
@@ -633,7 +659,17 @@ export default {
       }
     },
     secondFactorAction() {
-      return this.subscription.next_action || '';
+      return this.subscription.next_action || { type: '', coordinates: [] };
+    },
+    cardCodeAction() {
+      return this.secondFactorAction.type === 'enter_card_code';
+    },
+    getSecondFactorCode() {
+      if (this.cardCodeAction) {
+        return this.cardCoordinates.map((item) => item.value).join('');
+      }
+
+      return this.secondFactor;
     },
     secondFactorTypeText() {
       switch (this.secondFactorAction.type) {
@@ -642,7 +678,7 @@ export default {
         case 'sms_code':
           return 'que fue enviado a tu teléfono';
         case 'enter_card_code':
-          return 'Unsupported yet';
+          return 'de tu tarjeta de coordenadas';
         case 'in_app':
           return 'Unsupported yet';
         default:
@@ -742,7 +778,7 @@ export default {
       if (this.$v.$invalid) { return; }
 
       this.showSpinner = true;
-      const data = { code: this.secondFactor, linktoken: this.linkToken };
+      const data = { code: this.getSecondFactorCode, linktoken: this.linkToken };
       apiClient.subscriptions.update(this.selectedAccount.id,
         this.subscription.id,
         data,
