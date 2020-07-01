@@ -593,6 +593,7 @@ export default {
       accounts: [],
       selectedAccount: {},
       linkToken: '',
+      linkId: '',
       secondFactor: '',
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
@@ -767,6 +768,7 @@ export default {
           if (this.requestType === 'subscription') {
             this.handleFetchedAccounts(response.data.accounts);
             this.linkToken = response.data.link_token;
+            this.linkId = response.data.id;
             this.moveTo('confirm-subscription');
           }
         })
@@ -819,7 +821,7 @@ export default {
       if (this.$v.$invalid) { return; }
 
       this.showSpinner = true;
-      const data = { code: this.getSecondFactorCode, linktoken: this.linkToken };
+      const data = { code: this.getSecondFactorCode, linkToken: this.linkToken };
       apiClient.subscriptions.update(this.subscription.id,
         data,
         this.headers)
@@ -835,8 +837,11 @@ export default {
         });
     },
     handleSubscriptionExit() {
-      this.subscription.status = 'canceled';
-      const payload = { subscription: this.subscription };
+      const payload = {
+        subscription: this.subscription,
+        account: this.selectedAccount,
+        linkId: this.linkId,
+      };
       this.$emit('subscriptionCreateSuccess', payload);
     },
     sortAccounts(accounts) {
