@@ -707,9 +707,9 @@ export default {
     },
     secondFactorTypeText() {
       switch (this.secondFactorAction.type) {
-        case 'device_code':
+        case 'enter_device_code':
           return 'de tu digipass';
-        case 'sms_code':
+        case 'enter_sms_code':
           return 'que fue enviado a tu teléfono';
         case 'enter_card_code':
           return 'de tu tarjeta de coordenadas';
