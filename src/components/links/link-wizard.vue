@@ -705,14 +705,6 @@ export default {
 
       return this.secondFactor;
     },
-    nextStepFromConfirmation() {
-      switch (this.secondFactorAction.type) {
-        case 'authorize_in_app':
-          return 'wait-for-app';
-        default:
-          return 'second-factor';
-      }
-    },
     secondFactorTypeText() {
       switch (this.secondFactorAction.type) {
         case 'device_code':
@@ -808,13 +800,21 @@ export default {
         .then((response) => {
           this.subscription = response.data;
           this.showSpinner = false;
-          this.moveTo(this.nextStepFromConfirmation);
+          this.nextStepFromConfirmation();
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
           this.showSpinner = false;
         });
+    },
+    nextStepFromConfirmation() {
+      if (this.secondFactorAction.type === 'authorize_in_app') {
+        this.pollForSubscriptionConfirmation();
+        this.moveTo('wait-for-app');
+      } else {
+        this.moveTo('second-factor');
+      }
     },
     submitSecondFactor() {
       if (this.$v.$invalid) { return; }
@@ -855,7 +855,7 @@ export default {
         return a.name > b.name ? 1 : 0;
       });
     },
-    pollForSubscriptionconfirmation() {
+    pollForSubscriptionConfirmation() {
       this.pollingforSubscription = true;
       this.interval = setInterval(this.subscriptionPolling, 1000);
     },
