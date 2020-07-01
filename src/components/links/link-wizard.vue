@@ -693,7 +693,7 @@ export default {
       }
     },
     secondFactorAction() {
-      return this.subscription.next_action || { type: '', coordinates: [] };
+      return this.subscription.nextAction || { type: '', coordinates: [] };
     },
     cardCodeAction() {
       return this.secondFactorAction.type === 'enter_card_code';
@@ -707,7 +707,7 @@ export default {
     },
     nextStepFromConfirmation() {
       switch (this.secondFactorAction.type) {
-        case 'in_app':
+        case 'authorize_in_app':
           return 'wait-for-app';
         default:
           return 'second-factor';
@@ -721,7 +721,7 @@ export default {
           return 'que fue enviado a tu teléfono';
         case 'enter_card_code':
           return 'de tu tarjeta de coordenadas';
-        case 'in_app':
+        case 'authorize_in_app':
           return 'Acepta la suscripción en la aplicación de tu teléfono para continuar';
         default:
           return '';
