@@ -464,7 +464,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l">Confirmación</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <button @click="handleSubscriptionExit" class="text-gray-700">
               <font-awesome-icon icon="times"/>
             </button>
           </div>
@@ -578,7 +578,7 @@ const SUBSCRIPTION_STEPS = [
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
-const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'canceled', 'failed'];
+const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'canceled'];
 
 export default {
   data() {
@@ -828,7 +828,11 @@ export default {
         .then((response) => {
           this.subscription.status = response.data.status;
           this.showSpinner = false;
-          this.moveTo('subscription-completed');
+          if (this.subscription.status === 'failed') {
+            this.moveTo('error');
+          } else {
+            this.moveTo('subscription-completed');
+          }
         })
         .catch((error) => {
           this.showSpinner = false;
@@ -873,6 +877,10 @@ export default {
             this.pollingforSubscription = false;
             clearTimeout(this.interval);
             this.moveTo('subscription-completed');
+          } else if (this.subscription.status === 'failed') {
+            this.pollingforSubscription = false;
+            clearTimeout(this.interval);
+            this.moveTo('error');
           }
         })
         .catch((error) => {
