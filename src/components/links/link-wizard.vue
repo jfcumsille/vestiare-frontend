@@ -666,7 +666,7 @@ export default {
       return this.$route.query['holder-type'] || this.$route.query.holder_type;
     },
     customerId() {
-      return this.$route.query.holder_type;
+      return this.$route.query.customer_id;
     },
     isBusiness() {
       return this.holderType === 'business';
