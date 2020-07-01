@@ -17,7 +17,15 @@ function update(subscriptionId, data, authenticationHeader) {
     });
 }
 
+function get(subscriptionId, linkToken, authenticationHeader) {
+  return axiosInstance
+    .get(`/internal/v1/subscriptions/${subscriptionId}?link_token=${linkToken}`, {
+      headers: authenticationHeader,
+    });
+}
+
 export default {
   create,
   update,
+  get,
 };
