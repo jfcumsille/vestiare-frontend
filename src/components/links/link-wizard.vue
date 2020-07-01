@@ -779,8 +779,7 @@ export default {
 
       this.showSpinner = true;
       const data = { code: this.getSecondFactorCode, linktoken: this.linkToken };
-      apiClient.subscriptions.update(this.selectedAccount.id,
-        this.subscription.id,
+      apiClient.subscriptions.update(this.subscription.id,
         data,
         this.headers)
         .then((response) => {

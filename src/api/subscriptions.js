@@ -10,9 +10,9 @@ function create(accountId, customerId, linkToken, authenticationHeader) {
     });
 }
 
-function update(accountId, subscriptionId, data, authenticationHeader) {
+function update(subscriptionId, data, authenticationHeader) {
   return axiosInstance
-    .patch(`/internal/v1/accounts/${accountId}/subscriptions/${subscriptionId}`, data, {
+    .patch(`/internal/v1/subscriptions/${subscriptionId}`, data, {
       headers: authenticationHeader,
     });
 }
