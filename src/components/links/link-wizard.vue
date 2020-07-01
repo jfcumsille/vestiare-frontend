@@ -596,7 +596,6 @@ export default {
       secondFactor: '',
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
-      subscriptionResult: '',
       pollingforSubscription: false,
     };
   },
@@ -825,7 +824,7 @@ export default {
         data,
         this.headers)
         .then((response) => {
-          this.subscriptionResult = response.data.result;
+          this.subscription.status = response.data.status;
           this.showSpinner = false;
           this.moveTo('subscription-completed');
         })
@@ -864,8 +863,8 @@ export default {
         this.linkToken,
         this.headers)
         .then((response) => {
-          this.subscriptionResult = response.data.result;
-          if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(this.subscriptionResult.status)) {
+          this.subscription.status = response.data.status;
+          if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(this.subscription.status)) {
             this.pollingforSubscription = false;
             clearTimeout(this.interval);
             this.moveTo('subscription-completed');
