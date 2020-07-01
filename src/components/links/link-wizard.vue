@@ -429,6 +429,35 @@
             </div>
           </div>
         </div>
+        <div v-if='currentStep==="wait-for-app"'>
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('intro')" class="text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l">Confirmación</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <hr>
+          <div class="relative">
+            <div class="flex-1 px-6 py-2">
+              <div class="h-full">
+                <img class="bank-logo h-24 rounded object-cover mx-auto"
+                    :src="bank.logo" />
+                <div class="flex flex-col content-center text-center my-2">
+                  <div class="m-8">
+                    <vue-element-loading :active="true" :spinner="'bar-fade-scale'">
+                    </vue-element-loading>
+                  </div>
+                  <div class="text-2xl my-3 text-center leading-tight">
+                    {{ secondFactorTypeText }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div v-if='currentStep==="subscription-completed"'>
           <div class="py-6 px-6 text-gray-800 flex justify-between">
             <button @click="moveTo('intro')" class="text-gray-700">
@@ -525,6 +554,7 @@
 <script>
 
 import { required, requiredIf } from 'vuelidate/lib/validators';
+import VueElementLoading from 'vue-element-loading';
 import { individualRut, businessRut } from '../../validators/rut_validator';
 import Spinner from '../spinner.vue';
 import { availableBanks } from '../../banks-helper';
@@ -542,11 +572,13 @@ const SUBSCRIPTION_STEPS = [
   'confirm-subscription',
   'select-account',
   'second-factor',
+  'wait-for-app',
   'subscription-completed',
   'error',
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
+const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'canceled', 'failed'];
 
 export default {
   data() {
@@ -565,6 +597,7 @@ export default {
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
       subscriptionResult: '',
+      pollingforSubscription: false,
     };
   },
   props: {
@@ -591,6 +624,7 @@ export default {
   },
   components: {
     Spinner,
+    VueElementLoading,
   },
   validations() {
     if (this.currentWizard === 'link') {
@@ -671,6 +705,14 @@ export default {
 
       return this.secondFactor;
     },
+    nextStepFromConfirmation() {
+      switch (this.secondFactorAction.type) {
+        case 'in_app':
+          return 'wait-for-app';
+        default:
+          return 'second-factor';
+      }
+    },
     secondFactorTypeText() {
       switch (this.secondFactorAction.type) {
         case 'device_code':
@@ -680,7 +722,7 @@ export default {
         case 'enter_card_code':
           return 'de tu tarjeta de coordenadas';
         case 'in_app':
-          return 'Unsupported yet';
+          return 'Acepta la suscripción en la aplicación de tu teléfono para continuar';
         default:
           return '';
       }
@@ -766,7 +808,7 @@ export default {
         .then((response) => {
           this.subscription = response.data;
           this.showSpinner = false;
-          this.moveTo('second-factor');
+          this.moveTo(this.nextStepFromConfirmation);
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
@@ -812,6 +854,29 @@ export default {
         if (a.name < b.name) return -1;
         return a.name > b.name ? 1 : 0;
       });
+    },
+    pollForSubscriptionconfirmation() {
+      this.pollingforSubscription = true;
+      this.interval = setInterval(this.subscriptionPolling, 1000);
+    },
+    subscriptionPolling() {
+      apiClient.subscriptions.get(this.subscription.id,
+        this.linkToken,
+        this.headers)
+        .then((response) => {
+          this.subscriptionResult = response.data.result;
+          if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(this.subscriptionResult.status)) {
+            this.pollingforSubscription = false;
+            clearTimeout(this.interval);
+            this.moveTo('subscription-completed');
+          }
+        })
+        .catch((error) => {
+          this.pollingforSubscription = false;
+          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.currentStep = 'error';
+          clearTimeout(this.interval);
+        });
     },
     trackLinkCreatedEvent(responseData) {
       window.analytics.track('Link Created', {
