@@ -1,11 +1,11 @@
 <template>
 <div>
-  <link-form v-if="showForm"
+  <link-wizard v-if="showForm"
     @createSuccess='onCreateSuccess'
     :createdThrough="'dashboard'"
     :submitAction="'createUserLinkFromDashboard'"
     :headers="formHeaders">
-  </link-form>
+  </link-wizard>
   <link-detail v-if="!showForm"
       :bank='bank'
       :holderType='holderType'
@@ -18,7 +18,7 @@
 <script>
 
 import LinkDetail from './link-detail.vue';
-import LinkForm from './link-form.vue';
+import LinkWizard from './link-wizard.vue';
 import { findBankByCode } from '../../banks-helper';
 
 export default {
@@ -35,7 +35,7 @@ export default {
     window.analytics.page('New dashboard Link');
   },
   components: {
-    LinkForm,
+    LinkWizard,
     LinkDetail,
   },
   computed: {

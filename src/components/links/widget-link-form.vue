@@ -1,18 +1,20 @@
 <template>
 <div>
-  <link-form
-    @createSuccess='onCreateSuccess'
+  <link-wizard
+    @createSuccess='onLinkCreateSuccess'
+    @subscriptionCreateSuccess='onSubscriptionCreateSuccess'
     :createdThrough="'widget'"
     :submitAction="'createUserLinkFromWidget'"
     :headers="formHeaders"
-    :extraFields="extraFields">
-  </link-form>
+    :extraFields="extraFields"
+    :requestType="requestType">
+  </link-wizard>
 </div>
 </template>
 
 <script>
 
-import LinkForm from './link-form.vue';
+import LinkWizard from './link-wizard.vue';
 import { getValidUrl, queryize } from '../../helpers/widget_helper';
 
 export default {
@@ -20,9 +22,12 @@ export default {
     window.analytics.page('New widget Link');
   },
   components: {
-    LinkForm,
+    LinkWizard,
   },
   computed: {
+    requestType() {
+      return this.$route.query.product;
+    },
     apiKey() {
       return this.$route.query.public_key;
     },
@@ -40,11 +45,18 @@ export default {
     },
   },
   methods: {
-    onCreateSuccess(response) {
+    onLinkCreateSuccess(response) {
+      if (this.requestType === 'movements') {
+        this.redirectFromMovementCreation(response.data);
+      }
+    },
+
+    redirectFromMovementCreation(data) {
       const {
         // eslint-disable-next-line camelcase
         id: link_id, username, holder_type, institution: { id: institution_id },
-      } = response.data;
+      } = data;
+
       const params = {
         result: 'link_created',
         link_id,
@@ -52,6 +64,23 @@ export default {
         holder_type,
         institution_id,
       };
+
+      window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
+    },
+
+    onSubscriptionCreateSuccess(data) {
+      this.redirectFromSubscriptionCreation(data);
+    },
+
+    redirectFromSubscriptionCreation(data) {
+      const params = {
+        result: 'subscription_created',
+        subscription_id: data.subscription.id,
+        link_id: data.linkId,
+        account_id: data.account.id,
+        username: data.account.holder_id,
+      };
+
       window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
     },
   },
