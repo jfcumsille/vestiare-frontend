@@ -553,7 +553,7 @@
 </template>
 <script>
 
-import { required, requiredIf } from 'vuelidate/lib/validators';
+import { required, requiredIf, helpers } from 'vuelidate/lib/validators';
 import VueElementLoading from 'vue-element-loading';
 import { individualRut, businessRut } from '../../validators/rut_validator';
 import Spinner from '../spinner.vue';
@@ -655,7 +655,7 @@ export default {
           value:
           {
             required: requiredIf('cardCodeAction'),
-            lenghtValidator: (value) => value.length === 2,
+            lenghtValidator: (value) => !helpers.req(value) || value.length === 2,
           },
         },
       },
