@@ -72,13 +72,13 @@ export default {
       this.redirectFromSubscriptionCreation(response.data);
     },
 
-    redirectFromSubscriptionCreation(data) {
+    redirectFromSubscriptionCreation(subscription) {
       const {
-        subscriptionId, linkId, accountId, username,
-      } = data.subscription;
+        subscriptionId, linkId, accountId, username, status,
+      } = subscription;
 
       const params = {
-        result: data.result,
+        result: status,
         subscriptionId,
         linkId,
         accountId,

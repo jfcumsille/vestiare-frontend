@@ -794,7 +794,8 @@ export default {
         });
     },
     handleSubscriptionExit() {
-      const payload = { result: '', subscription: this.subscription };
+      this.subscription.status = 'canceled';
+      const payload = { subscription: this.subscription };
       this.$emit('subscriptionCreateSuccess', payload);
     },
     sortAccounts(accounts) {
