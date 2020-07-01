@@ -464,7 +464,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l">Confirmación</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <button @click="handleSubscriptionExit" class="text-gray-700">
               <font-awesome-icon icon="times"/>
             </button>
           </div>
@@ -578,7 +578,7 @@ const SUBSCRIPTION_STEPS = [
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
-const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'canceled', 'failed'];
+const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'canceled'];
 
 export default {
   data() {
@@ -593,10 +593,10 @@ export default {
       accounts: [],
       selectedAccount: {},
       linkToken: '',
+      linkId: '',
       secondFactor: '',
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
-      subscriptionResult: '',
       pollingforSubscription: false,
     };
   },
@@ -705,14 +705,6 @@ export default {
 
       return this.secondFactor;
     },
-    nextStepFromConfirmation() {
-      switch (this.secondFactorAction.type) {
-        case 'authorize_in_app':
-          return 'wait-for-app';
-        default:
-          return 'second-factor';
-      }
-    },
     secondFactorTypeText() {
       switch (this.secondFactorAction.type) {
         case 'device_code':
@@ -776,6 +768,7 @@ export default {
           if (this.requestType === 'subscription') {
             this.handleFetchedAccounts(response.data.accounts);
             this.linkToken = response.data.link_token;
+            this.linkId = response.data.id;
             this.moveTo('confirm-subscription');
           }
         })
@@ -808,7 +801,7 @@ export default {
         .then((response) => {
           this.subscription = response.data;
           this.showSpinner = false;
-          this.moveTo(this.nextStepFromConfirmation);
+          this.nextStepFromConfirmation();
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
@@ -816,18 +809,30 @@ export default {
           this.showSpinner = false;
         });
     },
+    nextStepFromConfirmation() {
+      if (this.secondFactorAction.type === 'authorize_in_app') {
+        this.pollForSubscriptionConfirmation();
+        this.moveTo('wait-for-app');
+      } else {
+        this.moveTo('second-factor');
+      }
+    },
     submitSecondFactor() {
       if (this.$v.$invalid) { return; }
 
       this.showSpinner = true;
-      const data = { code: this.getSecondFactorCode, linktoken: this.linkToken };
+      const data = { code: this.getSecondFactorCode, linkToken: this.linkToken };
       apiClient.subscriptions.update(this.subscription.id,
         data,
         this.headers)
         .then((response) => {
-          this.subscriptionResult = response.data.result;
+          this.subscription.status = response.data.status;
           this.showSpinner = false;
-          this.moveTo('subscription-completed');
+          if (this.subscription.status === 'failed') {
+            this.moveTo('error');
+          } else {
+            this.moveTo('subscription-completed');
+          }
         })
         .catch((error) => {
           this.showSpinner = false;
@@ -836,8 +841,11 @@ export default {
         });
     },
     handleSubscriptionExit() {
-      this.subscription.status = 'canceled';
-      const payload = { subscription: this.subscription };
+      const payload = {
+        subscription: this.subscription,
+        account: this.selectedAccount,
+        linkId: this.linkId,
+      };
       this.$emit('subscriptionCreateSuccess', payload);
     },
     sortAccounts(accounts) {
@@ -855,7 +863,7 @@ export default {
         return a.name > b.name ? 1 : 0;
       });
     },
-    pollForSubscriptionconfirmation() {
+    pollForSubscriptionConfirmation() {
       this.pollingforSubscription = true;
       this.interval = setInterval(this.subscriptionPolling, 1000);
     },
@@ -864,11 +872,15 @@ export default {
         this.linkToken,
         this.headers)
         .then((response) => {
-          this.subscriptionResult = response.data.result;
-          if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(this.subscriptionResult.status)) {
+          this.subscription.status = response.data.status;
+          if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(this.subscription.status)) {
             this.pollingforSubscription = false;
             clearTimeout(this.interval);
             this.moveTo('subscription-completed');
+          } else if (this.subscription.status === 'failed') {
+            this.pollingforSubscription = false;
+            clearTimeout(this.interval);
+            this.moveTo('error');
           }
         })
         .catch((error) => {

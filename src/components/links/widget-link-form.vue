@@ -68,21 +68,17 @@ export default {
       window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
     },
 
-    onSubscriptionCreateSuccess(response) {
-      this.redirectFromSubscriptionCreation(response.data);
+    onSubscriptionCreateSuccess(data) {
+      this.redirectFromSubscriptionCreation(data);
     },
 
-    redirectFromSubscriptionCreation(subscription) {
-      const {
-        subscriptionId, linkId, accountId, username, status,
-      } = subscription;
-
+    redirectFromSubscriptionCreation(data) {
       const params = {
-        result: status,
-        subscriptionId,
-        linkId,
-        accountId,
-        username,
+        result: 'subscription_created',
+        subscription_id: data.subscription.id,
+        link_id: data.linkId,
+        account_id: data.account.id,
+        username: data.account.holder_id,
       };
 
       window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
