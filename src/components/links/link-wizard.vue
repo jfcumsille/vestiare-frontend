@@ -349,7 +349,7 @@
         </div>
         <div v-if='currentStep==="second-factor"'>
           <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l">Segundo Factor</h1>
@@ -431,7 +431,7 @@
         </div>
         <div v-if='currentStep==="wait-for-app"'>
           <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l">Confirmación</h1>
@@ -460,7 +460,7 @@
         </div>
         <div v-if='currentStep==="subscription-completed"'>
           <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+            <button @click="moveTo('confirm-subscription')" class="text-gray-700 invisible">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l">Confirmación</h1>
