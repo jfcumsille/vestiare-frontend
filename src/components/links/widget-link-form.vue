@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     requestType() {
-      return this.$route.query.product;
+      return this.$route.query.product || 'movements';
     },
     apiKey() {
       return this.$route.query.public_key;
