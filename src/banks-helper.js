@@ -32,7 +32,7 @@ const availableBanks = [
     label: 'Banco Santander',
     logo: santanderLogo,
     smallLogo: santanderSmallLogo,
-    holderTypes: { business: true, individual: false },
+    holderTypes: { business: true, individual: true },
   },
   {
     code: 'cl_banco_bci',
