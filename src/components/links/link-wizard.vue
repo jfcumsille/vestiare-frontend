@@ -754,7 +754,7 @@ export default {
       return { link_data: { ...formFields, product: this.requestType }, ...this.extraFields };
     },
     onSubmit() {
-      if (this.$v.$invalid) { return; }
+      if (this.$v.$invalid || this.showSpinner) { return; }
 
       this.showSpinner = true;
       const formData = this.getFormData();
@@ -793,6 +793,8 @@ export default {
       this.moveTo('confirm-subscription');
     },
     handleConfirmSubscription() {
+      if (this.showSpinner) { return; }
+
       this.showSpinner = true;
       apiClient.subscriptions.create(this.selectedAccount.id,
         this.customerId,
@@ -818,7 +820,7 @@ export default {
       }
     },
     submitSecondFactor() {
-      if (this.$v.$invalid) { return; }
+      if (this.$v.$invalid || this.showSpinner) { return; }
 
       this.showSpinner = true;
       const data = { code: this.getSecondFactorCode, linkToken: this.linkToken };
