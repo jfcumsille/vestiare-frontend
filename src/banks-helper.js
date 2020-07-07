@@ -39,14 +39,14 @@ const availableBanks = [
     label: 'Banco BCI',
     logo: bciLogo,
     smallLogo: bciSmallLogo,
-    holderTypes: { business: true, individual: true },
+    holderTypes: { business: false, individual: false },
   },
   {
     code: 'cl_banco_estado',
     label: 'Banco Estado',
     logo: bancoEstadoLogo,
     smallLogo: bancoEstadoSmallLogo,
-    holderTypes: { business: true, individual: false },
+    holderTypes: { business: false, individual: false },
   },
   {
     code: 'cl_banco_itau',
