@@ -751,7 +751,7 @@ export default {
         password: this.password,
       };
 
-      return { link_data: formFields, ...this.extraFields };
+      return { link_data: { ...formFields, product: this.requestType }, ...this.extraFields };
     },
     onSubmit() {
       if (this.$v.$invalid) { return; }
