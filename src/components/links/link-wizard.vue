@@ -597,7 +597,6 @@ export default {
       secondFactor: '',
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
-      pollingforSubscription: false,
     };
   },
   props: {
@@ -865,8 +864,7 @@ export default {
         return a.name > b.name ? 1 : 0;
       });
     },
-    pollForSubscriptionConfirmation() {
-      this.pollingforSubscription = true;
+    pollForSubscription() {
       this.interval = setInterval(this.subscriptionPolling, 1000);
     },
     subscriptionPolling() {
