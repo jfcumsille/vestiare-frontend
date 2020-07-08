@@ -390,7 +390,7 @@
                         Por favor ingresa el código {{ secondFactorTypeText }}
                       </div>
                     </div>
-                    <div v-if='secondFactorAction.type === "enter_card_code"'
+                    <div v-if='cardCodeAction'
                       class="flex mx-12">
                       <input
                         v-for="(v, index) in $v.cardCoordinates.$each.$iter"
