@@ -578,7 +578,7 @@ const SUBSCRIPTION_STEPS = [
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
-const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'canceled'];
+const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'unknown'];
 
 export default {
   data() {
