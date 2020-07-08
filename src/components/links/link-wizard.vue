@@ -597,6 +597,7 @@ export default {
       secondFactor: '',
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
+      pollingForStatusChange: false,
     };
   },
   props: {
@@ -801,39 +802,28 @@ export default {
         this.headers)
         .then((response) => {
           this.subscription = response.data;
-          this.showSpinner = false;
-          this.nextStepFromConfirmation();
+          this.handleSubscriptionStatus(this.subscription.status);
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
           this.showSpinner = false;
+        })
+        .finally(() => {
+          this.pollingForStatusChange = false;
         });
-    },
-    nextStepFromConfirmation() {
-      if (this.secondFactorAction.type === 'authorize_in_app') {
-        this.pollForSubscriptionConfirmation();
-        this.moveTo('wait-for-app');
-      } else {
-        this.moveTo('second-factor');
-      }
     },
     submitSecondFactor() {
       if (this.$v.$invalid || this.showSpinner) { return; }
 
       this.showSpinner = true;
       const data = { code: this.getSecondFactorCode, linkToken: this.linkToken };
+      this.pollingForStatusChange = true;
       apiClient.subscriptions.update(this.subscription.id,
         data,
         this.headers)
-        .then((response) => {
-          this.subscription.status = response.data.status;
-          this.showSpinner = false;
-          if (this.subscription.status === 'failed') {
-            this.moveTo('error');
-          } else {
-            this.moveTo('subscription-completed');
-          }
+        .then(() => {
+          this.pollForSubscription();
         })
         .catch((error) => {
           this.showSpinner = false;
@@ -873,22 +863,37 @@ export default {
         this.headers)
         .then((response) => {
           this.subscription.status = response.data.status;
-          if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(this.subscription.status)) {
-            this.pollingforSubscription = false;
-            clearTimeout(this.interval);
-            this.moveTo('subscription-completed');
-          } else if (this.subscription.status === 'failed') {
-            this.pollingforSubscription = false;
-            clearTimeout(this.interval);
-            this.moveTo('error');
-          }
+          this.handleSubscriptionStatus(this.subscription.status);
         })
         .catch((error) => {
-          this.pollingforSubscription = false;
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
-          clearTimeout(this.interval);
         });
+    },
+    handleSubscriptionStatus(status) {
+      if (status === 'requires_action') {
+        this.handleSubscriptionAction(this.secondFactorAction);
+      } else if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(status)) {
+        this.stopIntervalAndMove(this.interval, 'subscription-completed');
+      } else if (status === 'failed') {
+        this.stopIntervalAndMove(this.interval, 'error');
+      }
+    },
+    handleSubscriptionAction(action) {
+      if (this.pollingForStatusChange) { return; }
+
+      if (action.type === 'authorize_in_app') {
+        // Polling continues until authorized
+        this.showSpinner = false;
+        this.moveTo('wait-for-app');
+      } else {
+        this.stopIntervalAndMove(this.interval, 'second-factor');
+      }
+    },
+    stopIntervalAndMove(interval, nextStep) {
+      this.showSpinner = false;
+      clearTimeout(interval);
+      this.moveTo(nextStep);
     },
     trackLinkCreatedEvent(responseData) {
       window.analytics.track('Link Created', {
