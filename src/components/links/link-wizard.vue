@@ -688,6 +688,8 @@ export default {
           return 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
         case 'not_implemented_institution':
           return 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
+        case 'invalid_2f':
+          return 'El código ingresado no es correcto, por favor intenta nuevamente';
         default:
           return 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
       }
@@ -875,6 +877,9 @@ export default {
         this.handleSubscriptionAction(this.secondFactorAction);
       } else if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(status)) {
         this.stopIntervalAndMove(this.interval, 'subscription-completed');
+      } else if (status === 'rejected') {
+        this.errorCode = 'invalid_2f';
+        this.stopIntervalAndMove(this.interval, 'error');
       } else if (status === 'failed') {
         this.stopIntervalAndMove(this.interval, 'error');
       }
