@@ -309,7 +309,7 @@
                       </div>
                     </div>
                     <div class="w-10/12">
-                      El monto máximo varía según tu cuenta
+                      La conexión permite realizar transferencias desde la aplicación
                     </div>
                   </div>
                   <div class=" px-2 font-regular flex flex-wrap items-center
