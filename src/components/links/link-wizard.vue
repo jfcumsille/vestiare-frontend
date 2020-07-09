@@ -804,7 +804,7 @@ export default {
         this.headers)
         .then((response) => {
           this.subscription = response.data;
-          this.handleSubscriptionStatus(this.subscription.status);
+          this.pollForSubscription();
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
@@ -865,6 +865,7 @@ export default {
         this.headers)
         .then((response) => {
           this.subscription.status = response.data.status;
+          this.subscription.nextAction = response.data.nextAction;
           this.handleSubscriptionStatus(this.subscription.status);
         })
         .catch((error) => {
