@@ -390,7 +390,7 @@
                         Por favor ingresa el código {{ secondFactorTypeText }}
                       </div>
                     </div>
-                    <div v-if='secondFactorAction.type === "enter_card_code"'
+                    <div v-if='cardCodeAction'
                       class="flex mx-12">
                       <input
                         v-for="(v, index) in $v.cardCoordinates.$each.$iter"
@@ -578,7 +578,7 @@ const SUBSCRIPTION_STEPS = [
 ];
 const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
-const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'canceled'];
+const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'unknown'];
 
 export default {
   data() {
@@ -597,7 +597,7 @@ export default {
       secondFactor: '',
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
-      pollingforSubscription: false,
+      pollingForStatusChange: false,
     };
   },
   props: {
@@ -688,6 +688,8 @@ export default {
           return 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
         case 'not_implemented_institution':
           return 'Lamentablemente esta institución no la hemos implementado. Escríbele a elliot@fintoc.com';
+        case 'invalid_2f':
+          return 'El código ingresado no es correcto, por favor intenta nuevamente';
         default:
           return 'No pudimos conectarnos con el banco. Si el problema persiste, intenta más tarde';
       }
@@ -802,39 +804,28 @@ export default {
         this.headers)
         .then((response) => {
           this.subscription = response.data;
-          this.showSpinner = false;
-          this.nextStepFromConfirmation();
+          this.handleSubscriptionStatus(this.subscription.status);
         })
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
           this.showSpinner = false;
+        })
+        .finally(() => {
+          this.pollingForStatusChange = false;
         });
-    },
-    nextStepFromConfirmation() {
-      if (this.secondFactorAction.type === 'authorize_in_app') {
-        this.pollForSubscriptionConfirmation();
-        this.moveTo('wait-for-app');
-      } else {
-        this.moveTo('second-factor');
-      }
     },
     submitSecondFactor() {
       if (this.$v.$invalid || this.showSpinner) { return; }
 
       this.showSpinner = true;
       const data = { code: this.getSecondFactorCode, linkToken: this.linkToken };
+      this.pollingForStatusChange = true;
       apiClient.subscriptions.update(this.subscription.id,
         data,
         this.headers)
-        .then((response) => {
-          this.subscription.status = response.data.status;
-          this.showSpinner = false;
-          if (this.subscription.status === 'failed') {
-            this.moveTo('error');
-          } else {
-            this.moveTo('subscription-completed');
-          }
+        .then(() => {
+          this.pollForSubscription();
         })
         .catch((error) => {
           this.showSpinner = false;
@@ -865,8 +856,7 @@ export default {
         return a.name > b.name ? 1 : 0;
       });
     },
-    pollForSubscriptionConfirmation() {
-      this.pollingforSubscription = true;
+    pollForSubscription() {
       this.interval = setInterval(this.subscriptionPolling, 1000);
     },
     subscriptionPolling() {
@@ -875,22 +865,40 @@ export default {
         this.headers)
         .then((response) => {
           this.subscription.status = response.data.status;
-          if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(this.subscription.status)) {
-            this.pollingforSubscription = false;
-            clearTimeout(this.interval);
-            this.moveTo('subscription-completed');
-          } else if (this.subscription.status === 'failed') {
-            this.pollingforSubscription = false;
-            clearTimeout(this.interval);
-            this.moveTo('error');
-          }
+          this.handleSubscriptionStatus(this.subscription.status);
         })
         .catch((error) => {
-          this.pollingforSubscription = false;
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
-          clearTimeout(this.interval);
         });
+    },
+    handleSubscriptionStatus(status) {
+      if (status === 'requires_action') {
+        this.handleSubscriptionAction(this.secondFactorAction);
+      } else if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(status)) {
+        this.stopIntervalAndMove(this.interval, 'subscription-completed');
+      } else if (status === 'rejected') {
+        this.errorCode = 'invalid_2f';
+        this.stopIntervalAndMove(this.interval, 'error');
+      } else if (status === 'failed') {
+        this.stopIntervalAndMove(this.interval, 'error');
+      }
+    },
+    handleSubscriptionAction(action) {
+      if (this.pollingForStatusChange) { return; }
+
+      if (action.type === 'authorize_in_app') {
+        // Polling continues until authorized
+        this.showSpinner = false;
+        this.moveTo('wait-for-app');
+      } else {
+        this.stopIntervalAndMove(this.interval, 'second-factor');
+      }
+    },
+    stopIntervalAndMove(interval, nextStep) {
+      this.showSpinner = false;
+      clearTimeout(interval);
+      this.moveTo(nextStep);
     },
     trackLinkCreatedEvent(responseData) {
       window.analytics.track('Link Created', {
