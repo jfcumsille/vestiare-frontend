@@ -737,7 +737,7 @@ export default {
       if (!PERMITTED_STEPS.includes(step)) {
         throw Error('Unrecognized step');
       }
-
+      this.trackWidgetStepCompletedEvent(step);
       this.currentStep = step;
     },
     selectBank(bank) {
@@ -909,6 +909,26 @@ export default {
         holder_id: responseData.holder_id,
         username: responseData.username,
         created_through: this.createdThrough,
+      });
+    },
+    trackWidgetStepCompletedEvent(nextStep) {
+      if (this.currentStep === 'confirm-subscription' && nextStep === 'select-account') {
+        // Don't track step completed because moving to 'select-account' is not actually completing
+        // the 'confirm-subscription' event
+        return;
+      }
+
+      window.analytics.track('Widget Step Completed', {
+        step: this.currentStep,
+        product: this.requestType,
+        institution_id: this.bank ? this.bank.code : null,
+        username: this.rut ? this.rut : null,
+        holder_id: this.holderId ? this.holderId : null,
+        holder_type: this.holderType,
+        link_id: this.linkId ? this.linkId : null,
+        selected_account: this.selectedAccount.id,
+        subscription_id: this.subscription.id,
+        customer_id: this.customerId ? this.customerId : null,
       });
     },
     trackLinkCreationFailedEvent(formData, errorCode) {
