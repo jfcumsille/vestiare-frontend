@@ -810,6 +810,7 @@ export default {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
           this.showSpinner = false;
+          this.trackSubscriptionCreationFailedEvent();
         })
         .finally(() => {
           this.pollingForStatusChange = false;
@@ -831,6 +832,7 @@ export default {
           this.showSpinner = false;
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
+          this.trackSubscriptionCreationFailedEvent();
         });
     },
     handleSubscriptionExit() {
@@ -839,6 +841,7 @@ export default {
         account: this.selectedAccount,
         linkId: this.linkId,
       };
+      this.trackWidgetStepCompletedEvent(null);
       this.$emit('subscriptionCreateSuccess', payload);
     },
     sortAccounts(accounts) {
@@ -871,6 +874,7 @@ export default {
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.currentStep = 'error';
+          this.trackSubscriptionCreationFailedEvent();
         });
     },
     handleSubscriptionStatus(status) {
@@ -881,8 +885,10 @@ export default {
       } else if (status === 'rejected') {
         this.errorCode = 'invalid_2f';
         this.stopIntervalAndMove(this.interval, 'error');
+        this.trackSubscriptionCreationFailedEvent();
       } else if (status === 'failed') {
         this.stopIntervalAndMove(this.interval, 'error');
+        this.trackSubscriptionCreationFailedEvent();
       }
     },
     handleSubscriptionAction(action) {
@@ -918,17 +924,11 @@ export default {
         return;
       }
 
+      const properties = this.getComponentPropertiesToTrack();
       window.analytics.track('Widget Step Completed', {
         step: this.currentStep,
         product: this.requestType,
-        institution_id: this.bank ? this.bank.code : null,
-        username: this.rut ? this.rut : null,
-        holder_id: this.holderId ? this.holderId : null,
-        holder_type: this.holderType,
-        link_id: this.linkId ? this.linkId : null,
-        selected_account: this.selectedAccount.id,
-        subscription_id: this.subscription.id,
-        customer_id: this.customerId ? this.customerId : null,
+        ...properties,
       });
     },
     trackLinkCreationFailedEvent(formData, errorCode) {
@@ -939,6 +939,13 @@ export default {
         username: formData.link_data.username,
         holder_id: formData.link_data.holder_id,
         created_through: this.createdThrough,
+      });
+    },
+    trackSubscriptionCreationFailedEvent() {
+      const properties = this.getComponentPropertiesToTrack();
+      window.analytics.track('Subscription Creation Failed', {
+        error_code: this.errorCode,
+        ...properties,
       });
     },
     redirectIfApiKeyError(errorResponse) {
@@ -962,6 +969,18 @@ export default {
       } else {
         field.$reset();
       }
+    },
+    getComponentPropertiesToTrack() {
+      return {
+        institution_id: this.bank ? this.bank.code : null,
+        username: this.rut ? this.rut : null,
+        holder_id: this.holderId ? this.holderId : null,
+        holder_type: this.holderType,
+        link_id: this.linkId ? this.linkId : null,
+        selected_account: this.selectedAccount.id,
+        subscription_id: this.subscription.id,
+        customer_id: this.customerId ? this.customerId : null,
+      };
     },
   },
 };
