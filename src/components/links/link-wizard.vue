@@ -883,6 +883,7 @@ export default {
         this.handleSubscriptionAction(this.secondFactorAction);
       } else if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(status)) {
         this.stopIntervalAndMove(this.interval, 'subscription-completed');
+        this.trackSubscriptionCreatedEvent();
       } else if (status === 'rejected') {
         this.errorCode = 'invalid_2f';
         this.stopIntervalAndMove(this.interval, 'error');
@@ -946,6 +947,12 @@ export default {
       const properties = this.getComponentPropertiesToTrack();
       window.analytics.track('Subscription Creation Failed', {
         error_code: this.errorCode,
+        ...properties,
+      });
+    },
+    trackSubscriptionCreatedEvent() {
+      const properties = this.getComponentPropertiesToTrack();
+      window.analytics.track('Subscription Created', {
         ...properties,
       });
     },
