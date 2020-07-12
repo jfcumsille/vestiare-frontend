@@ -762,6 +762,7 @@ export default {
       const formData = this.getFormData();
       const payload = { formData: this.getFormData(), headers: this.headers };
 
+      this.trackWidgetStepCompletedEvent(null);
       this.$store.dispatch(this.submitAction, payload)
         .then((response) => {
           this.trackLinkCreatedEvent(response.data);
@@ -973,8 +974,8 @@ export default {
     getComponentPropertiesToTrack() {
       return {
         institution_id: this.bank ? this.bank.code : null,
-        username: this.rut ? this.rut : null,
-        holder_id: this.holderId ? this.holderId : null,
+        username: this.rut ? this.rut.replace(/[-.]/g, '') : null,
+        holder_id: this.holderId ? this.holderId.replace(/[-.]/g, '') : null,
         holder_type: this.holderType,
         link_id: this.linkId ? this.linkId : null,
         selected_account: this.selectedAccount.id,
