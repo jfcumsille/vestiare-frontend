@@ -1,5 +1,29 @@
 version: 2
 jobs:
+  test:
+    docker:
+      - image: circleci/node:12-browsers
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - yarn-dependencies-{{ checksum "yarn.lock" }}
+          - yarn-dependencies-
+
+      - run:
+          name: Install yarn dependencies
+          command: yarn install
+
+      - save_cache:
+          key: yarn-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Run jest tests
+          command: yarn test --runInBand
+
   lint:
     docker:
       - image: circleci/node:12
@@ -41,4 +65,6 @@ workflows:
   lint:
     jobs:
       - lint:
+          context: org-global
+      - test:
           context: org-global
