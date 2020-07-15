@@ -1,34 +1,96 @@
 <template>
-  <div>
-    <div class="w-full h-full absolute top-0 left-0 z-20 flex flex-col
-                items-center justify-center">
-      <div class="spinner ease-linear rounded-full border-8 border-t-8 border-gray-200
-                  h-32 w-32">
-      </div>
-      <div>
-        <slot></slot>
-      </div>
-    </div>
-    <div class="w-full h-full bg-white absolute top-0 left-0 z-10 opacity-75">
+  <div class="spinner-wrapper" :class="fullScreen && 'full-screen'">
+    <div class="wrapper">
+      <img src="../assets/images/fintoc-isologo-chevron-white.png" class="chevron-animated">
+      <img src="../assets/images/fintoc-isologo-dot-white.png" class="dot-animated">
     </div>
   </div>
 </template>
 
+<script>
+export default {
+  props: {
+    fullScreen: {
+      type: Boolean,
+      default: true,
+    },
+  },
+};
+</script>
+
 <style scoped>
-@-webkit-keyframes spinner {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+.full-screen {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  background-color: #FFFFFFAA;
 }
-
-@keyframes spinner {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+.spinner-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
 }
-
-.spinner {
-  z-index: 1;
-  border-top-color: #3498db;
-  -webkit-animation: spinner 1.5s linear infinite;
-  animation: spinner 1.5s linear infinite;
+.wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: 7rem;
+  width: 7rem;
+  background-color: #0A0C57;
+  border-radius: 50%;
+}
+.wrapper img {
+  position: absolute;
+  left: 10%;
+  right: 0;
+  top: 20%;
+  bottom: 20%;
+  height: 60%;
+}
+@-webkit-keyframes dot-animated {
+  from {
+    left: 20%;
+  }
+  to {
+    left: 30%;
+  }
+}
+@keyframes dot-animated {
+  from {
+    left: 20%;
+  }
+  to {
+    left: 30%;
+  }
+}
+.dot-animated {
+  -webkit-animation: dot-animated 1s linear 0s infinite alternate;
+  -moz-animation: dot-animated 1s linear 0s infinite alternate;
+  -ms-animation: dot-animated 1s linear 0s infinite alternate;
+  animation: dot-animated 1s linear 0s infinite alternate;
+}
+@-webkit-keyframes chevron-animated {
+  from {
+    left: 30%;
+  }
+  to {
+    left: 20%;
+  }
+}
+@keyframes chevron-animated {
+  from {
+    left: 30%;
+  }
+  to {
+    left: 20%;
+  }
+}
+.chevron-animated {
+  -webkit-animation: chevron-animated 1s linear 0s infinite alternate;
+  -moz-animation: chevron-animated 1s linear 0s infinite alternate;
+  -ms-animation: chevron-animated 1s linear 0s infinite alternate;
+  animation: chevron-animated 1s linear 0s infinite alternate;
 }
 </style>
