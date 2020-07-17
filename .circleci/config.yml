@@ -1,5 +1,40 @@
 version: 2
 jobs:
+  test:
+    docker:
+      - image: circleci/node:12-browsers
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - yarn-dependencies-{{ checksum "yarn.lock" }}
+          - yarn-dependencies-
+
+      - run:
+          name: Install yarn dependencies
+          command: yarn install
+
+      - save_cache:
+          key: yarn-dependencies-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+
+      - run:
+          name: Start Test Server
+          command: yarn serve --port=4444
+          background: true
+
+      - run:
+          shell: /bin/sh
+          command: |
+            wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 10 http://localhost:4444
+            :
+
+      - run:
+          name: Run jest tests
+          command: SKIP_JEST_PUPPETEER_SERVER=true yarn test --runInBand
+
   lint:
     docker:
       - image: circleci/node:12
@@ -38,7 +73,9 @@ jobs:
 
 workflows:
   version: 2
-  lint:
+  test_and_lint:
     jobs:
       - lint:
+          context: org-global
+      - test:
           context: org-global
