@@ -205,7 +205,7 @@
                               focus:border-indigo-700 focus:shadow-outline-indigo
                               active:bg-indigo-700 transition duration-150
                               ease-in-out"
-                        @click="onSubmit"
+                        @click="submitLinkIntent"
                         :class="{ 'hover:bg-indigo-500': !$v.$invalid,
                                   'cursor-not-allowed': $v.$invalid }">
                   <span class="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -594,6 +594,7 @@ export default {
       selectedAccount: {},
       linkToken: '',
       linkId: '',
+      linkIntent: '',
       secondFactor: '',
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
@@ -753,36 +754,11 @@ export default {
         password: this.password,
       };
 
-      return { link_data: { ...formFields, product: this.requestType }, ...this.extraFields };
+      return {
+        link_data: { ...formFields, product: this.requestType }, ...this.extraFields,
+      };
     },
-    onSubmit() {
-      if (this.$v.$invalid || this.showSpinner) { return; }
 
-      this.showSpinner = true;
-      const formData = this.getFormData();
-      const payload = { formData: this.getFormData(), headers: this.headers };
-
-      this.trackWidgetStepCompletedEvent(null);
-      this.$store.dispatch(this.submitAction, payload)
-        .then((response) => {
-          this.trackLinkCreatedEvent(response.data);
-          this.$emit('createSuccess', response);
-          this.showSpinner = false;
-          if (this.requestType === 'subscription') {
-            this.handleFetchedAccounts(response.data.accounts);
-            this.linkToken = response.data.link_token;
-            this.linkId = response.data.id;
-            this.moveTo('confirm-subscription');
-          }
-        })
-        .catch((error) => {
-          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
-          this.redirectIfApiKeyError(error.response);
-          this.trackLinkCreationFailedEvent(formData, this.errorCode);
-          this.currentStep = 'error';
-          this.showSpinner = false;
-        });
-    },
     handleFetchedAccounts(accounts) {
       const permittedAccountTypes = ['checking_account', 'sight_account'];
       this.accounts = this.sortAccounts(
@@ -791,6 +767,80 @@ export default {
 
       [this.selectedAccount] = this.accounts;
     },
+
+    handleSubscriptionLinkResponse(linkResponse) {
+      this.handleFetchedAccounts(linkResponse.data.accounts);
+      this.moveTo('confirm-subscription');
+    },
+
+    handleSucceededLinkIntent(linkIntentResponse) {
+      const { link } = linkIntentResponse;
+      if (this.requestType === 'subscription') {
+        this.linkId = link.id;
+        apiClient.links.get(this.linkId, this.headers).then((linkResponse) => {
+          this.handleSubscriptionLinkResponse(linkResponse);
+        }).catch((error) => {
+          // TODO: Add retry.
+          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.currentStep = 'error';
+        });
+      }
+      this.showSpinner = false;
+      clearTimeout(this.interval);
+      this.trackLinkCreatedEvent(link);
+      this.$emit('linkCreated', link);
+    },
+
+    handleLinkIntentResponse(linkIntentResponse) {
+      const { status } = linkIntentResponse;
+      if (status === 'succeeded') {
+        this.handleSucceededLinkIntent(linkIntentResponse);
+      } else if (status === 'rejected') {
+        this.errorCode = 'invalid_credentials';
+        this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
+      } else if (status === 'failed') {
+        this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
+      }
+    },
+
+    linkIntentPolling() {
+      apiClient.linkIntents.get(this.linkIntent.id, this.headers, this.createdThrough)
+        .then((response) => {
+          this.handleLinkIntentResponse(response.data);
+        })
+        .catch((error) => {
+          // TODO: Stop interval?
+          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.currentStep = 'error';
+          this.showSpinner = false;
+        });
+    },
+
+    pollForLinkIntent() {
+      this.interval = setInterval(this.linkIntentPolling, 1000);
+    },
+
+    submitLinkIntent() {
+      if (this.$v.$invalid || this.showSpinner) { return; }
+
+      this.showSpinner = true;
+      const formData = this.getFormData();
+
+      this.trackWidgetStepCompletedEvent(null);
+      apiClient.linkIntents.create(formData, this.headers, this.createdThrough)
+        .then((response) => {
+          this.linkIntent = response.data;
+          this.pollForLinkIntent();
+        })
+        .catch((error) => {
+          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+          this.redirectIfApiKeyError(error.response);
+          this.trackLinkIntentCreationFailedEvent(formData, this.errorCode);
+          this.currentStep = 'error';
+          this.showSpinner = false;
+        });
+    },
+
     handleAccountSelection(account) {
       this.selectedAccount = account;
       this.moveTo('confirm-subscription');
@@ -882,14 +932,14 @@ export default {
       if (status === 'requires_action') {
         this.handleSubscriptionAction(this.secondFactorAction);
       } else if (SUBSCRIPTION_ACCEPTED_STATUSES.includes(status)) {
-        this.stopIntervalAndMove(this.interval, 'subscription-completed');
+        this.stopSpinnerClearIntervalAndMove(this.interval, 'subscription-completed');
         this.trackSubscriptionCreatedEvent();
       } else if (status === 'rejected') {
         this.errorCode = 'invalid_2f';
-        this.stopIntervalAndMove(this.interval, 'error');
+        this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
         this.trackSubscriptionCreationFailedEvent();
       } else if (status === 'failed') {
-        this.stopIntervalAndMove(this.interval, 'error');
+        this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
         this.trackSubscriptionCreationFailedEvent();
       }
     },
@@ -901,22 +951,23 @@ export default {
         this.showSpinner = false;
         this.moveTo('wait-for-app');
       } else {
-        this.stopIntervalAndMove(this.interval, 'second-factor');
+        this.stopSpinnerClearIntervalAndMove(this.interval, 'second-factor');
       }
     },
-    stopIntervalAndMove(interval, nextStep) {
+    stopSpinnerClearIntervalAndMove(interval, nextStep) {
       this.showSpinner = false;
       clearTimeout(interval);
       this.moveTo(nextStep);
     },
-    trackLinkCreatedEvent(responseData) {
+    trackLinkCreatedEvent(link) {
       window.analytics.track('Link Created', {
-        link_id: responseData.id,
-        institution_id: responseData.institution.id,
-        holder_type: responseData.holder_type,
-        holder_id: responseData.holder_id,
-        username: responseData.username,
+        link_id: link.id,
+        institution_id: link.institution.id,
+        holder_type: link.holder_type,
+        holder_id: link.holder_id,
+        username: link.username,
         created_through: this.createdThrough,
+        product: this.requestType,
       });
     },
     trackWidgetStepCompletedEvent(nextStep) {
@@ -933,13 +984,13 @@ export default {
         ...properties,
       });
     },
-    trackLinkCreationFailedEvent(formData, errorCode) {
-      window.analytics.track('Link Creation Failed', {
+    trackLinkIntentCreationFailedEvent(formData, errorCode) {
+      window.analytics.track('Link Intent Creation Failed', {
         error_code: errorCode,
-        institution_id: formData.link_data.institution_id,
-        holder_type: formData.link_data.holder_type,
-        username: formData.link_data.username,
-        holder_id: formData.link_data.holder_id,
+        institution_id: formData.link_intent_data.institution_id,
+        holder_type: formData.link_intent_data.holder_type,
+        username: formData.link_intent_data.username,
+        holder_id: formData.link_intent_data.holder_id,
         created_through: this.createdThrough,
       });
     },

@@ -1,7 +1,7 @@
 <template>
 <div>
   <link-wizard
-    @createSuccess='onLinkCreateSuccess'
+    @linkCreated='onLinkCreated'
     @subscriptionCreateSuccess='onSubscriptionCreateSuccess'
     :createdThrough="'widget'"
     :submitAction="'createUserLinkFromWidget'"
@@ -45,9 +45,9 @@ export default {
     },
   },
   methods: {
-    onLinkCreateSuccess(response) {
+    onLinkCreated(link) {
       if (this.requestType === 'movements') {
-        this.redirectFromMovementCreation(response.data);
+        this.redirectFromMovementCreation(link);
       }
     },
 

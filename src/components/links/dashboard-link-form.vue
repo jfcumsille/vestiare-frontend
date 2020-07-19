@@ -1,7 +1,7 @@
 <template>
 <div>
   <link-wizard v-if="showForm"
-    @createSuccess='onCreateSuccess'
+    @linkCreated='onLinkCreated'
     :createdThrough="'dashboard'"
     :submitAction="'createUserLinkFromDashboard'"
     :headers="formHeaders">
@@ -17,6 +17,7 @@
 
 <script>
 
+import apiClient from '../../api';
 import LinkDetail from './link-detail.vue';
 import LinkWizard from './link-wizard.vue';
 import { findBankByCode } from '../../banks-helper';
@@ -51,18 +52,25 @@ export default {
       this.linkToken = responseData.linkToken;
       this.showForm = false;
     },
+
     updateStep(newStep) {
       this.currentStep = newStep;
     },
-    onCreateSuccess(response) {
-      const newLinkData = {
-        bank: findBankByCode(response.data.institution.id),
-        numberOfAccounts: response.data.accounts.length,
-        linkToken: response.data.link_token,
-        holderType: response.data.holder_type,
-      };
 
-      this.showLinkDetail(newLinkData);
+    onLinkCreated(link) {
+      apiClient.links.regenerateAccessToken(link.id, this.headers).then((linkResponse) => {
+        const newLinkData = {
+          bank: findBankByCode(linkResponse.data.institution.id),
+          numberOfAccounts: linkResponse.data.accounts.length,
+          linkToken: linkResponse.data.link_token,
+          holderType: linkResponse.data.holder_type,
+        };
+        this.showLinkDetail(newLinkData);
+      }).catch((error) => {
+        // TODO: Add retry.
+        this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
+        this.currentStep = 'error';
+      });
     },
   },
 };
