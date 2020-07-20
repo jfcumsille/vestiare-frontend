@@ -58,12 +58,12 @@ export default {
     },
 
     onLinkCreated(link) {
-      apiClient.links.regenerateAccessToken(link.id, this.headers).then((linkResponse) => {
+      apiClient.links.regenerateLinkToken(link.id, this.formHeaders).then((linkResponse) => {
         const newLinkData = {
           bank: findBankByCode(linkResponse.data.institution.id),
           numberOfAccounts: linkResponse.data.accounts.length,
-          linkToken: linkResponse.data.link_token,
-          holderType: linkResponse.data.holder_type,
+          linkToken: linkResponse.data.linkToken,
+          holderType: linkResponse.data.holderType,
         };
         this.showLinkDetail(newLinkData);
       }).catch((error) => {
