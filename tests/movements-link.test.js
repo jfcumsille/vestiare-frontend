@@ -1,4 +1,5 @@
 import 'expect-puppeteer';
+import { linkIntents } from './api-responses';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
 
@@ -6,8 +7,8 @@ describe('Movement link creation', () => {
   const paramsFactory = () => (
     {
       public_key: 'some_public_api_key',
-      redirect_to: 'https://domain.com',
-      webhook_url: 'https://domain.com/webhook',
+      redirect_to: 'https://www.google.com',
+      webhook_url: 'https://www.somedomain.com/webhook',
       customer_id: 'some_id',
     }
   );
@@ -44,6 +45,70 @@ describe('Movement link creation', () => {
     it('should not ask for company rut', async () => {
       await navigateToBankLogin(page);
       await expect(page).not.toMatchElement('#holder-id-input');
+    });
+
+    describe('when submitting credentials and eventually receiving a succesful response', () => {
+      const username = '123123123';
+      const maxPollingCount = 2;
+      const linkIntentId = 1;
+      let createdLinkIntent = false;
+      let succeededLinkIntent = false;
+      let pollingCount = 0;
+
+      const mockLinkIntentCreation = (request) => {
+        request.respond(linkIntents.createSuccess(linkIntentId));
+        createdLinkIntent = true;
+      };
+
+      const mockLinkIntentPolling = (request) => {
+        if (pollingCount < maxPollingCount) {
+          request.respond(linkIntents.getProcessing(linkIntentId));
+          pollingCount += 1;
+        } else {
+          request.respond(linkIntents.getSuccess({
+            holderType: params.holder_type,
+            username,
+          }));
+          succeededLinkIntent = true;
+        }
+      };
+
+      const setupRequestInterception = async () => {
+        await page.setRequestInterception(true);
+        page.on('request', (request) => {
+          if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
+            mockLinkIntentCreation(request);
+          } else if (request.url().endsWith(`/internal/v1/link_intents/widget/${linkIntentId}`)
+            && request.method() === 'GET') {
+            mockLinkIntentPolling(request);
+          } else {
+            request.continue();
+          }
+        });
+      };
+
+      beforeAll(async () => {
+        await setupRequestInterception();
+        await page.type('#rut-input', username);
+        await page.type('#password-input', 'jonsnow');
+        await Promise.all([
+          page.click('#bank-login-submit-btn'),
+          page.waitForNavigation(),
+        ]);
+      });
+
+      it('posts to fintoc to create a link intent', async () => {
+        expect(createdLinkIntent).toBe(true);
+      });
+
+      it('polls for link_intent until succeeded response', async () => {
+        expect(succeededLinkIntent).toBe(true);
+        expect(pollingCount).toBe(maxPollingCount);
+      });
+
+      it('redirects to redirect_to param', async () => {
+        expect(page.url().startsWith(params.redirect_to)).toBe(true);
+      });
     });
   });
 });

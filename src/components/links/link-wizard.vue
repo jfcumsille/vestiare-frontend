@@ -142,6 +142,7 @@
                             v-rut:live
                             v-model.trim="rut"
                             @blur='touchIfPresentElseReset($v.rut)'
+                            id='rut-input'
                     >
                     <transition name="vertical-slide-fade">
                       <p
@@ -193,7 +194,8 @@
                                   focus:outline-none focus:shadow-sm"
                           type="password"
                           placeholder="Contraseña"
-                          v-model.trim="$v.password.$model">
+                          v-model.trim="$v.password.$model"
+                          id='password-input'>
                     <transition name="vertical-slide-fade">
                       <p
                         class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
