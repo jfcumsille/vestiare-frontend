@@ -401,7 +401,7 @@
                           border border-grey-lighter rounded py-3 px-2 mx-2 leading-tight
                           focus:outline-none focus:shadow-sm mt-4 text-center"
                         :class="{ 'border-red-500': $v.secondFactor.$error }"
-                        :placeholder="secondFactorAction.coordinates[index]"
+                        :placeholder="secondFactorAction.challenges[index]"
                         v-model.trim.lazy="v.value.$model">
                     </div>
                     <div v-else>
@@ -696,14 +696,14 @@ export default {
       }
     },
     secondFactorAction() {
-      return this.subscription.nextAction || { type: '', coordinates: [] };
+      return this.subscription.nextAction || { type: '', challenges: [] };
     },
     cardCodeAction() {
-      return this.secondFactorAction.type === 'enter_card_code';
+      return this.secondFactorAction.type === 'enter_coordinates';
     },
-    getSecondFactorCode() {
+    getSecondFactor() {
       if (this.cardCodeAction) {
-        return this.cardCoordinates.map((item) => item.value).join('');
+        return this.cardCoordinates.map((item) => item.value);
       }
 
       return this.secondFactor;
@@ -714,7 +714,7 @@ export default {
           return 'de tu digipass';
         case 'enter_sms_code':
           return 'que fue enviado a tu teléfono';
-        case 'enter_card_code':
+        case 'enter_coordinates':
           return 'de tu tarjeta de coordenadas';
         case 'authorize_in_app':
           return 'Acepta la suscripción en la aplicación de tu teléfono para continuar';
@@ -869,7 +869,7 @@ export default {
       if (this.$v.$invalid || this.showSpinner) { return; }
 
       this.showSpinner = true;
-      const data = { code: this.getSecondFactorCode, linkToken: this.linkToken };
+      const data = { secondFactor: this.getSecondFactor, linkToken: this.linkToken };
       this.pollingForStatusChange = true;
       apiClient.subscriptions.update(this.subscription.id,
         data,
