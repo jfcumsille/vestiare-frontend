@@ -775,15 +775,11 @@ export default {
 
     handleSucceededLinkIntent(linkIntentResponse) {
       const { link } = linkIntentResponse;
+      this.linkId = link.id;
+      this.linkToken = link.temporaryLinkToken;
       if (this.requestType === 'subscription') {
-        this.linkId = link.id;
-        apiClient.links.get(this.linkId, this.headers).then((linkResponse) => {
-          this.handleSubscriptionLinkResponse(linkResponse);
-        }).catch((error) => {
-          // TODO: Add retry.
-          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
-          this.currentStep = 'error';
-        });
+        this.handleFetchedAccounts(link.accounts);
+        this.moveTo('confirm-subscription');
       }
       this.showSpinner = false;
       clearTimeout(this.interval);
