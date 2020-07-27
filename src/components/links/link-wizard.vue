@@ -685,6 +685,8 @@ export default {
           return 'Por favor utiliza un rut chileno válido';
         case 'invalid_credentials':
           return 'Credenciales inválidas';
+        case 'credentials_locked':
+          return 'Credenciales bloqueadas';
         case 'unavailable_institution':
           return 'Parece que estamos con problemas. Si el problema sigue escríbele a elliot@fintoc.com';
         case 'not_implemented_institution':
@@ -792,7 +794,7 @@ export default {
       if (status === 'succeeded') {
         this.handleSucceededLinkIntent(linkIntentResponse);
       } else if (status === 'rejected') {
-        this.errorCode = 'invalid_credentials';
+        this.errorCode = linkIntentResponse.reason || 'invalid_credentials';
         this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
         this.trackLinkCreationFailedEvent(this.errorCode);
       } else if (status === 'failed') {
