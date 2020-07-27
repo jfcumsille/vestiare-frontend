@@ -7,7 +7,7 @@ describe('Movement link creation', () => {
   const paramsFactory = () => (
     {
       public_key: 'some_public_api_key',
-      redirect_to: 'https://www.google.com/',
+      redirect_to: 'http://localhost:4444/login',
       webhook_url: 'https://www.somedomain.com/webhook',
       customer_id: 'some_id',
     }
@@ -38,47 +38,46 @@ describe('Movement link creation', () => {
     const params = paramsFactory();
     params.holder_type = 'individual';
 
-    beforeAll(async () => {
-      await page.goto(`${WIDGET_URL}?${new URLSearchParams(params)}`);
-    });
+    const testMovementLinkCreation = () => {
+      beforeAll(async () => {
+        await page.goto(`${WIDGET_URL}?${new URLSearchParams(params)}`);
+        await navigateToBankLogin(page);
+      });
 
-    it('should not ask for company rut', async () => {
-      await navigateToBankLogin(page);
-      await expect(page).not.toMatchElement('#holder-id-input');
-    });
+      it('should not ask for company rut', async () => {
+        await expect(page).not.toMatchElement('#holder-id-input');
+      });
 
-    describe('when submitting credentials and eventually receiving a succesful response', () => {
-      const username = '123123123';
-      const maxPollingCount = 2;
-      const linkIntentId = 1;
-      const createdLinkId = 2;
-      let createdLinkIntent = false;
-      let succeededLinkIntent = false;
-      let pollingCount = 0;
-      let createParams = {};
+      describe('when submitting credentials and eventually receiving a succesful response', () => {
+        const username = '123123123';
+        const maxPollingCount = 2;
+        const linkIntentId = 1;
+        const createdLinkId = 2;
+        let createdLinkIntent = false;
+        let succeededLinkIntent = false;
+        let pollingCount = 0;
+        let createParams = {};
 
-      const mockLinkIntentCreation = (request) => {
-        request.respond(linkIntents.createSuccess(linkIntentId));
-        createdLinkIntent = true;
-      };
+        const mockLinkIntentCreation = (request) => {
+          request.respond(linkIntents.createSuccess(linkIntentId));
+          createdLinkIntent = true;
+        };
 
-      const mockLinkIntentPolling = (request) => {
-        if (pollingCount < maxPollingCount) {
-          request.respond(linkIntents.getProcessing(linkIntentId));
-          pollingCount += 1;
-        } else {
-          request.respond(linkIntents.getSuccess({
-            holderType: params.holder_type,
-            linkId: createdLinkId,
-            username,
-          }));
-          succeededLinkIntent = true;
-        }
-      };
+        const mockLinkIntentPolling = (request) => {
+          if (pollingCount < maxPollingCount) {
+            request.respond(linkIntents.getProcessing(linkIntentId));
+            pollingCount += 1;
+          } else {
+            request.respond(linkIntents.getSuccess({
+              holderType: params.holder_type,
+              linkId: createdLinkId,
+              username,
+            }));
+            succeededLinkIntent = true;
+          }
+        };
 
-      const setupRequestInterception = async () => {
-        await page.setRequestInterception(true);
-        page.on('request', (request) => {
+        const requestHandler = (request) => {
           if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
             mockLinkIntentCreation(request);
             createParams = JSON.parse(request.postData());
@@ -88,42 +87,64 @@ describe('Movement link creation', () => {
           } else {
             request.continue();
           }
+        };
+
+        beforeAll(async () => {
+          await page.setRequestInterception(true);
+          page.on('request', requestHandler);
+          await page.type('#rut-input', username);
+          await page.type('#password-input', 'jonsnow');
+          await Promise.all([
+            page.waitForNavigation(),
+            page.click('#bank-login-submit-btn'),
+          ]);
         });
-      };
 
-      beforeAll(async () => {
-        await setupRequestInterception();
-        await page.type('#rut-input', username);
-        await page.type('#password-input', 'jonsnow');
-        await Promise.all([
-          page.click('#bank-login-submit-btn'),
-          page.waitForNavigation(),
-        ]);
+        afterAll(async () => {
+          page.off('request', requestHandler);
+          await page.setRequestInterception(false);
+        });
+
+        it('posts to fintoc to create a link intent with correct params', () => {
+          const linkData = createParams.link_data;
+          expect(createdLinkIntent).toBe(true);
+          expect(createParams.callback_url).toEqual(params.webhook_url);
+          expect(linkData.holder_type).toEqual(params.holder_type);
+          expect(linkData.product).toEqual('movements');
+          expect(linkData.holder_id).toEqual('');
+        });
+
+        it('polls for link_intent until succeeded response', () => {
+          expect(succeededLinkIntent).toBe(true);
+          expect(pollingCount).toBe(maxPollingCount);
+        });
+
+        it('redirects to redirect_to param with correct query params', () => {
+          const url = page.url();
+          const redirectParams = new URLSearchParams(url.replace(`${params.redirect_to}?`, ''));
+          expect(url.startsWith(params.redirect_to)).toBe(true);
+          expect(redirectParams.get('result')).toEqual('link_created');
+          expect(redirectParams.get('link_id')).toEqual(createdLinkId.toString());
+          expect(redirectParams.get('username')).toEqual(username);
+          expect(redirectParams.get('holder_type')).toEqual(params.holder_type);
+        });
+      });
+    };
+
+    describe('with product param = movements', () => {
+      beforeAll(() => {
+        params.product = 'movements';
       });
 
-      it('posts to fintoc to create a link intent with correct params', async () => {
-        const linkData = createParams.link_data;
-        expect(createdLinkIntent).toBe(true);
-        expect(createParams.callback_url).toEqual(params.webhook_url);
-        expect(linkData.holder_type).toEqual(params.holder_type);
-        expect(linkData.product).toEqual('movements');
-        expect(linkData.holder_id).toEqual('');
+      testMovementLinkCreation();
+    });
+
+    describe('with no product in params', () => {
+      beforeAll(() => {
+        delete params.product;
       });
 
-      it('polls for link_intent until succeeded response', async () => {
-        expect(succeededLinkIntent).toBe(true);
-        expect(pollingCount).toBe(maxPollingCount);
-      });
-
-      it('redirects to redirect_to param with correct query params', async () => {
-        const url = page.url();
-        const redirectParams = new URLSearchParams(url.replace(`${params.redirect_to}?`, ''));
-        expect(url.startsWith(params.redirect_to)).toBe(true);
-        expect(redirectParams.get('result')).toEqual('link_created');
-        expect(redirectParams.get('link_id')).toEqual(createdLinkId.toString());
-        expect(redirectParams.get('username')).toEqual(username);
-        expect(redirectParams.get('holder_type')).toEqual(params.holder_type);
-      });
+      testMovementLinkCreation();
     });
   });
 });
