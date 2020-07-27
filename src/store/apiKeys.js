@@ -15,7 +15,8 @@ const mutations = {
     state.userApiKeys = userApiKeys.map((apiKey) => ({
       id: apiKey.id,
       key: apiKey.token,
-      isPublic: apiKey.is_public,
+      isPublic: apiKey.isPublic,
+      mode: apiKey.mode,
     }));
   },
 };
