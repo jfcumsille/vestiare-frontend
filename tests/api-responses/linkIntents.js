@@ -16,13 +16,15 @@ function getProcessing(linkIntentId) {
   };
 }
 
-function getSuccess({ holderType, username, holderId = username }) {
+function getSuccess({
+  holderType, username, linkId = 1, holderId = username,
+}) {
   return {
     status: 200,
     headers,
     body: JSON.stringify({
       link: {
-        id: 1,
+        id: linkId,
         institution: { id: 1 },
         holder_type: holderType,
         holder_id: holderId,

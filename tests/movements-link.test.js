@@ -7,7 +7,7 @@ describe('Movement link creation', () => {
   const paramsFactory = () => (
     {
       public_key: 'some_public_api_key',
-      redirect_to: 'https://www.google.com',
+      redirect_to: 'https://www.google.com/',
       webhook_url: 'https://www.somedomain.com/webhook',
       customer_id: 'some_id',
     }
@@ -51,6 +51,7 @@ describe('Movement link creation', () => {
       const username = '123123123';
       const maxPollingCount = 2;
       const linkIntentId = 1;
+      const createdLinkId = 2;
       let createdLinkIntent = false;
       let succeededLinkIntent = false;
       let pollingCount = 0;
@@ -68,6 +69,7 @@ describe('Movement link creation', () => {
         } else {
           request.respond(linkIntents.getSuccess({
             holderType: params.holder_type,
+            linkId: createdLinkId,
             username,
           }));
           succeededLinkIntent = true;
@@ -113,8 +115,14 @@ describe('Movement link creation', () => {
         expect(pollingCount).toBe(maxPollingCount);
       });
 
-      it('redirects to redirect_to param', async () => {
-        expect(page.url().startsWith(params.redirect_to)).toBe(true);
+      it('redirects to redirect_to param with correct query params', async () => {
+        const url = page.url();
+        const redirectParams = new URLSearchParams(url.replace(`${params.redirect_to}?`, ''));
+        expect(url.startsWith(params.redirect_to)).toBe(true);
+        expect(redirectParams.get('result')).toEqual('link_created');
+        expect(redirectParams.get('link_id')).toEqual(createdLinkId.toString());
+        expect(redirectParams.get('username')).toEqual(username);
+        expect(redirectParams.get('holder_type')).toEqual(params.holder_type);
       });
     });
   });
