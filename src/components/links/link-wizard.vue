@@ -91,14 +91,14 @@
           <hr>
           <div class="flex-1 p-4">
             <div class="h-full">
-              <div class="grid grid-cols-2 gap-2 p-2">
+              <div class="grid grid-cols-2 gap-2 p-2 h-24">
                 <button v-for="bank in supportedBanks"
                         v-bind:key='bank.code'
                         @click='selectBank(bank)'
                         class="border-gray-200 shadow-xs hover:shadow-md py-3 px-1 rounded
                         transition ease-in-out duration-150">
-                  <img class="bank-logo h-16 w-auto rounded object-cover mx-auto"
-                      :src="bank.logo" />
+                  <img class="bank-logo h-6 w-auto rounded object-cover mx-auto"
+                       :src="bank.logo" />
                 </button>
               </div>
             </div>
@@ -109,23 +109,24 @@
             <button @click="moveTo('select-bank')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l">Ingresa</h1>
+            <h1 class="text-l text-gray-900">Ingresa</h1>
             <button @click="cancelLinkCreation" class="text-gray-700">
               <font-awesome-icon icon="times"/>
             </button>
           </div>
           <hr>
-          <div class="relative">
+          <div class="relative flex-1">
             <spinner v-if="showSpinner">
+              <p class="mt-6 text-center text-gray-800 font-medium text-sm w-48">
+                Nos demoraremos 40 segundos como máximo  ⌛
+              </p>
             </spinner>
-            <div class="flex-1 px-6 flex flex-col justify-between">
-              <div class="py-2">
-                <img
-                    :class="{ 'mt-6' : !isBusiness}"
-                    class="bank-logo h-24 rounded object-cover mx-auto"
-                    :src="this.bank.logo" />
+            <div class="h-full flex flex-col justify-between px-6 py-6">
+              <div class="py-2" :class="{ 'py-12': !isBusiness }">
+                <img class="bank-logo h-12 rounded object-cover mx-auto"
+                     :src="this.bank.logo" />
               </div>
-              <div :class="{ 'mt-6' : !isBusiness}">
+              <div>
                 <div class="h-20">
                   <div class="w-full flex flex-col">
                     <input class="appearance-none block w-full bg-grey-lighter text-grey-900
@@ -230,7 +231,7 @@
             <button @click="moveTo('confirm-subscription')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l">Selecciona una cuenta</h1>
+            <h1 class="text-l text-gray-900">Selecciona una cuenta</h1>
             <button @click="cancelLinkCreation" class="text-gray-700">
               <font-awesome-icon icon="times"/>
             </button>
@@ -239,9 +240,11 @@
           <div class="relative">
             <div class="flex-1 px-6 py-2">
               <div class="h-full">
-                <img class="bank-logo h-24 rounded object-cover mx-auto"
-                    :src="bank.logo" />
-                <div class="text-center px-4">
+                <div class="py-6">
+                  <img class="bank-logo h-12 rounded object-cover mx-auto"
+                      :src="bank.logo" />
+                </div>
+                <div class="text-center px-4 text-gray-900">
                   Selecciona la cuenta con la que quieres conectarte
                 </div>
                 <div class="grid grid-cols-1 gap-4 px-2 py-3 my-5 h-56 overflow-auto">
@@ -271,11 +274,175 @@
             </div>
           </div>
         </div>
-        <div v-if='currentStep==="confirm-subscription"'>
+        <div v-if='currentStep==="confirm-subscription"'
+             class='h-full flex flex-col'
+             :key="currentStep">
           <div class="py-6 px-6 text-gray-800 flex justify-between">
             <button @click="moveTo('intro')" class="text-gray-700">
               <font-awesome-icon icon="chevron-left"/>
             </button>
+            <h1 class="text-l text-gray-900">Confirmación</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <hr>
+          <div class="relative flex-1">
+            <spinner v-if="showSpinner">
+              <p class="mt-6 w-48 text-center text-gray-800 font-medium text-sm">
+                Nos demoraremos 20 segundos como máximo  ⌛
+              </p>
+            </spinner>
+            <div class="h-full flex flex-col justify-between px-6 py-6">
+              <div class="py-4">
+                <img class="bank-logo h-10 rounded object-cover mx-auto"
+                      :src="bank.logo" />
+              </div>
+              <div class="flex flex-col justify-between">
+                <div class="text-base font-regular flex flex-wrap items-center py-2">
+                  <div class="w-2/12">
+                    <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                rounded-full">
+                      <font-awesome-icon icon="building"/>
+                    </div>
+                  </div>
+                  <div class="w-10/12">
+                      Vas a conectar tu cuenta Fintual
+                  </div>
+                </div>
+                <div class="text-base font-regular flex flex-wrap items-center py-2">
+                  <div class="w-2/12">
+                    <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                rounded-full">
+                      <font-awesome-icon icon="dollar-sign"/>
+                    </div>
+                  </div>
+                  <div class="w-10/12">
+                    La conexión permite realizar transferencias desde la aplicación
+                  </div>
+                </div>
+                <div class="font-regular flex flex-wrap items-center
+                            text-gray-700 py-2 text-sm">
+                  Se usará esta cuenta:
+                </div>
+                <div class="py-2">
+                  <button @click='moveTo("select-account")'
+                    class="w-full border-gray-200 shadow-xs hover:shadow-md py-4 px-1 rounded
+                            transition ease-in-out duration-150">
+                  <div class="items-center text-sm mt-1">
+                      <div class="flex text-left items-center">
+                        <div class="w-1/5 px-2">
+                          <input type="radio" class="form-radio h-4 w-4" checked>
+                        </div>
+                        <div class="w-4/5 px-1">
+                          <p> {{ selectedAccount.name }}</p>
+                          <p> {{ selectedAccount.number }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <button @click="handleConfirmSubscription"
+                  type="submit"
+                  class="group relative w-full justify-center py-4 px-4 border
+                        border-transparent text-l leading-5 rounded-md
+                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                        focus:shadow-outline-indigo active:bg-indigo-700 transition
+                        duration-150 ease-in-out mt-4 tracking-wide 'hover:bg-indigo-500'">
+                  Continuar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if='currentStep==="second-factor"' class="h-full flex flex-col" :key="currentStep">
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
+            <h1 class="text-l text-gray-900">Segundo Factor</h1>
+            <button @click="cancelLinkCreation" class="text-gray-700">
+              <font-awesome-icon icon="times"/>
+            </button>
+          </div>
+          <hr>
+          <div class="relative flex-1">
+            <spinner v-if="showSpinner">
+            </spinner>
+            <div class="h-full flex flex-col justify-between px-6 py-6">
+              <div class="py-6">
+                <img class="bank-logo h-12 rounded object-cover mx-auto"
+                      :src="bank.logo" />
+              </div>
+              <div>
+                <div class="text-base font-regular flex flex-wrap items-center">
+                  <div class="w-2/12 text-gray-900">
+                    <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                rounded-full text-gray-900">
+                      <font-awesome-icon icon="handshake"/>
+                    </div>
+                  </div>
+                  <div class="w-10/12 text-gray-900">
+                    Sólo falta ingresar el segundo factor requerido por tu banco
+                  </div>
+                </div>
+                <div class="text-base font-regular flex flex-wrap items-center py-2">
+                  <div class="w-2/12">
+                    <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
+                                rounded-full text-green-700">
+                      <font-awesome-icon icon="lock"/>
+                    </div>
+                  </div>
+                  <div class="w-10/12 text-gray-900">
+                    Por favor ingresa el código {{ secondFactorTypeText }}
+                  </div>
+                </div>
+              </div>
+              <div class=''>
+                <div class='h-20'>
+                  <div v-if='cardCodeAction'
+                    class="flex mx-12">
+                    <input
+                      v-for="(v, index) in $v.cardCoordinates.$each.$iter"
+                      :key="index"
+                      type="password"
+                      maxlength="2"
+                      class="appearance-none block w-full bg-grey-lighter text-grey-900
+                        border border-grey-lighter rounded py-4 px-2 mx-2 leading-tight
+                        focus:outline-none focus:shadow-sm text-center"
+                      :class="{ 'border-red-500': $v.secondFactor.$error }"
+                      :placeholder="secondFactorAction.challenges[index]"
+                      v-model.trim.lazy="v.value.$model">
+                  </div>
+                  <div v-else>
+                    <input
+                      type="password"
+                      class="appearance-none block w-full bg-grey-lighter text-grey-900
+                        border border-grey-lighter rounded py-4 px-4 leading-tight
+                        focus:outline-none focus:shadow-sm"
+                      :class="{ 'border-red-500': $v.secondFactor.$error }"
+                      placeholder="Código segundo factor"
+                      v-model.trim.lazy="$v.secondFactor.$model">
+                  </div>
+                </div>
+                <button @click="submitSecondFactor"
+                  type="submit"
+                  class="group relative w-full justify-center py-4 px-4 border
+                        border-transparent text-l leading-5 rounded-md
+                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                        focus:shadow-outline-indigo active:bg-indigo-700 transition
+                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'">
+                  Autorizar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if='currentStep==="wait-for-app"' class="h-full flex flex-col" :key="currentStep">
+          <div class="py-6 px-6 text-gray-800 flex justify-between">
+            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+              <font-awesome-icon icon="chevron-left"/>
+            </button>
             <h1 class="text-l">Confirmación</h1>
             <button @click="cancelLinkCreation" class="text-gray-700">
               <font-awesome-icon icon="times"/>
@@ -283,168 +450,12 @@
           </div>
           <hr>
           <div class="relative">
-            <spinner v-if="showSpinner">
-            </spinner>
             <div class="flex-1 px-6 py-2">
               <div class="h-full">
-                <img class="bank-logo h-24 rounded object-cover mx-auto"
-                    :src="bank.logo" />
-                <div class="flex flex-col justify-between py-2">
-                  <div class="text-base font-regular flex flex-wrap items-center py-2">
-                    <div class="w-2/12">
-                      <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
-                                  rounded-full">
-                        <font-awesome-icon icon="building"/>
-                      </div>
-                    </div>
-                    <div class="w-10/12">
-                       Vas a conectar tu cuenta Fintual
-                    </div>
-                  </div>
-                  <div class="text-base font-regular flex flex-wrap items-center py-2">
-                    <div class="w-2/12">
-                      <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
-                                  rounded-full">
-                        <font-awesome-icon icon="dollar-sign"/>
-                      </div>
-                    </div>
-                    <div class="w-10/12">
-                      La conexión permite realizar transferencias desde la aplicación
-                    </div>
-                  </div>
-                  <div class=" px-2 font-regular flex flex-wrap items-center
-                    text-gray-700 py-2 text-sm">
-                    Se usará esta cuenta:
-                  </div>
-                  <div class="px-2 py-2">
-                    <button @click='moveTo("select-account")'
-                      class="w-full border-gray-200 shadow-xs hover:shadow-md py-2 px-1 rounded
-                      transition ease-in-out duration-150">
-                    <div class="items-center text-sm mt-1">
-                        <div class="flex text-left items-center">
-                          <div class="w-1/5 px-2">
-                            <input type="radio" class="form-radio h-4 w-4" checked>
-                          </div>
-                          <div class="w-4/5 px-1">
-                            <p> {{ selectedAccount.name }}</p>
-                            <p> {{ selectedAccount.number }}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                  <button @click="handleConfirmSubscription"
-                    type="submit"
-                    class="group relative w-full justify-center py-3 px-4 border
-                          border-transparent text-l leading-5 rounded-md
-                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                          focus:shadow-outline-indigo active:bg-indigo-700 transition
-                          duration-150 ease-in-out mt-4 tracking-wide 'hover:bg-indigo-500'">
-                    Continuar
-                  </button>
+                <div class="py-6">
+                  <img class="bank-logo h-12 rounded object-cover mx-auto"
+                       :src="bank.logo" />
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-if='currentStep==="second-factor"'>
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
-              <font-awesome-icon icon="chevron-left"/>
-            </button>
-            <h1 class="text-l">Segundo Factor</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
-              <font-awesome-icon icon="times"/>
-            </button>
-          </div>
-          <hr>
-          <div class="relative">
-            <spinner v-if="showSpinner">
-            </spinner>
-            <div class="flex-1 px-6 py-2">
-              <div class="h-full">
-                <img class="bank-logo h-24 rounded object-cover mx-auto"
-                    :src="bank.logo" />
-                <div class="flex flex-col justify-between py-2">
-                  <div>
-                    <div class="text-base font-regular flex flex-wrap items-center py-2">
-                      <div class="w-2/12">
-                        <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
-                                    rounded-full">
-                          <font-awesome-icon icon="handshake"/>
-                        </div>
-                      </div>
-                      <div class="w-10/12">
-                        Sólo falta ingresar el segundo factor
-                      requerido por tu banco
-                      </div>
-                    </div>
-                    <div class="text-base font-regular flex flex-wrap items-center py-2">
-                      <div class="w-2/12">
-                        <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
-                                    rounded-full">
-                          <font-awesome-icon icon="lock"/>
-                        </div>
-                      </div>
-                      <div class="w-10/12">
-                        Por favor ingresa el código {{ secondFactorTypeText }}
-                      </div>
-                    </div>
-                    <div v-if='cardCodeAction'
-                      class="flex mx-12">
-                      <input
-                        v-for="(v, index) in $v.cardCoordinates.$each.$iter"
-                        :key="index"
-                        type="password"
-                        maxlength="2"
-                        class="w-1/3 appearance-none block w-full bg-grey-lighter text-grey-900
-                          border border-grey-lighter rounded py-3 px-2 mx-2 leading-tight
-                          focus:outline-none focus:shadow-sm mt-4 text-center"
-                        :class="{ 'border-red-500': $v.secondFactor.$error }"
-                        :placeholder="secondFactorAction.challenges[index]"
-                        v-model.trim.lazy="v.value.$model">
-                    </div>
-                    <div v-else>
-                      <input
-                        type="password"
-                        class="appearance-none block w-full bg-grey-lighter text-grey-900
-                          border border-grey-lighter rounded py-3 px-4 leading-tight
-                          focus:outline-none focus:shadow-sm mt-4"
-                        :class="{ 'border-red-500': $v.secondFactor.$error }"
-                        placeholder="Código segundo factor"
-                        v-model.trim.lazy="$v.secondFactor.$model">
-                    </div>
-                  </div>
-                  <button @click="submitSecondFactor"
-                    type="submit"
-                    class="group relative w-full justify-center mt-6 py-3 px-4 border
-                          border-transparent text-l leading-5 rounded-md
-                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                          focus:shadow-outline-indigo active:bg-indigo-700 transition
-                          duration-150 ease-in-out mt-4 tracking-wide 'hover:bg-indigo-500'">
-                    Autorizar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div v-if='currentStep==="wait-for-app"'>
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
-              <font-awesome-icon icon="chevron-left"/>
-            </button>
-            <h1 class="text-l">Confirmación</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
-              <font-awesome-icon icon="times"/>
-            </button>
-          </div>
-          <hr>
-          <div class="relative">
-            <div class="flex-1 px-6 py-2">
-              <div class="h-full">
-                <img class="bank-logo h-24 rounded object-cover mx-auto"
-                    :src="bank.logo" />
                 <div class="flex flex-col content-center text-center my-2">
                   <div class="m-8">
                     <vue-element-loading :active="true" :spinner="'bar-fade-scale'">
@@ -458,46 +469,48 @@
             </div>
           </div>
         </div>
-        <div v-if='currentStep==="subscription-completed"'>
+        <div v-if='currentStep==="subscription-completed"'
+             class='h-full flex flex-col'
+             :key="currentStep">
           <div class="py-6 px-6 text-gray-800 flex justify-between">
             <button @click="moveTo('confirm-subscription')" class="text-gray-700 invisible">
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l">Confirmación</h1>
+            <h1 class="text-l text-gray-900">Confirmación</h1>
             <button @click="handleSubscriptionExit" class="text-gray-700">
               <font-awesome-icon icon="times"/>
             </button>
           </div>
           <hr>
-          <div class="relative">
+          <div class="relative  flex-1">
             <spinner v-if="showSpinner">
             </spinner>
-            <div class="flex-1 px-6 py-2">
-              <div class="h-full">
-                <img class="bank-logo h-24 rounded object-cover mx-auto"
+            <div class="h-full px-6 py-6">
+              <div class="py-6">
+                <img class="bank-logo h-12 rounded object-cover mx-auto"
                     :src="bank.logo" />
-                <div class="flex flex-col content-center text-center my-2">
-                  <div class="mb-4">
-                    <div class="bg-gray-100 shadow w-24 h-24 p-1
-                                rounded-full m-auto justify-center flex">
-                      <font-awesome-icon class="m-auto fa-2x" icon="check"/>
-                    </div>
+              </div>
+              <div class="flex flex-col content-center text-center my-2">
+                <div class="mb-4">
+                  <div class="bg-gray-100 shadow w-24 h-24 p-1
+                              rounded-full m-auto justify-center flex">
+                    <font-awesome-icon class="m-auto fa-2x" icon="check"/>
                   </div>
-                  <div class="text-2xl my-3 text-center leading-tight">
-                    Te conectaste exitosamente con Fintual
-                  </div>
+                </div>
+                <div class="text-2xl my-3 text-center leading-tight">
+                  Te conectaste exitosamente con Fintual
+                </div>
 
-                  <div class="h-full">
-                    <button @click="handleSubscriptionExit"
-                      type="submit"
-                      class="group relative w-full justify-center py-3 px-4 border
-                            border-transparent text-l leading-5 rounded-md
-                            text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                            focus:shadow-outline-indigo active:bg-indigo-700 transition
-                            duration-150 ease-in-out mt-4 tracking-wide hover:bg-indigo-500">
-                      Continuar
-                    </button>
-                  </div>
+                <div class="h-full">
+                  <button @click="handleSubscriptionExit"
+                    type="submit"
+                    class="group relative w-full justify-center py-4 px-4 border
+                          border-transparent text-l leading-5 rounded-md
+                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
+                          focus:shadow-outline-indigo active:bg-indigo-700 transition
+                          duration-150 ease-in-out mt-4 tracking-wide hover:bg-indigo-500">
+                    Continuar
+                  </button>
                 </div>
               </div>
             </div>
@@ -512,32 +525,22 @@
           </div>
           <hr>
           <div class="flex-1 p-6 flex flex-col justify-between">
-            <div>
-              <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
-                          shadow-md mb-6"
-                   role="alert">
-                <div class="flex">
-                  <div class="py-1">
-                    <svg class="fill-current h-6 w-6 text-red-500 mr-4"
-                         xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 20 20">
-                      <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93
-                               17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32
-                               11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p class="font-semibold">Tuvimos un problema con tus credenciales</p>
-                    <p class="text-sm">{{ textError }}</p>
-                  </div>
-                </div>
-              </div>
-              <img class="bank-logo h-24 rounded object-cover mx-auto"
+            <div class="py-4">
+              <img class="bank-logo h-12 rounded object-cover mx-auto"
                   :src="this.bank.logo"/>
+            </div>
+            <div class="bg-gray-100 shadow w-24 h-24 rounded-full m-auto justify-center flex">
+              <font-awesome-icon class="m-auto fa-2x" icon="times"/>
+            </div>
+            <div class="py-4">
+              <div class="text-center text-red-900">
+                <p class="font-semibold">Tuvimos un problema</p>
+                <p class="text-sm">{{ textError }}</p>
+              </div>
             </div>
             <button @click="moveTo('bank-log-in')"
                   type="submit"
-                  class="group relative w-full flex justify-center py-3 px-4 border
+                  class="group relative w-full flex justify-center py-4 px-4 border
                         border-transparent text-l leading-5 rounded-md
                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                         focus:shadow-outline-indigo active:bg-indigo-700 transition
