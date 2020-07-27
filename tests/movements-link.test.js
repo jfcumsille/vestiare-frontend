@@ -54,6 +54,7 @@ describe('Movement link creation', () => {
       let createdLinkIntent = false;
       let succeededLinkIntent = false;
       let pollingCount = 0;
+      let createParams = {};
 
       const mockLinkIntentCreation = (request) => {
         request.respond(linkIntents.createSuccess(linkIntentId));
@@ -78,6 +79,7 @@ describe('Movement link creation', () => {
         page.on('request', (request) => {
           if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
             mockLinkIntentCreation(request);
+            createParams = JSON.parse(request.postData());
           } else if (request.url().endsWith(`/internal/v1/link_intents/widget/${linkIntentId}`)
             && request.method() === 'GET') {
             mockLinkIntentPolling(request);
@@ -97,8 +99,13 @@ describe('Movement link creation', () => {
         ]);
       });
 
-      it('posts to fintoc to create a link intent', async () => {
+      it('posts to fintoc to create a link intent with correct params', async () => {
+        const linkData = createParams.link_data;
         expect(createdLinkIntent).toBe(true);
+        expect(createParams.callback_url).toEqual(params.webhook_url);
+        expect(linkData.holder_type).toEqual(params.holder_type);
+        expect(linkData.product).toEqual('movements');
+        expect(linkData.holder_id).toEqual('');
       });
 
       it('polls for link_intent until succeeded response', async () => {
