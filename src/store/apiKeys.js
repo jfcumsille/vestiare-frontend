@@ -1,4 +1,4 @@
-import axiosAuth from '../axios-auth';
+import apiClient from '../api';
 
 const state = {
   userApiKeys: [],
@@ -22,34 +22,19 @@ const mutations = {
 
 const actions = {
   getUserApiKeys({ commit }) {
-    return new Promise((resolve, reject) => {
-      const url = '/v1/api_keys';
-      axiosAuth.get(url, { headers: this.getters.authHeaders })
-        .then((response) => {
-          commit('updateUserApiKeys', response.data);
-          resolve();
-        })
-        .catch((error) => reject(error));
+    apiClient.apiKeys.index(this.getters.authHeaders).then((response) => {
+      commit('updateUserApiKeys', response.data);
     });
   },
   destroyUserApiKey(context, apiKeyId) {
-    const url = `/v1/api_keys/${apiKeyId}`;
-    axiosAuth.delete(url, { headers: this.getters.authHeaders })
-      .then(() => {
-        // TODO: notify api key deletion.
-        this.dispatch('getUserApiKeys');
-      })
-      .catch((error) => console.log(error));
+    apiClient.apiKeys.destroy(apiKeyId, this.getters.authHeaders).then(() => {
+      // TODO: notify api key deletion.
+      this.dispatch('getUserApiKeys');
+    });
   },
   createUserApiKey() {
-    return new Promise((resolve, reject) => {
-      const url = '/v1/api_keys';
-      axiosAuth.post(url, {}, { headers: this.getters.authHeaders })
-        .then((response) => {
-          this.dispatch('getUserApiKeys');
-          resolve(response);
-        })
-        .catch((error) => reject(error.response.data));
+    apiClient.apiKeys.create(this.getters.authHeaders).then(() => {
+      this.dispatch('getUserApiKeys');
     });
   },
 };
