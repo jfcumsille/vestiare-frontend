@@ -794,8 +794,10 @@ export default {
       } else if (status === 'rejected') {
         this.errorCode = 'invalid_credentials';
         this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
+        this.trackLinkCreationFailedEvent(this.errorCode);
       } else if (status === 'failed') {
         this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
+        this.trackLinkCreationFailedEvent(this.errorCode);
       }
     },
 
@@ -831,7 +833,7 @@ export default {
         .catch((error) => {
           this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
           this.redirectIfApiKeyError(error.response);
-          this.trackLinkIntentCreationFailedEvent(formData, this.errorCode);
+          this.trackLinkCreationFailedEvent(this.errorCode);
           this.currentStep = 'error';
           this.showSpinner = false;
         });
@@ -980,13 +982,14 @@ export default {
         ...properties,
       });
     },
-    trackLinkIntentCreationFailedEvent(formData, errorCode) {
-      window.analytics.track('Link Intent Creation Failed', {
+    trackLinkCreationFailedEvent(errorCode) {
+      const properties = this.getComponentPropertiesToTrack();
+      window.analytics.track('Link Creation Failed', {
         error_code: errorCode,
-        institution_id: formData.link_intent_data.institution_id,
-        holder_type: formData.link_intent_data.holder_type,
-        username: formData.link_intent_data.username,
-        holder_id: formData.link_intent_data.holder_id,
+        institution_id: properties.institution_id,
+        holder_type: properties.holder_type,
+        username: properties.username,
+        holder_id: properties.holder_id,
         created_through: this.createdThrough,
       });
     },
