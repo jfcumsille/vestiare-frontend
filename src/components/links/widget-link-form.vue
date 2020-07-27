@@ -54,14 +54,14 @@ export default {
     redirectFromMovementCreation(data) {
       const {
         // eslint-disable-next-line camelcase
-        id: link_id, username, holder_type, institution: { id: institution_id },
+        id: link_id, username, holderType, institution: { id: institution_id },
       } = data;
 
       const params = {
         result: 'link_created',
         link_id,
         username,
-        holder_type,
+        holder_type: holderType,
         institution_id,
       };
 
