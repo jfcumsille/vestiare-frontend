@@ -812,10 +812,11 @@ export default {
           this.handleLinkIntentResponse(response.data);
         })
         .catch((error) => {
-          // TODO: Stop interval?
-          this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
-          this.currentStep = 'error';
-          this.showSpinner = false;
+          this.errorCode = 'unknown';
+          if (error.response && error.response.data.error) {
+            this.errorCode = error.response.data.error.code;
+          }
+          this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
         });
     },
 
