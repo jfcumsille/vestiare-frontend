@@ -13,7 +13,7 @@
           </div>
           <div class="px-8 pb-8 flex flex-col justify-between">
             <img class="mx-auto h-16 w-auto rounded-full shadow"
-                src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
+                 src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
             <h1 class="text-2xl mt-4 text-center leading-tight">
               Fintoc se conectará con tu banco
             </h1>
@@ -293,13 +293,11 @@
                 Nos demoraremos 20 segundos como máximo  ⌛
               </p>
             </spinner>
-            <div class="h-full flex flex-col justify-between px-6 py-6">
-              <div class="py-4">
-                <img class="bank-logo h-10 rounded object-cover mx-auto"
-                      :src="bank.logo" />
-              </div>
-              <div class="flex flex-col justify-between">
-                <div class="text-base font-regular flex flex-wrap items-center py-2">
+            <div class="h-full flex flex-col justify-between px-6 py-6 text-gray-900">
+              <img class="bank-logo h-10 rounded object-cover mx-auto"
+                   :src="bank.logo" />
+              <div>
+                <div class="text-base font-regular flex flex-wrap items-center h-12">
                   <div class="w-2/12">
                     <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
                                 rounded-full">
@@ -307,10 +305,10 @@
                     </div>
                   </div>
                   <div class="w-10/12">
-                      Vas a conectar tu cuenta con Fintual
+                    Vas a conectar tu cuenta con Fintual
                   </div>
                 </div>
-                <div class="text-base font-regular flex flex-wrap items-center py-2">
+                <div class="text-base font-regular flex flex-wrap items-center h-12 mt-2">
                   <div class="w-2/12">
                     <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
                                 rounded-full">
@@ -321,34 +319,35 @@
                     La conexión permite realizar transferencias desde la aplicación
                   </div>
                 </div>
-                <div class="font-regular flex flex-wrap items-center
-                            text-gray-700 py-2 text-sm">
+              </div>
+              <div class="mt-2">
+                <div class="font-regular text-gray-700 text-sm pb-2">
                   Se usará esta cuenta:
                 </div>
                 <div class="py-2">
                   <button @click='moveTo("select-account")'
                     class="w-full border-gray-200 shadow-xs hover:shadow-md py-4 px-1 rounded
-                            transition ease-in-out duration-150">
-                  <div class="items-center text-sm mt-1">
-                      <div class="flex text-left items-center">
-                        <div class="w-1/5 px-2">
+                           transition ease-in-out duration-150">
+                    <div class="text-sm flex flex-wrap items-center text-left">
+                      <div class="w-2/12">
+                        <div class="px-2 h-4">
                           <input type="radio" class="form-radio h-4 w-4" checked>
                         </div>
-                        <div class="w-4/5 px-1">
-                          <p> {{ selectedAccount.name }}</p>
-                          <p> {{ selectedAccount.number }}</p>
-                        </div>
+                      </div>
+                      <div class="w-10/12">
+                        <p class="font-medium">{{ selectedAccount.name }}</p>
+                        <p>{{ selectedAccount.number }}</p>
                       </div>
                     </div>
                   </button>
                 </div>
                 <button @click="handleConfirmSubscription"
                   type="submit"
-                  class="group relative w-full justify-center py-4 px-4 border
+                  class="group relative w-full justify-center py-4 px-4 border mt-2
                         border-transparent text-l leading-5 rounded-md
                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                         focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out mt-4 tracking-wide 'hover:bg-indigo-500'">
+                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'">
                   Continuar
                 </button>
               </div>
