@@ -50,6 +50,7 @@ describe('Movement link creation', () => {
 
       describe('when submitting credentials and eventually receiving a succesful response', () => {
         const username = '123123123';
+        const formattedUsername = '12.312.312-3';
         const maxPollingCount = 2;
         const linkIntentId = 1;
         const createdLinkId = 2;
@@ -111,6 +112,7 @@ describe('Movement link creation', () => {
           expect(createParams.callback_url).toEqual(params.webhook_url);
           expect(linkData.holder_type).toEqual(params.holder_type);
           expect(linkData.product).toEqual('movements');
+          expect(linkData.username).toEqual(formattedUsername);
           expect(linkData.holder_id).toEqual('');
         });
 
