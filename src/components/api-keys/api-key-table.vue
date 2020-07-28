@@ -42,7 +42,7 @@
           </td>
           <td class="px-6 py-4 whitespace-no-wrap border-b
                     border-gray-200 text-sm leading-5 font-medium w-1/6">
-            <button @click="destroyApiKey(apiKey.id)"
+            <button v-if="mode !== 'test'" @click="destroyApiKey(apiKey.id)"
               class="px-6 py-3 inline-flex text-sm leading-5 font-medium rounded-md bg-red-200
                       text-red-900 hover:bg-red-300 align-middle">
               <font-awesome-icon icon="trash" class="mr-2 align-middle"/> Borrar
