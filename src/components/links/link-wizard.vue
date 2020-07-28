@@ -58,7 +58,8 @@
                           border-transparent text-l leading-5 rounded-md
                           text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                           focus:shadow-outline-indigo active:bg-indigo-700 transition
-                          duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide">
+                          duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide"
+                    id="intro-continue-btn">
                 Continuar
             </button>
               <div class="text-center text-sm text-gray-600 mt-4">
@@ -91,7 +92,10 @@
           <hr>
           <div class="flex-1 p-4">
             <div class="h-full">
-              <div class="grid grid-cols-2 gap-2 p-2 h-24">
+              <div
+                class="grid grid-cols-2 gap-2 p-2 h-24"
+                id="bank-btns-container"
+              >
                 <button v-for="bank in supportedBanks"
                         v-bind:key='bank.code'
                         @click='selectBank(bank)'
@@ -110,7 +114,11 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l text-gray-900">Ingresa</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <button
+              @click="cancelLinkCreation"
+              class="text-gray-700"
+              id="exit-btn"
+            >
               <font-awesome-icon icon="times"/>
             </button>
           </div>
@@ -138,6 +146,7 @@
                             v-rut:live
                             v-model.trim="rut"
                             @blur='touchIfPresentElseReset($v.rut)'
+                            id='rut-input'
                     >
                     <transition name="vertical-slide-fade">
                       <p
@@ -165,6 +174,7 @@
                           v-rut:live
                           v-model.trim="holderId"
                           @blur='touchIfPresentElseReset($v.holderId)'
+                          id="holder-id-input"
                     >
                     <transition name="vertical-slide-fade">
                       <p
@@ -188,7 +198,8 @@
                                   focus:outline-none focus:shadow-sm"
                           type="password"
                           placeholder="Contraseña"
-                          v-model.trim="$v.password.$model">
+                          v-model.trim="$v.password.$model"
+                          id='password-input'>
                     <transition name="vertical-slide-fade">
                       <p
                         class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
@@ -208,7 +219,8 @@
                               ease-in-out"
                         @click="submitLinkIntent"
                         :class="{ 'hover:bg-indigo-500': !$v.$invalid,
-                                  'cursor-not-allowed': $v.$invalid }">
+                                  'cursor-not-allowed': $v.$invalid }"
+                        id="bank-login-submit-btn">
                   <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                     <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400
                                 transition ease-in-out duration-150"
