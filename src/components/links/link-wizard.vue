@@ -307,7 +307,7 @@
                     </div>
                   </div>
                   <div class="w-10/12">
-                      Vas a conectar tu cuenta Fintual
+                      Vas a conectar tu cuenta con Fintual
                   </div>
                 </div>
                 <div class="text-base font-regular flex flex-wrap items-center py-2">
