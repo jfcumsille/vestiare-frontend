@@ -60,16 +60,16 @@ describe('Movement link creation', () => {
         let createParams = {};
 
         const mockLinkIntentCreation = (request) => {
-          request.respond(linkIntents.createSuccess(linkIntentId));
+          request.respond(linkIntents.successfulCreate(linkIntentId));
           createdLinkIntent = true;
         };
 
         const mockLinkIntentPolling = (request) => {
           if (pollingCount < maxPollingCount) {
-            request.respond(linkIntents.getProcessing(linkIntentId));
+            request.respond(linkIntents.processingStatusGet(linkIntentId));
             pollingCount += 1;
           } else {
-            request.respond(linkIntents.getSuccess({
+            request.respond(linkIntents.successfulGet({
               holderType: params.holder_type,
               linkId: createdLinkId,
               username,

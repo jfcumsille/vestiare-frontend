@@ -1,6 +1,6 @@
 const headers = { 'Access-Control-Allow-Origin': '*' };
 
-function createSuccess(linkIntentId) {
+function successfulCreate(linkIntentId) {
   return {
     status: 201,
     headers,
@@ -8,7 +8,7 @@ function createSuccess(linkIntentId) {
   };
 }
 
-function getProcessing(linkIntentId) {
+function processingStatusGet(linkIntentId) {
   return {
     status: 200,
     headers,
@@ -16,7 +16,7 @@ function getProcessing(linkIntentId) {
   };
 }
 
-function getSuccess({
+function successfulGet({
   holderType, username, linkId = 1, holderId = username,
 }) {
   return {
@@ -36,7 +36,7 @@ function getSuccess({
 }
 
 export default {
-  createSuccess,
-  getProcessing,
-  getSuccess,
+  successfulCreate,
+  processingStatusGet,
+  successfulGet,
 };
