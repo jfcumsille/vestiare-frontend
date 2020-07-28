@@ -1,4 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
+// IMPORTANT: bank images should follow 5:1 (w:h) ratio.
 import bancoChileLogo from 'chilean-bank-images/banco-chile/big.png';
 import bancoChileSmallLogo from 'chilean-bank-images/banco-chile/small.png';
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="w-full h-full absolute top-0 left-0 z-20 flex flex-col
+    <div class="w-full h-full absolute top-0 left-0 z-30 flex flex-col
                 items-center justify-center">
       <div class="spinner ease-linear rounded-full border-8 border-t-8 border-gray-200
                   h-32 w-32">
@@ -9,7 +9,7 @@
         <slot></slot>
       </div>
     </div>
-    <div class="w-full h-full bg-white absolute top-0 left-0 z-10 opacity-75">
+    <div class="w-full h-full bg-white absolute top-0 left-0 z-20 opacity-75">
     </div>
   </div>
 </template>
