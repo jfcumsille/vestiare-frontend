@@ -26,11 +26,24 @@ describe('Movement link creation', () => {
 
     beforeAll(async () => {
       await page.goto(`${WIDGET_URL}?${new URLSearchParams(params)}`);
+      await navigateToBankLogin(page);
     });
 
     it('should ask for company rut', async () => {
-      await navigateToBankLogin(page);
       await expect(page).toMatchElement('#holder-id-input');
+    });
+
+    describe('when clicking on close button', () => {
+      beforeAll(async () => {
+        await Promise.all([
+          page.waitForNavigation(),
+          page.click('#exit-btn'),
+        ]);
+      });
+
+      it('redirects to redirect_to param with result = user_exited in query', () => {
+        expect(page.url()).toEqual(`${params.redirect_to}?result=user_exited`);
+      });
     });
   });
 

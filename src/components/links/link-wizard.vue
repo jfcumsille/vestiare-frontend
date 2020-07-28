@@ -114,7 +114,11 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 class="text-l text-gray-900">Ingresa</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <button
+              @click="cancelLinkCreation"
+              class="text-gray-700"
+              id="exit-btn"
+            >
               <font-awesome-icon icon="times"/>
             </button>
           </div>
