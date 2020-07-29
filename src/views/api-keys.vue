@@ -22,7 +22,7 @@
                 </h1>
               </div>
             </div>
-            <div class="mt-4 flex justify-between">
+            <div class="flex justify-between">
               <div>
                 <p>
                   Public: La usarás en el
@@ -36,7 +36,7 @@
                 <button @click="createApiKey"
                   :class="{ 'text-xs': shouldShowTable }"
                   class="px-3 py-2 inline-flex text-sm font-medium rounded-md
-                        hover:bg-gray-700 focus:outline-none bg-gray-800 text-white">
+                         hover:bg-gray-700 focus:outline-none bg-gray-800 text-white">
                   <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar API Key
                 </button>
               </div>
