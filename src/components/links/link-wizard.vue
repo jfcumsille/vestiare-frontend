@@ -540,7 +540,8 @@
               <img class="bank-logo h-12 rounded object-cover mx-auto"
                   :src="this.bank.logo"/>
             </div>
-            <div class="bg-gray-100 shadow w-24 h-24 rounded-full m-auto justify-center flex">
+            <div class="bg-gray-100 shadow w-24 h-24 rounded-full m-auto justify-center flex
+                        text-gray-900">
               <font-awesome-icon class="m-auto fa-2x" icon="times"/>
             </div>
             <div class="py-4">
