@@ -9,7 +9,6 @@ describe('Movement link creation', () => {
       public_key: 'some_public_api_key',
       redirect_to: 'http://localhost:4444/login',
       webhook_url: 'https://www.somedomain.com/webhook',
-      customer_id: 'some_id',
     }
   );
 
