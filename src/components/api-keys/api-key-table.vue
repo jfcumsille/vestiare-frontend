@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div v-for="mode in ['live', 'test']" v-bind:key='mode'>
+  <div v-for="mode in ['live', 'test']" v-bind:key='mode' class="pb-6">
     <table class="min-w-full">
       <thead class="bg-gray-100">
         <tr>
@@ -19,14 +19,14 @@
         <tr v-for='apiKey in apiKeysByMode(mode)' v-bind:key='apiKey.id'>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-4/6">
             <div class="flex">
-              <div class="api-key
+              <div class="api-key h-10
                           bg-teal-200 py-2 px-4 rounded-md text-lg text-gray-900
                           rounded-r-none tracking-wider">
                 {{ apiKey.key }}
               </div>
-              <div class="flex-none bg-teal-200 hover:bg-teal-300 rounded-r-md h-full">
+              <div class="flex-none bg-teal-200 hover:bg-teal-300 rounded-r-md">
                 <button v-clipboard:copy='apiKey.key'
-                        class="text-lg py-2 px-3">
+                        class="text-lg py-2 px-3 h-10">
                   <font-awesome-icon icon="copy"/>
                 </button>
               </div>
@@ -34,14 +34,14 @@
           </td>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6">
             <div
-              class="text-lg font-regular text-gray-900 w-20
+              class="text-lg font-regular text-gray-900 w-20 h-10
                     text-center bg-gray-200 py-2 px-2 rounded-md"
             >
               {{ mapApiKeyType(apiKey.isPublic) }}
             </div>
           </td>
-          <td class="px-6 py-4 whitespace-no-wrap border-b
-                    border-gray-200 text-sm leading-5 font-medium w-1/6">
+          <td class="px-6 py-4 whitespace-no-wrap border-b h-10
+                     border-gray-200 text-sm leading-5 font-medium w-1/6">
             <button v-if="mode !== 'test'" @click="destroyApiKey(apiKey.id)"
               class="px-4 py-2 inline-flex text-lg leading-5 font-regular rounded-md bg-red-200
                      text-red-900 hover:bg-red-300 align-middle">
@@ -57,7 +57,7 @@
 
 <style scoped>
 .api-key {
-  width: 750px;
+  max-width: 750px;
   overflow: hidden;
 }
 </style>
