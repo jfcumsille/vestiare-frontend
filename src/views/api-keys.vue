@@ -35,8 +35,8 @@
               <div>
                 <button @click="createApiKey"
                   :class="{ 'text-xs': shouldShowTable }"
-                  class="px-2 py-1 inline-flex text-l font-medium rounded-md bg-gray-200
-                        text-gray-900 hover:bg-gray-300 focus:outline-none">
+                  class="px-3 py-2 inline-flex text-sm font-medium rounded-md
+                        hover:bg-gray-700 focus:outline-none bg-gray-800 text-white">
                   <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar API Key
                 </button>
               </div>
