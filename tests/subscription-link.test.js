@@ -27,8 +27,10 @@ describe('Movement link creation', () => {
   let linkIntentPollingCount;
   let createParams;
   let createdSubscription;
-  let requiresAction;
+  let updatedSubscription;
+  let receivedRequiresAction;
   let subscriptionPollingCount;
+  let succeededSubscription;
 
   const varSetup = () => {
     createdLinkIntent = false;
@@ -36,8 +38,10 @@ describe('Movement link creation', () => {
     linkIntentPollingCount = 0;
     createParams = {};
     createdSubscription = false;
-    requiresAction = false;
+    updatedSubscription = false;
+    receivedRequiresAction = false;
     subscriptionPollingCount = 0;
+    succeededSubscription = false;
   };
 
   const navigateToBankLogin = async (page) => {
@@ -93,17 +97,25 @@ describe('Movement link creation', () => {
     createdSubscription = true;
   };
 
+  const mockSubscriptionUpdate = async (request) => {
+    await request.respond(subscriptions.successfulUpdate(subscriptionId));
+    updatedSubscription = true;
+  };
+
   const mockSubscriptionPolling = (request) => {
     if (subscriptionPollingCount < maxPollingCount) {
       request.respond(linkIntents.processingStatusGet(linkIntentId));
       subscriptionPollingCount += 1;
-    } else {
+    } else if (!receivedRequiresAction) {
       request.respond(subscriptions.get({
         subscriptionId,
         status: 'requires_action',
         next_action: { type: 'enter_device_code' },
       }));
-      requiresAction = true;
+      receivedRequiresAction = true;
+    } else {
+      request.respond(subscriptions.get({ subscriptionId, status: 'succeeded' }));
+      succeededSubscription = true;
     }
   };
 
@@ -113,8 +125,10 @@ describe('Movement link creation', () => {
     } else if (request.url().endsWith('/internal/v1/accounts/1/subscriptions') && request.method() === 'POST') {
       mockSubscriptionCreation(request);
     } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}?link_token=${temporaryLinkToken}`)
-    && request.method() === 'GET') {
+      && request.method() === 'GET') {
       mockSubscriptionPolling(request);
+    } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}`) && request.method() === 'PATCH') {
+      mockSubscriptionUpdate(request);
     } else {
       request.continue();
     }
@@ -188,12 +202,53 @@ describe('Movement link creation', () => {
     });
 
     it('polls for subscription until requires_action response', () => {
-      expect(requiresAction).toBe(true);
+      expect(receivedRequiresAction).toBe(true);
       expect(subscriptionPollingCount).toBe(maxPollingCount);
     });
 
     it('shows step with input to enter code', async () => {
       await expect(page).toMatchElement('#single-code-second-factor-input');
+    });
+
+    describe('when submitting device code and eventually receiving succesful response', () => {
+      beforeAll(async () => {
+        await page.type('#single-code-second-factor-input', '000000');
+        await page.click('#second-factor-auth-btn');
+        await page.waitForSelector('#subscription-exit-btn');
+      });
+
+      it('sends patch to fintoc to submit code to created subscription', () => {
+        expect(updatedSubscription).toBe(true);
+      });
+
+      it('polls for subscription until success response', () => {
+        expect(succeededSubscription).toBe(true);
+        expect(subscriptionPollingCount).toBe(maxPollingCount);
+      });
+
+      it('shows final subscription step', async () => {
+        await expect(page).toMatchElement('#subscription-exit-btn');
+      });
+
+      describe('when clicking on final exit btn', () => {
+        beforeAll(async () => {
+          await Promise.all([
+            page.waitForNavigation(),
+            page.click('#subscription-exit-btn'),
+          ]);
+        });
+
+        it('redirects to redirect_to param with correct query params', () => {
+          const url = page.url();
+          const redirectParams = new URLSearchParams(url.replace(`${params.redirect_to}?`, ''));
+          expect(url.startsWith(params.redirect_to)).toBe(true);
+          expect(redirectParams.get('result')).toEqual('subscription_created');
+          expect(redirectParams.get('link_id')).toEqual(createdLinkId.toString());
+          expect(redirectParams.get('subscription_id')).toEqual(subscriptionId.toString());
+          expect(redirectParams.get('account_id')).toEqual('1');
+          expect(redirectParams.get('username')).toEqual(username);
+        });
+      });
     });
   });
 });

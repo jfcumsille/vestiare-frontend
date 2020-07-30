@@ -446,7 +446,9 @@
                         border-transparent text-l leading-5 rounded-md
                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                         focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'">
+                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'"
+                      id='second-factor-auth-btn'
+                >
                   Autorizar
                 </button>
               </div>
@@ -518,7 +520,9 @@
                       border-transparent text-l leading-5 rounded-md
                       text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                       focus:shadow-outline-indigo active:bg-indigo-700 transition
-                      duration-150 ease-in-out mt-4 tracking-wide hover:bg-indigo-500">
+                      duration-150 ease-in-out mt-4 tracking-wide hover:bg-indigo-500"
+                id="subscription-exit-btn"
+              >
                 Continuar
               </button>
             </div>
