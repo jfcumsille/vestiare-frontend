@@ -359,7 +359,9 @@
                         border-transparent text-l leading-5 rounded-md
                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                         focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'">
+                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'"
+                  id='confirm-subscription-btn'
+                >
                   Continuar
                 </button>
               </div>
@@ -433,7 +435,9 @@
                         focus:outline-none focus:shadow-sm"
                       :class="{ 'border-red-500': $v.secondFactor.$error }"
                       placeholder="Código segundo factor"
-                      v-model.trim.lazy="$v.secondFactor.$model">
+                      v-model.trim.lazy="$v.secondFactor.$model"
+                      id='single-code-second-factor-input'
+                    >
                   </div>
                 </div>
                 <button @click="submitSecondFactor"
