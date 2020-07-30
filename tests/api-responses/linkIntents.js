@@ -1,9 +1,9 @@
 const headers = { 'Access-Control-Allow-Origin': '*' };
-const accounts = [
+const accounts = (username) => ([
   {
-    id: 1, type: 'checking_account', name: 'Cuenta Corriente', number: '123345890',
+    id: 1, type: 'checking_account', name: 'Cuenta Corriente', number: '123345890', holder_id: username,
   },
-];
+]);
 
 function successfulCreate(linkIntentId) {
   return {
@@ -34,7 +34,7 @@ function successfulGet({
         holder_type: holderType,
         holder_id: holderId,
         username,
-        accounts,
+        accounts: accounts(username),
         temporaryLinkToken,
       },
       status: 'succeeded',
