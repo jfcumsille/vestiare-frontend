@@ -13,7 +13,7 @@ const paramsFactory = () => (
   }
 );
 
-describe('Movement link creation', () => {
+describe('Subscription link creation', () => {
   const params = paramsFactory();
   const username = '123123123';
   const formattedUsername = '12.312.312-3';
@@ -104,7 +104,7 @@ describe('Movement link creation', () => {
     updatedSubscription = true;
   };
 
-  const mockSubscriptionPolling = (request) => {
+  const mockSubscriptionPolling = (request, secondFactor, challenges) => {
     if (subscriptionPollingCount < maxPollingCount) {
       request.respond(linkIntents.processingStatusGet(linkIntentId));
       subscriptionPollingCount += 1;
@@ -112,7 +112,7 @@ describe('Movement link creation', () => {
       request.respond(subscriptions.get({
         subscriptionId,
         status: 'requires_action',
-        next_action: { type: 'enter_device_code' },
+        nextAction: { type: secondFactor, challenges },
       }));
       receivedRequiresAction = true;
     } else {
@@ -121,7 +121,7 @@ describe('Movement link creation', () => {
     }
   };
 
-  const subscriptionRequestHandler = (request) => {
+  const subscriptionRequestHandler = (request, secondFactor, challenges = []) => {
     if (request.url().includes('link_intents')) {
       linkIntentRequestHandler(request);
     } else if (request.url().endsWith('/internal/v1/accounts/1/subscriptions') && request.method() === 'POST') {
@@ -129,7 +129,7 @@ describe('Movement link creation', () => {
       createSubscriptionParams = JSON.parse(request.postData());
     } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}?link_token=${temporaryLinkToken}`)
       && request.method() === 'GET') {
-      mockSubscriptionPolling(request);
+      mockSubscriptionPolling(request, secondFactor, challenges);
     } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}`) && request.method() === 'PATCH') {
       mockSubscriptionUpdate(request);
       updateSubscriptionParams = JSON.parse(request.postData());
@@ -189,17 +189,19 @@ describe('Movement link creation', () => {
   });
 
   describe('when confirming default bank account and eventually receiving requires action enter_device_code', () => {
+    const requestHandler = (request) => subscriptionRequestHandler(request, 'enter_device_code');
+
     beforeAll(async () => {
       varSetup();
       await page.setRequestInterception(true);
-      page.on('request', subscriptionRequestHandler);
+      page.on('request', requestHandler);
       await navigateToSubscriptionConfirmation(page);
       await page.click('#confirm-subscription-btn');
       await page.waitForSelector('#single-code-second-factor-input');
     });
 
     afterAll(async () => {
-      page.off('request', subscriptionRequestHandler);
+      page.off('request', requestHandler);
       await page.setRequestInterception(false);
     });
 
