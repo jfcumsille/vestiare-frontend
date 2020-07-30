@@ -31,6 +31,7 @@ describe('Movement link creation', () => {
   let receivedRequiresAction;
   let subscriptionPollingCount;
   let succeededSubscription;
+  let createSubscriptionParams;
 
   const varSetup = () => {
     createdLinkIntent = false;
@@ -124,6 +125,7 @@ describe('Movement link creation', () => {
       linkIntentRequestHandler(request);
     } else if (request.url().endsWith('/internal/v1/accounts/1/subscriptions') && request.method() === 'POST') {
       mockSubscriptionCreation(request);
+      createSubscriptionParams = JSON.parse(request.postData());
     } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}?link_token=${temporaryLinkToken}`)
       && request.method() === 'GET') {
       mockSubscriptionPolling(request);
@@ -133,6 +135,9 @@ describe('Movement link creation', () => {
       request.continue();
     }
   };
+  beforeAll(async () => {
+    jest.setTimeout(10000);
+  });
 
   describe('when clicking on close button', () => {
     beforeAll(async () => {
@@ -183,7 +188,6 @@ describe('Movement link creation', () => {
 
   describe('when confirming default bank account and eventually receiving requires action enter_device_code', () => {
     beforeAll(async () => {
-      jest.setTimeout(10000);
       varSetup();
       await page.setRequestInterception(true);
       page.on('request', subscriptionRequestHandler);
@@ -197,8 +201,10 @@ describe('Movement link creation', () => {
       await page.setRequestInterception(false);
     });
 
-    it('posts to fintoc to create a subscription', () => {
+    it('posts to fintoc to create a subscription with correct params', () => {
       expect(createdSubscription).toBe(true);
+      expect(createSubscriptionParams.customer_id).toEqual(params.customer_id);
+      expect(createSubscriptionParams.link_token).toEqual(temporaryLinkToken);
     });
 
     it('polls for subscription until requires_action response', () => {
