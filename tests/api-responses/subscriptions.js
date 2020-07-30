@@ -16,7 +16,16 @@ function get({ subscriptionId, status, nextAction = null }) {
   };
 }
 
+function successfulUpdate(subscriptionId) {
+  return {
+    status: 200,
+    headers,
+    body: JSON.stringify({ id: subscriptionId, status: 'processing_action' }),
+  };
+}
+
 export default {
   successfulCreate,
   get,
+  successfulUpdate,
 };
