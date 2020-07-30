@@ -32,6 +32,7 @@ describe('Movement link creation', () => {
   let subscriptionPollingCount;
   let succeededSubscription;
   let createSubscriptionParams;
+  let updateSubscriptionParams;
 
   const varSetup = () => {
     createdLinkIntent = false;
@@ -131,6 +132,7 @@ describe('Movement link creation', () => {
       mockSubscriptionPolling(request);
     } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}`) && request.method() === 'PATCH') {
       mockSubscriptionUpdate(request);
+      updateSubscriptionParams = JSON.parse(request.postData());
     } else {
       request.continue();
     }
@@ -217,14 +219,18 @@ describe('Movement link creation', () => {
     });
 
     describe('when submitting device code and eventually receiving succesful response', () => {
+      const code = '000000';
+
       beforeAll(async () => {
-        await page.type('#single-code-second-factor-input', '000000');
+        await page.type('#single-code-second-factor-input', code);
         await page.click('#second-factor-auth-btn');
         await page.waitForSelector('#subscription-exit-btn');
       });
 
       it('sends patch to fintoc to submit code to created subscription', () => {
         expect(updatedSubscription).toBe(true);
+        expect(updateSubscriptionParams.second_factor).toEqual(code);
+        expect(updateSubscriptionParams.link_token).toEqual(temporaryLinkToken);
       });
 
       it('polls for subscription until success response', () => {
