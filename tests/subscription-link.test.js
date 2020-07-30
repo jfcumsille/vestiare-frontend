@@ -25,7 +25,7 @@ describe('Movement link creation', () => {
   let createdLinkIntent;
   let succeededLinkIntent;
   let linkIntentPollingCount;
-  let createParams;
+  let createLinkIntentParams;
   let createdSubscription;
   let updatedSubscription;
   let receivedRequiresAction;
@@ -36,7 +36,7 @@ describe('Movement link creation', () => {
     createdLinkIntent = false;
     succeededLinkIntent = false;
     linkIntentPollingCount = 0;
-    createParams = {};
+    createLinkIntentParams = {};
     createdSubscription = false;
     updatedSubscription = false;
     receivedRequiresAction = false;
@@ -83,7 +83,7 @@ describe('Movement link creation', () => {
   const linkIntentRequestHandler = (request) => {
     if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
       mockLinkIntentCreation(request);
-      createParams = JSON.parse(request.postData());
+      createLinkIntentParams = JSON.parse(request.postData());
     } else if (request.url().endsWith(`/internal/v1/link_intents/widget/${linkIntentId}`)
       && request.method() === 'GET') {
       mockLinkIntentPolling(request);
@@ -162,9 +162,9 @@ describe('Movement link creation', () => {
     });
 
     it('posts to fintoc to create a link intent with correct params', () => {
-      const linkData = createParams.link_data;
+      const linkData = createLinkIntentParams.link_data;
       expect(createdLinkIntent).toBe(true);
-      expect(createParams.callback_url).toEqual(params.webhook_url);
+      expect(createLinkIntentParams.callback_url).toEqual(params.webhook_url);
       expect(linkData.holder_type).toEqual(params.holder_type);
       expect(linkData.product).toEqual('subscription');
       expect(linkData.username).toEqual(formattedUsername);
