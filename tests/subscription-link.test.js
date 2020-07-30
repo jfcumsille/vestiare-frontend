@@ -270,4 +270,72 @@ describe('Subscription link creation', () => {
       testSubscriptionSuccessRedirect();
     });
   });
+
+  describe('when confirming default bank account and eventually receiving requires action enter_coordinates', () => {
+    const challenges = ['A1', 'B2', 'C3'];
+    const requestHandler = (request) => subscriptionRequestHandler(request, 'enter_coordinates', challenges);
+
+    beforeAll(async () => {
+      varSetup();
+      await page.setRequestInterception(true);
+      page.on('request', requestHandler);
+      await navigateToSubscriptionConfirmation(page);
+      await page.click('#confirm-subscription-btn');
+      await page.waitForSelector('#challenge-0');
+    });
+
+    afterAll(async () => {
+      page.off('request', requestHandler);
+      await page.setRequestInterception(false);
+    });
+
+    it('posts to fintoc to create a subscription with correct params', () => {
+      expect(createdSubscription).toBe(true);
+      expect(createSubscriptionParams.customer_id).toEqual(params.customer_id);
+      expect(createSubscriptionParams.link_token).toEqual(temporaryLinkToken);
+    });
+
+    it('polls for subscription until requires_action response', () => {
+      expect(receivedRequiresAction).toBe(true);
+      expect(subscriptionPollingCount).toBe(maxPollingCount);
+    });
+
+    it('shows step with challenge inputs and correct placeholders', async () => {
+      await expect(page).toMatchElement('#challenge-0');
+      await expect(page).toMatchElement('#challenge-1');
+      await expect(page).toMatchElement('#challenge-2');
+      await expect(page.$eval('#challenge-0', (input) => input.placeholder)).resolves.toEqual(challenges[0]);
+      await expect(page.$eval('#challenge-1', (input) => input.placeholder)).resolves.toEqual(challenges[1]);
+      await expect(page.$eval('#challenge-2', (input) => input.placeholder)).resolves.toEqual(challenges[2]);
+    });
+
+    describe('when submitting coordinate and eventually receiving succesful response', () => {
+      const coordinates = ['00', '11', '22'];
+
+      beforeAll(async () => {
+        await page.type('#challenge-0', coordinates[0]);
+        await page.type('#challenge-1', coordinates[1]);
+        await page.type('#challenge-2', coordinates[2]);
+        await page.click('#second-factor-auth-btn');
+        await page.waitForSelector('#subscription-exit-btn');
+      });
+
+      it('sends patch to fintoc to submit code to created subscription', () => {
+        expect(updatedSubscription).toBe(true);
+        expect(updateSubscriptionParams.second_factor).toEqual(coordinates);
+        expect(updateSubscriptionParams.link_token).toEqual(temporaryLinkToken);
+      });
+
+      it('polls for subscription until success response', () => {
+        expect(succeededSubscription).toBe(true);
+        expect(subscriptionPollingCount).toBe(maxPollingCount);
+      });
+
+      it('shows final subscription step', async () => {
+        await expect(page).toMatchElement('#subscription-exit-btn');
+      });
+
+      testSubscriptionSuccessRedirect();
+    });
+  });
 });

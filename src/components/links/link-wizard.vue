@@ -425,7 +425,9 @@
                         focus:outline-none focus:shadow-sm text-center"
                       :class="{ 'border-red-500': $v.secondFactor.$error }"
                       :placeholder="secondFactorAction.challenges[index]"
-                      v-model.trim.lazy="v.value.$model">
+                      v-model.trim.lazy="v.value.$model"
+                      :id="`challenge-${index}`"
+                    >
                   </div>
                   <div v-else>
                     <input
