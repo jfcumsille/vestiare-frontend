@@ -78,7 +78,7 @@ export default {
         subscription_id: data.subscription.id,
         link_id: data.linkId,
         account_id: data.account.id,
-        username: data.account.holder_id,
+        username: data.account.holderId,
       };
 
       window.location = getValidUrl(`${this.returnUrl}?${queryize(params)}`);
