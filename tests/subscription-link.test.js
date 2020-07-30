@@ -137,6 +137,29 @@ describe('Subscription link creation', () => {
       request.continue();
     }
   };
+
+  const testSubscriptionSuccessRedirect = () => {
+    describe('when clicking on final exit btn', () => {
+      beforeAll(async () => {
+        await Promise.all([
+          page.waitForNavigation(),
+          page.click('#subscription-exit-btn'),
+        ]);
+      });
+
+      it('redirects to redirect_to param with correct query params', () => {
+        const url = page.url();
+        const redirectParams = new URLSearchParams(url.replace(`${params.redirect_to}?`, ''));
+        expect(url.startsWith(params.redirect_to)).toBe(true);
+        expect(redirectParams.get('result')).toEqual('subscription_created');
+        expect(redirectParams.get('link_id')).toEqual(createdLinkId.toString());
+        expect(redirectParams.get('subscription_id')).toEqual(subscriptionId.toString());
+        expect(redirectParams.get('account_id')).toEqual('1');
+        expect(redirectParams.get('username')).toEqual(username);
+      });
+    });
+  };
+
   beforeAll(async () => {
     jest.setTimeout(10000);
   });
@@ -244,25 +267,7 @@ describe('Subscription link creation', () => {
         await expect(page).toMatchElement('#subscription-exit-btn');
       });
 
-      describe('when clicking on final exit btn', () => {
-        beforeAll(async () => {
-          await Promise.all([
-            page.waitForNavigation(),
-            page.click('#subscription-exit-btn'),
-          ]);
-        });
-
-        it('redirects to redirect_to param with correct query params', () => {
-          const url = page.url();
-          const redirectParams = new URLSearchParams(url.replace(`${params.redirect_to}?`, ''));
-          expect(url.startsWith(params.redirect_to)).toBe(true);
-          expect(redirectParams.get('result')).toEqual('subscription_created');
-          expect(redirectParams.get('link_id')).toEqual(createdLinkId.toString());
-          expect(redirectParams.get('subscription_id')).toEqual(subscriptionId.toString());
-          expect(redirectParams.get('account_id')).toEqual('1');
-          expect(redirectParams.get('username')).toEqual(username);
-        });
-      });
+      testSubscriptionSuccessRedirect();
     });
   });
 });
