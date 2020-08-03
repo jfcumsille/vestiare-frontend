@@ -1,6 +1,8 @@
 import 'expect-puppeteer';
-import { subscriptions } from './api-responses';
-import { linkIntents as linkIntentHandler } from './api-request-handlers';
+import {
+  linkIntents as linkIntentHandler,
+  subscriptions as subscriptionsHandler,
+} from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
 
@@ -83,49 +85,28 @@ describe('Subscription link creation', () => {
     });
   };
 
-  const mockSubscriptionCreation = async (request) => {
-    await request.respond(subscriptions.successfulCreate(subscriptionId));
-    createdSubscription = true;
-  };
-
-  const mockSubscriptionUpdate = async (request) => {
-    await request.respond(subscriptions.successfulUpdate(subscriptionId));
-    updatedSubscription = true;
-  };
-
-  const mockSubscriptionPolling = (request, secondFactor, challenges) => {
-    if (subscriptionPollingCount < maxPollingCount) {
-      const status = receivedRequiresAction ? 'processing_action' : 'waiting_for_action';
-      request.respond(subscriptions.get({ subscriptionId, status }));
-      subscriptionPollingCount += 1;
-    } else if (!receivedRequiresAction) {
-      request.respond(subscriptions.get({
-        subscriptionId,
-        status: 'requires_action',
-        nextAction: { type: secondFactor, challenges },
-      }));
-      receivedRequiresAction = true;
-    } else {
-      request.respond(subscriptions.get({ subscriptionId, status: 'succeeded' }));
-      succeededSubscription = true;
-    }
-  };
-
   const subscriptionRequestHandler = (request, secondFactor, challenges = []) => {
-    if (request.url().includes('link_intents')) {
-      linkIntentRequestHandler(request);
-    } else if (request.url().endsWith('/internal/v1/accounts/1/subscriptions') && request.method() === 'POST') {
-      mockSubscriptionCreation(request);
-      createSubscriptionParams = JSON.parse(request.postData());
-    } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}?link_token=${temporaryLinkToken}`)
-      && request.method() === 'GET') {
-      mockSubscriptionPolling(request, secondFactor, challenges);
-    } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}`) && request.method() === 'PATCH') {
-      mockSubscriptionUpdate(request);
-      updateSubscriptionParams = JSON.parse(request.postData());
-    } else {
-      request.continue();
-    }
+    subscriptionsHandler({
+      request,
+      subscriptionId,
+      secondFactor,
+      temporaryLinkToken,
+      challenges,
+      beforeSubmittingSecondFactor: !receivedRequiresAction,
+      respondPollingWithLoadingStatus: subscriptionPollingCount < maxPollingCount,
+      linkIntentHandler: linkIntentRequestHandler,
+      loadingCallback: () => { subscriptionPollingCount += 1; },
+      requiresActionCallback: () => { receivedRequiresAction = true; },
+      successCallback: () => { succeededSubscription = true; },
+      createdCallback: (requestParams) => {
+        createdSubscription = true;
+        createSubscriptionParams = requestParams;
+      },
+      updatedCallback: (requestParams) => {
+        updatedSubscription = true;
+        updateSubscriptionParams = requestParams;
+      },
+    });
   };
 
   const testSubscriptionSuccessRedirect = () => {
