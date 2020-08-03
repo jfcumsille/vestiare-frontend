@@ -106,7 +106,8 @@ describe('Subscription link creation', () => {
 
   const mockSubscriptionPolling = (request, secondFactor, challenges) => {
     if (subscriptionPollingCount < maxPollingCount) {
-      request.respond(linkIntents.processingStatusGet(linkIntentId));
+      const status = receivedRequiresAction ? 'processing_action' : 'waiting_for_action';
+      request.respond(subscriptions.get({ subscriptionId, status }));
       subscriptionPollingCount += 1;
     } else if (!receivedRequiresAction) {
       request.respond(subscriptions.get({
