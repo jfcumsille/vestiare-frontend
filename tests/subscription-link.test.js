@@ -1,6 +1,6 @@
 import 'expect-puppeteer';
 import { subscriptions } from './api-responses';
-import { linkIntents } from './api-mocks';
+import { linkIntents as linkIntentHandler } from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
 
@@ -64,31 +64,23 @@ describe('Subscription link creation', () => {
   };
 
   const linkIntentRequestHandler = (request) => {
-    if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
-      linkIntents.mockCreation({
-        request,
-        linkIntentId,
-        createdCallback: () => { createdLinkIntent = true; },
-      });
-      createLinkIntentParams = JSON.parse(request.postData());
-    } else if (request.url().endsWith(`/internal/v1/link_intents/widget/${linkIntentId}`)
-      && request.method() === 'GET') {
-      linkIntents.mockPolling({
-        request,
-        linkIntentId,
-        respondWithProcessingStatus: linkIntentPollingCount < maxPollingCount,
-        successParams: {
-          holderType: params.holder_type,
-          linkId: createdLinkId,
-          temporaryLinkToken,
-          username,
-        },
-        processingCallback: () => { linkIntentPollingCount += 1; },
-        successCallback: () => { succeededLinkIntent = true; },
-      });
-    } else {
-      request.continue();
-    }
+    linkIntentHandler({
+      request,
+      linkIntentId,
+      respondPollingWithProcessingStatus: linkIntentPollingCount < maxPollingCount,
+      successParams: {
+        holderType: params.holder_type,
+        linkId: createdLinkId,
+        temporaryLinkToken,
+        username,
+      },
+      createdCallback: (requestParams) => {
+        createdLinkIntent = true;
+        createLinkIntentParams = requestParams;
+      },
+      processingCallback: () => { linkIntentPollingCount += 1; },
+      successCallback: () => { succeededLinkIntent = true; },
+    });
   };
 
   const mockSubscriptionCreation = async (request) => {

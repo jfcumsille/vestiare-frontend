@@ -1,5 +1,5 @@
 import 'expect-puppeteer';
-import { linkIntents } from './api-mocks';
+import { linkIntents as linkIntentHandler } from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
 
@@ -72,30 +72,22 @@ describe('Movement link creation', () => {
         let createParams = {};
 
         const requestHandler = (request) => {
-          if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
-            linkIntents.mockCreation({
-              request,
-              linkIntentId,
-              createdCallback: () => { createdLinkIntent = true; },
-            });
-            createParams = JSON.parse(request.postData());
-          } else if (request.url().endsWith(`/internal/v1/link_intents/widget/${linkIntentId}`)
-            && request.method() === 'GET') {
-            linkIntents.mockPolling({
-              request,
-              linkIntentId,
-              respondWithProcessingStatus: pollingCount < maxPollingCount,
-              successParams: {
-                holderType: params.holder_type,
-                linkId: createdLinkId,
-                username,
-              },
-              processingCallback: () => { pollingCount += 1; },
-              successCallback: () => { succeededLinkIntent = true; },
-            });
-          } else {
-            request.continue();
-          }
+          linkIntentHandler({
+            request,
+            linkIntentId,
+            respondPollingWithProcessingStatus: pollingCount < maxPollingCount,
+            successParams: {
+              holderType: params.holder_type,
+              linkId: createdLinkId,
+              username,
+            },
+            createdCallback: (requestParams) => {
+              createdLinkIntent = true;
+              createParams = requestParams;
+            },
+            processingCallback: () => { pollingCount += 1; },
+            successCallback: () => { succeededLinkIntent = true; },
+          });
         };
 
         beforeAll(async () => {
