@@ -1,5 +1,5 @@
 import 'expect-puppeteer';
-import { linkIntents } from './api-responses';
+import { linkIntents } from './api-mocks';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
 
@@ -71,32 +71,28 @@ describe('Movement link creation', () => {
         let pollingCount = 0;
         let createParams = {};
 
-        const mockLinkIntentCreation = (request) => {
-          request.respond(linkIntents.successfulCreate(linkIntentId));
-          createdLinkIntent = true;
-        };
-
-        const mockLinkIntentPolling = (request) => {
-          if (pollingCount < maxPollingCount) {
-            request.respond(linkIntents.processingStatusGet(linkIntentId));
-            pollingCount += 1;
-          } else {
-            request.respond(linkIntents.successfulGet({
-              holderType: params.holder_type,
-              linkId: createdLinkId,
-              username,
-            }));
-            succeededLinkIntent = true;
-          }
-        };
-
         const requestHandler = (request) => {
           if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
-            mockLinkIntentCreation(request);
+            linkIntents.mockCreation({
+              request,
+              linkIntentId,
+              createdCallback: () => { createdLinkIntent = true; },
+            });
             createParams = JSON.parse(request.postData());
           } else if (request.url().endsWith(`/internal/v1/link_intents/widget/${linkIntentId}`)
             && request.method() === 'GET') {
-            mockLinkIntentPolling(request);
+            linkIntents.mockPolling({
+              request,
+              linkIntentId,
+              respondWithProcessingStatus: pollingCount < maxPollingCount,
+              successParams: {
+                holderType: params.holder_type,
+                linkId: createdLinkId,
+                username,
+              },
+              processingCallback: () => { pollingCount += 1; },
+              successCallback: () => { succeededLinkIntent = true; },
+            });
           } else {
             request.continue();
           }
