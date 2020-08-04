@@ -498,8 +498,8 @@
             </spinner>
             <div class="h-full flex flex-col justify-between px-6 py-6">
               <div class="pt-6 pb-2">
-               <img class="bank-logo h-12 rounded object-cover mx-auto"
-                    :src="bank.logo" />
+                <img class="bank-logo h-12 rounded object-cover mx-auto"
+                     :src="bank.logo" />
               </div>
               <div class="bg-gray-100 shadow w-24 h-24 py-2
                           rounded-full m-auto justify-center flex">
@@ -508,8 +508,6 @@
               <div class="text-2xl text-center leading-tight py-4">
                 Te conectaste exitosamente con Fintual
               </div>
-
-                <div class="h-full">
               <button @click="handleSubscriptionExit"
                 type="submit"
                 class="group relative w-full justify-center py-4 px-4 border
@@ -520,8 +518,6 @@
                 Continuar
               </button>
             </div>
-          </div>
-        </div>
           </div>
         </div>
         <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
