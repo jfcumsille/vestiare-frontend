@@ -1,4 +1,9 @@
 const headers = { 'Access-Control-Allow-Origin': '*' };
+const accounts = (username) => ([
+  {
+    id: 1, type: 'checking_account', name: 'Cuenta Corriente', number: '123345890', holder_id: username,
+  },
+]);
 
 function successfulCreate(linkIntentId) {
   return {
@@ -17,7 +22,7 @@ function processingStatusGet(linkIntentId) {
 }
 
 function successfulGet({
-  holderType, username, linkId = 1, holderId = username,
+  holderType, username, linkId = 1, holderId = username, temporaryLinkToken = null,
 }) {
   return {
     status: 200,
@@ -29,6 +34,8 @@ function successfulGet({
         holder_type: holderType,
         holder_id: holderId,
         username,
+        accounts: accounts(username),
+        temporaryLinkToken,
       },
       status: 'succeeded',
     }),

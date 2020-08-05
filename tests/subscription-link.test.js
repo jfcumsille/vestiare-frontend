@@ -1,0 +1,312 @@
+import 'expect-puppeteer';
+import {
+  linkIntents as linkIntentHandler,
+  subscriptions as subscriptionsHandler,
+} from './api-request-handlers';
+
+const WIDGET_URL = 'http://localhost:4444/widget-iframe';
+
+const paramsFactory = () => (
+  {
+    public_key: 'some_public_api_key',
+    redirect_to: 'http://localhost:4444/login',
+    customer_id: 'some_id',
+    product: 'subscription',
+    holder_type: 'individual',
+  }
+);
+
+describe('Subscription link creation', () => {
+  const params = paramsFactory();
+  const username = '123123123';
+  const formattedUsername = '12.312.312-3';
+  const maxPollingCount = 2;
+  const linkIntentId = 1;
+  const subscriptionId = 1;
+  const createdLinkId = 2;
+  const temporaryLinkToken = 'some_link_token';
+  let createdLinkIntent;
+  let succeededLinkIntent;
+  let linkIntentPollingCount;
+  let createLinkIntentParams;
+  let createdSubscription;
+  let updatedSubscription;
+  let receivedRequiresAction;
+  let subscriptionPollingCount;
+  let succeededSubscription;
+  let createSubscriptionParams;
+  let updateSubscriptionParams;
+
+  const varSetup = () => {
+    createdLinkIntent = false;
+    succeededLinkIntent = false;
+    linkIntentPollingCount = 0;
+    createLinkIntentParams = {};
+    createdSubscription = false;
+    updatedSubscription = false;
+    receivedRequiresAction = false;
+    subscriptionPollingCount = 0;
+    succeededSubscription = false;
+  };
+
+  const navigateToBankLogin = async (page) => {
+    await page.goto(`${WIDGET_URL}?${new URLSearchParams(params)}`);
+    await page.click('#intro-continue-btn');
+    await page.waitForSelector('#bank-btns-container button');
+    await page.click('#bank-btns-container button');
+    await page.waitForSelector('#bank-login-submit-btn');
+  };
+
+  const navigateToSubscriptionConfirmation = async (page) => {
+    await navigateToBankLogin(page);
+    await page.type('#rut-input', username);
+    await page.type('#password-input', 'jonsnow');
+    await page.click('#bank-login-submit-btn');
+    await page.waitForSelector('#confirm-subscription-btn');
+  };
+
+  const linkIntentRequestHandler = (request) => {
+    linkIntentHandler({
+      request,
+      linkIntentId,
+      respondPollingWithProcessingStatus: linkIntentPollingCount < maxPollingCount,
+      successParams: {
+        holderType: params.holder_type,
+        linkId: createdLinkId,
+        temporaryLinkToken,
+        username,
+      },
+      createdCallback: (requestParams) => {
+        createdLinkIntent = true;
+        createLinkIntentParams = requestParams;
+      },
+      processingCallback: () => { linkIntentPollingCount += 1; },
+      successCallback: () => { succeededLinkIntent = true; },
+    });
+  };
+
+  const subscriptionRequestHandler = (request, secondFactor, challenges = []) => {
+    subscriptionsHandler({
+      request,
+      subscriptionId,
+      secondFactor,
+      temporaryLinkToken,
+      challenges,
+      beforeSubmittingSecondFactor: !receivedRequiresAction,
+      respondPollingWithLoadingStatus: subscriptionPollingCount < maxPollingCount,
+      linkIntentHandler: linkIntentRequestHandler,
+      loadingCallback: () => { subscriptionPollingCount += 1; },
+      requiresActionCallback: () => { receivedRequiresAction = true; },
+      successCallback: () => { succeededSubscription = true; },
+      createdCallback: (requestParams) => {
+        createdSubscription = true;
+        createSubscriptionParams = requestParams;
+      },
+      updatedCallback: (requestParams) => {
+        updatedSubscription = true;
+        updateSubscriptionParams = requestParams;
+      },
+    });
+  };
+
+  const testSubscriptionSuccessRedirect = () => {
+    describe('when clicking on final exit btn', () => {
+      beforeAll(async () => {
+        await Promise.all([
+          page.waitForNavigation(),
+          page.click('#subscription-exit-btn'),
+        ]);
+      });
+
+      it('redirects to redirect_to param with correct query params', () => {
+        const url = page.url();
+        const redirectParams = new URLSearchParams(url.replace(`${params.redirect_to}?`, ''));
+        expect(url.startsWith(params.redirect_to)).toBe(true);
+        expect(redirectParams.get('result')).toEqual('subscription_created');
+        expect(redirectParams.get('link_id')).toEqual(createdLinkId.toString());
+        expect(redirectParams.get('subscription_id')).toEqual(subscriptionId.toString());
+        expect(redirectParams.get('account_id')).toEqual('1');
+        expect(redirectParams.get('username')).toEqual(username);
+      });
+    });
+  };
+
+  beforeAll(async () => {
+    jest.setTimeout(10000);
+  });
+
+  describe('when clicking on close button', () => {
+    beforeAll(async () => {
+      await navigateToBankLogin(page);
+      await Promise.all([
+        page.waitForNavigation(),
+        page.click('#exit-btn'),
+      ]);
+    });
+
+    it('redirects to redirect_to param with result = user_exited in query', () => {
+      expect(page.url()).toEqual(`${params.redirect_to}?result=user_exited`);
+    });
+  });
+
+  describe('when submitting bank credentials and eventually receiving a succesful response', () => {
+    beforeAll(async () => {
+      varSetup();
+      await page.setRequestInterception(true);
+      page.on('request', linkIntentRequestHandler);
+      await navigateToSubscriptionConfirmation(page);
+    });
+
+    afterAll(async () => {
+      page.off('request', linkIntentRequestHandler);
+      await page.setRequestInterception(false);
+    });
+
+    it('posts to fintoc to create a link intent with correct params', () => {
+      const linkData = createLinkIntentParams.link_data;
+      expect(createdLinkIntent).toBe(true);
+      expect(createLinkIntentParams.callback_url).toEqual(params.webhook_url);
+      expect(linkData.holder_type).toEqual(params.holder_type);
+      expect(linkData.product).toEqual('subscription');
+      expect(linkData.username).toEqual(formattedUsername);
+      expect(linkData.holder_id).toEqual('');
+    });
+
+    it('polls for link_intent until succeeded response', () => {
+      expect(succeededLinkIntent).toBe(true);
+      expect(linkIntentPollingCount).toBe(maxPollingCount);
+    });
+
+    it('shows confirmation step', async () => {
+      await expect(page).toMatchElement('#confirm-subscription-btn');
+    });
+  });
+
+  describe('when confirming default bank account and eventually receiving requires action enter_device_code', () => {
+    const requestHandler = (request) => subscriptionRequestHandler(request, 'enter_device_code');
+
+    beforeAll(async () => {
+      varSetup();
+      await page.setRequestInterception(true);
+      page.on('request', requestHandler);
+      await navigateToSubscriptionConfirmation(page);
+      await page.click('#confirm-subscription-btn');
+      await page.waitForSelector('#single-code-second-factor-input');
+    });
+
+    afterAll(async () => {
+      page.off('request', requestHandler);
+      await page.setRequestInterception(false);
+    });
+
+    it('posts to fintoc to create a subscription with correct params', () => {
+      expect(createdSubscription).toBe(true);
+      expect(createSubscriptionParams.customer_id).toEqual(params.customer_id);
+      expect(createSubscriptionParams.link_token).toEqual(temporaryLinkToken);
+    });
+
+    it('polls for subscription until requires_action response', () => {
+      expect(receivedRequiresAction).toBe(true);
+      expect(subscriptionPollingCount).toBe(maxPollingCount);
+    });
+
+    it('shows step with input to enter code', async () => {
+      await expect(page).toMatchElement('#single-code-second-factor-input');
+    });
+
+    describe('when submitting device code and eventually receiving succesful response', () => {
+      const code = '000000';
+
+      beforeAll(async () => {
+        await page.type('#single-code-second-factor-input', code);
+        await page.click('#second-factor-auth-btn');
+        await page.waitForSelector('#subscription-exit-btn');
+      });
+
+      it('sends patch to fintoc to submit code to created subscription', () => {
+        expect(updatedSubscription).toBe(true);
+        expect(updateSubscriptionParams.second_factor).toEqual(code);
+        expect(updateSubscriptionParams.link_token).toEqual(temporaryLinkToken);
+      });
+
+      it('polls for subscription until success response', () => {
+        expect(succeededSubscription).toBe(true);
+        expect(subscriptionPollingCount).toBe(maxPollingCount);
+      });
+
+      it('shows final subscription step', async () => {
+        await expect(page).toMatchElement('#subscription-exit-btn');
+      });
+
+      testSubscriptionSuccessRedirect();
+    });
+  });
+
+  describe('when confirming default bank account and eventually receiving requires action enter_coordinates', () => {
+    const challenges = ['A1', 'B2', 'C3'];
+    const requestHandler = (request) => subscriptionRequestHandler(request, 'enter_coordinates', challenges);
+
+    beforeAll(async () => {
+      varSetup();
+      await page.setRequestInterception(true);
+      page.on('request', requestHandler);
+      await navigateToSubscriptionConfirmation(page);
+      await page.click('#confirm-subscription-btn');
+      await page.waitForSelector('#challenge-0');
+    });
+
+    afterAll(async () => {
+      page.off('request', requestHandler);
+      await page.setRequestInterception(false);
+    });
+
+    it('posts to fintoc to create a subscription with correct params', () => {
+      expect(createdSubscription).toBe(true);
+      expect(createSubscriptionParams.customer_id).toEqual(params.customer_id);
+      expect(createSubscriptionParams.link_token).toEqual(temporaryLinkToken);
+    });
+
+    it('polls for subscription until requires_action response', () => {
+      expect(receivedRequiresAction).toBe(true);
+      expect(subscriptionPollingCount).toBe(maxPollingCount);
+    });
+
+    it('shows step with challenge inputs and correct placeholders', async () => {
+      await expect(page).toMatchElement('#challenge-0');
+      await expect(page).toMatchElement('#challenge-1');
+      await expect(page).toMatchElement('#challenge-2');
+      await expect(page.$eval('#challenge-0', (input) => input.placeholder)).resolves.toEqual(challenges[0]);
+      await expect(page.$eval('#challenge-1', (input) => input.placeholder)).resolves.toEqual(challenges[1]);
+      await expect(page.$eval('#challenge-2', (input) => input.placeholder)).resolves.toEqual(challenges[2]);
+    });
+
+    describe('when submitting coordinate and eventually receiving succesful response', () => {
+      const coordinates = ['00', '11', '22'];
+
+      beforeAll(async () => {
+        await page.type('#challenge-0', coordinates[0]);
+        await page.type('#challenge-1', coordinates[1]);
+        await page.type('#challenge-2', coordinates[2]);
+        await page.click('#second-factor-auth-btn');
+        await page.waitForSelector('#subscription-exit-btn');
+      });
+
+      it('sends patch to fintoc to submit code to created subscription', () => {
+        expect(updatedSubscription).toBe(true);
+        expect(updateSubscriptionParams.second_factor).toEqual(coordinates);
+        expect(updateSubscriptionParams.link_token).toEqual(temporaryLinkToken);
+      });
+
+      it('polls for subscription until success response', () => {
+        expect(succeededSubscription).toBe(true);
+        expect(subscriptionPollingCount).toBe(maxPollingCount);
+      });
+
+      it('shows final subscription step', async () => {
+        await expect(page).toMatchElement('#subscription-exit-btn');
+      });
+
+      testSubscriptionSuccessRedirect();
+    });
+  });
+});

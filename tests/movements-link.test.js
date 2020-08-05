@@ -1,5 +1,5 @@
 import 'expect-puppeteer';
-import { linkIntents } from './api-responses';
+import { linkIntents as linkIntentHandler } from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
 
@@ -9,7 +9,6 @@ describe('Movement link creation', () => {
       public_key: 'some_public_api_key',
       redirect_to: 'http://localhost:4444/login',
       webhook_url: 'https://www.somedomain.com/webhook',
-      customer_id: 'some_id',
     }
   );
 
@@ -72,35 +71,23 @@ describe('Movement link creation', () => {
         let pollingCount = 0;
         let createParams = {};
 
-        const mockLinkIntentCreation = (request) => {
-          request.respond(linkIntents.successfulCreate(linkIntentId));
-          createdLinkIntent = true;
-        };
-
-        const mockLinkIntentPolling = (request) => {
-          if (pollingCount < maxPollingCount) {
-            request.respond(linkIntents.processingStatusGet(linkIntentId));
-            pollingCount += 1;
-          } else {
-            request.respond(linkIntents.successfulGet({
+        const requestHandler = (request) => {
+          linkIntentHandler({
+            request,
+            linkIntentId,
+            respondPollingWithProcessingStatus: pollingCount < maxPollingCount,
+            successParams: {
               holderType: params.holder_type,
               linkId: createdLinkId,
               username,
-            }));
-            succeededLinkIntent = true;
-          }
-        };
-
-        const requestHandler = (request) => {
-          if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
-            mockLinkIntentCreation(request);
-            createParams = JSON.parse(request.postData());
-          } else if (request.url().endsWith(`/internal/v1/link_intents/widget/${linkIntentId}`)
-            && request.method() === 'GET') {
-            mockLinkIntentPolling(request);
-          } else {
-            request.continue();
-          }
+            },
+            createdCallback: (requestParams) => {
+              createdLinkIntent = true;
+              createParams = requestParams;
+            },
+            processingCallback: () => { pollingCount += 1; },
+            successCallback: () => { succeededLinkIntent = true; },
+          });
         };
 
         beforeAll(async () => {
