@@ -61,7 +61,7 @@ export default {
       apiClient.links.regenerateLinkToken(link.id, this.formHeaders).then((linkResponse) => {
         const newLinkData = {
           bank: findBankByCode(linkResponse.data.institution.id),
-          numberOfAccounts: linkResponse.data.accounts.length,
+          numberOfAccounts: linkResponse.data.accountsCount,
           linkToken: linkResponse.data.linkToken,
           holderType: linkResponse.data.holderType,
         };
