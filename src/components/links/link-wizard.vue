@@ -80,15 +80,15 @@
           </div>
         </div>
         <div v-if='currentStep==="select-bank"' class='h-full flex flex-col' :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('intro')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l">Selecciona tu banco</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Selecciona tu banco</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="flex-1 p-4">
             <div class="h-full">
@@ -109,19 +109,15 @@
           </div>
         </div>
         <div v-if='currentStep==="bank-log-in"' class='h-full flex flex-col' :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('select-bank')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('select-bank')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Ingresa</h1>
-            <button
-              @click="cancelLinkCreation"
-              class="text-gray-700"
-              id="exit-btn"
-            >
+            <h1 slot='currentStepText' >Ingresa</h1>
+            <button @click="cancelLinkCreation" slot='closeButton' id="exit-btn">
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
@@ -239,15 +235,15 @@
           </div>
         </div>
         <div v-if='currentStep==="select-account"' class='h-full flex flex-col' :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Selecciona una cuenta</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Selecciona una cuenta</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative">
             <div class="flex-1 px-6 py-2">
@@ -289,15 +285,15 @@
         <div v-if='currentStep==="confirm-subscription"'
              class='h-full flex flex-col'
              :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('intro')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Confirmación</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Confirmación</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
@@ -369,15 +365,15 @@
           </div>
         </div>
         <div v-if='currentStep==="second-factor"' class="h-full flex flex-col" :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Segundo Factor</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Segundo Factor</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
@@ -458,15 +454,15 @@
           </div>
         </div>
         <div v-if='currentStep==="wait-for-app"' class="h-full flex flex-col" :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l">Confirmación</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Confirmación</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative">
             <div class="flex-1 px-6 py-2">
@@ -491,15 +487,15 @@
         <div v-if='currentStep==="subscription-completed"'
              class='h-full flex flex-col'
              :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700 invisible">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Confirmación</h1>
-            <button @click="handleSubscriptionExit" class="text-gray-700">
+            <h1 slot='currentStepText' >Confirmación</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
@@ -530,13 +526,15 @@
             </div>
           </div>
         </div>
-        <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
-          <div class="pt-6 px-6 text-gray-800">
-            <button @click="moveTo('bank-log-in')" class="self-start text-gray-700">
+        <div v-if='currentStep==="error"'
+             class='h-full flex flex-col'
+             :key="currentStep">
+          <widget-nav>
+            <button @click="moveTo('bank-log-in')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l mt-2 text-center">Error</h1>
-          </div>
+            <h1 slot='currentStepText' >Error</h1>
+          </widget-nav>
           <hr>
           <div class="flex-1 p-6 flex flex-col justify-between">
             <div class="py-4">
@@ -575,6 +573,7 @@ import { required, requiredIf, helpers } from 'vuelidate/lib/validators';
 import VueElementLoading from 'vue-element-loading';
 import { individualRut, businessRut } from '../../validators/rut_validator';
 import Spinner from '../spinner.vue';
+import WidgetNav from './widget-nav.vue';
 import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
 import errorObject from '../../helpers/error_object';
@@ -644,6 +643,7 @@ export default {
   components: {
     Spinner,
     VueElementLoading,
+    WidgetNav,
   },
   validations() {
     if (this.currentWizard === 'link') {
