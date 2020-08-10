@@ -102,7 +102,7 @@
                         class="border-gray-200 shadow-xs hover:shadow-md py-3 px-1 rounded
                         transition ease-in-out duration-150">
                   <img class="bank-logo h-6 w-auto rounded object-cover mx-auto"
-                       :src="bank.logo" />
+                       :src="bank.logo[holderType]" />
                 </button>
               </div>
             </div>
@@ -128,7 +128,7 @@
             <div class="h-full flex flex-col justify-between px-6 py-6">
               <div class="py-2" :class="{ 'py-12': !isBusiness }">
                 <img class="bank-logo h-12 rounded object-cover mx-auto"
-                     :src="this.bank.logo" />
+                     :src="bank.logo[holderType]" />
               </div>
               <div>
                 <div class="h-20">
@@ -250,7 +250,7 @@
               <div class="h-full">
                 <div class="py-6">
                   <img class="bank-logo h-12 rounded object-cover mx-auto"
-                      :src="bank.logo" />
+                      :src="bank.logo[holderType]" />
                 </div>
                 <div class="text-center px-4 text-gray-900">
                   Selecciona la cuenta con la que quieres conectarte
@@ -303,7 +303,7 @@
             </spinner>
             <div class="h-full flex flex-col justify-between px-6 py-6 text-gray-900">
               <img class="bank-logo h-10 rounded object-cover mx-auto"
-                   :src="bank.logo" />
+                   :src="bank.logo[holderType]" />
               <div>
                 <div class="text-base font-regular flex flex-wrap items-center h-12">
                   <div class="w-2/12">
@@ -381,7 +381,7 @@
             <div class="h-full flex flex-col justify-between px-6 py-6">
               <div class="py-6">
                 <img class="bank-logo h-12 rounded object-cover mx-auto"
-                      :src="bank.logo" />
+                      :src="bank.logo[holderType]" />
               </div>
               <div>
                 <div class="text-base font-regular flex flex-wrap items-center">
@@ -469,7 +469,7 @@
               <div class="h-full">
                 <div class="py-6">
                   <img class="bank-logo h-12 rounded object-cover mx-auto"
-                       :src="bank.logo" />
+                       :src="bank.logo[holderType]" />
                 </div>
                 <div class="flex flex-col content-center text-center my-2">
                   <div class="m-8">
@@ -503,7 +503,7 @@
             <div class="h-full flex flex-col justify-between px-6 py-6">
               <div class="pt-6 pb-2">
                 <img class="bank-logo h-12 rounded object-cover mx-auto"
-                     :src="bank.logo" />
+                     :src="bank.logo[holderType]" />
               </div>
               <div class="bg-gray-100 shadow w-24 h-24 py-2
                           rounded-full m-auto justify-center flex">
@@ -539,7 +539,7 @@
           <div class="flex-1 p-6 flex flex-col justify-between">
             <div class="py-4">
               <img class="bank-logo h-12 rounded object-cover mx-auto"
-                  :src="this.bank.logo"/>
+                  :src="this.bank.logo[holderType]"/>
             </div>
             <div class="bg-gray-100 shadow w-24 h-24 rounded-full m-auto justify-center flex
                         text-gray-900">
