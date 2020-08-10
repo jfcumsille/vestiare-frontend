@@ -1,6 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // IMPORTANT: bank images should follow 5:1 (w:h) ratio.
 import bancoChileLogo from 'chilean-bank-images/banco-chile/big.png';
+import bancoChileBusinessLogo from 'chilean-bank-images/banco-chile/business-big.png';
 import bancoChileSmallLogo from 'chilean-bank-images/banco-chile/small.png';
 
 import santanderLogo from 'chilean-bank-images/santander/big.png';
@@ -24,54 +25,109 @@ const availableBanks = [
   {
     code: 'cl_banco_de_chile',
     label: 'Banco de Chile',
-    logo: bancoChileLogo,
+    logo: {
+      individual: bancoChileLogo,
+      business: bancoChileBusinessLogo,
+    },
     smallLogo: bancoChileSmallLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: true, individual: true },
   },
   {
     code: 'cl_banco_santander',
     label: 'Banco Santander',
-    logo: santanderLogo,
+    logo: {
+      individual: santanderLogo,
+      business: santanderLogo,
+    },
     smallLogo: santanderSmallLogo,
+    specialIndication: {
+      business: 'El usuario debe tener permisos para ver el saldo, cartola provisoria y movimientos históricos',
+    },
     holderTypes: { business: true, individual: true },
   },
   {
     code: 'cl_banco_bci',
     label: 'Banco BCI',
-    logo: bciLogo,
+    logo: {
+      individual: bciLogo,
+      business: bciLogo,
+    },
     smallLogo: bciSmallLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
     code: 'cl_banco_estado',
     label: 'Banco Estado',
-    logo: bancoEstadoLogo,
+    logo: {
+      individual: bancoEstadoLogo,
+      business: bancoEstadoLogo,
+    },
     smallLogo: bancoEstadoSmallLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
     code: 'cl_banco_itau',
     label: 'Banco Itaú',
-    logo: itauLogo,
+    logo: {
+      individual: itauLogo,
+      business: itauLogo,
+    },
     smallLogo: itauLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
     code: 'cl_banco_falabella',
     label: 'Banco Falabella',
-    logo: falabellaLogo,
+    logo: {
+      individual: falabellaLogo,
+      business: falabellaLogo,
+    },
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
     code: 'cl_banco_scotiabank',
     label: 'Banco Scotiabank',
-    logo: scotiabankLogo,
+    logo: {
+      individual: scotiabankLogo,
+      business: scotiabankLogo,
+    },
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
     code: 'cl_banco_security',
     label: 'Banco Security',
-    logo: securityLogo,
+    logo: {
+      individual: securityLogo,
+      business: securityLogo,
+    },
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
 ];

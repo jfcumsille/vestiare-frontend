@@ -80,15 +80,15 @@
           </div>
         </div>
         <div v-if='currentStep==="select-bank"' class='h-full flex flex-col' :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('intro')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l">Selecciona tu banco</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Selecciona tu banco</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="flex-1 p-4">
             <div class="h-full">
@@ -102,26 +102,22 @@
                         class="border-gray-200 shadow-xs hover:shadow-md py-3 px-1 rounded
                         transition ease-in-out duration-150">
                   <img class="bank-logo h-6 w-auto rounded object-cover mx-auto"
-                       :src="bank.logo" />
+                       :src="bank.logo[holderType]" />
                 </button>
               </div>
             </div>
           </div>
         </div>
         <div v-if='currentStep==="bank-log-in"' class='h-full flex flex-col' :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('select-bank')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('select-bank')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Ingresa</h1>
-            <button
-              @click="cancelLinkCreation"
-              class="text-gray-700"
-              id="exit-btn"
-            >
+            <h1 slot='currentStepText' >Ingresa</h1>
+            <button @click="cancelLinkCreation" slot='closeButton' id="exit-btn">
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
@@ -129,12 +125,11 @@
                 Nos demoraremos 40 segundos como máximo  ⌛
               </p>
             </spinner>
-            <div class="h-full flex flex-col justify-between px-6 py-6">
-              <div class="py-2" :class="{ 'py-12': !isBusiness }">
-                <img class="bank-logo h-12 rounded object-cover mx-auto"
-                     :src="this.bank.logo" />
-              </div>
-              <div>
+            <div class="h-full flex flex-col px-6 py-6"
+                 :class="{ 'justify-between': holderType === 'business' }">
+              <img class="bank-logo h-12 rounded object-cover mx-auto"
+                   :src="bank.logo[holderType]" />
+              <div class="pt-6">
                 <div class="h-20">
                   <div class="w-full flex flex-col">
                     <input class="appearance-none block w-full bg-grey-lighter text-grey-900
@@ -239,49 +234,45 @@
           </div>
         </div>
         <div v-if='currentStep==="select-account"' class='h-full flex flex-col' :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Selecciona una cuenta</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Selecciona una cuenta</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
-          <div class="relative">
-            <div class="flex-1 px-6 py-2">
-              <div class="h-full">
-                <div class="py-6">
-                  <img class="bank-logo h-12 rounded object-cover mx-auto"
-                      :src="bank.logo" />
-                </div>
-                <div class="text-center px-4 text-gray-900">
-                  Selecciona la cuenta con la que quieres conectarte
-                </div>
-                <div class="grid grid-cols-1 gap-4 px-2 py-3 my-5 h-56 overflow-auto">
-                  <button v-for="account in accounts"
-                          :key='account.id'
-                          @click='handleAccountSelection(account)'
-                          class="border-gray-200 shadow-xs hover:shadow-md py-2 px-1 rounded
-                          transition ease-in-out duration-150">
-                    <div class="flex items-center text-sm">
-                      <div class="flex w-3/5 text-left items-center">
-                        <div class="w-1/5 px-2">
-                          <input type="radio" class="form-radio h-4 w-4"
-                          :checked="account.id === selectedAccount.id">
-                        </div>
-                        <div class="w-4/5 px-1">
-                          <p> {{ account.name }}</p>
-                          <p class="text-gray-700"> {{ account.number }}</p>
-                        </div>
+          <div class="flex-1 px-6 py-6">
+            <div class="h-full">
+              <img class="bank-logo h-12 rounded object-cover mx-auto"
+                  :src="bank.logo[holderType]" />
+              <div class="text-center py-6 px-4 text-gray-900">
+                Selecciona la cuenta con la que quieres conectarte
+              </div>
+              <div class="grid grid-cols-1 gap-4 px-2 py-3 my-5 h-56 overflow-auto">
+                <button v-for="account in accounts"
+                        :key='account.id'
+                        @click='handleAccountSelection(account)'
+                        class="border-gray-200 shadow-xs hover:shadow-md py-2 px-1 rounded
+                        transition ease-in-out duration-150">
+                  <div class="flex items-center text-sm">
+                    <div class="flex w-3/5 text-left items-center">
+                      <div class="w-1/5 px-2">
+                        <input type="radio" class="form-radio h-4 w-4"
+                        :checked="account.id === selectedAccount.id">
                       </div>
-                      <div class="w-2/5">
-                        <p class="text-gray-700"> ${{ account.balance.available }}</p>
+                      <div class="w-4/5 px-1">
+                        <p> {{ account.name }}</p>
+                        <p class="text-gray-700"> {{ account.number }}</p>
                       </div>
                     </div>
-                  </button>
-                </div>
+                    <div class="w-2/5">
+                      <p class="text-gray-700"> ${{ account.balance.available }}</p>
+                    </div>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
@@ -289,15 +280,15 @@
         <div v-if='currentStep==="confirm-subscription"'
              class='h-full flex flex-col'
              :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('intro')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('intro')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Confirmación</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Confirmación</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
@@ -306,8 +297,8 @@
               </p>
             </spinner>
             <div class="h-full flex flex-col justify-between px-6 py-6 text-gray-900">
-              <img class="bank-logo h-10 rounded object-cover mx-auto"
-                   :src="bank.logo" />
+              <img class="bank-logo h-12 rounded object-cover mx-auto"
+                   :src="bank.logo[holderType]" />
               <div>
                 <div class="text-base font-regular flex flex-wrap items-center h-12">
                   <div class="w-2/12">
@@ -369,26 +360,24 @@
           </div>
         </div>
         <div v-if='currentStep==="second-factor"' class="h-full flex flex-col" :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Segundo Factor</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Segundo Factor</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
             </spinner>
             <div class="h-full flex flex-col justify-between px-6 py-6">
-              <div class="py-6">
-                <img class="bank-logo h-12 rounded object-cover mx-auto"
-                      :src="bank.logo" />
-              </div>
+              <img class="bank-logo h-12 rounded object-cover mx-auto"
+                    :src="bank.logo[holderType]" />
               <div>
-                <div class="text-base font-regular flex flex-wrap items-center">
+                <div class="text-base font-regular flex flex-wrap items-center h-12">
                   <div class="w-2/12 text-gray-900">
                     <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
                                 rounded-full text-gray-900">
@@ -399,7 +388,7 @@
                     Sólo falta ingresar el segundo factor requerido por tu banco
                   </div>
                 </div>
-                <div class="text-base font-regular flex flex-wrap items-center py-2">
+                <div class="text-base font-regular flex flex-wrap items-center h-12">
                   <div class="w-2/12">
                     <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
                                 rounded-full text-green-700">
@@ -458,24 +447,22 @@
           </div>
         </div>
         <div v-if='currentStep==="wait-for-app"' class="h-full flex flex-col" :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l">Confirmación</h1>
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <h1 slot='currentStepText' >Confirmación</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative">
-            <div class="flex-1 px-6 py-2">
+            <div class="flex-1 px-6 py-6">
               <div class="h-full">
-                <div class="py-6">
-                  <img class="bank-logo h-12 rounded object-cover mx-auto"
-                       :src="bank.logo" />
-                </div>
-                <div class="flex flex-col content-center text-center my-2">
+                <img class="bank-logo h-12 rounded object-cover mx-auto"
+                      :src="bank.logo[holderType]" />
+                <div class="flex flex-col content-center text-center py-6">
                   <div class="m-8">
                     <vue-element-loading :active="true" :spinner="'bar-fade-scale'">
                     </vue-element-loading>
@@ -491,24 +478,22 @@
         <div v-if='currentStep==="subscription-completed"'
              class='h-full flex flex-col'
              :key="currentStep">
-          <div class="py-6 px-6 text-gray-800 flex justify-between">
-            <button @click="moveTo('confirm-subscription')" class="text-gray-700 invisible">
+          <widget-nav>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l text-gray-900">Confirmación</h1>
-            <button @click="handleSubscriptionExit" class="text-gray-700">
+            <h1 slot='currentStepText' >Confirmación</h1>
+            <button @click="cancelLinkCreation" slot='closeButton'>
               <font-awesome-icon icon="times"/>
             </button>
-          </div>
+          </widget-nav>
           <hr>
           <div class="relative flex-1">
             <spinner v-if="showSpinner">
             </spinner>
             <div class="h-full flex flex-col justify-between px-6 py-6">
-              <div class="pt-6 pb-2">
-                <img class="bank-logo h-12 rounded object-cover mx-auto"
-                     :src="bank.logo" />
-              </div>
+              <img class="bank-logo h-12 rounded object-cover mx-auto"
+                   :src="bank.logo[holderType]" />
               <div class="bg-gray-100 shadow w-24 h-24 py-2
                           rounded-full m-auto justify-center flex">
                 <font-awesome-icon class="m-auto fa-2x" icon="check"/>
@@ -530,19 +515,19 @@
             </div>
           </div>
         </div>
-        <div v-if='currentStep==="error"' class='h-full flex flex-col' :key="currentStep">
-          <div class="pt-6 px-6 text-gray-800">
-            <button @click="moveTo('bank-log-in')" class="self-start text-gray-700">
+        <div v-if='currentStep==="error"'
+             class='h-full flex flex-col'
+             :key="currentStep">
+          <widget-nav>
+            <button @click="moveTo('bank-log-in')" slot='backButton'>
               <font-awesome-icon icon="chevron-left"/>
             </button>
-            <h1 class="text-l mt-2 text-center">Error</h1>
-          </div>
+            <h1 slot='currentStepText' >Error</h1>
+          </widget-nav>
           <hr>
           <div class="flex-1 p-6 flex flex-col justify-between">
-            <div class="py-4">
-              <img class="bank-logo h-12 rounded object-cover mx-auto"
-                  :src="this.bank.logo"/>
-            </div>
+            <img class="bank-logo h-12 rounded object-cover mx-auto"
+                :src="this.bank.logo[holderType]"/>
             <div class="bg-gray-100 shadow w-24 h-24 rounded-full m-auto justify-center flex
                         text-gray-900">
               <font-awesome-icon class="m-auto fa-2x" icon="times"/>
@@ -551,6 +536,9 @@
               <div class="text-center text-red-900">
                 <p class="font-semibold">Tuvimos un problema</p>
                 <p class="text-sm">{{ textError }}</p>
+                <p class='text-xs py-2' v-if="bank.specialIndication[holderType]">
+                  * {{ bank.specialIndication[holderType] }}
+                </p>
               </div>
             </div>
             <button @click="moveTo('bank-log-in')"
@@ -559,7 +547,7 @@
                         border-transparent text-l leading-5 rounded-md
                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                         focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out mt-6 hover:bg-indigo-500 tracking-wide">
+                        duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide">
               Volver a intentar
             </button>
           </div>
@@ -575,6 +563,7 @@ import { required, requiredIf, helpers } from 'vuelidate/lib/validators';
 import VueElementLoading from 'vue-element-loading';
 import { individualRut, businessRut } from '../../validators/rut_validator';
 import Spinner from '../spinner.vue';
+import WidgetNav from './widget-nav.vue';
 import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
 import errorObject from '../../helpers/error_object';
@@ -644,6 +633,7 @@ export default {
   components: {
     Spinner,
     VueElementLoading,
+    WidgetNav,
   },
   validations() {
     if (this.currentWizard === 'link') {
