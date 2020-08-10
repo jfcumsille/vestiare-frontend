@@ -30,6 +30,10 @@ const availableBanks = [
       business: bancoChileBusinessLogo,
     },
     smallLogo: bancoChileSmallLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: true, individual: true },
   },
   {
@@ -40,6 +44,9 @@ const availableBanks = [
       business: santanderLogo,
     },
     smallLogo: santanderSmallLogo,
+    specialIndication: {
+      business: 'El usuario debe tener permisos para ver el saldo, cartola provisoria y movimientos históricos',
+    },
     holderTypes: { business: true, individual: true },
   },
   {
@@ -50,6 +57,10 @@ const availableBanks = [
       business: bciLogo,
     },
     smallLogo: bciSmallLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
@@ -60,6 +71,10 @@ const availableBanks = [
       business: bancoEstadoLogo,
     },
     smallLogo: bancoEstadoSmallLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
@@ -70,6 +85,10 @@ const availableBanks = [
       business: itauLogo,
     },
     smallLogo: itauLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
@@ -78,6 +97,10 @@ const availableBanks = [
     logo: {
       individual: falabellaLogo,
       business: falabellaLogo,
+    },
+    specialIndication: {
+      business: null,
+      individual: null,
     },
     holderTypes: { business: false, individual: false },
   },
@@ -88,6 +111,10 @@ const availableBanks = [
       individual: scotiabankLogo,
       business: scotiabankLogo,
     },
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
     holderTypes: { business: false, individual: false },
   },
   {
@@ -96,6 +123,10 @@ const availableBanks = [
     logo: {
       individual: securityLogo,
       business: securityLogo,
+    },
+    specialIndication: {
+      business: null,
+      individual: null,
     },
     holderTypes: { business: false, individual: false },
   },

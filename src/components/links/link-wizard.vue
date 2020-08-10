@@ -536,6 +536,9 @@
               <div class="text-center text-red-900">
                 <p class="font-semibold">Tuvimos un problema</p>
                 <p class="text-sm">{{ textError }}</p>
+                <p class='text-xs py-2' v-if="bank.specialIndication[holderType]">
+                  * {{ bank.specialIndication[holderType] }}
+                </p>
               </div>
             </div>
             <button @click="moveTo('bank-log-in')"
@@ -544,7 +547,7 @@
                         border-transparent text-l leading-5 rounded-md
                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
                         focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out mt-6 hover:bg-indigo-500 tracking-wide">
+                        duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide">
               Volver a intentar
             </button>
           </div>
