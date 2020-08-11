@@ -16,6 +16,7 @@ const mutations = {
     state.userLinks = userLinks.map((link) => ({
       bank: findBankByCode(link.institution.id),
       holderType: link.holder_type,
+      holderId: link.holder_id,
       rut: link.username,
       numberOfAccounts: link.accounts_count,
       linkId: link.id,
