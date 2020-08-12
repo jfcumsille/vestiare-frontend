@@ -53,23 +53,15 @@ export default {
       this.showForm = false;
     },
 
-    updateStep(newStep) {
-      this.currentStep = newStep;
-    },
-
     onLinkCreated(link) {
       apiClient.links.regenerateLinkToken(link.id, this.formHeaders).then((linkResponse) => {
         const newLinkData = {
           bank: findBankByCode(linkResponse.data.institution.id),
-          numberOfAccounts: linkResponse.data.accounts.length,
+          numberOfAccounts: linkResponse.data.accountsCount,
           linkToken: linkResponse.data.linkToken,
           holderType: linkResponse.data.holderType,
         };
         this.showLinkDetail(newLinkData);
-      }).catch((error) => {
-        // TODO: Add retry.
-        this.errorCode = error.response != null ? error.response.data.error.code : 'unknown';
-        this.currentStep = 'error';
       });
     },
   },

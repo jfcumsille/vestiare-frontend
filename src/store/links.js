@@ -17,7 +17,7 @@ const mutations = {
       bank: findBankByCode(link.institution.id),
       holderType: link.holder_type,
       rut: link.username,
-      numberOfAccounts: link.accounts.length,
+      numberOfAccounts: link.accounts_count,
       linkId: link.id,
       mode: link.mode,
     }));
