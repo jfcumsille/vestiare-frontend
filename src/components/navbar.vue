@@ -14,7 +14,7 @@
               <router-link to="/links" active-class="bg-gray-900 text-white"
                   class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white
                          hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
-                Credenciales
+                Links
               </router-link>
               <router-link to="/api-keys" active-class="bg-gray-900 text-white"
                  class="ml-4
@@ -107,7 +107,7 @@
         <router-link to="/links" active-class="bg-gray-900 text-white"
             class="block px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white
                    hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
-          Credenciales
+          Links
         </router-link>
         <router-link to="/api-keys" active-class="bg-gray-900 text-white"
             class="mt-1
