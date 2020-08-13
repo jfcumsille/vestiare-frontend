@@ -7,8 +7,6 @@ const mockGet = async (request, companyName) => {
 const requestHandler = ({ request, companyName }) => {
   if (request.url().endsWith('/internal/v1/widget_config') && request.method() === 'GET') {
     mockGet(request, companyName);
-  } else {
-    request.continue();
   }
 };
 

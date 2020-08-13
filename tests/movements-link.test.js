@@ -72,22 +72,26 @@ describe('Movement link creation', () => {
         let createParams = {};
 
         const requestHandler = (request) => {
-          linkIntentHandler({
-            request,
-            linkIntentId,
-            respondPollingWithProcessingStatus: pollingCount < maxPollingCount,
-            successParams: {
-              holderType: params.holder_type,
-              linkId: createdLinkId,
-              username,
-            },
-            createdCallback: (requestParams) => {
-              createdLinkIntent = true;
-              createParams = requestParams;
-            },
-            processingCallback: () => { pollingCount += 1; },
-            successCallback: () => { succeededLinkIntent = true; },
-          });
+          if (request.url().includes('link_intents')) {
+            linkIntentHandler({
+              request,
+              linkIntentId,
+              respondPollingWithProcessingStatus: pollingCount < maxPollingCount,
+              successParams: {
+                holderType: params.holder_type,
+                linkId: createdLinkId,
+                username,
+              },
+              createdCallback: (requestParams) => {
+                createdLinkIntent = true;
+                createParams = requestParams;
+              },
+              processingCallback: () => { pollingCount += 1; },
+              successCallback: () => { succeededLinkIntent = true; },
+            });
+          } else {
+            request.continue();
+          }
         };
 
         beforeAll(async () => {

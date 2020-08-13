@@ -26,14 +26,11 @@ const requestHandler = ({
   linkIntentId,
   respondPollingWithProcessingStatus,
   successParams,
-  widgetConfigHandler,
   createdCallback = () => null,
   processingCallback = () => null,
   successCallback = () => null,
 }) => {
-  if (widgetConfigHandler && request.url().includes('widget_config')) {
-    widgetConfigHandler(request);
-  } else if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
+  if (request.url().endsWith('/internal/v1/link_intents/widget') && request.method() === 'POST') {
     mockCreation({
       request,
       linkIntentId,
@@ -50,8 +47,6 @@ const requestHandler = ({
       processingCallback,
       successCallback,
     });
-  } else {
-    request.continue();
   }
 };
 
