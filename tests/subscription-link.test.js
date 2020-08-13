@@ -2,6 +2,7 @@ import 'expect-puppeteer';
 import {
   linkIntents as linkIntentHandler,
   subscriptions as subscriptionsHandler,
+  widgetConfig as widgetConfigHandler,
 } from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
@@ -25,6 +26,7 @@ describe('Subscription link creation', () => {
   const subscriptionId = 1;
   const createdLinkId = 2;
   const temporaryLinkToken = 'some_link_token';
+  const companyName = 'SomeCompany';
   let createdLinkIntent;
   let succeededLinkIntent;
   let linkIntentPollingCount;
@@ -65,6 +67,10 @@ describe('Subscription link creation', () => {
     await page.waitForSelector('#confirm-subscription-btn');
   };
 
+  const widgetConfigRequestHandler = (request) => {
+    widgetConfigHandler({ request, companyName });
+  };
+
   const linkIntentRequestHandler = (request) => {
     linkIntentHandler({
       request,
@@ -76,6 +82,7 @@ describe('Subscription link creation', () => {
         temporaryLinkToken,
         username,
       },
+      widgetConfigHandler: widgetConfigRequestHandler,
       createdCallback: (requestParams) => {
         createdLinkIntent = true;
         createLinkIntentParams = requestParams;
@@ -179,6 +186,11 @@ describe('Subscription link creation', () => {
 
     it('shows confirmation step', async () => {
       await expect(page).toMatchElement('#confirm-subscription-btn');
+    });
+
+    it('shows company name', async () => {
+      const text = await page.$eval('#company-connect-text', (el) => el.textContent);
+      expect(text).toContain(companyName);
     });
   });
 
