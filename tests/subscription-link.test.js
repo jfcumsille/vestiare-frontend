@@ -2,6 +2,7 @@ import 'expect-puppeteer';
 import {
   linkIntents as linkIntentHandler,
   subscriptions as subscriptionsHandler,
+  widgetConfig as widgetConfigHandler,
 } from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
@@ -25,6 +26,7 @@ describe('Subscription link creation', () => {
   const subscriptionId = 1;
   const createdLinkId = 2;
   const temporaryLinkToken = 'some_link_token';
+  const companyName = 'SomeCompany';
   let createdLinkIntent;
   let succeededLinkIntent;
   let linkIntentPollingCount;
@@ -65,6 +67,10 @@ describe('Subscription link creation', () => {
     await page.waitForSelector('#confirm-subscription-btn');
   };
 
+  const widgetConfigRequestHandler = (request) => {
+    widgetConfigHandler({ request, companyName });
+  };
+
   const linkIntentRequestHandler = (request) => {
     linkIntentHandler({
       request,
@@ -94,7 +100,6 @@ describe('Subscription link creation', () => {
       challenges,
       beforeSubmittingSecondFactor: !receivedRequiresAction,
       respondPollingWithLoadingStatus: subscriptionPollingCount < maxPollingCount,
-      linkIntentHandler: linkIntentRequestHandler,
       loadingCallback: () => { subscriptionPollingCount += 1; },
       requiresActionCallback: () => { receivedRequiresAction = true; },
       successCallback: () => { succeededSubscription = true; },
@@ -106,6 +111,32 @@ describe('Subscription link creation', () => {
         updatedSubscription = true;
         updateSubscriptionParams = requestParams;
       },
+    });
+  };
+
+  const requestHandler = (request, secondFactor = null, challenges = []) => {
+    if (request.url().includes('widget_config')) {
+      widgetConfigRequestHandler(request);
+    } else if (request.url().includes('link_intents')) {
+      linkIntentRequestHandler(request);
+    } else if (request.url().includes('subscriptions')) {
+      subscriptionRequestHandler(request, secondFactor, challenges);
+    } else {
+      request.continue();
+    }
+  };
+
+  const setupRequestHandler = (secondFactor = null, challenges = []) => {
+    const handler = (request) => requestHandler(request, secondFactor, challenges);
+
+    beforeAll(async () => {
+      await page.setRequestInterception(true);
+      page.on('request', handler);
+    });
+
+    afterAll(async () => {
+      page.off('request', handler);
+      await page.setRequestInterception(false);
     });
   };
 
@@ -136,6 +167,8 @@ describe('Subscription link creation', () => {
   });
 
   describe('when clicking on close button', () => {
+    setupRequestHandler();
+
     beforeAll(async () => {
       await navigateToBankLogin(page);
       await Promise.all([
@@ -150,16 +183,11 @@ describe('Subscription link creation', () => {
   });
 
   describe('when submitting bank credentials and eventually receiving a succesful response', () => {
+    setupRequestHandler();
+
     beforeAll(async () => {
       varSetup();
-      await page.setRequestInterception(true);
-      page.on('request', linkIntentRequestHandler);
       await navigateToSubscriptionConfirmation(page);
-    });
-
-    afterAll(async () => {
-      page.off('request', linkIntentRequestHandler);
-      await page.setRequestInterception(false);
     });
 
     it('posts to fintoc to create a link intent with correct params', () => {
@@ -180,23 +208,21 @@ describe('Subscription link creation', () => {
     it('shows confirmation step', async () => {
       await expect(page).toMatchElement('#confirm-subscription-btn');
     });
+
+    it('shows company name', async () => {
+      const text = await page.$eval('#company-connect-text', (el) => el.textContent);
+      expect(text).toContain(companyName);
+    });
   });
 
   describe('when confirming default bank account and eventually receiving requires action enter_device_code', () => {
-    const requestHandler = (request) => subscriptionRequestHandler(request, 'enter_device_code');
+    setupRequestHandler('enter_device_code');
 
     beforeAll(async () => {
       varSetup();
-      await page.setRequestInterception(true);
-      page.on('request', requestHandler);
       await navigateToSubscriptionConfirmation(page);
       await page.click('#confirm-subscription-btn');
       await page.waitForSelector('#single-code-second-factor-input');
-    });
-
-    afterAll(async () => {
-      page.off('request', requestHandler);
-      await page.setRequestInterception(false);
     });
 
     it('posts to fintoc to create a subscription with correct params', () => {
@@ -244,20 +270,13 @@ describe('Subscription link creation', () => {
 
   describe('when confirming default bank account and eventually receiving requires action enter_coordinates', () => {
     const challenges = ['A1', 'B2', 'C3'];
-    const requestHandler = (request) => subscriptionRequestHandler(request, 'enter_coordinates', challenges);
+    setupRequestHandler('enter_coordinates', challenges);
 
     beforeAll(async () => {
       varSetup();
-      await page.setRequestInterception(true);
-      page.on('request', requestHandler);
       await navigateToSubscriptionConfirmation(page);
       await page.click('#confirm-subscription-btn');
       await page.waitForSelector('#challenge-0');
-    });
-
-    afterAll(async () => {
-      page.off('request', requestHandler);
-      await page.setRequestInterception(false);
     });
 
     it('posts to fintoc to create a subscription with correct params', () => {

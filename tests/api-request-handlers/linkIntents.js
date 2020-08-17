@@ -47,8 +47,6 @@ const requestHandler = ({
       processingCallback,
       successCallback,
     });
-  } else {
-    request.continue();
   }
 };
 

@@ -44,16 +44,13 @@ const requestHandler = ({
   challenges,
   beforeSubmittingSecondFactor,
   respondPollingWithLoadingStatus,
-  linkIntentHandler,
   loadingCallback = () => null,
   requiresActionCallback = () => null,
   successCallback = () => null,
   createdCallback = () => null,
   updatedCallback = () => null,
 }) => {
-  if (request.url().includes('link_intents')) {
-    linkIntentHandler(request);
-  } else if (request.url().endsWith('/internal/v1/accounts/1/subscriptions') && request.method() === 'POST') {
+  if (request.url().endsWith('/internal/v1/accounts/1/subscriptions') && request.method() === 'POST') {
     mockSubscriptionCreation(request, subscriptionId);
     createdCallback(JSON.parse(request.postData()));
   } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}?link_token=${temporaryLinkToken}`)
@@ -72,8 +69,6 @@ const requestHandler = ({
   } else if (request.url().endsWith(`/internal/v1/subscriptions/${subscriptionId}`) && request.method() === 'PATCH') {
     mockSubscriptionUpdate(request, subscriptionId);
     updatedCallback(JSON.parse(request.postData()));
-  } else {
-    request.continue();
   }
 };
 

@@ -307,8 +307,11 @@
                       <font-awesome-icon icon="building"/>
                     </div>
                   </div>
-                  <div class="w-10/12">
-                    Vas a conectar tu cuenta con Fintual
+                  <div
+                    id="company-connect-text"
+                    class="w-10/12"
+                  >
+                    Vas a conectar tu cuenta con {{ subscribableCompanyName }}
                   </div>
                 </div>
                 <div class="text-base font-regular flex flex-wrap items-center h-12 mt-2">
@@ -499,7 +502,7 @@
                 <font-awesome-icon class="m-auto fa-2x" icon="check"/>
               </div>
               <div class="text-2xl text-center leading-tight py-4">
-                Te conectaste exitosamente con Fintual
+                Te conectaste exitosamente con {{ subscribableCompanyName }}
               </div>
               <button @click="handleSubscriptionExit"
                 type="submit"
@@ -606,6 +609,7 @@ export default {
       cardCoordinates: [{ value: '' }, { value: '' }, { value: '' }],
       subscription: {},
       pollingForStatusChange: false,
+      subscribableCompanyName: '',
     };
   },
   props: {
@@ -669,6 +673,13 @@ export default {
         },
       },
     };
+  },
+  beforeMount() {
+    if (this.requestType === 'subscription') {
+      apiClient.widgetConfig.get(this.headers).then(({ data }) => {
+        this.subscribableCompanyName = data.companyName;
+      });
+    }
   },
   computed: {
     holderType() {
