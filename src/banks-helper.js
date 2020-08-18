@@ -61,7 +61,7 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: false, individual: true },
+    holderTypes: { business: true, individual: true },
   },
   {
     code: 'cl_banco_estado',
