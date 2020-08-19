@@ -12,7 +12,7 @@
             </button>
           </div>
           <div class="px-8 pb-8 flex flex-col justify-between">
-            <img class="mx-auto h-16 w-auto rounded-full shadow"
+            <img class="mx-auto h-16 w-auto"
                  src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
             <h1 class="text-2xl mt-4 text-center leading-tight">
               Fintoc se conectará con tu banco

@@ -6,7 +6,7 @@
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <router-link to="/">
-              <img class="h-12" src="../assets/images/fintoc-logo-white.png" alt="Fintoc" />
+              <img class="h-8" src="../assets/images/fintoc-logo-white.png" alt="Fintoc" />
             </router-link>
           </div>
           <div class="hidden md:block">
