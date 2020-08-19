@@ -1,66 +1,127 @@
+/*--------------------------------------------------------------
+# Tailwind
+--------------------------------------------------------------*/
 /* purgecss start ignore */
-@tailwind base;
-
+@import "tailwindcss/base";
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 300;
-  src: url(../fonts/Rubik-Light.ttf)
+  src: url(../fonts/DMSans-Regular.ttf)
        format("truetype");
 }
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 300;
   font-style: italic;
-  src: url(../fonts/Rubik-LightItalic.ttf)
+  src: url(../fonts/DMSans-Italic.ttf)
        format("truetype");
 }
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 400;
-  src: url(../fonts/Rubik-Regular.ttf)
+  src: url(../fonts/DMSans-Regular.ttf)
        format("truetype");
 }
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 500;
-  src: url(../fonts/Rubik-Medium.ttf)
+  src: url(../fonts/DMSans-Medium.ttf)
        format("truetype");
 }
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 500;
   font-style: italic;
-  src: url(../fonts/Rubik-MediumItalic.ttf)
+  src: url(../fonts/DMSans-MediumItalic.ttf)
        format("truetype");
 }
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 600;
-  src: url(../fonts/Rubik-Bold.ttf)
+  src: url(../fonts/DMSans-Bold.ttf)
        format("truetype");
 }
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 600;
   font-style: italic;
-  src: url(../fonts/Rubik-BoldItalic.ttf)
+  src: url(../fonts/DMSans-BoldItalic.ttf)
        format("truetype");
 }
 
 @font-face {
-  font-family: "Rubik";
+  font-family: "DM Sans";
   font-weight: 900;
-  src: url(../fonts/Rubik-Black.ttf)
+  src: url(../fonts/DMSans-Bold.ttf)
        format("truetype");
 }
 
-@tailwind components;
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 300;
+  src: url(../fonts/DMMono-Light.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 300;
+  font-style: italic;
+  src: url(../fonts/DMMono-LightItalic.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 400;
+  src: url(../fonts/DMMono-Regular.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 500;
+  src: url(../fonts/DMMono-Medium.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 500;
+  font-style: italic;
+  src: url(../fonts/DMMono-MediumItalic.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 600;
+  src: url(../fonts/DMMono-Medium.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 600;
+  font-style: italic;
+  src: url(../fonts/DMMono-MediumItalic.ttf)
+       format("truetype");
+}
+
+@font-face {
+  font-family: "DM Mono";
+  font-weight: 900;
+  src: url(../fonts/DMMono-Medium.ttf)
+       format("truetype");
+}
+
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 /* purgecss end ignore */
-@tailwind utilities;
