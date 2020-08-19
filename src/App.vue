@@ -33,7 +33,7 @@ export default {
 @import './assets/css/tailwind.css';
 
 html {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'DMMono', sans-serif;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
