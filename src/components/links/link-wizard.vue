@@ -11,13 +11,13 @@
               <font-awesome-icon icon="times"/>
             </button>
           </div>
-          <div class="px-8 pb-8 flex flex-col justify-between">
-            <img class="mx-auto h-16 w-auto"
+          <div class="px-8 pb-8 flex-1 flex flex-col justify-between">
+            <img class="mx-auto h-12 w-auto"
                  src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
             <h1 class="text-2xl mt-4 text-center leading-tight">
               Fintoc se conectará con tu banco
             </h1>
-            <div class="text-gray-800 mt-1">
+            <div class="text-gray-700 mt-1">
               <div class="text-base font-regular flex flex-wrap items-center h-12">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
@@ -56,26 +56,25 @@
                     type="submit"
                     class="group relative w-full justify-center py-3 px-4 border
                           border-transparent text-l leading-5 rounded-md
-                          text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                          focus:shadow-outline-indigo active:bg-indigo-700 transition
-                          duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide"
+                          text-white fintoc-blue focus:outline-none transition
+                          duration-150 ease-in-out mt-4 hover:opacity-75 tracking-wide"
                     id="intro-continue-btn">
                 Continuar
             </button>
-              <div class="text-center text-sm text-gray-600 mt-4">
-                Al continuar aceptas los
-                <a
-                  class="no-underline border-b border-gray-400"
-                  href="documents/terms-and-conditions.pdf"
-                  target="_blank">
-                    Términos y Condiciones
-                </a> y la
-                <a
-                  class="no-underline border-b border-gray-400"
-                  href="documents/privacy-policies.pdf"
-                  target="_blank">
-                    Política de Privacidad
-                </a>
+            <div class="text-center text-sm text-gray-600 mt-4">
+              Al continuar aceptas los
+              <a
+                class="no-underline border-b border-gray-400"
+                href="documents/terms-and-conditions.pdf"
+                target="_blank">
+                  Términos y Condiciones
+              </a> y la
+              <a
+                class="no-underline border-b border-gray-400"
+                href="documents/privacy-policies.pdf"
+                target="_blank">
+                  Política de Privacidad
+              </a>
             </div>
           </div>
         </div>
@@ -93,14 +92,15 @@
           <div class="flex-1 p-4">
             <div class="h-full">
               <div
-                class="grid grid-cols-2 gap-2 p-2 h-24"
+                class="grid grid-cols-2 gap-2 p-2 h-48"
                 id="bank-btns-container"
               >
                 <button v-for="bank in supportedBanks"
                         v-bind:key='bank.code'
                         @click='selectBank(bank)'
-                        class="border-gray-200 shadow-xs hover:shadow-md py-3 px-1 rounded
-                        transition ease-in-out duration-150">
+                        class="border-gray-200 hover:shadow-md py-3 px-1 rounded-md
+                               transition ease-in-out duration-150 border-t border-b
+                               border-r border-l">
                   <img class="bank-logo h-6 w-auto rounded object-cover mx-auto"
                        :src="bank.logo[holderType]" />
                 </button>
@@ -207,23 +207,20 @@
                 </div>
                 <button type="submit"
                         class="group relative w-full flex justify-center py-4 px-4 border
-                              border-transparent text-sm leading-5 font-medium rounded-md
-                              text-white bg-indigo-600 focus:outline-none
-                              focus:border-indigo-700 focus:shadow-outline-indigo
-                              active:bg-indigo-700 transition duration-150
-                              ease-in-out"
+                               border-transparent text-sm leading-5 font-medium rounded-md
+                               text-white fintoc-blue focus:outline-none transition duration-150
+                               ease-in-out"
                         @click="submitLinkIntent"
-                        :class="{ 'hover:bg-indigo-500': !$v.$invalid,
+                        :class="{ 'hover:opacity-75': !$v.$invalid,
                                   'cursor-not-allowed': $v.$invalid }"
                         id="bank-login-submit-btn">
                   <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                    <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400
-                                transition ease-in-out duration-150"
-                        fill="currentColor"
-                        viewBox="0 0 20 20">
+                    <svg class="h-5 w-5 text-white transition ease-in-out duration-150"
+                         fill="currentColor"
+                         viewBox="0 0 20 20">
                       <path fill-rule="evenodd"
                             d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0
-                              01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                               01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
                             clip-rule="evenodd" />
                     </svg>
                   </span>
@@ -351,9 +348,8 @@
                   type="submit"
                   class="group relative w-full justify-center py-4 px-4 border mt-2
                         border-transparent text-l leading-5 rounded-md
-                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                        focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'"
+                        text-white fintoc-blue focus:outline-none transition
+                        duration-150 ease-in-out tracking-wide hover:opacity-75"
                   id='confirm-subscription-btn'
                 >
                   Continuar
@@ -438,9 +434,8 @@
                   type="submit"
                   class="group relative w-full justify-center py-4 px-4 border
                         border-transparent text-l leading-5 rounded-md
-                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                        focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out tracking-wide 'hover:bg-indigo-500'"
+                        text-white fintoc-blue focus:outline-none transition
+                        duration-150 ease-in-out tracking-wide hover:opacity-75"
                       id='second-factor-auth-btn'
                 >
                   Autorizar
@@ -508,9 +503,8 @@
                 type="submit"
                 class="group relative w-full justify-center py-4 px-4 border
                       border-transparent text-l leading-5 rounded-md
-                      text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                      focus:shadow-outline-indigo active:bg-indigo-700 transition
-                      duration-150 ease-in-out mt-4 tracking-wide hover:bg-indigo-500"
+                      text-white fintoc-blue focus:outline-none transition
+                      duration-150 ease-in-out mt-4 tracking-wide hover:opacity-75"
                 id="subscription-exit-btn"
               >
                 Continuar
@@ -547,10 +541,9 @@
             <button @click="moveTo('bank-log-in')"
                   type="submit"
                   class="group relative w-full flex justify-center py-4 px-4 border
-                        border-transparent text-l leading-5 rounded-md
-                        text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                        focus:shadow-outline-indigo active:bg-indigo-700 transition
-                        duration-150 ease-in-out mt-4 hover:bg-indigo-500 tracking-wide">
+                         border-transparent text-l leading-5 rounded-md
+                         text-white fintoc-blue focus:outline-none transition
+                         duration-150 ease-in-out mt-4 hover:opacity-75 tracking-wide">
               Volver a intentar
             </button>
           </div>
@@ -1067,6 +1060,11 @@ export default {
 </script>
 
 <style scoped>
+.fintoc-blue {
+  background: #101058;
+}
+
+
 .link-frame {
   height: 500px;
   width: 360px;
