@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="bg-white shadow-lg rounded link-frame mx-auto">
+  <div class="bg-white shadow-lg rounded link-frame mx-auto font-sans">
     <div class="w-full h-full">
       <transition name="component-fade" mode="out-in">
         <div v-if='currentStep==="intro"'
