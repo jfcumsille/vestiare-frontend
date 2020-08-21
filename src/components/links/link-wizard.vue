@@ -1060,10 +1060,6 @@ export default {
 </script>
 
 <style scoped>
-.fintoc-blue {
-  background: #101058;
-}
-
 
 .link-frame {
   height: 500px;

@@ -31,6 +31,7 @@ export default {
 
 <style>
 @import './assets/css/tailwind.css';
+@import './assets/css/general.css';
 
 html {
   font-family: 'DMMono', sans-serif;
