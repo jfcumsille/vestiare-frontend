@@ -65,15 +65,15 @@
               Al continuar aceptas los
               <a
                 class="no-underline border-b border-gray-400"
-                href="documents/terms-and-conditions.pdf"
+                href="https://fintoc.com/legal/#terminos-y-condiciones-2"
                 target="_blank">
                   Términos y Condiciones
               </a> y la
               <a
                 class="no-underline border-b border-gray-400"
-                href="documents/privacy-policies.pdf"
+                href="https://fintoc.com/legal/#politicas-de-privacidad-2"
                 target="_blank">
-                  Política de Privacidad
+                  Políticas de Privacidad
               </a>
             </div>
           </div>

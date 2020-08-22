@@ -75,15 +75,15 @@
         Al registrarte, aceptas los
         <a
           class="no-underline border-b border-gray-400"
-          href="documents/dev-terms-and-conditions.pdf"
+          href="https://fintoc.com/legal/#terminos-y-condiciones"
           target="_blank">
             Términos y Condiciones
         </a> y la
         <a
           class="no-underline border-b border-gray-400"
-          href="documents/dev-privacy-policies.pdf"
+          href="https://fintoc.com/legal/#politicas-de-privacidad"
           target="_blank">
-            Política de Privacidad
+            Políticas de Privacidad
         </a>
     </div>
     <div class="text-gray-900 mt-4">
