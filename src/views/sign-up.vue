@@ -2,7 +2,7 @@
 <div class="bg-gray-100 min-h-screen flex flex-col">
   <spinner v-if='showSpinner'></spinner>
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-    <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
+    <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
     <h1 class="mt-2 text-4xl text-center font-medium text-gray-900">
       ¡Bienvenido!
     </h1>
@@ -27,7 +27,7 @@
       <form @submit.prevent="onSubmit" method="POST">
         <input
             type="email"
-            class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-3
+            class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-4
                   rounded-md mt-4 focus:outline-none mb-1"
             name="email"
             placeholder="Email"
@@ -38,7 +38,7 @@
         </div>
         <input
             type="password"
-            class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-3
+            class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-4
                   rounded-md mt-4 focus:outline-none mb-1"
             name="password"
             placeholder="Password"

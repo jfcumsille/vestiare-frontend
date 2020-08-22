@@ -3,7 +3,7 @@
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <spinner v-if='showSpinner'></spinner>
     <div class="max-w-md w-full">
-      <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
+      <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
       <div>
         <h2 class="mt-6 text-center text-4xl leading-9 font-medium text-gray-900">
           Ingresa a tu cuenta
@@ -32,14 +32,14 @@
           <input aria-label="Email address" name="email" type="email"
                  required
                  v-model="email"
-                 class="appearance-none block w-full px-3 py-3 border
+                 class="appearance-none block w-full p-4 border
                         border-gray-400 placeholder-gray-500 text-gray-900 rounded-t-md
                         focus:outline-none focus:shadow-outline-blue focus:border-blue-300
                         focus:z-10 sm:text-sm sm:leading-5" placeholder="Email" />
           <input aria-label="Password" name="password" type="password"
                  required
                  v-model="password"
-                 class="appearance-none relative block w-full px-3 py-3 border border-t-0
+                 class="appearance-none relative block w-full p-4 border border-t-0
                         border-gray-400 placeholder-gray-500 text-gray-900 rounded-b-md
                         focus:outline-none focus:shadow-outline-blue focus:border-blue-300
                         focus:z-10 sm:text-sm sm:leading-5" placeholder="Password" />

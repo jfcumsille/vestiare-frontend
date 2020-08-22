@@ -3,7 +3,7 @@
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <spinner v-if='showSpinner'></spinner>
     <div class="max-w-md w-full">
-      <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
+      <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
       <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3
                   shadow-md mb-4 mt-4"
           role="alert"
@@ -46,7 +46,7 @@
             <input aria-label="Email address" name="email" type="email"
                   required
                   v-model="email"
-                  class="appearance-none block w-full px-3 py-3 border
+                  class="appearance-none block w-full p-4 border
                           border-gray-400 placeholder-gray-500 text-gray-900 rounded-md
                           focus:outline-none focus:shadow-outline-blue focus:border-blue-300
                           focus:z-10 sm:text-sm sm:leading-5" placeholder="Email" />
