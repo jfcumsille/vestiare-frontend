@@ -3,7 +3,7 @@
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <spinner v-if='showSpinner'></spinner>
     <div class="max-w-md w-full">
-      <img class="mx-auto h-16 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
+      <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
       <div>
         <h2 class="mt-6 text-center text-4xl leading-9 font-medium text-gray-900">
           Ingresa a tu cuenta
@@ -32,40 +32,27 @@
           <input aria-label="Email address" name="email" type="email"
                  required
                  v-model="email"
-                 class="appearance-none block w-full px-3 py-3 border
+                 class="appearance-none block w-full p-4 border
                         border-gray-400 placeholder-gray-500 text-gray-900 rounded-t-md
                         focus:outline-none focus:shadow-outline-blue focus:border-blue-300
                         focus:z-10 sm:text-sm sm:leading-5" placeholder="Email" />
           <input aria-label="Password" name="password" type="password"
                  required
                  v-model="password"
-                 class="appearance-none relative block w-full px-3 py-3 border border-t-0
+                 class="appearance-none relative block w-full p-4 border border-t-0
                         border-gray-400 placeholder-gray-500 text-gray-900 rounded-b-md
                         focus:outline-none focus:shadow-outline-blue focus:border-blue-300
                         focus:z-10 sm:text-sm sm:leading-5" placeholder="Password" />
         </div>
 
         <div class="mt-6">
-          <button type="submit"
-                  class="group relative w-full flex justify-center py-3 px-4 border
-                         border-transparent text-sm leading-5 font-medium rounded-md
-                         text-white bg-indigo-600 focus:outline-none focus:border-indigo-700
-                         focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150
-                         ease-in-out"
-                  :class="{ 'hover:bg-indigo-500': !$v.$invalid,
-                            'cursor-not-allowed': $v.$invalid }">
-            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-              <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400 transition ease-in-out
-                          duration-150" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd"
-                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0
-                        01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-              </svg>
-            </span>
+          <action-button
+            :has-lock-icon="true"
+            :invalid-form="$v.$invalid"
+            >
             Login
-          </button>
+          </action-button>
         </div>
-
         <div class="mt-6 flex items-center justify-between">
           <div class="text-sm leading-5 flex items-end">
             <router-link
@@ -85,6 +72,7 @@
 <script>
 import { required, email } from 'vuelidate/lib/validators';
 import Spinner from '../components/spinner.vue';
+import actionButton from '../components/actionButton.vue';
 
 export default {
   data() {
@@ -103,6 +91,7 @@ export default {
     window.analytics.page('Login');
   },
   components: {
+    actionButton,
     Spinner,
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="bg-white shadow-lg rounded link-frame mx-auto">
+  <div class="bg-white shadow-lg rounded link-frame mx-auto font-sans">
     <div class="w-full h-full">
       <transition name="component-fade" mode="out-in">
         <div v-if='currentStep==="intro"'
@@ -12,12 +12,12 @@
             </button>
           </div>
           <div class="px-8 pb-8 flex-1 flex flex-col justify-between">
-            <img class="mx-auto h-12 w-auto"
+            <img class="mx-auto h-10 w-auto"
                  src="../../assets/images/fintoc-isologo.png" alt="fintoc" />
-            <h1 class="text-2xl mt-4 text-center leading-tight">
+            <h1 class="text-2xl mt-4 text-center font-medium px-10 leading-snug">
               Fintoc se conectará con tu banco
             </h1>
-            <div class="text-gray-700 mt-1">
+            <div class="text-gray-600 mt-1">
               <div class="text-base font-regular flex flex-wrap items-center h-12">
                 <div class="w-2/12">
                   <div class="bg-gray-100 shadow w-8 h-8 p-1 text-center align-middle
@@ -52,28 +52,29 @@
                 </div>
               </div>
             </div>
-            <button @click="moveTo('select-bank')"
-                    type="submit"
-                    class="group relative w-full justify-center py-3 px-4 border
-                          border-transparent text-l leading-5 rounded-md
-                          text-white fintoc-blue focus:outline-none transition
-                          duration-150 ease-in-out mt-4 hover:opacity-75 tracking-wide"
-                    id="intro-continue-btn">
+            <div class="py-4">
+              <action-button
+                @click.native="moveTo('select-bank')"
+                id='intro-continue-btn'
+                :has-lock-icon="false"
+                :invalid-form="false"
+                >
                 Continuar
-            </button>
-            <div class="text-center text-sm text-gray-600 mt-4">
+              </action-button>
+            </div>
+            <div class="text-center text-sm text-gray-600">
               Al continuar aceptas los
               <a
                 class="no-underline border-b border-gray-400"
-                href="documents/terms-and-conditions.pdf"
+                href="https://fintoc.com/legal/#terminos-y-condiciones-2"
                 target="_blank">
                   Términos y Condiciones
               </a> y la
               <a
                 class="no-underline border-b border-gray-400"
-                href="documents/privacy-policies.pdf"
+                href="https://fintoc.com/legal/#politicas-de-privacidad-2"
                 target="_blank">
-                  Política de Privacidad
+                  Políticas de Privacidad
               </a>
             </div>
           </div>
@@ -205,27 +206,14 @@
                     </transition>
                   </div>
                 </div>
-                <button type="submit"
-                        class="group relative w-full flex justify-center py-4 px-4 border
-                               border-transparent text-sm leading-5 font-medium rounded-md
-                               text-white fintoc-blue focus:outline-none transition duration-150
-                               ease-in-out"
-                        @click="submitLinkIntent"
-                        :class="{ 'hover:opacity-75': !$v.$invalid,
-                                  'cursor-not-allowed': $v.$invalid }"
-                        id="bank-login-submit-btn">
-                  <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                    <svg class="h-5 w-5 text-white transition ease-in-out duration-150"
-                         fill="currentColor"
-                         viewBox="0 0 20 20">
-                      <path fill-rule="evenodd"
-                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0
-                               01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                  </span>
+                <action-button
+                  @click.native="submitLinkIntent"
+                  id='bank-login-submit-btn'
+                  :has-lock-icon="true"
+                  :invalid-form="$v.$invalid"
+                  >
                   Ingresar
-                </button>
+                </action-button>
               </div>
             </div>
           </div>
@@ -344,16 +332,14 @@
                     </div>
                   </button>
                 </div>
-                <button @click="handleConfirmSubscription"
-                  type="submit"
-                  class="group relative w-full justify-center py-4 px-4 border mt-2
-                        border-transparent text-l leading-5 rounded-md
-                        text-white fintoc-blue focus:outline-none transition
-                        duration-150 ease-in-out tracking-wide hover:opacity-75"
+                <action-button
+                  @click.native="handleConfirmSubscription"
                   id='confirm-subscription-btn'
-                >
+                  :has-lock-icon="true"
+                  :invalid-form="false"
+                  >
                   Continuar
-                </button>
+                </action-button>
               </div>
             </div>
           </div>
@@ -430,16 +416,14 @@
                     >
                   </div>
                 </div>
-                <button @click="submitSecondFactor"
-                  type="submit"
-                  class="group relative w-full justify-center py-4 px-4 border
-                        border-transparent text-l leading-5 rounded-md
-                        text-white fintoc-blue focus:outline-none transition
-                        duration-150 ease-in-out tracking-wide hover:opacity-75"
-                      id='second-factor-auth-btn'
-                >
+                <action-button
+                  @click.native="submitSecondFactor"
+                  id='second-factor-auth-btn'
+                  :has-lock-icon="true"
+                  :invalid-form="false"
+                  >
                   Autorizar
-                </button>
+                </action-button>
               </div>
             </div>
           </div>
@@ -499,16 +483,14 @@
               <div class="text-2xl text-center leading-tight py-4">
                 Te conectaste exitosamente con {{ subscribableCompanyName }}
               </div>
-              <button @click="handleSubscriptionExit"
-                type="submit"
-                class="group relative w-full justify-center py-4 px-4 border
-                      border-transparent text-l leading-5 rounded-md
-                      text-white fintoc-blue focus:outline-none transition
-                      duration-150 ease-in-out mt-4 tracking-wide hover:opacity-75"
-                id="subscription-exit-btn"
-              >
+              <action-button
+                @click.native="handleSubscriptionExit"
+                id='subscription-exit-btn'
+                :has-lock-icon="false"
+                :invalid-form="false"
+                >
                 Continuar
-              </button>
+              </action-button>
             </div>
           </div>
         </div>
@@ -538,14 +520,13 @@
                 </p>
               </div>
             </div>
-            <button @click="moveTo('bank-log-in')"
-                  type="submit"
-                  class="group relative w-full flex justify-center py-4 px-4 border
-                         border-transparent text-l leading-5 rounded-md
-                         text-white fintoc-blue focus:outline-none transition
-                         duration-150 ease-in-out mt-4 hover:opacity-75 tracking-wide">
-              Volver a intentar
-            </button>
+            <action-button
+              @click.native="moveTo('bank-log-in')"
+              :has-lock-icon="false"
+              :invalid-form="false"
+              >
+              Continuar
+            </action-button>
           </div>
         </div>
       </transition>
@@ -564,6 +545,7 @@ import { availableBanks } from '../../banks-helper';
 import { getValidUrl } from '../../helpers/widget_helper';
 import errorObject from '../../helpers/error_object';
 import apiClient from '../../api';
+import actionButton from '../actionButton.vue';
 
 const LINK_STEPS = [
   'intro',
@@ -628,6 +610,7 @@ export default {
     },
   },
   components: {
+    actionButton,
     Spinner,
     VueElementLoading,
     WidgetNav,
@@ -1060,10 +1043,6 @@ export default {
 </script>
 
 <style scoped>
-.fintoc-blue {
-  background: #101058;
-}
-
 
 .link-frame {
   height: 500px;

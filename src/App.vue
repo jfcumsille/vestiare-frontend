@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="font-sans">
     <Navbar v-if="showNavbar"></Navbar>
     <router-view></router-view>
   </div>
@@ -31,6 +31,7 @@ export default {
 
 <style>
 @import './assets/css/tailwind.css';
+@import './assets/css/general.css';
 
 html {
   font-family: 'DMMono', sans-serif;
