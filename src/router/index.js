@@ -10,6 +10,7 @@ import RecoverPassword from '../views/recover-password.vue';
 import Links from '../views/links.vue';
 import NewLink from '../views/new-link.vue';
 import WidgetIframe from '../views/widget-iframe.vue';
+import UserProfile from '../views/user-profile.vue';
 import RequestNewBank from '../views/request-new-bank.vue';
 import ApiKeys from '../views/api-keys.vue';
 import Error from '../views/error.vue';
@@ -76,6 +77,17 @@ const routes = [
   {
     path: '/links/new',
     component: NewLink,
+    beforeEnter(to, from, next) {
+      if (store.getters.isUserLoggedIn) {
+        next();
+      } else {
+        next('login');
+      }
+    },
+  },
+  {
+    path: '/user-profile',
+    component: UserProfile,
     beforeEnter(to, from, next) {
       if (store.getters.isUserLoggedIn) {
         next();

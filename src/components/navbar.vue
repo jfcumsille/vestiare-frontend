@@ -42,7 +42,7 @@
                Documentación
             </a>
             <!-- Profile dropdown -->
-            <div class="ml-3 relative">
+            <div class="ml-3 z-30 relative">
               <div>
                 <button class="max-w-xs flex items-center text-base rounded-full text-white
                                focus:outline-none focus:shadow-solid"
@@ -54,14 +54,22 @@
                 </button>
               </div>
               <transition name='drop-down-ease-out'>
-                <div v-show='showDropDown'
-                    class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
-                  <div class="rounded-md bg-white shadow-xs"
+                <div
+                    v-show='showDropDown'
+                    class="origin-top-right absolute right-0 mr-1 mt-2 w-48 rounded-md shadow-lg">
+                  <router-link
+                      to="/user-profile"
+                      class="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200 w-full
+                             text-left rounded-t-md bg-white"
+                  >
+                    Mi perfil
+                  </router-link>
+                  <div class="rounded-b-md bg-white shadow-xs"
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="user-menu">
-                    <button class="block px-4 py-2 text-base text-gray-700 hover:bg-gray-100 w-full
-                                   text-left rounded-md"
+                    <button class="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200 w-full
+                                   text-left"
                             role="menuitem"
                             @click='signOut'>
                       Salir
@@ -114,6 +122,15 @@
                    block px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
                    hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
           Api keys
+        </router-link>
+        <router-link
+            to="/user-profile"
+            active-class="bg-gray-900 text-white"
+            class="block px-3 py-2 rounded-md text-base font-semibold text-gray-400
+                  hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
+                  focus:bg-gray-700"
+        >
+          Mi perfil
         </router-link>
       </div>
       <div class="pt-3 pb-3 border-t border-gray-700">
