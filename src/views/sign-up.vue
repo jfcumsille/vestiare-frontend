@@ -3,12 +3,9 @@
   <spinner v-if='showSpinner'></spinner>
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
-    <h1 class="mt-2 text-4xl text-center font-medium text-gray-900">
-      ¡Bienvenido!
-    </h1>
-    <h2 class="mb-2 text-4xl text-center font-regular text-gray-900">
+    <h1 class="m-5 text-4xl text-center font-regular text-gray-900">
       Regístrate acá 👇
-    </h2>
+    </h1>
     <div class="w-full">
       <div class="bg-red-100 border-t-4 border-red-500 rounded-b text-red-900 px-4 py-3
                   shadow-md mb-4 mt-2"
@@ -25,31 +22,123 @@
         </div>
       </div>
       <form @submit.prevent="onSubmit" method="POST">
-        <input
-            type="email"
-            class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-4
-                  rounded-md mt-4 focus:outline-none mb-1"
-            name="email"
-            placeholder="Email"
-            v-model.trim.lazy="$v.email.$model">
-        <div class='text-red-700' v-if="!$v.email.email">Ingresa un email válido 👮🏽‍♀️</div>
-        <div class='text-red-700' v-if="!$v.email.required && $v.email.$error">
-          Este campo es obligatorio
+        <div class="h-20">
+          <div class="w-full flex flex-col">
+            <input
+                class="appearance-none block w-full bg-grey-lighter text-grey-900
+                      border border-grey-lighter rounded py-4 px-4 leading-tight
+                      focus:outline-none focus:shadow-sm"
+                type="text"
+                name="name"
+                placeholder="Nombre"
+                @blur='touchIfPresentElseReset($v.name)'
+                v-model.trim.lazy="$v.name.$model"
+            >
+            <transition name="vertical-slide-fade">
+              <p
+                class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                v-if="name !== ''"
+              >
+                Nombre
+              </p>
+            </transition>
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.name.minLength">
+            Ingresa un nombre válido 👮🏽‍♀
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.name.required && $v.name.$error">
+            Este campo es obligatorio
+          </div>
         </div>
-        <input
-            type="password"
-            class="border border-gray-400 placeholder-gray-500 text-gray-900 w-full p-4
-                  rounded-md mt-4 focus:outline-none mb-1"
-            name="password"
-            placeholder="Password"
-            v-model.trim="$v.password.$model">
-        <div class='text-red-700' v-if="!$v.password.required && $v.password.$error">
-          Este campo es obligatorio
+
+        <div class="h-20">
+          <div class="w-full flex flex-col">
+            <input
+                class="appearance-none block w-full bg-grey-lighter text-grey-900
+                      border border-grey-lighter rounded py-4 px-4 leading-tight
+                      focus:outline-none focus:shadow-sm"
+                type="text"
+                name="lastName"
+                placeholder="Apellido"
+                @blur='touchIfPresentElseReset($v.lastName)'
+                v-model.trim.lazy="$v.lastName.$model"
+            >
+            <transition lastName="vertical-slide-fade">
+              <p
+                class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                v-if="lastName !== ''"
+              >
+                Apellido
+              </p>
+            </transition>
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.lastName.minLength">
+            Ingresa un apellido válido 👮🏽‍♀️
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.lastName.required && $v.lastName.$error">
+            Este campo es obligatorio
+          </div>
         </div>
-        <div class='text-red-700' v-if="!$v.password.minLength && $v.password.$error">
-          La contraseña debe tener un mínimo de {{$v.password.$params.minLength.min}} caracteres
+
+        <div class="h-20">
+          <div class="w-full flex flex-col">
+            <input
+                class="appearance-none block w-full bg-grey-lighter text-grey-900
+                      border border-grey-lighter rounded py-4 px-4 leading-tight
+                      focus:outline-none focus:shadow-sm"
+                type="email"
+                name="email"
+                placeholder="Email"
+                @blur='touchIfPresentElseReset($v.email)'
+                v-model.trim.lazy="$v.email.$model"
+            >
+            <transition name="vertical-slide-fade">
+              <p
+                class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                v-if="email !== ''"
+              >
+                Email
+              </p>
+            </transition>
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.email.email">
+            Ingresa un email válido 👮🏽‍♀️
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.email.required && $v.email.$error">
+            Este campo es obligatorio
+          </div>
         </div>
-        <div class="mt-4">
+
+        <div class="h-20">
+          <div class="w-full flex flex-col">
+            <input
+                class="appearance-none block w-full bg-grey-lighter text-grey-900
+                      border border-grey-lighter rounded py-4 px-4 leading-tight
+                      focus:outline-none focus:shadow-sm"
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                @blur='touchIfPresentElseReset($v.password)'
+                v-model.trim.lazy="$v.password.$model"
+            >
+            <transition password="vertical-slide-fade">
+              <p
+                class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
+                v-if="password !== ''"
+              >
+                Contraseña
+              </p>
+            </transition>
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.password.minLength && $v.password.$error">
+            La contraseña debe tener un mínimo de {{$v.password.$params.minLength.min}} caracteres
+          </div>
+          <div class='text-red-700 text-xs' v-if="!$v.password.required && $v.password.$error">
+            Este campo es obligatorio
+          </div>
+        </div>
+
+        <div class="mt-2">
           <action-button
             :has-lock-icon="true"
             :invalid-form="$v.$invalid"
@@ -59,6 +148,7 @@
         </div>
       </form>
     </div>
+
     <div class="text-center text-sm text-gray-600 mt-4">
         Al registrarte, aceptas los
         <a
@@ -74,14 +164,15 @@
             Políticas de Privacidad
         </a>
     </div>
+
     <div class="text-gray-900 mt-4">
-    ¿Ya tienes una cuenta?
-    <router-link to="../login/"
-                 class="font-medium text-indigo-600 hover:text-indigo-800 focus:outline-none
-                        focus:underline transition ease-in-out duration-150">
-        Log in
-    </router-link>
-  </div>
+      ¿Ya tienes una cuenta?
+      <router-link to="../login/"
+                  class="font-medium text-indigo-600 hover:text-indigo-800 focus:outline-none
+                          focus:underline transition ease-in-out duration-150">
+          Log in
+      </router-link>
+    </div>
   </div>
 </div>
 </template>
@@ -94,7 +185,8 @@ import Spinner from '../components/spinner.vue';
 export default {
   data() {
     return {
-      name: 'remove-field',
+      name: '',
+      lastName: '',
       email: '',
       password: '',
       showFormError: false,
@@ -110,6 +202,7 @@ export default {
 
       const formData = {
         name: this.name,
+        lastName: this.lastName,
         email: this.email,
         password: this.password,
       };
@@ -132,6 +225,13 @@ export default {
         this.$router.push('/links');
       }
     },
+    touchIfPresentElseReset(field) {
+      if (field.$model !== '') {
+        field.$touch();
+      } else {
+        field.$reset();
+      }
+    },
     trackUserSignedUpEvent() {
       const userData = this.$store.getters.retrieveSessionFromStorage;
       window.analytics.identify(userData.userId, {
@@ -149,6 +249,14 @@ export default {
       email,
       required,
     },
+    name: {
+      required,
+      minLength: minLength(2),
+    },
+    lastName: {
+      required,
+      minLength: minLength(2),
+    },
     password: {
       required,
       minLength: minLength(8),
@@ -156,3 +264,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  .vertical-slide-fade-enter,
+  .vertical-slide-fade-leave-to {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+
+  .vertical-slide-fade-enter-active,
+  .vertical-slide-fade-leave-active {
+    transition: all .5s ease;
+  }
+</style>
