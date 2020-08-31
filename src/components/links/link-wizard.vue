@@ -7,7 +7,7 @@
           class="h-full flex flex-col"
           :key="currentStep">
           <div class="pt-6 px-6 flex justify-end">
-            <button @click="cancelLinkCreation" class="text-gray-700">
+            <button @click="cancelLinkCreation" class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </div>
@@ -81,11 +81,11 @@
         </div>
         <div v-if='currentStep==="select-bank"' class='h-full flex flex-col' :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('intro')" slot='backButton'>
+            <button @click="moveTo('intro')" slot='backButton' class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Selecciona tu banco</h1>
-            <button @click="cancelLinkCreation" slot='closeButton'>
+            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -111,11 +111,12 @@
         </div>
         <div v-if='currentStep==="bank-log-in"' class='h-full flex flex-col' :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('select-bank')" slot='backButton'>
+            <button @click="moveTo('select-bank')" slot='backButton' class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Ingresa</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' id="exit-btn">
+            <button @click="cancelLinkCreation" slot='closeButton' id="exit-btn"
+                    class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -220,11 +221,12 @@
         </div>
         <div v-if='currentStep==="select-account"' class='h-full flex flex-col' :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('confirm-subscription')" slot='backButton'>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'
+                    class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Selecciona una cuenta</h1>
-            <button @click="cancelLinkCreation" slot='closeButton'>
+            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -266,11 +268,11 @@
              class='h-full flex flex-col'
              :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('intro')" slot='backButton'>
+            <button @click="moveTo('intro')" slot='backButton' class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton'>
+            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -346,11 +348,12 @@
         </div>
         <div v-if='currentStep==="second-factor"' class="h-full flex flex-col" :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('confirm-subscription')" slot='backButton'>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'
+                    class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Segundo Factor</h1>
-            <button @click="cancelLinkCreation" slot='closeButton'>
+            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -430,11 +433,12 @@
         </div>
         <div v-if='currentStep==="wait-for-app"' class="h-full flex flex-col" :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('confirm-subscription')" slot='backButton'>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'
+                    class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton'>
+            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -461,11 +465,12 @@
              class='h-full flex flex-col'
              :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('confirm-subscription')" slot='backButton'>
+            <button @click="moveTo('confirm-subscription')" slot='backButton'
+                    class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton'>
+            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -498,7 +503,7 @@
              class='h-full flex flex-col'
              :key="currentStep">
           <widget-nav>
-            <button @click="moveTo('bank-log-in')" slot='backButton'>
+            <button @click="moveTo('bank-log-in')" slot='backButton' class="focus:outline-none">
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Error</h1>
