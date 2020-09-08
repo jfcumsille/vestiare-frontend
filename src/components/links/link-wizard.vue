@@ -93,7 +93,7 @@
           <div class="flex-1 p-4">
             <div class="h-full">
               <div
-                class="grid grid-cols-2 gap-2 p-2 h-48"
+                class="grid grid-cols-2 gap-2 p-2"
                 id="bank-btns-container"
               >
                 <button v-for="bank in supportedBanks"
@@ -101,7 +101,7 @@
                         @click='selectBank(bank)'
                         class="border-gray-200 hover:shadow-md py-3 px-1 rounded-md
                                transition ease-in-out duration-150 border-t border-b
-                               border-r border-l">
+                               border-r border-l h-20">
                   <img class="bank-logo h-6 w-auto rounded object-cover mx-auto"
                        :src="bank.logo[holderType]" />
                 </button>
@@ -130,7 +130,8 @@
             <div class="h-full flex flex-col px-6 py-6"
                  :class="{ 'justify-between': holderType === 'business' }">
               <img class="bank-logo h-12 rounded object-cover mx-auto"
-                   :src="bank.logo[holderType]" />
+                   :src="bank.logo[holderType]"
+                   :class="{ 'mt-1': holderType === 'business' }">
               <div class="pt-6">
                 <div class="h-20">
                   <div class="w-full flex flex-col">
