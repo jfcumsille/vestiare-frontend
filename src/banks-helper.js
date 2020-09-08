@@ -107,7 +107,7 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: true, individual: false },
+    holderTypes: { business: true, individual: true },
   },
   {
     code: 'cl_banco_falabella',
