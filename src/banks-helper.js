@@ -13,11 +13,15 @@ import bciSmallLogo from 'chilean-bank-images/bci/small.png';
 import bancoEstadoLogo from 'chilean-bank-images/banco-estado/big.png';
 import bancoEstadoSmallLogo from 'chilean-bank-images/banco-estado/small.png';
 
-import itauLogo from 'chilean-bank-images/itau/itau.png';
+import itauLogo from 'chilean-bank-images/itau/big.png';
+
+import scotiabankLogo from 'chilean-bank-images/scotiabank/big.png';
+
+import biceLogo from 'chilean-bank-images/bice/big.png';
+
 
 // Pending images.
 import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
-import scotiabankLogo from 'chilean-bank-images/scotiabank/scotiabank-complete.png';
 import securityLogo from 'chilean-bank-images/banco-security/security-complete.png';
 /* eslint-enable import/no-extraneous-dependencies */
 
@@ -64,6 +68,20 @@ const availableBanks = [
     holderTypes: { business: true, individual: true },
   },
   {
+    code: 'cl_banco_bice',
+    label: 'BICE',
+    logo: {
+      individual: biceLogo,
+      business: biceLogo,
+    },
+    smallLogo: biceLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    holderTypes: { business: true, individual: false },
+  },
+  {
     code: 'cl_banco_estado',
     label: 'Banco Estado',
     logo: {
@@ -89,7 +107,7 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: false, individual: false },
+    holderTypes: { business: true, individual: false },
   },
   {
     code: 'cl_banco_falabella',
@@ -111,11 +129,12 @@ const availableBanks = [
       individual: scotiabankLogo,
       business: scotiabankLogo,
     },
+    smallLogo: scotiabankLogo,
     specialIndication: {
       business: null,
       individual: null,
     },
-    holderTypes: { business: false, individual: false },
+    holderTypes: { business: true, individual: true },
   },
   {
     code: 'cl_banco_security',
