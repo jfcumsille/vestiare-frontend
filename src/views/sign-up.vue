@@ -121,7 +121,7 @@
                 @blur='touchIfPresentElseReset($v.password)'
                 v-model.trim.lazy="$v.password.$model"
             >
-            <transition password="vertical-slide-fade">
+            <transition name="vertical-slide-fade">
               <p
                 class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
                 v-if="password !== ''"
