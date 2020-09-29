@@ -791,7 +791,7 @@ export default {
     },
 
     isSoftRequest() {
-      return this.$route.query['soft-request'] === 'true';
+      return this.$route.query.soft_request === 'true';
     },
 
     // Special handling for soft-request.
