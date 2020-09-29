@@ -790,14 +790,22 @@ export default {
       this.$emit('linkCreated', link);
     },
 
+    isSoftRequest() {
+      return this.$route.query['soft-request'] === 'true';
+    },
+
     handleLinkIntentResponse(linkIntentResponse) {
       const { status } = linkIntentResponse;
       if (status === 'succeeded') {
         this.handleSucceededLinkIntent(linkIntentResponse);
       } else if (status === 'rejected') {
         this.errorCode = linkIntentResponse.reason || 'invalid_credentials';
-        this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
-        this.trackLinkCreationFailedEvent(this.errorCode);
+        if (this.errorCode === 'invalid_credentials' && this.isSoftRequest === true) {
+          this.handleSucceededLinkIntent(linkIntentResponse);
+        } else {
+          this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
+          this.trackLinkCreationFailedEvent(this.errorCode);
+        }
       } else if (status === 'failed') {
         this.stopSpinnerClearIntervalAndMove(this.interval, 'error');
         this.trackLinkCreationFailedEvent(this.errorCode);
