@@ -63,7 +63,7 @@
                 @blur='touchIfPresentElseReset($v.lastName)'
                 v-model.trim.lazy="$v.lastName.$model"
             >
-            <transition lastName="vertical-slide-fade">
+            <transition name="vertical-slide-fade">
               <p
                 class='z-10 absolute text-sm self-end py-4 pr-5 text-gray-600'
                 v-if="lastName !== ''"
