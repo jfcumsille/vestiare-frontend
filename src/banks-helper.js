@@ -14,10 +14,13 @@ import bancoEstadoLogo from 'chilean-bank-images/banco-estado/big.png';
 import bancoEstadoSmallLogo from 'chilean-bank-images/banco-estado/small.png';
 
 import itauLogo from 'chilean-bank-images/itau/big.png';
+import itauSmallLogo from 'chilean-bank-images/itau/small.png';
 
 import scotiabankLogo from 'chilean-bank-images/scotiabank/big.png';
+import scotiabankSmallLogo from 'chilean-bank-images/scotiabank/small.png';
 
 import biceLogo from 'chilean-bank-images/bice/big.png';
+import biceSmallLogo from 'chilean-bank-images/bice/small.png';
 
 
 // Pending images.
@@ -74,7 +77,7 @@ const availableBanks = [
       individual: biceLogo,
       business: biceLogo,
     },
-    smallLogo: biceLogo,
+    smallLogo: biceSmallLogo,
     specialIndication: {
       business: null,
       individual: null,
@@ -102,7 +105,7 @@ const availableBanks = [
       individual: itauLogo,
       business: itauLogo,
     },
-    smallLogo: itauLogo,
+    smallLogo: itauSmallLogo,
     specialIndication: {
       business: null,
       individual: null,
@@ -129,7 +132,7 @@ const availableBanks = [
       individual: scotiabankLogo,
       business: scotiabankLogo,
     },
-    smallLogo: scotiabankLogo,
+    smallLogo: scotiabankSmallLogo,
     specialIndication: {
       business: null,
       individual: null,
