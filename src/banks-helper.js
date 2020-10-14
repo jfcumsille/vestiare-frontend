@@ -41,7 +41,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: true, individual: true },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: true, movements: true },
+    },
   },
   {
     code: 'cl_banco_santander',
@@ -54,7 +57,10 @@ const availableBanks = [
     specialIndication: {
       business: 'El usuario debe tener permisos para ver el saldo, cartola provisoria y movimientos históricos',
     },
-    holderTypes: { business: true, individual: true },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: true, movements: false },
+    },
   },
   {
     code: 'cl_banco_bci',
@@ -68,7 +74,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: true, individual: true },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: true, movements: false },
+    },
   },
   {
     code: 'cl_banco_bice',
@@ -82,7 +91,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: true, individual: false },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: false, movements: false },
+    },
   },
   {
     code: 'cl_banco_estado',
@@ -96,7 +108,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: true, individual: false },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: false, movements: false },
+    },
   },
   {
     code: 'cl_banco_itau',
@@ -110,7 +125,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: true, individual: true },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: true, movements: false },
+    },
   },
   {
     code: 'cl_banco_falabella',
@@ -123,7 +141,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: false, individual: false },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
   },
   {
     code: 'cl_banco_scotiabank',
@@ -137,7 +158,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: true, individual: true },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: true, movements: false },
+    },
   },
   {
     code: 'cl_banco_security',
@@ -150,7 +174,10 @@ const availableBanks = [
       business: null,
       individual: null,
     },
-    holderTypes: { business: false, individual: false },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
   },
 ];
 
