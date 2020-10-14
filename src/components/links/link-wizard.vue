@@ -674,7 +674,9 @@ export default {
       return this.holderType === 'business';
     },
     supportedBanks() {
-      return availableBanks.filter((bank) => bank.holderTypes[this.holderType] === true);
+      return availableBanks.filter(
+        (bank) => bank.isAvailable[this.holderType][this.requestType],
+      );
     },
     currentWizard() {
       if (LINK_STEPS.includes(this.currentStep)) return 'link';
