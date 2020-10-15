@@ -610,7 +610,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    requestType: {
+    product: {
       type: String,
       default: '',
     },
@@ -657,7 +657,7 @@ export default {
     };
   },
   beforeMount() {
-    if (this.requestType === 'subscription') {
+    if (this.product === 'subscription') {
       apiClient.widgetConfig.get(this.headers).then(({ data }) => {
         this.subscribableCompanyName = data.companyName;
       });
@@ -675,7 +675,7 @@ export default {
     },
     supportedBanks() {
       return availableBanks.filter(
-        (bank) => bank.isAvailable[this.holderType][this.requestType],
+        (bank) => bank.isAvailable[this.holderType][this.product],
       );
     },
     currentWizard() {
@@ -760,7 +760,7 @@ export default {
       };
 
       return {
-        link_data: { ...formFields, product: this.requestType }, ...this.extraFields,
+        link_data: { ...formFields, product: this.product }, ...this.extraFields,
       };
     },
 
@@ -782,7 +782,7 @@ export default {
       const { link } = linkIntentResponse;
       this.linkId = link.id;
       this.linkToken = link.temporaryLinkToken;
-      if (this.requestType === 'subscription') {
+      if (this.product === 'subscription') {
         this.handleFetchedAccounts(link.accounts);
         this.moveTo('confirm-subscription');
       }
@@ -984,7 +984,7 @@ export default {
         holder_id: link.holder_id,
         username: link.username,
         created_through: this.createdThrough,
-        product: this.requestType,
+        product: this.product,
       });
     },
     trackWidgetStepCompletedEvent(nextStep) {
@@ -997,7 +997,7 @@ export default {
       const properties = this.getComponentPropertiesToTrack();
       window.analytics.track('Widget Step Completed', {
         step: this.currentStep,
-        product: this.requestType,
+        product: this.product,
         ...properties,
       });
     },

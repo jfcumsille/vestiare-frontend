@@ -22,7 +22,6 @@ import scotiabankSmallLogo from 'chilean-bank-images/scotiabank/small.png';
 import biceLogo from 'chilean-bank-images/bice/big.png';
 import biceSmallLogo from 'chilean-bank-images/bice/small.png';
 
-
 // Pending images.
 import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
 import securityLogo from 'chilean-bank-images/banco-security/security-complete.png';

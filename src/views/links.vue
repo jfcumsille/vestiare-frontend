@@ -15,13 +15,13 @@
             </div>
           </div>
           <div class="mt-4 text-right">
-            <router-link to="/links/new?holder_type=individual"
+            <router-link to="/links/new?holder_type=individual&product=movements"
               :class="{ 'text-xs': shouldShowTable }"
               class="px-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
                       text-gray-900 hover:bg-gray-300">
               <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Nuevo link personas
             </router-link>
-            <router-link to="/links/new?holder_type=business"
+            <router-link to="/links/new?holder_type=business&product=movements"
               :class="{ 'text-xs': shouldShowTable }"
               class="px-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
                       text-gray-900 hover:bg-gray-300">

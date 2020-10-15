@@ -4,7 +4,8 @@
     @linkCreated='onLinkCreated'
     :createdThrough="'dashboard'"
     :submitAction="'createUserLinkFromDashboard'"
-    :headers="formHeaders">
+    :headers="formHeaders"
+    :product="product">
   </link-wizard>
   <link-detail v-if="!showForm"
       :bank='bank'
@@ -42,6 +43,9 @@ export default {
   computed: {
     formHeaders() {
       return this.$store.getters.authHeaders;
+    },
+    product() {
+      return this.$route.query.product || 'movements';
     },
   },
   methods: {
