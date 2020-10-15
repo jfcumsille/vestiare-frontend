@@ -7,7 +7,7 @@
     :submitAction="'createUserLinkFromWidget'"
     :headers="formHeaders"
     :extraFields="extraFields"
-    :requestType="requestType">
+    :product="product">
   </link-wizard>
 </div>
 </template>
@@ -25,7 +25,7 @@ export default {
     LinkWizard,
   },
   computed: {
-    requestType() {
+    product() {
       return this.$route.query.product || 'movements';
     },
     apiKey() {
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     onLinkCreated(link) {
-      if (this.requestType === 'movements') {
+      if (this.product === 'movements') {
         this.redirectFromMovementCreation(link);
       }
     },
