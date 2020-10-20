@@ -39,10 +39,11 @@ const actions = {
   },
   destroyUserLink(context, linkId) {
     const url = `/v1/links/${linkId}`;
-    axiosAuth.delete(url, { headers: this.getters.authHeaders })
-      .then(() => {
+    return axiosAuth.delete(url, { headers: this.getters.authHeaders })
+      .then((response) => {
         // TODO: notify link deletion.
         this.dispatch('getUserLinks');
+        return response;
       })
       .catch((error) => console.log(error));
   },
