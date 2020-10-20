@@ -10,7 +10,7 @@
             <link-table v-if="shouldShowTable"></link-table>
             <div v-if="!shouldShowTable" class="text-center">
               <h1 class="text-4xl mt-4">
-                Todavía no agregaste ninguna credencial 👀
+                Todavía no agregas ninguna credencial 👀
               </h1>
             </div>
           </div>
