@@ -160,7 +160,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 import Spinner from '../spinner.vue';
 
 export default {
@@ -173,9 +173,9 @@ export default {
   },
 
   computed: {
-    ...mapGetters([
-      'userLinks',
-    ]),
+    ...mapState({
+      userLinks: (state) => state.links.userLinks,
+    }),
   },
 
   components: {

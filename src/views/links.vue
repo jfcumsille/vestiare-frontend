@@ -2,12 +2,16 @@
 <div class="bg-gray-200">
   <main class="h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative">
-      <spinner v-if="shouldShowSpinner"></spinner>
-      <div class="flex flex-col">
+      <div class="grid place-items-center">
+        <spinner v-if="loadingLinks"></spinner>
+      </div>
+      <div v-if="!loadingLinks" class="flex flex-col">
         <div class="overflow-x-auto">
           <div class="align-middle inline-block min-w-full overflow-hidden
                       sm:rounded-md border-gray-200">
-            <link-table v-if="shouldShowTable"></link-table>
+
+            <link-table v-if="shouldShowTable" />
+
             <div v-if="!shouldShowTable" class="text-center">
               <h1 class="text-4xl mt-4">
                 Todavía no agregas ninguna credencial 👀
@@ -30,40 +34,36 @@
           </div>
         </div>
       </div>
+
     </div>
   </main>
 </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import LinkTable from '../components/links/link-table.vue';
-import Spinner from '../components/spinner.vue';
+import Spinner from '../components/lib/spinner.vue';
 
 export default {
-  data() {
-    return {
-      retrievingUserLinks: false,
-    };
-  },
   created() {
-    this.retrievingUserLinks = true;
-    this.$store.dispatch('getUserLinks').then(() => {
-      this.retrievingUserLinks = false;
-    });
+    this.getUserLinks();
   },
   mounted() {
     window.analytics.page('Links');
   },
-  computed: {
-    ...mapGetters([
-      'userLinks',
+  methods: {
+    ...mapActions([
+      'getUserLinks',
     ]),
+  },
+  computed: {
+    ...mapState({
+      userLinks: (state) => state.links.userLinks,
+      loadingLinks: (state) => state.links.loading,
+    }),
     shouldShowTable() {
-      return this.userLinks.length !== 0;
-    },
-    shouldShowSpinner() {
-      return this.$store.getters.userLinks.length === 0 && this.retrievingUserLinks;
+      return !this.loadingLinks && this.userLinks.length !== 0;
     },
   },
   components: {
