@@ -1,6 +1,6 @@
 export default {
   state: {
-    show: true,
+    show: false,
   },
   getters: {
   },

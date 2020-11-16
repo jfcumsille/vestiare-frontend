@@ -13,110 +13,90 @@ import WidgetIframe from '../views/widget-iframe.vue';
 import UserProfile from '../views/user-profile.vue';
 import RequestNewBank from '../views/request-new-bank.vue';
 import ApiKeys from '../views/api-keys.vue';
+import Onboarding from '../views/onboarding.vue';
 import Error from '../views/error.vue';
 import { validateQueryParams } from '../helpers/widget_helper';
 
 Vue.use(VueRouter);
 
+const guardLogin = (to, from, next) => {
+  if (store.getters.isUserLoggedIn) {
+    next();
+  } else {
+    next('login');
+  }
+};
+
+const guardApp = (to, from, next) => {
+  if (store.getters.isUserLoggedIn) {
+    next('links');
+  } else {
+    next();
+  }
+};
+
+const guardLoginAndOnboarding = async (to, from, next) => {
+  if (store.getters.isUserLoggedIn) {
+    if (store.state.onboarding.show === false) {
+      next();
+    } else {
+      next('onboarding');
+    }
+  } else {
+    next('login');
+  }
+};
+
 const routes = [
   {
     path: '/login',
     component: LogIn,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next('links');
-      } else {
-        next();
-      }
-    },
+    beforeEnter: guardApp,
   },
   {
     path: '/signup',
     component: SignUp,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next('links');
-      } else {
-        next();
-      }
-    },
+    beforeEnter: guardApp,
   },
   {
     path: '/recover-password',
     component: RecoverPassword,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next('links');
-      } else {
-        next();
-      }
-    },
+    beforeEnter: guardApp,
   },
   {
     path: '/change-password',
     component: ChangePassword,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next('links');
-      } else {
-        next();
-      }
-    },
+    beforeEnter: guardApp,
   },
   {
     path: '/links',
     component: Links,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next();
-      } else {
-        next('login');
-      }
-    },
+    beforeEnter: guardLoginAndOnboarding,
   },
   {
     path: '/links/new',
     component: NewLink,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next();
-      } else {
-        next('login');
-      }
-    },
+    beforeEnter: guardLoginAndOnboarding,
   },
   {
     path: '/user-profile',
     component: UserProfile,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next();
-      } else {
-        next('login');
-      }
-    },
+    beforeEnter: guardLoginAndOnboarding,
   },
   {
     path: '/request-new-bank',
     component: RequestNewBank,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next();
-      } else {
-        next('login');
-      }
-    },
+    beforeEnter: guardLoginAndOnboarding,
   },
   {
     path: '/api-keys',
     component: ApiKeys,
-    beforeEnter(to, from, next) {
-      if (store.getters.isUserLoggedIn) {
-        next();
-      } else {
-        next('login');
-      }
-    },
+    beforeEnter: guardLoginAndOnboarding,
+  },
+  {
+    path: '/onboarding',
+    component: Onboarding,
+    beforeEnter: guardLogin,
   },
   {
     path: '/widget',

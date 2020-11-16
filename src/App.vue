@@ -15,10 +15,13 @@ export default {
   },
   computed: {
     ...mapState({
-      showOnboarding: (state) => state.onboarding.show,
+      viewOnboarding: (state) => state.onboarding.show,
     }),
     showNavbar() {
       return this.loggedIn && !this.showOnboarding && !this.isExternalCall && !this.errorPage;
+    },
+    showOnboarding() {
+      return this.viewOnboarding || this.$route.path === '/onboarding';
     },
     loggedIn() {
       return this.$store.getters.isUserLoggedIn;
