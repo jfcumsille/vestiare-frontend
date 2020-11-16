@@ -1,5 +1,5 @@
-import axiosAuth from '../axios-auth';
-import { findBankByCode } from '../banks-helper';
+import axiosAuth from '../../axios-auth';
+import { findBankByCode } from '../../banks-helper';
 
 const initialState = {
   userLinks: [],

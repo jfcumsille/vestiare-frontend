@@ -1,4 +1,4 @@
-import axiosAuth from '../axios-auth';
+import axiosAuth from '../../axios-auth';
 
 const initialState = {
   idToken: localStorage.getItem('idToken') || '',
