@@ -23,6 +23,10 @@ const getters = {
     };
   },
 
+  getUserData() {
+    return state;
+  },
+
   getUser() {
     return state.userId;
   },
@@ -37,6 +41,10 @@ const getters = {
 
   getLastName() {
     return state.lastName;
+  },
+
+  getFullName() {
+    return `${state.name} ${state.lastName}`;
   },
 };
 
@@ -73,6 +81,13 @@ const mutations = {
     this.commit('saveSessionToStore', clearAuthData);
     this.commit('saveSessionToStorage', clearAuthData);
   },
+
+  identifyUserEvent(userData) {
+    window.analytics.identify(userData.userId, {
+      email: userData.email,
+      name: getters.getFullName(),
+    });
+  },
 };
 
 function getUserDataFromAuthResponse(response) {
@@ -96,6 +111,7 @@ const actions = {
     return axiosAuth.put(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
+        commit('identifyUserEvent', userData);
         commit('saveSession', userData);
       })
       .catch((error) => { throw error; });
@@ -110,6 +126,7 @@ const actions = {
     return axiosAuth.post(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
+        commit('identifyUserEvent', userData);
 
         // BEGIN TEMP CODE: Do not show temporary missing names.
         if (userData.name === 'pending-name' || userData.name === 'remove-field') {
@@ -148,6 +165,7 @@ const actions = {
     return axiosAuth.post(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
+        commit('identifyUserEvent', userData);
         commit('saveSession', userData);
       });
   },
@@ -166,8 +184,14 @@ const actions = {
     return axiosAuth.put(url, payload, { headers: this.getters.authHeaders })
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
+        commit('identifyUserEvent', userData);
         commit('saveSession', userData);
       });
+  },
+
+  identifyUserEvent({ commit }) {
+    const userData = this.getters.getUserData;
+    commit('identifyUserEvent', userData);
   },
 };
 

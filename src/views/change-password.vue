@@ -85,10 +85,6 @@ export default {
   },
   methods: {
     trackUserLoggedInEvent() {
-      const userData = this.$store.getters.retrieveSessionFromStorage;
-      window.analytics.identify(userData.userId, {
-        email: userData.email,
-      });
       window.analytics.track('User Logged In');
     },
     submitForm() {

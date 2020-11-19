@@ -26,6 +26,11 @@ export default {
       return this.$route.path === '/error';
     },
   },
+  beforeMount() {
+    if (this.loggedIn) {
+      this.$store.dispatch('identifyUserEvent');
+    }
+  },
 };
 </script>
 
