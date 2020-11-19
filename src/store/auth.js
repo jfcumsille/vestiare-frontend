@@ -1,6 +1,6 @@
 import axiosAuth from '../axios-auth';
 
-const state = {
+const initialState = {
   idToken: localStorage.getItem('idToken') || '',
   userId: localStorage.getItem('userId') || '',
   email: localStorage.getItem('email') || '',
@@ -9,37 +9,33 @@ const state = {
 };
 
 const getters = {
-  isUserLoggedIn() {
+  isUserLoggedIn(state) {
     return !!state.idToken && !!state.userId;
   },
 
-  getUserData() {
-    return state;
-  },
-
-  getUser() {
+  getUser(state) {
     return state.userId;
   },
 
-  getEmail() {
+  getEmail(state) {
     return state.email;
   },
 
-  getName() {
+  getName(state) {
     return state.name;
   },
 
-  getLastName() {
+  getLastName(state) {
     return state.lastName;
   },
 
-  getFullName() {
+  getFullName(state) {
     return `${state.name} ${state.lastName}`;
   },
 };
 
 const mutations = {
-  saveSessionToStorage(context, userData) {
+  saveSessionToStorage(state, userData) {
     localStorage.setItem('idToken', userData.idToken);
     localStorage.setItem('userId', userData.userId);
     localStorage.setItem('email', userData.email);
@@ -47,36 +43,12 @@ const mutations = {
     localStorage.setItem('lastName', userData.lastName);
   },
 
-  saveSessionToStore(context, userData) {
+  saveSessionToStore(state, userData) {
     state.idToken = userData.idToken;
     state.userId = userData.userId;
     state.email = userData.email;
     state.name = userData.name;
     state.lastName = userData.lastName;
-  },
-
-  saveSession(context, userData) {
-    this.commit('saveSessionToStorage', userData);
-    this.commit('saveSessionToStore', userData);
-  },
-
-  clearAuthData() {
-    const clearAuthData = {
-      idToken: '',
-      userId: '',
-      email: '',
-      name: '',
-      lastName: '',
-    };
-    this.commit('saveSessionToStore', clearAuthData);
-    this.commit('saveSessionToStorage', clearAuthData);
-  },
-
-  identifyUserEvent(userData) {
-    window.analytics.identify(userData.userId, {
-      email: userData.email,
-      name: getters.getFullName(),
-    });
   },
 };
 
@@ -91,7 +63,23 @@ function getUserDataFromAuthResponse(response) {
 }
 
 const actions = {
-  changePassword({ commit }, formData) {
+  saveSession({ commit }, userData) {
+    commit('saveSessionToStorage', userData);
+    commit('saveSessionToStore', userData);
+  },
+
+  clearAuthData({ dispatch }) {
+    const clearAuthData = {
+      idToken: '',
+      userId: '',
+      email: '',
+      name: '',
+      lastName: '',
+    };
+    dispatch('saveSession', clearAuthData);
+  },
+
+  changePassword({ dispatch }, formData) {
     const payload = {
       reset_password_token: formData.resetPasswordToken,
       password: formData.password,
@@ -101,22 +89,26 @@ const actions = {
     return axiosAuth.put(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
-        commit('identifyUserEvent', userData);
-        commit('saveSession', userData);
+        dispatch('saveSession', userData).then(() => {
+          dispatch('identifyUserEvent');
+        });
       })
       .catch((error) => { throw error; });
   },
 
-  logIn({ commit }, formData) {
-    const payload = {
-      email: formData.email,
-      password: formData.password,
-    };
+  identifyUserEvent(context) {
+    window.analytics.identify(context.state.userId, {
+      email: context.state.email,
+      name: context.getters.getFullName,
+    });
+  },
+
+  logIn({ dispatch }, formData) {
+    const payload = { email: formData.email, password: formData.password };
     const url = '/internal/v1/sessions';
     return axiosAuth.post(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
-        commit('identifyUserEvent', userData);
 
         // BEGIN TEMP CODE: Do not show temporary missing names.
         if (userData.name === 'pending-name' || userData.name === 'remove-field') {
@@ -127,24 +119,24 @@ const actions = {
         }
         // END TEMP CODE.
 
-        commit('saveSession', userData);
+        dispatch('saveSession', userData).then(() => {
+          dispatch('identifyUserEvent');
+        });
       })
       .catch((error) => { throw error; });
   },
 
   sendPasswordRecovery(context, formData) {
-    const payload = {
-      email: formData.email,
-    };
+    const payload = { email: formData.email };
     const url = '/internal/v1/users/password';
     return axiosAuth.post(url, payload);
   },
 
-  signOut({ commit }) {
-    return commit('clearAuthData');
+  signOut({ dispatch }) {
+    return dispatch('clearAuthData');
   },
 
-  signUp({ commit }, formData) {
+  signUp({ dispatch }, formData) {
     const payload = {
       name: formData.name,
       last_name: formData.lastName,
@@ -155,33 +147,27 @@ const actions = {
     return axiosAuth.post(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
-        commit('identifyUserEvent', userData);
-        commit('saveSession', userData);
+        dispatch('saveSession', userData).then(() => {
+          dispatch('identifyUserEvent');
+        });
       });
   },
 
-  updateUserInformation({ commit }, formData) {
+  updateUserInformation({ dispatch, state }, formData) {
     const url = `/internal/v1/users/${state.userId}`;
-    const payload = {
-      name: formData.name,
-      last_name: formData.lastName,
-    };
+    const payload = { name: formData.name, last_name: formData.lastName };
     return axiosAuth.put(url, payload, { headers: this.getters.authHeaders })
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
-        commit('identifyUserEvent', userData);
-        commit('saveSession', userData);
+        dispatch('saveSession', userData).then(() => {
+          dispatch('identifyUserEvent');
+        });
       });
-  },
-
-  identifyUserEvent({ commit }) {
-    const userData = this.getters.getUserData;
-    commit('identifyUserEvent', userData);
   },
 };
 
 export default {
-  state,
+  state: initialState,
   getters,
   mutations,
   actions,
