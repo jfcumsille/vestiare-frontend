@@ -233,10 +233,6 @@ export default {
       }
     },
     trackUserSignedUpEvent() {
-      const userData = this.$store.getters.retrieveSessionFromStorage;
-      window.analytics.identify(userData.userId, {
-        email: userData.email,
-      });
       window.analytics.track('User Signed Up');
     },
   },
