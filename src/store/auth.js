@@ -13,16 +13,6 @@ const getters = {
     return !!state.idToken && !!state.userId;
   },
 
-  retrieveSessionFromStorage() {
-    return {
-      idToken: localStorage.getItem('idToken'),
-      userId: localStorage.getItem('userId'),
-      email: localStorage.getItem('email'),
-      name: localStorage.getItem('name'),
-      lastName: localStorage.getItem('lastName'),
-    };
-  },
-
   getUserData() {
     return state;
   },
@@ -168,11 +158,6 @@ const actions = {
         commit('identifyUserEvent', userData);
         commit('saveSession', userData);
       });
-  },
-
-  tryToLoginFromStorage({ commit }) {
-    const userData = this.getters.retrieveSessionFromStorage;
-    if (userData) { commit('saveSessionToStore', userData); }
   },
 
   updateUserInformation({ commit }, formData) {
