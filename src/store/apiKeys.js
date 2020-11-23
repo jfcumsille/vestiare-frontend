@@ -27,15 +27,18 @@ const actions = {
       commit('updateUserApiKeys', response.data);
     });
   },
+
   destroyUserApiKey(context, apiKeyId) {
     apiClient.apiKeys.destroy(apiKeyId, this.getters.authHeaders).then(() => {
       // TODO: notify api key deletion.
       this.dispatch('getUserApiKeys');
     });
   },
-  createUserApiKey() {
-    apiClient.apiKeys.create(this.getters.authHeaders).then(() => {
+
+  async createUserApiKey() {
+    return apiClient.apiKeys.create(this.getters.authHeaders).then((response) => {
       this.dispatch('getUserApiKeys');
+      return response;
     });
   },
 };
