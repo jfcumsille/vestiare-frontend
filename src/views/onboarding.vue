@@ -1,35 +1,22 @@
 <template>
-<div class="mx-auto px-2 h-full w-full flex flex-col">
-  <div>
+<div class='flex items-center justify-center h-screen'
+    v-bind:class="{ 'bg-tint-cyan': isIntroduction }">
     <!-- Introduction -->
-    <introduction v-if='currentStep === 0' />
+    <introduction v-if='isIntroduction' @next="nextOnboardingStep" />
     <!-- Create Link-->
-    <create-link v-if='currentStep === 1' />
+    <create-link v-if='currentStep === 1' @next="nextOnboardingStep"/>
     <!-- Show New Link (Fetch Accounts) -->
-    <show-accounts v-if='currentStep === 2' />
+    <show-accounts v-if='currentStep === 2' @next="nextOnboardingStep" />
     <!-- Show API Keys and Hello Word Fintoc -->
-    <show-api v-if='currentStep === 3' />
+    <show-api v-if='currentStep === 3' @next="nextOnboardingStep" />
     <!-- Show Private Link ID and finish -->
-    <show-link v-if='currentStep === 4' />
-  </div>
-
-  <div>
-    <button v-if='currentStep === 0' v-on:click='nextOnboardingStep'>
-      Empezemos
-    </button>
-    <button v-if='currentStep > 0 && currentStep < 4 ' v-on:click='nextOnboardingStep'>
-      Siguiente
-    </button>
-    <button v-if='currentStep === 4' v-on:click='goToDashboard'>
-      Termine
-    </button>
-  </div>
+    <show-link v-if='currentStep === 4' @next="goToDashboard"/>
 </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import Introduction from '../components/onboarding/introduction.vue';
+import Introduction from '../components/onboarding/introduction/Introduction.vue';
 import CreateLink from '../components/onboarding/create-link.vue';
 import ShowAccounts from '../components/onboarding/show-accounts.vue';
 import ShowApi from '../components/onboarding/show-api.vue';
@@ -48,6 +35,9 @@ export default {
     ...mapState({
       currentStep: (state) => state.onboarding.currentStep,
     }),
+    isIntroduction() {
+      return this.currentStep === 0;
+    },
   },
   components: {
     Introduction,
