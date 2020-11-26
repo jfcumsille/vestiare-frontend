@@ -7,7 +7,8 @@
           class="h-full flex flex-col"
           :key="currentStep">
           <div class="pt-6 px-6 flex justify-end">
-            <button @click="cancelLinkCreation" class="focus:outline-none">
+            <button v-if="showCloseButton"
+                    @click="cancelLinkCreation" class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </div>
@@ -85,7 +86,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Selecciona tu banco</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button v-if="showCloseButton" @click="cancelLinkCreation"
+              slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -115,7 +117,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Ingresa</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' id="exit-btn"
+            <button v-if="showCloseButton" @click="cancelLinkCreation"
+                    slot='closeButton' id="exit-btn"
                     class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
@@ -227,7 +230,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Selecciona una cuenta</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button v-if="showCloseButton"
+                    @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -273,7 +277,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button v-if="showCloseButton" @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -354,7 +359,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Segundo Factor</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button v-if="showCloseButton" @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -439,7 +445,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button v-if="showCloseButton" @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -471,7 +478,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button v-if="showCloseButton" @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -614,6 +622,8 @@ export default {
       type: String,
       default: '',
     },
+    holderTypeOnboarding: String,
+    mode: String,
   },
   components: {
     actionButton,
@@ -665,6 +675,7 @@ export default {
   },
   computed: {
     holderType() {
+      if (this.holderTypeOnboarding) return this.holderTypeOnboarding;
       return this.$route.query['holder-type'] || this.$route.query.holder_type;
     },
     customerId() {
@@ -726,6 +737,9 @@ export default {
         default:
           return '';
       }
+    },
+    showCloseButton() {
+      return this.createdThrough !== 'onboarding';
     },
   },
   methods: {
@@ -844,7 +858,7 @@ export default {
       const formData = this.getFormData();
 
       this.trackWidgetStepCompletedEvent(null);
-      apiClient.linkIntents.create(formData, this.headers, this.createdThrough)
+      apiClient.linkIntents.create(formData, this.headers, this.createdThrough, this.mode)
         .then((response) => {
           this.linkIntent = response.data;
           this.pollForLinkIntent();

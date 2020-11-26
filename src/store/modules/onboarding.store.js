@@ -4,6 +4,7 @@ export default {
     currentStep: 0,
     isProgrammer: null,
     useCase: null,
+    link: null,
   },
   getters: {
   },
@@ -15,6 +16,9 @@ export default {
       state.isProgrammer = payload.isProgrammer;
       state.useCase = payload.useCase;
     },
+    setOnboardingLink(state, payload) {
+      state.link = payload.link;
+    },
   },
   actions: {
     nextOnboardingStep({ commit }) {
@@ -22,6 +26,9 @@ export default {
     },
     setOnboarding({ commit }, payload) {
       commit('setInitialOnboarding', payload);
+    },
+    setOnboardingLink({ commit }, payload) {
+      commit('setOnboardingLink', payload);
     },
   },
 };

@@ -4,18 +4,22 @@ const linkIntentsUrl = '/internal/v1/link_intents';
 const dashboardUrl = `${linkIntentsUrl}/dashboard`;
 const widgetUrl = `${linkIntentsUrl}/widget`;
 
-function create(formData, headers, createdThrough) {
-  const url = createdThrough === 'dashboard' ? dashboardUrl : widgetUrl;
+const privateEndpoints = ['dashboard', 'onboarding'];
+
+// eslint-disable-next-line camelcase
+function create({ link_data }, headers, createdThrough, mode) {
+  const url = privateEndpoints.includes(createdThrough) ? dashboardUrl : widgetUrl;
+  Object.assign(link_data, { mode: mode || 'live' });
   return axiosInstance
     .post(url, {
-      ...formData,
+      link_data,
     }, {
       headers,
     });
 }
 
 function get(linkIntentId, headers, callingFrom) {
-  const url = callingFrom === 'dashboard' ? dashboardUrl : widgetUrl;
+  const url = privateEndpoints.includes(callingFrom) ? dashboardUrl : widgetUrl;
   return axiosInstance.get(`${url}/${linkIntentId}`, { headers });
 }
 
