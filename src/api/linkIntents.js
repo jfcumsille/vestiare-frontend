@@ -7,12 +7,12 @@ const widgetUrl = `${linkIntentsUrl}/widget`;
 const privateEndpoints = ['dashboard', 'onboarding'];
 
 // eslint-disable-next-line camelcase
-function create({ link_data }, headers, createdThrough, mode) {
+function create(formData, headers, createdThrough, mode) {
   const url = privateEndpoints.includes(createdThrough) ? dashboardUrl : widgetUrl;
-  Object.assign(link_data, { mode: mode || 'live' });
+  Object.assign(formData.link_data, { mode: mode || 'live' });
   return axiosInstance
     .post(url, {
-      link_data,
+      ...formData,
     }, {
       headers,
     });

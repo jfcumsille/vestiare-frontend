@@ -57,10 +57,9 @@
       <div class="flex flex-row justify-center ">
         <div v-if="linkCreated"
           @click="nextPage"
-          class="cursor-pointer shadow-outline-lg rounded w-1/2
+          class="cursor-pointer shadow-outline-lg rounded
           text-white bg-fintoc-blue rounde font-bold
-          text-lg text-center p-2 mt-8 lg:mt-12 ring-0 focus:ring-0"
-          v-bind:class="nextPageButtonCSS">
+          text-lg text-center p-2 mt-8 lg:mt-12 ring-0 focus:ring-0">
           Ver cuentas
         </div>
       </div>

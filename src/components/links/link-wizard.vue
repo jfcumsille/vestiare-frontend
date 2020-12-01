@@ -7,8 +7,7 @@
           class="h-full flex flex-col"
           :key="currentStep">
           <div class="pt-6 px-6 flex justify-end">
-            <button v-if="showCloseButton"
-                    @click="cancelLinkCreation" class="focus:outline-none">
+            <button @click="cancelLinkCreation" class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </div>
@@ -86,7 +85,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Selecciona tu banco</h1>
-            <button v-if="showCloseButton" @click="cancelLinkCreation"
+            <button @click="cancelLinkCreation"
               slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
@@ -117,7 +116,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Ingresa</h1>
-            <button v-if="showCloseButton" @click="cancelLinkCreation"
+            <button @click="cancelLinkCreation"
                     slot='closeButton' id="exit-btn"
                     class="focus:outline-none">
               <font-awesome-icon icon="times"/>
@@ -230,8 +229,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Selecciona una cuenta</h1>
-            <button v-if="showCloseButton"
-                    @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -277,7 +275,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button v-if="showCloseButton" @click="cancelLinkCreation"
+            <button @click="cancelLinkCreation"
                     slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
@@ -359,7 +357,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Segundo Factor</h1>
-            <button v-if="showCloseButton" @click="cancelLinkCreation"
+            <button @click="cancelLinkCreation"
                     slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
@@ -445,7 +443,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button v-if="showCloseButton" @click="cancelLinkCreation"
+            <button @click="cancelLinkCreation"
                     slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
@@ -478,7 +476,7 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button v-if="showCloseButton" @click="cancelLinkCreation"
+            <button @click="cancelLinkCreation"
                     slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
@@ -622,8 +620,15 @@ export default {
       type: String,
       default: '',
     },
-    holderTypeOnboarding: String,
+    holderTypeOnboarding: {
+      type: String,
+      default: null,
+    },
     mode: String,
+    closeOnboarding: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     actionButton,
@@ -675,7 +680,7 @@ export default {
   },
   computed: {
     holderType() {
-      if (this.holderTypeOnboarding) return this.holderTypeOnboarding;
+      if (this.holderTypeOnboarding !== null) return this.holderTypeOnboarding;
       return this.$route.query['holder-type'] || this.$route.query.holder_type;
     },
     customerId() {
@@ -738,14 +743,13 @@ export default {
           return '';
       }
     },
-    showCloseButton() {
-      return this.createdThrough !== 'onboarding';
-    },
   },
   methods: {
     cancelLinkCreation() {
       const redirectToUrl = this.$route.query.redirect_to;
-      if (redirectToUrl) {
+      if (this.closeOnboarding) {
+        this.$emit('onboarding-back');
+      } else if (redirectToUrl) {
         const validRedirectToURL = getValidUrl(redirectToUrl);
         const resultIsUserExited = 'result=user_exited';
         window.location = `${validRedirectToURL}?${resultIsUserExited}`;
@@ -772,7 +776,6 @@ export default {
         username: this.rut,
         password: this.password,
       };
-
       return {
         link_data: { ...formFields, product: this.product }, ...this.extraFields,
       };

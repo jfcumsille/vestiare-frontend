@@ -3,6 +3,7 @@ import linkIntents from './linkIntents';
 import apiKeys from './apiKeys';
 import links from './links';
 import widgetConfig from './widgetConfig';
+import accounts from './accounts';
 
 const apiClient = {
   subscriptions,
@@ -10,6 +11,7 @@ const apiClient = {
   apiKeys,
   links,
   widgetConfig,
+  accounts,
 };
 
 export default apiClient;

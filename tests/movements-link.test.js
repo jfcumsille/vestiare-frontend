@@ -2,7 +2,7 @@ import 'expect-puppeteer';
 import { linkIntents as linkIntentHandler } from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
-
+jest.setTimeout(30000);
 describe('Movement link creation', () => {
   const paramsFactory = () => (
     {
@@ -34,6 +34,7 @@ describe('Movement link creation', () => {
 
     describe('when clicking on close button', () => {
       beforeAll(async () => {
+        await page.waitForSelector('#exit-btn');
         await Promise.all([
           page.waitForNavigation(),
           page.click('#exit-btn'),

@@ -19,18 +19,20 @@
       <widget
           v-if="linkOptionSelected"
           @linkCreated='onLinkCreated'
+          @onboarding-back='unselectLinkOption'
           :createdThrough="'onboarding'"
           :product="'movements'"
           :headers="formHeaders"
-          :holderTypeOnboarding="'individual'"
+          :holderTypeOnboarding="useCase"
           :mode="mode"
+          :closeOnboarding="true"
         />
     </transition>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Widget from '../../links/link-wizard.vue';
 
 const MODE_OPTIONS = { test: 'test', live: 'live' };
@@ -43,6 +45,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      useCase: (state) => state.onboarding.useCase,
+    }),
     linkOptionSelected() {
       return Object.keys(MODE_OPTIONS).includes(this.mode);
     },
@@ -59,6 +64,10 @@ export default {
       this.setEnvironmentMode({ mode });
       this.mode = mode;
     },
+    unselectLinkOption() {
+      this.setEnvironmentMode({ mode: null });
+      this.mode = null;
+    },
     onLinkCreated(link) {
       this.setOnboardingLink({ link, mode: this.mode });
     },
@@ -70,8 +79,12 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active {
   transition: opacity .7s;
+}
+
+.fade-leave-active {
+  transition: opacity 0s;
 }
 
 .fade-enter, .fade-leave-to {

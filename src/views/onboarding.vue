@@ -1,28 +1,28 @@
 <template>
 <div class="h-screen overflow-hidden">
-    <div class="grid-transform absolute flex w-full h-full
-                items-center z-index overflow-hidden">
+  <div class="grid-transform absolute flex w-full h-full
+              items-center z-index overflow-hidden">
     <div class="absolute w-full overflow-hidden grid grid-cols-12 opacity-50">
-      <div class="bg-fintoc-blue stripe col-start-1 col-span-4" />
-      <div class="bg-gray-500 stripe col-start-9 col-end-13" />
-      <div class="bg-fintoc-yellow stripe col-start-11 col-end-13" />
-      <div class="bg-fintoc-cyan stripe col-start-1 col-end-3" />
-      <div class="bg-gray-300 stripe col-start-3 col-end-9" />
-      <div class="bg-gray-500 stripe col-start-1 col-end-6" />
-      <div class="bg-fintoc-blue stripe col-start-10 col-end-13" />
-      <div class="bg-fintoc-cyan stripe col-start-8 col-end-13" />
-      <div class="bg-fintoc-yellow stripe col-start-1 col-end-2" />
+      <div class="bg-fintoc-blue h-16 col-start-1 col-span-4" />
+      <div class="bg-gray-500 h-16 col-start-9 col-end-13" />
+      <div class="bg-fintoc-yellow h-16 col-start-11 col-end-13" />
+      <div class="bg-fintoc-cyan h-16 col-start-1 col-end-3" />
+      <div class="bg-gray-300 h-16 col-start-3 col-end-9" />
+      <div class="bg-gray-500 h-16 col-start-1 col-end-6" />
+      <div class="bg-fintoc-blue h-16 col-start-10 col-end-13" />
+      <div class="bg-fintoc-cyan h-16 col-start-8 col-end-13" />
+      <div class="bg-fintoc-yellow h-16 col-start-1 col-end-2" />
     </div>
   </div>
   <!-- Introduction -->
   <introduction v-if='isIntroduction' @next="nextOnboardingStep" />
   <!-- Create Link-->
   <create-link v-if='currentStep === 1' @next="nextOnboardingStep"/>
-  <!-- Show New Link (Fetch Accounts) -->
+  <!-- Fetch Accounts -->
   <show-accounts v-if='currentStep === 2' @next="nextOnboardingStep" />
-  <!-- Show API Keys and Hello World Fintoc -->
-  <show-api v-if='currentStep === 3' @next="nextOnboardingStep" />
-  <!-- Show Private Link ID and finish -->
+  <!-- Fetch Movements -->
+  <show-movements v-if='currentStep === 3' @next="nextOnboardingStep" />
+  <!-- Show Link & finish -->
   <show-link v-if='currentStep === 4' @next="goToDashboard"/>
 </div>
 </template>
@@ -31,8 +31,8 @@
 import { mapState, mapActions } from 'vuex';
 import Introduction from '../components/onboarding/introduction/Introduction.vue';
 import CreateLink from '../components/onboarding/create-link/CreateLink.vue';
-import ShowAccounts from '../components/onboarding/show-accounts.vue';
-import ShowApi from '../components/onboarding/show-api.vue';
+import ShowAccounts from '../components/onboarding/show-accounts/ShowAccounts.vue';
+import ShowMovements from '../components/onboarding/show-api.vue';
 import ShowLink from '../components/onboarding/show-link.vue';
 
 export default {
@@ -59,7 +59,7 @@ export default {
     Introduction,
     CreateLink,
     ShowAccounts,
-    ShowApi,
+    ShowMovements,
     ShowLink,
   },
 };
@@ -69,14 +69,11 @@ export default {
 
 .grid-transform {
   transform: skew(-12deg) rotate(-12deg);
-  top: -2rem;
+  top:-2rem;
 }
 
 .z-index {
   z-index: -1;
-}
-.stripe {
-  height: 64px;
 }
 
 </style>

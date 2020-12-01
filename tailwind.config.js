@@ -13,6 +13,10 @@ module.exports = {
           yellow: '#ffdb65',
           cyan: '#8cdee2',
         },
+        terminal: {
+          header: '#38393b',
+          body: '#23272e',
+        },
       },
     },
   },
