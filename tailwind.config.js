@@ -1,5 +1,8 @@
 module.exports = {
   theme: {
+    fontFamily: {
+      body: 'DMMono',
+    },
     extend: {
       colors: {
         fintoc: {
@@ -16,6 +19,10 @@ module.exports = {
         terminal: {
           header: '#38393b',
           body: '#23272e',
+        },
+        secondary: {
+          lighterBlue: '#6481f4',
+          blue: '#5373f3',
         },
       },
     },

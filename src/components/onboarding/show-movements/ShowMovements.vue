@@ -3,20 +3,20 @@
   <modal v-if="showModal" @close-modal="toggleModal"/>
   <div class="box-border bg-white px-8 py-12 rounded shadow sm:w-1/2 w-11/12">
     <div class="flex flex-col items-center justify-center relative">
-      <div class="text-lg text-center mb-12">
-        Prueba Fintoc en 3 minutos!
+      <div class="text-4xl text-center mb-10">
+        ¡Prueba Fintoc en 3 minutos!
       </div>
       <div class="text-sm font-semibold mb-2 text-left w-full">
         Tus movimientos
       </div>
-      <div class="text-sm text-justify">
+      <div class="text-sm text-justify text-gray-800">
         Con tu nuevo <span class=font-semibold> Link </span>
         también puedes consultar nuestra API y obtener los datos de tus movimientos cuando quieras.
       </div>
 
       <div class="mt-8">
         <div v-if="loading" class="text-xs text-center text-fintoc-blue">
-          Nos tardamos a lo mas 5 minutos en traer todos tus movimientos.
+          Nos tardamos a lo más 5 minutos en traer todos tus movimientos.
         </div>
 
         <div v-if="useFakeMovements" class="text-xs text-center text-fintoc-blue">
@@ -36,7 +36,7 @@
           <div
               v-if="loading"
               class="bg-gray-500 animate-pulse py-2 px-2
-                      rounded shadow h-16 w-40 mt-8"/>
+                      rounded shadow h-24 w-64 mt-8"/>
         </div>
         <div @click="toggleModal()"
             class="text-xs text-right underline text-fintoc-blue w-full pl-8 mb-8 py-2
@@ -44,17 +44,9 @@
             ver por API
         </div>
       </div>
-      <div
-        @click="nextPage"
-        class="shadow-outline-lg rounded
-        text-white rounde font-bold
-          text-md text-center py-2 px-4 mt-4 lg:mt-8 ring-0 focus:ring-0"
-        v-bind:class="{
-          'bg-gray-400': loading, 'bg-fintoc-blue': !loading,
-          'cursor-wait': loading, 'cursor-pointer': !loading,
-        }">
+      <step-button @click.native="nextPage" v-bind:loading="loading">
         Continuar
-      </div>
+      </step-button>
     </div>
   </div>
 </div>
@@ -64,10 +56,12 @@
 import { mapState, mapActions } from 'vuex';
 import MovementRow from './MovementsRow.vue';
 import Modal from './MovementsModal.vue';
+import StepButton from '../StepButton.vue';
 
 export default {
   data() {
     return {
+      pollingCount: 0,
       pollingInterval: null,
       showModal: false,
       useFakeMovements: false,
@@ -83,14 +77,19 @@ export default {
     },
     fakeMovements() {
       return [
-        { postDate: '1999-01-01', description: 'TEF from Jon Snow', amount: 10000 },
-        { postDate: '2005-07-07', description: 'Direct Deposit from Daenerys', amount: 20000 },
-        { postDate: '2010-04-09', description: 'Payment to the Lannisters', amount: 30000 },
+        {
+          id: 1, postDate: '1999-01-01', description: 'TEF to Jon Snow', amount: -457182,
+        },
+        {
+          id: 2, postDate: '2005-07-07', description: 'Direct Deposit from Daenerys', amount: 227531,
+        },
+        {
+          id: 3, postDate: '2010-04-09', description: 'Payment to the Lannisters', amount: 99999,
+        },
       ];
     },
     renderMovements() {
       if (this.useFakeMovements) {
-        console.log(1);
         return this.fakeMovements;
       }
       return this.movements.slice(0, 3);
@@ -99,7 +98,7 @@ export default {
   mounted() {
     this.fetchData();
     this.pollingInterval = setInterval(this.fetchData, 1000);
-    setTimeout(this.endPolling, 60 * 1000);
+    setTimeout(this.endPolling, 3 * 60 * 1000);
   },
   methods: {
     ...mapActions([
@@ -114,13 +113,14 @@ export default {
       this.showModal = !this.showModal;
     },
     fetchData() {
-      this.fetchMovements()
-        .then((response) => {
-          console.log(response);
-          if (response.data.length > 0) {
-            clearInterval(this.pollInterval);
-          }
-        });
+      if (this.loading) {
+        this.fetchMovements({ count: this.pollingCount })
+          .then((response) => {
+            if (response.data.length > 0) {
+              clearInterval(this.pollInterval);
+            }
+          });
+      }
     },
     endPolling() {
       clearInterval(this.pollingInterval);
@@ -132,6 +132,7 @@ export default {
   components: {
     MovementRow,
     Modal,
+    StepButton,
   },
 };
 </script>

@@ -3,13 +3,13 @@
   <modal v-if="showModal" @close-modal="toggleModal"/>
   <div class="box-border bg-white px-8 py-12 rounded shadow sm:w-1/2 w-11/12">
     <div class="flex flex-col items-center justify-center relative">
-      <div class="text-lg text-center mb-12">
-        Prueba Fintoc en 3 minutos!
+      <div class="text-4xl text-center mb-10">
+        ¡Prueba Fintoc en 3 minutos!
       </div>
       <div class="text-sm font-semibold mb-2 text-left w-full">
         Tus cuentas
       </div>
-      <div class="text-sm text-justify">
+      <div class="text-sm text-justify text-gray-800">
         Con tu nuevo <span class=font-semibold> Link </span>
         puedes consultar nuestra API y obtener los datos de tus cuentas cuando quieras.
       </div>
@@ -29,17 +29,9 @@
             ver por API
         </div>
       </div>
-      <div
-        @click="nextPage"
-        class="shadow-outline-lg rounded
-        text-white rounde
-          text-sm text-center py-2 px-4 mt-8 lg:mt-12 ring-0 focus:ring-0"
-        v-bind:class="{
-          'bg-gray-400': loading, 'bg-fintoc-blue': !loading,
-          'cursor-wait': loading, 'cursor-pointer': !loading,
-        }">
-        Ver movimientos
-      </div>
+      <step-button @click.native="nextPage" v-bind:loading="loading">
+        Ver Movimientos
+      </step-button>
     </div>
   </div>
 </div>
@@ -49,6 +41,7 @@
 import { mapState, mapActions } from 'vuex';
 import AccountRow from './AccountRow.vue';
 import Modal from './AccountsModal.vue';
+import StepButton from '../StepButton.vue';
 
 export default {
   data() {
@@ -83,6 +76,7 @@ export default {
   components: {
     AccountRow,
     Modal,
+    StepButton,
   },
 };
 </script>

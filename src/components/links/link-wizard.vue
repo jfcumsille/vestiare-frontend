@@ -61,6 +61,10 @@
                 >
                 Continuar
               </action-button>
+              <div v-if="isTestMode"
+                class="text-xs font-semibold flex justify-center text-red-600">
+                Estás en el ambiente de prueba
+              </div>
             </div>
             <div class="text-center text-sm text-gray-600">
               Al continuar aceptas los
@@ -577,13 +581,17 @@ const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
 const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'unknown'];
 
+const TEST_HOLDER_ID = '777777777';
+const TEST_USER_ID = '416148503';
+const TEST_PASSWORD = 'jonsnow';
+
 export default {
   data() {
     return {
       bank: '',
-      rut: '',
-      password: '',
-      holderId: '',
+      rut: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_USER_ID : '',
+      password: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_PASSWORD : '',
+      holderId: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_HOLDER_ID : '',
       currentStep: FIRST_STEP,
       errorCode: '',
       showSpinner: false,
@@ -742,6 +750,9 @@ export default {
         default:
           return '';
       }
+    },
+    isTestMode() {
+      return this.mode === 'test';
     },
   },
   methods: {

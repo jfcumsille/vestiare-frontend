@@ -2,7 +2,7 @@ import 'expect-puppeteer';
 import { linkIntents as linkIntentHandler } from './api-request-handlers';
 
 const WIDGET_URL = 'http://localhost:4444/widget-iframe';
-jest.setTimeout(30000);
+
 describe('Movement link creation', () => {
   const paramsFactory = () => (
     {

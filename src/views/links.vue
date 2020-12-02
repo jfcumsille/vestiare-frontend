@@ -47,6 +47,9 @@ import Spinner from '../components/lib/spinner.vue';
 export default {
   created() {
     this.getUserLinks();
+    if (!this.skipped) {
+      this.showOnboarding();
+    }
   },
   mounted() {
     window.analytics.page('Links');
@@ -54,12 +57,15 @@ export default {
   methods: {
     ...mapActions([
       'getUserLinks',
+      'showOnboarding',
     ]),
   },
   computed: {
     ...mapState({
       userLinks: (state) => state.links.userLinks,
       loadingLinks: (state) => state.links.loading,
+      show: (state) => state.onboarding.show,
+      skipped: (state) => state.onboarding.skipped,
     }),
     shouldShowTable() {
       return !this.loadingLinks && this.userLinks.length !== 0;
@@ -68,6 +74,13 @@ export default {
   components: {
     LinkTable,
     Spinner,
+  },
+  watch: {
+    show(newValue) {
+      if (newValue) {
+        this.$router.push('/onboarding');
+      }
+    },
   },
 };
 </script>

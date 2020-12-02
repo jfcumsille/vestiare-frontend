@@ -22,3 +22,12 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### Testing: run server and tests separately
+```
+yarn serve --port=4444
+```
+
+```
+SKIP_JEST_PUPPETEER_SERVER=true yarn test --runInBand
+```

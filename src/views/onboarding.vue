@@ -1,66 +1,168 @@
 <template>
-<div class="h-screen overflow-hidden">
-  <div class="grid-transform absolute flex w-full h-full
-              items-center z-index overflow-hidden">
-    <div class="absolute w-full overflow-hidden grid grid-cols-12 opacity-50">
-      <div class="bg-fintoc-blue h-16 col-start-1 col-span-4" />
-      <div class="bg-gray-500 h-16 col-start-9 col-end-13" />
-      <div class="bg-fintoc-yellow h-16 col-start-11 col-end-13" />
-      <div class="bg-fintoc-cyan h-16 col-start-1 col-end-3" />
-      <div class="bg-gray-300 h-16 col-start-3 col-end-9" />
-      <div class="bg-gray-500 h-16 col-start-1 col-end-6" />
-      <div class="bg-fintoc-blue h-16 col-start-10 col-end-13" />
-      <div class="bg-fintoc-cyan h-16 col-start-8 col-end-13" />
-      <div class="bg-fintoc-yellow h-16 col-start-1 col-end-2" />
+<div class="relative h-screen overflow-hidden">
+    <div v-if="!loading" class="grid-transform absolute flex w-full h-full
+                items-center z-index overflow-hidden">
+      <div class="absolute w-full overflow-hidden grid grid-cols-12 opacity-50">
+        <div class="bg-secondary-blue h-16 row-start-2 col-start-1 col-span-4" />
+        <div class="bg-fintoc-blue h-16 row-start-2 col-start-8 col-end-13" />
+        <div class="bg-fintoc-yellow row-start-3 h-16 col-start-9 col-end-13" />
+        <div class="bg-fintoc-cyan row-start-4 h-16 col-start-1 col-end-3" />
+        <div class="bg-gray-300 h-16 row-start-5 col-start-3 col-end-9" />
+        <div class="bg-gray-500 h-16 row-start-5 col-start-1 col-end-6" />
+        <div class="bg-secondary-blue h-16 row-start-5 col-start-11 col-end-13" />
+        <div class="bg-fintoc-cyan h-16 row-start-6 col-start-8 col-end-13" />
+        <div class="bg-fintoc-yellow h-16 row-start-6 col-start-1 col-end-2" />
+      </div>
+    </div>
+
+    <div
+      v-if="!isIntroduction"
+      class="z-50 absolute top-0 left-0 ml-10 mt-10 text-2xl
+      text-gray-400 cursor-pointer font-semibold"
+      @click="goToPreviousStep">
+      Volver
+    </div>
+
+    <div
+      v-if="!loading"
+      class="z-50 absolute top-0 right-0 mr-10 mt-10 text-2xl
+      text-gray-400 cursor-pointer font-semibold"
+      @click="skip">
+      Salir
+    </div>
+
+    <div class="relative h-screen overflow-hidden" v-if="!loading">
+      <!-- Introduction -->
+      <introduction v-if='isIntroduction' @next="goToNext" />
+      <!-- Create Link-->
+      <create-link v-if='isCreateLink' @next="goToNext"/>
+      <!-- Widget-->
+      <show-widget v-if='isShowWidget' @close-widget="goToPreviousStep" @next="goToNext"/>
+      <!-- Fetch Accounts -->
+      <show-accounts v-if='isShowAccounts' @next="goToNext" />
+      <!-- Fetch Movements -->
+      <show-movements v-if='isShowMovements' @next="goToNext" />
+      <!-- Show Link & finish -->
+      <show-link v-if='isEpilogue' @next="finish"/>
     </div>
   </div>
-  <!-- Introduction -->
-  <introduction v-if='isIntroduction' @next="nextOnboardingStep" />
-  <!-- Create Link-->
-  <create-link v-if='currentStep === 1' @next="nextOnboardingStep"/>
-  <!-- Fetch Accounts -->
-  <show-accounts v-if='currentStep === 2' @next="nextOnboardingStep" />
-  <!-- Fetch Movements -->
-  <show-movements v-if='currentStep === 3' @next="nextOnboardingStep" />
-  <!-- Show Link & finish -->
-  <show-link v-if='currentStep === 4' @next="goToDashboard"/>
-</div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
 import Introduction from '../components/onboarding/introduction/Introduction.vue';
 import CreateLink from '../components/onboarding/create-link/CreateLink.vue';
+import ShowWidget from '../components/onboarding/show-widget/ShowWidget.vue';
 import ShowAccounts from '../components/onboarding/show-accounts/ShowAccounts.vue';
 import ShowMovements from '../components/onboarding/show-movements/ShowMovements.vue';
-import ShowLink from '../components/onboarding/show-link.vue';
+import ShowLink from '../components/onboarding/show-link/ShowLink.vue';
 
+const INTRODUCTION = 'INTRODUCTION';
+const CREATE_LINK = 'CREATE_LINK';
+const SHOW_WIDGET = 'SHOW_WIDGET';
+const SHOW_ACCOUNTS = 'SHOW_ACCOUNTS';
+const SHOW_MOVEMENTS = 'SHOW_MOVEMENTS';
+const EPILOGUE = 'EPILOGUE';
+
+const STEPS = [
+  INTRODUCTION,
+  CREATE_LINK,
+  SHOW_WIDGET,
+  SHOW_ACCOUNTS,
+  SHOW_MOVEMENTS,
+  EPILOGUE,
+];
 export default {
   methods: {
     ...mapActions([
       'nextOnboardingStep',
+      'previousOnboardingStep',
+      'showOnboarding',
+      'skipOnboarding',
+      'finishOnboarding',
+      'removeLink',
     ]),
-    goToDashboard() {
+    goToLinks() {
       this.$router.push('/links');
     },
+    goToPreviousStep() {
+      if (this.isShowAccounts) {
+        this.removeLink();
+      }
+      this.previousOnboardingStep();
+    },
+    goToNext() {
+      this.nextOnboardingStep().then(() => {
+        window.analytics.track('viewed onboarding', {
+          step: this.currentStep,
+          email: this.email,
+        });
+      });
+    },
+    finish() {
+      this.finishOnboarding().then(() => {
+        window.analytics.track('finished onboarding', {
+          step: this.currentStep,
+          email: this.email,
+        });
+      });
+    },
+    skip() {
+      this.skipOnboarding().then(() => {
+        window.analytics.track('skipped onboarding', {
+          step: this.currentStep,
+          email: this.email,
+        });
+      });
+    },
+  },
+  created() {
+    if (this.show === null) {
+      this.showOnboarding();
+    }
   },
   computed: {
     ...mapState({
-      currentStep: (state) => state.onboarding.currentStep,
+      show: (state) => state.onboarding.show,
+      currentStep: (state) => STEPS[state.onboarding.currentStep],
+      email: (state) => state.auth.email,
     }),
-    isIntroduction() {
-      return this.currentStep === 0;
+    loading() {
+      return this.show === null;
     },
-    setWidth() {
-      return 'w-10/12';
+    isIntroduction() {
+      return this.currentStep === INTRODUCTION;
+    },
+    isCreateLink() {
+      return this.currentStep === CREATE_LINK;
+    },
+    isShowWidget() {
+      return this.currentStep === SHOW_WIDGET;
+    },
+    isShowAccounts() {
+      return this.currentStep === SHOW_ACCOUNTS;
+    },
+    isShowMovements() {
+      return this.currentStep === SHOW_MOVEMENTS;
+    },
+    isEpilogue() {
+      return this.currentStep === EPILOGUE;
     },
   },
   components: {
     Introduction,
     CreateLink,
+    ShowWidget,
     ShowAccounts,
     ShowMovements,
     ShowLink,
+  },
+  watch: {
+    show(newValue) {
+      if (newValue === false) {
+        this.goToLinks();
+      }
+    },
   },
 };
 </script>
@@ -69,7 +171,7 @@ export default {
 
 .grid-transform {
   transform: skew(-12deg) rotate(-12deg);
-  top:-2rem;
+  top:-6rem;
 }
 
 .z-index {
