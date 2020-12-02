@@ -1,22 +1,22 @@
 <template>
 <div class="flex h-full justify-center items-center">
-  <div class="z-50 max-h-screen bg-white rounded-md md:w-2/3 w-10/12 py-8
-              px-8 border-2 border-gray-100 shadow-md">
+  <div class="z-50 max-h-screen bg-white rounded-md w-4/5 sm:w-1/2 py-8
+              border-2 border-gray-100 shadow-md">
     <div class="flex flex-col items-center justify-center">
       <div>
         <img src="../../../assets/images/fintoc-isologo.png" class="h-16" />
       </div>
 
-      <div class="py-8 text-center text-xl">
+      <div class="py-2 text-center text-md">
         <p> Bienvendio a Fintoc, {{ name }}! </p>
         <p>  Necesitamos conocerte un poco más antes de partir </p>
       </div>
 
       <div class="flex flex-col justify-center md:justify-start
-      my-auto  px-8">
+      my-auto">
         <form class="flex flex-col" onsubmit="event.preventDefault();">
-            <div class="flex flex-col pt-4 pb-8">
-                <label class="text-lg text-center pb-4">Sabes programar?</label>
+            <div class="flex flex-col py-4">
+                <label class="text-sm text-center pb-4">Sabes programar?</label>
                 <div class="flex flex-row gap-x-8">
                   <introduction-button
                   @click.native="selectOption('isProgrammerSelected', true)"
@@ -28,7 +28,7 @@
             </div>
 
             <div class="flex flex-col pt-4">
-                <label class="text-lg text-center pb-4">Para que quieres usar Fintoc?</label>
+                <label class="text-sm text-center pb-4">Para que quieres usar Fintoc?</label>
                 <div class="flex flex-row gap-x-8">
                   <introduction-button
                     :isActive="useCaseOption('business')"
@@ -41,8 +41,8 @@
             </div>
 
             <div @click="nextPage"
-            class="shadow-outline-lg rounded text-white font-bold
-            text-lg text-center p-2 mt-8 lg:mt-12 ring-0 focus:ring-0"
+            class="shadow-outline-lg rounded text-white
+            text-sm text-center p-2 mt-8 ring-0 focus:ring-0"
             v-bind:class="nextPageButtonCSS"> Continuar </div>
         </form>
       </div>

@@ -3,13 +3,13 @@
   <modal v-if="showModal" @close-modal="toggleModal"/>
   <div class="box-border bg-white px-8 py-12 rounded shadow sm:w-1/2 w-11/12">
     <div class="flex flex-col items-center justify-center relative">
-      <div class="2xl:text-5xl xl:text-3xl text-xl py-2 text-center font-bold">
+      <div class="text-lg text-center mb-12">
         Prueba Fintoc en 3 minutos!
       </div>
-      <div class="lg:text-md sm:text-md text-sm font-bold">
+      <div class="text-sm font-semibold mb-2 text-left w-full">
         Tus cuentas
       </div>
-      <div class="bg-opacity-50 rounded-sm g:text-md sm:text-md text-sm text-justify">
+      <div class="text-sm text-justify">
         Con tu nuevo <span class=font-semibold> Link </span>
         puedes consultar nuestra API y obtener los datos de tus cuentas cuando quieras.
       </div>
@@ -32,8 +32,8 @@
       <div
         @click="nextPage"
         class="shadow-outline-lg rounded
-        text-white rounde font-bold
-          text-md text-center py-2 px-4 mt-8 lg:mt-12 ring-0 focus:ring-0"
+        text-white rounde
+          text-sm text-center py-2 px-4 mt-8 lg:mt-12 ring-0 focus:ring-0"
         v-bind:class="{
           'bg-gray-400': loading, 'bg-fintoc-blue': !loading,
           'cursor-wait': loading, 'cursor-pointer': !loading,

@@ -32,7 +32,7 @@ import { mapState, mapActions } from 'vuex';
 import Introduction from '../components/onboarding/introduction/Introduction.vue';
 import CreateLink from '../components/onboarding/create-link/CreateLink.vue';
 import ShowAccounts from '../components/onboarding/show-accounts/ShowAccounts.vue';
-import ShowMovements from '../components/onboarding/show-api.vue';
+import ShowMovements from '../components/onboarding/show-movements/ShowMovements.vue';
 import ShowLink from '../components/onboarding/show-link.vue';
 
 export default {

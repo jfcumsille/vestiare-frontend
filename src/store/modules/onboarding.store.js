@@ -2,14 +2,15 @@ import apiClient from '../../api';
 
 export default {
   state: {
-    show: false,
+    accounts: null,
+    apiKey: null,
     currentStep: 0,
     isProgrammer: null,
-    useCase: null,
-    mode: null,
-    accounts: null,
     link: null,
-    apiKey: null,
+    mode: null,
+    movements: [],
+    show: false,
+    useCase: null,
   },
   getters: {
   },
@@ -33,6 +34,9 @@ export default {
     setAccounts(state, payload) {
       state.accounts = payload.accounts;
     },
+    setMovements(state, payload) {
+      state.movements = payload.movements;
+    },
   },
   actions: {
     nextOnboardingStep({ commit }) {
@@ -54,10 +58,20 @@ export default {
         dispatch('fetchAccounts', { apiKey: apiKey.token });
       });
     },
-    fetchAccounts({ commit, state }, payload) {
+    fetchAccounts({ commit, state }, { apiKey }) {
       const linkToken = state.link.temporaryLinkToken;
-      apiClient.accounts.get(linkToken, payload).then((response) => {
+      apiClient.accounts.get({ linkToken, apiKey }).then((response) => {
         commit('setAccounts', { accounts: response.data });
+      });
+    },
+    fetchMovements({ commit, state }) {
+      const linkToken = state.link.temporaryLinkToken;
+      const accountId = state.accounts[0].id;
+      const apiKey = state.apiKey.token;
+      console.log(linkToken, accountId, apiKey);
+      return apiClient.movements.get({ linkToken, accountId, apiKey }).then((response) => {
+        commit('setMovements', { movements: response.data });
+        return response;
       });
     },
   },
