@@ -10,6 +10,9 @@ import santanderSmallLogo from 'chilean-bank-images/santander/small.png';
 import bciLogo from 'chilean-bank-images/bci/big.png';
 import bciSmallLogo from 'chilean-bank-images/bci/small.png';
 
+import bci360Logo from 'chilean-bank-images/bci360/big.png';
+import bci360SmallLogo from 'chilean-bank-images/bci360/small.png';
+
 import bancoEstadoLogo from 'chilean-bank-images/banco-estado/big.png';
 import bancoEstadoSmallLogo from 'chilean-bank-images/banco-estado/small.png';
 
@@ -76,6 +79,23 @@ const availableBanks = [
     isAvailable: {
       business: { subscription: false, movements: true },
       individual: { subscription: true, movements: false },
+    },
+  },
+  {
+    code: 'cl_banco_bci_360',
+    label: 'Banco BCI 360',
+    logo: {
+      individual: bci360Logo,
+      business: bci360Logo,
+    },
+    smallLogo: bci360SmallLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: true },
+      individual: { subscription: false, movements: false },
     },
   },
   {
