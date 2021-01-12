@@ -18,7 +18,7 @@
             <div>
               <p>
                 Public: La usarás en el
-                <a href="https://fintoc.com/docs#integrando-el-widget" target="_blank" class="underline">
+                <a href="https://docs.fintoc.com/docs/integration" target="_blank" class="underline">
                   Widget
                 </a>
               </p>

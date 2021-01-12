@@ -61,6 +61,10 @@
                 >
                 Continuar
               </action-button>
+              <div v-if="isTestMode"
+                class="text-xs font-semibold flex justify-center text-red-600">
+                Estás en el ambiente de prueba
+              </div>
             </div>
             <div class="text-center text-sm text-gray-600">
               Al continuar aceptas los
@@ -85,7 +89,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Selecciona tu banco</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button @click="cancelLinkCreation"
+              slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -115,7 +120,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Ingresa</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' id="exit-btn"
+            <button @click="cancelLinkCreation"
+                    slot='closeButton' id="exit-btn"
                     class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
@@ -273,7 +279,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -354,7 +361,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Segundo Factor</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -439,7 +447,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -471,7 +480,8 @@
               <font-awesome-icon icon="chevron-left"/>
             </button>
             <h1 slot='currentStepText' >Confirmación</h1>
-            <button @click="cancelLinkCreation" slot='closeButton' class="focus:outline-none">
+            <button @click="cancelLinkCreation"
+                    slot='closeButton' class="focus:outline-none">
               <font-awesome-icon icon="times"/>
             </button>
           </widget-nav>
@@ -571,13 +581,17 @@ const PERMITTED_STEPS = [...LINK_STEPS, ...SUBSCRIPTION_STEPS];
 const FIRST_STEP = PERMITTED_STEPS[0];
 const SUBSCRIPTION_ACCEPTED_STATUSES = ['succeeded', 'unknown'];
 
+const TEST_HOLDER_ID = '777777777';
+const TEST_USER_ID = '416148503';
+const TEST_PASSWORD = 'jonsnow';
+
 export default {
   data() {
     return {
       bank: '',
-      rut: '',
-      password: '',
-      holderId: '',
+      rut: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_USER_ID : '',
+      password: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_PASSWORD : '',
+      holderId: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_HOLDER_ID : '',
       currentStep: FIRST_STEP,
       errorCode: '',
       showSpinner: false,
@@ -613,6 +627,15 @@ export default {
     product: {
       type: String,
       default: '',
+    },
+    holderTypeOnboarding: {
+      type: String,
+      default: null,
+    },
+    mode: String,
+    closeOnboarding: {
+      type: Boolean,
+      default: false,
     },
   },
   components: {
@@ -665,6 +688,7 @@ export default {
   },
   computed: {
     holderType() {
+      if (this.holderTypeOnboarding !== null) return this.holderTypeOnboarding;
       return this.$route.query['holder-type'] || this.$route.query.holder_type;
     },
     customerId() {
@@ -727,11 +751,16 @@ export default {
           return '';
       }
     },
+    isTestMode() {
+      return this.mode === 'test';
+    },
   },
   methods: {
     cancelLinkCreation() {
       const redirectToUrl = this.$route.query.redirect_to;
-      if (redirectToUrl) {
+      if (this.closeOnboarding) {
+        this.$emit('onboarding-back');
+      } else if (redirectToUrl) {
         const validRedirectToURL = getValidUrl(redirectToUrl);
         const resultIsUserExited = 'result=user_exited';
         window.location = `${validRedirectToURL}?${resultIsUserExited}`;
@@ -758,7 +787,6 @@ export default {
         username: this.rut,
         password: this.password,
       };
-
       return {
         link_data: { ...formFields, product: this.product }, ...this.extraFields,
       };
@@ -844,7 +872,7 @@ export default {
       const formData = this.getFormData();
 
       this.trackWidgetStepCompletedEvent(null);
-      apiClient.linkIntents.create(formData, this.headers, this.createdThrough)
+      apiClient.linkIntents.create(formData, this.headers, this.createdThrough, this.mode)
         .then((response) => {
           this.linkIntent = response.data;
           this.pollForLinkIntent();

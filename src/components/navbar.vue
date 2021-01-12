@@ -33,7 +33,7 @@
                       hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
                Blog
             </a>
-            <a href="https://fintoc.com/docs"
+            <a href="https://docs.fintoc.com/"
                target="blank"
                class="ml-4
                       px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
@@ -142,7 +142,7 @@
                     focus:bg-gray-700">
             Blog
           </a>
-          <a href="https://fintoc.com/docs"
+          <a href="https://docs.fintoc.com/"
              target="blank"
              class="block px-3 py-2 rounded-md text-base font-semibold text-gray-400
                     hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white

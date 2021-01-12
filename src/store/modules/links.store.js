@@ -1,18 +1,16 @@
-import axiosAuth from '../axios-auth';
-import { findBankByCode } from '../banks-helper';
+import axiosAuth from '../../axios-auth';
+import { findBankByCode } from '../../banks-helper';
 
-const state = {
+const initialState = {
   userLinks: [],
+  loading: true,
 };
 
 const getters = {
-  userLinks() {
-    return state.userLinks;
-  },
 };
 
 const mutations = {
-  updateUserLinks(context, userLinks) {
+  updateUserLinks(state, userLinks) {
     state.userLinks = userLinks.map((link) => ({
       bank: findBankByCode(link.institution.id),
       holderType: link.holder_type,
@@ -23,15 +21,23 @@ const mutations = {
       mode: link.mode,
     }));
   },
+  removeUserLink(state, linkId) {
+    state.userLinks = state.userLinks.filter((link) => link.linkId !== linkId);
+  },
+  updateLoading(state, status) {
+    state.loading = status;
+  },
 };
 
 const actions = {
   getUserLinks({ commit }) {
+    commit('updateLoading', true);
     return new Promise((resolve, reject) => {
       const url = '/v1/links';
       axiosAuth.get(url, { headers: this.getters.authHeaders })
         .then((response) => {
           commit('updateUserLinks', response.data);
+          commit('updateLoading', false);
           resolve();
         })
         .catch((error) => reject(error));
@@ -42,7 +48,7 @@ const actions = {
     return axiosAuth.delete(url, { headers: this.getters.authHeaders })
       .then((response) => {
         // TODO: notify link deletion.
-        this.dispatch('getUserLinks');
+        this.commit('removeUserLink', linkId);
         return response;
       })
       .catch((error) => console.log(error));
@@ -72,7 +78,7 @@ const actions = {
 };
 
 export default {
-  state,
+  state: initialState,
   getters,
   mutations,
   actions,

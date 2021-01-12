@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import apiKeys from './apiKeys';
-import auth from './auth';
-import links from './links';
+import modules from './modules';
 
 Vue.use(Vuex);
 
@@ -18,9 +16,5 @@ export default new Vuex.Store({
   },
   actions: {
   },
-  modules: {
-    apiKeys,
-    auth,
-    links,
-  },
+  modules,
 });

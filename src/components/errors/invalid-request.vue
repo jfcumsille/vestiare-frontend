@@ -18,7 +18,7 @@
         <li v-if="hasValue('param')"> param: {{ error.param }} </li>
       </ul>
 
-      <p class="mt-10">Please check the docs at <a class="border-b" href="https://fintoc.com/docs"> https://fintoc.com/docs </a ></p>
+      <p class="mt-10">Please check the docs at <a class="border-b" href="https://docs.fintoc.com"> https://docs.fintoc.com/ </a ></p>
     </div>
   </div>
 

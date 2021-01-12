@@ -34,6 +34,7 @@ describe('Movement link creation', () => {
 
     describe('when clicking on close button', () => {
       beforeAll(async () => {
+        await page.waitForSelector('#exit-btn');
         await Promise.all([
           page.waitForNavigation(),
           page.click('#exit-btn'),

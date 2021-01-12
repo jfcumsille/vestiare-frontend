@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Navbar from './components/navbar.vue';
 
 export default {
@@ -13,8 +14,14 @@ export default {
     Navbar,
   },
   computed: {
+    ...mapState({
+      viewOnboarding: (state) => state.onboarding.show,
+    }),
     showNavbar() {
-      return this.loggedIn && !this.isExternalCall && !this.errorPage;
+      return this.loggedIn && !this.showOnboarding && !this.isExternalCall && !this.errorPage;
+    },
+    showOnboarding() {
+      return this.viewOnboarding || this.$route.path === '/onboarding';
     },
     loggedIn() {
       return this.$store.getters.isUserLoggedIn;
