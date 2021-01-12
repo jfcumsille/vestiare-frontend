@@ -93,25 +93,20 @@ export default {
     },
     goToNext() {
       this.nextOnboardingStep().then(() => {
-        window.analytics.track('viewed onboarding', {
+        window.analytics.track('Viewed Onboarding', {
           step: this.currentStep,
-          email: this.email,
         });
       });
     },
     finish() {
       this.finishOnboarding().then(() => {
-        window.analytics.track('finished onboarding', {
-          step: this.currentStep,
-          email: this.email,
-        });
+        window.analytics.track('Finished Onboarding', {});
       });
     },
     skip() {
       this.skipOnboarding().then(() => {
-        window.analytics.track('skipped onboarding', {
+        window.analytics.track('Skipped Onboarding', {
           step: this.currentStep,
-          email: this.email,
         });
       });
     },
