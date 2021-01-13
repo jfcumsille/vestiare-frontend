@@ -63,6 +63,7 @@ export default {
       name: (state) => state.auth.name,
       isProgrammerSelected: (state) => state.onboarding.isProgrammer,
       useCaseSelected: (state) => state.onboarding.useCase,
+      userId: (state) => state.auth.userId,
     }),
     isCompleted() {
       return this.isProgrammerSelected !== null && this.useCaseSelected !== null;
@@ -75,6 +76,10 @@ export default {
     ]),
     nextPage() {
       if (this.isCompleted) {
+        window.analytics.identify(this.userId, {
+          purpose: this.useCaseSelected,
+          background: this.isProgrammerSelected ? 'programmer' : 'non-programmer',
+        });
         this.$emit('next');
       }
     },
