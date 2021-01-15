@@ -61,7 +61,7 @@ const availableBanks = [
     },
     isAvailable: {
       business: { subscription: false, movements: true },
-      individual: { subscription: true, movements: true },
+      individual: { subscription: false, movements: true },
     },
   },
   {
