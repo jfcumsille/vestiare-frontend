@@ -95,7 +95,7 @@
             </button>
           </widget-nav>
           <hr>
-          <div class="flex-1 p-4">
+          <div class="flex-1 p-4 overflow-auto overscroll-y-auto">
             <div class="h-full">
               <div
                 class="grid grid-cols-2 gap-2 p-2"
