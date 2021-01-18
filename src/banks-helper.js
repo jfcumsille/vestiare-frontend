@@ -25,9 +25,11 @@ import scotiabankSmallLogo from 'chilean-bank-images/scotiabank/small.png';
 import biceLogo from 'chilean-bank-images/bice/big.png';
 import biceSmallLogo from 'chilean-bank-images/bice/small.png';
 
+import securityLogo from 'chilean-bank-images/banco-security/big.png';
+import securitySmallLogo from 'chilean-bank-images/banco-security/small.png';
+
 // Pending images.
 import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
-import securityLogo from 'chilean-bank-images/banco-security/security-complete.png';
 /* eslint-enable import/no-extraneous-dependencies */
 
 const availableBanks = [
@@ -189,6 +191,7 @@ const availableBanks = [
       individual: securityLogo,
       business: securityLogo,
     },
+    smallLogo: securitySmallLogo,
     specialIndication: {
       business: null,
       individual: null,
