@@ -6,7 +6,7 @@ export default {
     apiKey: null,
     currentStep: 0,
     isProgrammer: null,
-    link: null,
+    linkToken: null,
     mode: null,
     movements: [],
     show: null,
@@ -38,7 +38,7 @@ export default {
       state.useCase = payload;
     },
     setOnboardingLink(state, payload) {
-      state.link = payload.link;
+      state.linkToken = payload.linkToken;
     },
     setMode(state, payload) {
       state.mode = payload.mode;
@@ -108,13 +108,13 @@ export default {
       });
     },
     fetchAccounts({ commit, state }, { apiKey }) {
-      const linkToken = state.link.temporaryLinkToken;
+      const { linkToken } = state;
       apiClient.accounts.get({ linkToken, apiKey }).then((response) => {
         commit('setAccounts', { accounts: response.data });
       });
     },
     fetchMovements({ commit, state }, payload) {
-      const linkToken = state.link.temporaryLinkToken;
+      const { linkToken } = state;
       const accountIndex = payload.count % state.accounts.length;
       const accountId = state.accounts[accountIndex].id;
       const apiKey = state.apiKey.token;

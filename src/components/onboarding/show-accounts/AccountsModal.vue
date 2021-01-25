@@ -38,7 +38,7 @@ import Terminal from '../TerminalContainer.vue';
 export default {
   computed: {
     ...mapState({
-      linkToken: (state) => state.onboarding.link.temporaryLinkToken,
+      linkToken: (state) => state.onboarding.linkToken,
       apiKey: (state) => state.onboarding.apiKey,
     }),
     token() {

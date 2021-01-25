@@ -20,6 +20,7 @@
 import { mapActions, mapState } from 'vuex';
 import Widget from '../../links/link-wizard.vue';
 import LinkCreated from './LinkCreated.vue';
+import apiClient from '../../../api';
 
 export default {
   data() {
@@ -42,9 +43,15 @@ export default {
     ...mapActions([
       'setOnboardingLink',
     ]),
-    onLinkCreated(link) {
-      this.setOnboardingLink({ link, mode: this.mode });
+    showLinkDetail(linkToken) {
+      this.setOnboardingLink({ linkToken, mode: this.mode });
       this.showWidget = false;
+    },
+    onLinkCreated(link) {
+      apiClient.links.regenerateLinkToken(link.id, this.formHeaders).then((linkResponse) => {
+        const { linkToken } = linkResponse.data;
+        this.showLinkDetail(linkToken);
+      });
     },
     unselectLinkOption() {
       this.$emit('close-widget');

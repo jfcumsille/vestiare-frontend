@@ -16,10 +16,10 @@
                     text-black border-gray-200 rounded-sm text-xs px-4 py-2">
             <span class="cursor-pointer" @click="copyToClipboard">
             <code>
-              {{ this.link.temporaryLinkToken }}
+              {{ this.linkToken }}
             </code>
               </span>
-            <input type="hidden" id="copy" :value="this.link.temporaryLinkToken">
+            <input type="hidden" id="copy" :value="this.linkToken">
           </div>
         </div>
 
@@ -43,7 +43,7 @@ import StepButton from '../StepButton.vue';
 export default {
   computed: {
     ...mapState({
-      link: (state) => state.onboarding.link,
+      linkToken: (state) => state.onboarding.linkToken,
     }),
   },
   methods: {
