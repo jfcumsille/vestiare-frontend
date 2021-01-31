@@ -34,13 +34,13 @@ const actions = {
     commit('updateLoading', true);
     return new Promise((resolve, reject) => {
       const url = '/v1/links';
-      axiosAuth.get(url, { headers: this.getters.authHeaders })
-        .then((response) => {
-          commit('updateUserLinks', response.data);
-          commit('updateLoading', false);
-          resolve();
-        })
-        .catch((error) => reject(error));
+      const queryParams = { current_organization_id: this.getters.getDefaultOrganizationId };
+      const { authHeaders } = this.getters;
+      axiosAuth.get(url, { headers: authHeaders, params: queryParams }).then((response) => {
+        commit('updateUserLinks', response.data);
+        commit('updateLoading', false);
+        resolve();
+      }).catch((error) => reject(error));
     });
   },
   destroyUserLink(context, linkId) {

@@ -5,11 +5,12 @@
 
     <div class="h-20">
       <div class="w-full flex flex-col">
-        <select class="border p-4">
+        <select class="border p-4" @change="onOrganizationChange($event)">
           <option v-for="organization in organizations"
                   v-bind:key="organization.id"
-                  v-bind:value="organization.id">
-            Organización {{ organization.name || 'Default' }}
+                  v-bind:value="organization.id"
+                  v-bind:selected="selectedOrganizationId === organization.id">
+            Organización: {{ organization.name || 'Default' }}
           </option>
         </select>
       </div>
@@ -125,8 +126,13 @@ export default {
       showSpinner: false,
     };
   },
-
+  computed: {
+    ...mapState({
+      selectedOrganizationId: (state) => state.auth.defaultOrganizationId,
+    }),
+  },
   methods: {
+    ...mapActions(['updateDefaultOrganizationId']),
     onSubmit() {
       if (this.$v.$invalid) { return; }
       const formData = {
@@ -145,6 +151,11 @@ export default {
       } else {
         field.$reset();
       }
+    },
+
+    onOrganizationChange(event) {
+      const defaultOrganizationId = event.target.value;
+      this.updateDefaultOrganizationId({ defaultOrganizationId });
     },
   },
   components: {

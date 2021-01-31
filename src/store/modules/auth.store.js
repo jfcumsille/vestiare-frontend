@@ -7,7 +7,7 @@ const initialState = {
   name: '',
   lastName: '',
   organizations: [],
-  defaultOrganization: '',
+  defaultOrganizationId: localStorage.getItem('defaultOrganizationId') || '',
 };
 
 const getters = {
@@ -39,8 +39,8 @@ const getters = {
     return state.organizations;
   },
 
-  getDefaultOrganization(state) {
-    return state.defaultOrganization;
+  getDefaultOrganizationId(state) {
+    return state.defaultOrganizationId;
   },
 };
 
@@ -61,9 +61,9 @@ const mutations = {
     state.defautOrganization = userData.defautOrganization;
   },
 
-  updateDefaultOrganization(state, defaultOrganizationId) {
+  updateDefaultOrganizationId(state, defaultOrganizationId) {
     state.defaultOrganizationId = defaultOrganizationId;
-    localStorage.setItem('defautOrganization', defaultOrganizationId);
+    localStorage.setItem('defaultOrganizationId', defaultOrganizationId);
   },
 };
 
@@ -80,6 +80,9 @@ function getUserDataFromAuthResponse(response) {
 }
 
 const actions = {
+  setOrganizationChange({ commit }, payload) {
+    commit('changeOrganization', payload);
+  },
   saveSession({ commit }, userData) {
     commit('saveSessionToStorage', userData);
     commit('saveSessionToStore', userData);
@@ -166,8 +169,8 @@ const actions = {
     return dispatch('clearAuthData');
   },
 
-  updateDefaultOrganization({ dispatch }, defaultOrganizationId) {
-    return dispatch('updateDefaultOrganization', defaultOrganizationId);
+  updateDefaultOrganization({ commit }, payload) {
+    commit('updateDefaultOrganizationId', payload.defaultOrganizationId);
   },
 
   signUp({ dispatch }, formData) {
