@@ -36,6 +36,7 @@ export default {
   beforeMount() {
     if (this.loggedIn) {
       this.$store.dispatch('identifyUserEvent');
+      this.$store.dispatch('getCurrentUser');
     }
   },
 };

@@ -4,8 +4,8 @@ const initialState = {
   idToken: localStorage.getItem('idToken') || '',
   userId: localStorage.getItem('userId') || '',
   email: localStorage.getItem('email') || '',
-  name: localStorage.getItem('name') || '',
-  lastName: localStorage.getItem('lastName') || '',
+  name: '',
+  lastName: '',
 };
 
 const getters = {
@@ -39,8 +39,6 @@ const mutations = {
     localStorage.setItem('idToken', userData.idToken);
     localStorage.setItem('userId', userData.userId);
     localStorage.setItem('email', userData.email);
-    localStorage.setItem('name', userData.name);
-    localStorage.setItem('lastName', userData.lastName);
   },
 
   saveSessionToStore(state, userData) {
@@ -103,25 +101,36 @@ const actions = {
     });
   },
 
+  handleUserResponse({ dispatch }, response) {
+    const userData = getUserDataFromAuthResponse(response);
+
+    // BEGIN TEMP CODE: Do not show temporary missing names.
+    if (userData.name === 'pending-name' || userData.name === 'remove-field') {
+      userData.name = '';
+    }
+    if (userData.lastName === 'pending-last-name') {
+      userData.lastName = '';
+    }
+    // END TEMP CODE.
+
+    dispatch('saveSession', userData).then(() => { dispatch('identifyUserEvent'); });
+  },
+
+  getCurrentUser({ dispatch }) {
+    const url = `/internal/v1/users/${initialState.userId}`;
+    return axiosAuth.get(url, { headers: this.getters.authHeaders })
+      .then((response) => {
+        dispatch('handleUserResponse', response);
+      })
+      .catch((error) => { throw error; });
+  },
+
   logIn({ dispatch }, formData) {
     const payload = { email: formData.email, password: formData.password };
     const url = '/internal/v1/sessions';
     return axiosAuth.post(url, payload)
       .then((response) => {
-        const userData = getUserDataFromAuthResponse(response);
-
-        // BEGIN TEMP CODE: Do not show temporary missing names.
-        if (userData.name === 'pending-name' || userData.name === 'remove-field') {
-          userData.name = '';
-        }
-        if (userData.lastName === 'pending-last-name') {
-          userData.lastName = '';
-        }
-        // END TEMP CODE.
-
-        dispatch('saveSession', userData).then(() => {
-          dispatch('identifyUserEvent');
-        });
+        dispatch('handleUserResponse', response);
       })
       .catch((error) => { throw error; });
   },
