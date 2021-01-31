@@ -6,6 +6,8 @@ const initialState = {
   email: localStorage.getItem('email') || '',
   name: '',
   lastName: '',
+  organizations: [],
+  defaultOrganization: '',
 };
 
 const getters = {
@@ -32,6 +34,14 @@ const getters = {
   getFullName(state) {
     return `${state.name} ${state.lastName}`;
   },
+
+  getOrganizations(state) {
+    return state.organizations;
+  },
+
+  getDefaultOrganization(state) {
+    return state.defaultOrganization;
+  },
 };
 
 const mutations = {
@@ -47,6 +57,13 @@ const mutations = {
     state.email = userData.email;
     state.name = userData.name;
     state.lastName = userData.lastName;
+    state.organizations = userData.organizations;
+    state.defautOrganization = userData.defautOrganization;
+  },
+
+  updateDefaultOrganization(state, defaultOrganizationId) {
+    state.defaultOrganizationId = defaultOrganizationId;
+    localStorage.setItem('defautOrganization', defaultOrganizationId);
   },
 };
 
@@ -57,6 +74,8 @@ function getUserDataFromAuthResponse(response) {
     email: response.data.email,
     name: response.data.name,
     lastName: response.data.last_name,
+    organizations: response.data.organizations,
+    defautOrganization: response.data.default_organization_id,
   };
 }
 
@@ -73,6 +92,8 @@ const actions = {
       email: '',
       name: '',
       lastName: '',
+      organizations: [],
+      defautOrganization: '',
     };
     dispatch('saveSession', clearAuthData);
   },
@@ -143,6 +164,10 @@ const actions = {
 
   signOut({ dispatch }) {
     return dispatch('clearAuthData');
+  },
+
+  updateDefaultOrganization({ dispatch }, defaultOrganizationId) {
+    return dispatch('updateDefaultOrganization', defaultOrganizationId);
   },
 
   signUp({ dispatch }, formData) {

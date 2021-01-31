@@ -2,6 +2,19 @@
 <div class="h-screen">
   <div class="max-w-screen-md mx-auto p-6 lg:p-8 relative">
     <spinner v-if="showSpinner"></spinner>
+
+    <div class="h-20">
+      <div class="w-full flex flex-col">
+        <select class="border p-4">
+          <option v-for="organization in organizations"
+                  v-bind:key="organization.id"
+                  v-bind:value="organization.id">
+            Organización {{ organization.name || 'Default' }}
+          </option>
+        </select>
+      </div>
+    </div>
+
     <form @submit.prevent="onSubmit" method="POST">
       <div class="h-20">
         <div class="w-full flex flex-col">
@@ -95,6 +108,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import { required, minLength } from 'vuelidate/lib/validators';
 import ActionButton from '../components/actionButton.vue';
 import Spinner from '../components/spinner.vue';
@@ -105,11 +119,13 @@ export default {
       name: this.$store.getters.getName,
       lastName: this.$store.getters.getLastName,
       email: this.$store.getters.getEmail,
+      organizations: this.$store.getters.getOrganizations,
       password: '',
       showFormError: false,
       showSpinner: false,
     };
   },
+
   methods: {
     onSubmit() {
       if (this.$v.$invalid) { return; }
@@ -122,6 +138,7 @@ export default {
         this.showSpinner = false;
       });
     },
+
     touchIfPresentElseReset(field) {
       if (field.$model !== '') {
         field.$touch();
