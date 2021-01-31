@@ -21,9 +21,11 @@ const mutations = {
       mode: link.mode,
     }));
   },
+
   removeUserLink(state, linkId) {
     state.userLinks = state.userLinks.filter((link) => link.linkId !== linkId);
   },
+
   updateLoading(state, status) {
     state.loading = status;
   },
@@ -34,15 +36,16 @@ const actions = {
     commit('updateLoading', true);
     return new Promise((resolve, reject) => {
       const url = '/v1/links';
-      axiosAuth.get(url, { headers: this.getters.authHeaders })
-        .then((response) => {
-          commit('updateUserLinks', response.data);
-          commit('updateLoading', false);
-          resolve();
-        })
-        .catch((error) => reject(error));
+      const queryParams = { current_organization_id: this.getters.getDefaultOrganizationId };
+      const { authHeaders } = this.getters;
+      axiosAuth.get(url, { headers: authHeaders, params: queryParams }).then((response) => {
+        commit('updateUserLinks', response.data);
+        commit('updateLoading', false);
+        resolve();
+      }).catch((error) => reject(error));
     });
   },
+
   destroyUserLink(context, linkId) {
     const url = `/v1/links/${linkId}`;
     return axiosAuth.delete(url, { headers: this.getters.authHeaders })
@@ -53,10 +56,12 @@ const actions = {
       })
       .catch((error) => console.log(error));
   },
+
   createUserLinkFromWidget(context, payload) {
     const url = 'internal/v1/links/widget';
     return axiosAuth.post(url, payload.formData, { headers: { ...payload.headers } });
   },
+
   createUserLinkFromDashboard(context, payload) {
     const url = 'internal/v1/links/dashboard';
     return axiosAuth.post(url, payload.formData, { headers: { ...payload.headers } })
@@ -65,6 +70,7 @@ const actions = {
         return response;
       });
   },
+
   sendNewLinkRequest(context, formData) {
     return new Promise((resolve, reject) => {
       const url = '/v1/user_credentials';

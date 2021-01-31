@@ -4,8 +4,10 @@ const initialState = {
   idToken: localStorage.getItem('idToken') || '',
   userId: localStorage.getItem('userId') || '',
   email: localStorage.getItem('email') || '',
-  name: localStorage.getItem('name') || '',
-  lastName: localStorage.getItem('lastName') || '',
+  name: '',
+  lastName: '',
+  organizations: [],
+  defaultOrganizationId: localStorage.getItem('defaultOrganizationId') || '',
 };
 
 const getters = {
@@ -32,6 +34,14 @@ const getters = {
   getFullName(state) {
     return `${state.name} ${state.lastName}`;
   },
+
+  getOrganizations(state) {
+    return state.organizations;
+  },
+
+  getDefaultOrganizationId(state) {
+    return state.defaultOrganizationId;
+  },
 };
 
 const mutations = {
@@ -39,8 +49,6 @@ const mutations = {
     localStorage.setItem('idToken', userData.idToken);
     localStorage.setItem('userId', userData.userId);
     localStorage.setItem('email', userData.email);
-    localStorage.setItem('name', userData.name);
-    localStorage.setItem('lastName', userData.lastName);
   },
 
   saveSessionToStore(state, userData) {
@@ -49,6 +57,13 @@ const mutations = {
     state.email = userData.email;
     state.name = userData.name;
     state.lastName = userData.lastName;
+    state.organizations = userData.organizations;
+    state.defautOrganization = userData.defautOrganization;
+  },
+
+  updateDefaultOrganizationId(state, defaultOrganizationId) {
+    state.defaultOrganizationId = defaultOrganizationId;
+    localStorage.setItem('defaultOrganizationId', defaultOrganizationId);
   },
 };
 
@@ -59,10 +74,15 @@ function getUserDataFromAuthResponse(response) {
     email: response.data.email,
     name: response.data.name,
     lastName: response.data.last_name,
+    organizations: response.data.organizations,
+    defautOrganization: response.data.default_organization_id,
   };
 }
 
 const actions = {
+  setOrganizationChange({ commit }, payload) {
+    commit('changeOrganization', payload);
+  },
   saveSession({ commit }, userData) {
     commit('saveSessionToStorage', userData);
     commit('saveSessionToStore', userData);
@@ -75,6 +95,8 @@ const actions = {
       email: '',
       name: '',
       lastName: '',
+      organizations: [],
+      defautOrganization: '',
     };
     dispatch('saveSession', clearAuthData);
   },
@@ -103,25 +125,36 @@ const actions = {
     });
   },
 
+  handleUserResponse({ dispatch }, response) {
+    const userData = getUserDataFromAuthResponse(response);
+
+    // BEGIN TEMP CODE: Do not show temporary missing names.
+    if (userData.name === 'pending-name' || userData.name === 'remove-field') {
+      userData.name = '';
+    }
+    if (userData.lastName === 'pending-last-name') {
+      userData.lastName = '';
+    }
+    // END TEMP CODE.
+
+    dispatch('saveSession', userData).then(() => { dispatch('identifyUserEvent'); });
+  },
+
+  getCurrentUser({ dispatch }) {
+    const url = `/internal/v1/users/${initialState.userId}`;
+    return axiosAuth.get(url, { headers: this.getters.authHeaders })
+      .then((response) => {
+        dispatch('handleUserResponse', response);
+      })
+      .catch((error) => { throw error; });
+  },
+
   logIn({ dispatch }, formData) {
     const payload = { email: formData.email, password: formData.password };
     const url = '/internal/v1/sessions';
     return axiosAuth.post(url, payload)
       .then((response) => {
-        const userData = getUserDataFromAuthResponse(response);
-
-        // BEGIN TEMP CODE: Do not show temporary missing names.
-        if (userData.name === 'pending-name' || userData.name === 'remove-field') {
-          userData.name = '';
-        }
-        if (userData.lastName === 'pending-last-name') {
-          userData.lastName = '';
-        }
-        // END TEMP CODE.
-
-        dispatch('saveSession', userData).then(() => {
-          dispatch('identifyUserEvent');
-        });
+        dispatch('handleUserResponse', response);
       })
       .catch((error) => { throw error; });
   },
@@ -134,6 +167,10 @@ const actions = {
 
   signOut({ dispatch }) {
     return dispatch('clearAuthData');
+  },
+
+  updateDefaultOrganizationId({ commit }, payload) {
+    commit('updateDefaultOrganizationId', payload.defaultOrganizationId);
   },
 
   signUp({ dispatch }, formData) {
