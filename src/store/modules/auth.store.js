@@ -169,7 +169,7 @@ const actions = {
     return dispatch('clearAuthData');
   },
 
-  updateDefaultOrganization({ commit }, payload) {
+  updateDefaultOrganizationId({ commit }, payload) {
     commit('updateDefaultOrganizationId', payload.defaultOrganizationId);
   },
 

@@ -23,7 +23,9 @@ const mutations = {
 
 const actions = {
   getUserApiKeys({ commit }) {
-    apiClient.apiKeys.index(this.getters.authHeaders).then((response) => {
+    const headers = this.getters.authHeaders;
+    const params = { current_organization_id: this.getters.getDefaultOrganizationId };
+    apiClient.apiKeys.index(headers, params).then((response) => {
       commit('updateUserApiKeys', response.data);
     });
   },
