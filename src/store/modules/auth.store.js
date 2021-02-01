@@ -49,6 +49,7 @@ const mutations = {
     localStorage.setItem('idToken', userData.idToken);
     localStorage.setItem('userId', userData.userId);
     localStorage.setItem('email', userData.email);
+    localStorage.setItem('defaultOrganizationId', userData.defaultOrganizationId);
   },
 
   saveSessionToStore(state, userData) {
@@ -58,7 +59,7 @@ const mutations = {
     state.name = userData.name;
     state.lastName = userData.lastName;
     state.organizations = userData.organizations;
-    state.defautOrganization = userData.defautOrganization;
+    state.defautOrganizationId = userData.defautOrganization;
   },
 
   updateDefaultOrganizationId(state, defaultOrganizationId) {
@@ -75,7 +76,7 @@ function getUserDataFromAuthResponse(response) {
     name: response.data.name,
     lastName: response.data.last_name,
     organizations: response.data.organizations,
-    defautOrganization: response.data.default_organization_id,
+    defautOrganizationId: response.data.default_organization_id,
   };
 }
 
@@ -96,7 +97,7 @@ const actions = {
       name: '',
       lastName: '',
       organizations: [],
-      defautOrganization: '',
+      defautOrganizationId: '',
     };
     dispatch('saveSession', clearAuthData);
   },
