@@ -59,7 +59,7 @@ const mutations = {
     state.name = userData.name;
     state.lastName = userData.lastName;
     state.organizations = userData.organizations;
-    state.defautOrganizationId = userData.defautOrganization;
+    state.defaultOrganizationId = userData.defaultOrganizationId;
   },
 
   updateDefaultOrganizationId(state, defaultOrganizationId) {
@@ -76,7 +76,7 @@ function getUserDataFromAuthResponse(response) {
     name: response.data.name,
     lastName: response.data.last_name,
     organizations: response.data.organizations,
-    defautOrganizationId: response.data.default_organization_id,
+    defaultOrganizationId: response.data.default_organization_id,
   };
 }
 
@@ -97,7 +97,7 @@ const actions = {
       name: '',
       lastName: '',
       organizations: [],
-      defautOrganizationId: '',
+      defaultOrganizationId: '',
     };
     dispatch('saveSession', clearAuthData);
   },
@@ -128,7 +128,6 @@ const actions = {
 
   handleUserResponse({ dispatch }, response) {
     const userData = getUserDataFromAuthResponse(response);
-
     // BEGIN TEMP CODE: Do not show temporary missing names.
     if (userData.name === 'pending-name' || userData.name === 'remove-field') {
       userData.name = '';
@@ -137,7 +136,6 @@ const actions = {
       userData.lastName = '';
     }
     // END TEMP CODE.
-
     dispatch('saveSession', userData).then(() => { dispatch('identifyUserEvent'); });
   },
 
