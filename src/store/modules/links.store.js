@@ -47,8 +47,13 @@ const actions = {
   },
 
   destroyUserLink(context, linkId) {
-    const url = `/v1/links/${linkId}`;
-    return axiosAuth.delete(url, { headers: this.getters.authHeaders })
+    const url = '/v1/links';
+    const params = {
+      id: linkId,
+      current_organization_id: this.getters.getDefaultOrganizationId,
+    };
+    const headers = this.getters.authHeaders;
+    return axiosAuth.delete(url, { headers, params })
       .then((response) => {
         // TODO: notify link deletion.
         this.commit('removeUserLink', linkId);
