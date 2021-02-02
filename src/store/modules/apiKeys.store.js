@@ -31,14 +31,19 @@ const actions = {
   },
 
   destroyUserApiKey(context, apiKeyId) {
-    apiClient.apiKeys.destroy(apiKeyId, this.getters.authHeaders).then(() => {
+    const params = {
+      id: apiKeyId,
+      current_organization_id: this.getters.getDefaultOrganizationId,
+    };
+    apiClient.apiKeys.destroy(this.getters.authHeaders, params).then(() => {
       // TODO: notify api key deletion.
       this.dispatch('getUserApiKeys');
     });
   },
 
   async createUserApiKey() {
-    return apiClient.apiKeys.create(this.getters.authHeaders).then((response) => {
+    const params = { current_organization_id: this.getters.getDefaultOrganizationId };
+    return apiClient.apiKeys.create(this.getters.authHeaders, params).then((response) => {
       this.dispatch('getUserApiKeys');
       return response;
     });
