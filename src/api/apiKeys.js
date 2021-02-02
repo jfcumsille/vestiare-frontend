@@ -5,7 +5,7 @@ function index(headers, params) {
 }
 
 function create(headers, params) {
-  return axiosInstance.post('/v1/api_keys', {}, { headers, params });
+  return axiosInstance.post('/v1/api_keys', { headers, params });
 }
 
 function destroy(headers, params) {
