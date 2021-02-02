@@ -35,7 +35,8 @@ const actions = {
       id: apiKeyId,
       current_organization_id: this.getters.getDefaultOrganizationId,
     };
-    apiClient.apiKeys.destroy(this.getters.authHeaders, params).then(() => {
+    const headers = { headers: this.getters.authHeaders };
+    apiClient.apiKeys.destroy(headers, params).then(() => {
       // TODO: notify api key deletion.
       this.dispatch('getUserApiKeys');
     });
@@ -43,7 +44,8 @@ const actions = {
 
   async createUserApiKey() {
     const params = { current_organization_id: this.getters.getDefaultOrganizationId };
-    return apiClient.apiKeys.create(this.getters.authHeaders, params).then((response) => {
+    const headers = { headers: this.getters.authHeaders };
+    return apiClient.apiKeys.create(headers, params).then((response) => {
       this.dispatch('getUserApiKeys');
       return response;
     });
