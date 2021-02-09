@@ -612,10 +612,6 @@ export default {
       type: String,
       default: 'dashboard',
     },
-    submitAction: {
-      type: String,
-      default: 'createUserLinkFromDashboard',
-    },
     headers: {
       type: Object,
       default: () => ({}),

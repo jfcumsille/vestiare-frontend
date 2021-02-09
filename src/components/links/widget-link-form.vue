@@ -4,7 +4,6 @@
     @linkCreated='onLinkCreated'
     @subscriptionCreateSuccess='onSubscriptionCreateSuccess'
     :createdThrough="'widget'"
-    :submitAction="'createUserLinkFromWidget'"
     :headers="formHeaders"
     :extraFields="extraFields"
     :product="product">

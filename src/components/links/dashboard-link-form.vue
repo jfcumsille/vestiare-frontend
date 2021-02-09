@@ -3,7 +3,6 @@
   <link-wizard v-if="showForm"
     @linkCreated='onLinkCreated'
     :createdThrough="'dashboard'"
-    :submitAction="'createUserLinkFromDashboard'"
     :headers="formHeaders"
     :product="product">
   </link-wizard>
