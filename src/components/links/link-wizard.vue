@@ -866,7 +866,9 @@ export default {
 
       this.showSpinner = true;
       const formData = this.getFormData();
-
+      if (this.createdThrough === 'dashboard') {
+        formData.current_organization_id = this.$store.getters.getDefaultOrganizationId;
+      }
       this.trackWidgetStepCompletedEvent(null);
       apiClient.linkIntents.create(formData, this.headers, this.createdThrough, this.mode)
         .then((response) => {
