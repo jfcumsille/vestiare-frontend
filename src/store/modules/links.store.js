@@ -62,20 +62,6 @@ const actions = {
       .catch((error) => console.log(error));
   },
 
-  createUserLinkFromWidget(context, payload) {
-    const url = 'internal/v1/links/widget';
-    return axiosAuth.post(url, payload.formData, { headers: { ...payload.headers } });
-  },
-
-  createUserLinkFromDashboard(context, payload) {
-    const url = 'internal/v1/links/dashboard';
-    return axiosAuth.post(url, payload.formData, { headers: { ...payload.headers } })
-      .then((response) => {
-        this.dispatch('getUserLinks');
-        return response;
-      });
-  },
-
   sendNewLinkRequest(context, formData) {
     return new Promise((resolve, reject) => {
       const url = '/v1/user_credentials';
