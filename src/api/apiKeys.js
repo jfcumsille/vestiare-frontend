@@ -9,7 +9,6 @@ function create(headers, params) {
 }
 
 function destroy(headers, params) {
-  console.log(headers.headers, params);
   return axiosInstance.delete(`/v1/api_keys/${params.id}`, { headers: headers.headers, params: { current_organization_id: params.current_organization_id } });
 }
 

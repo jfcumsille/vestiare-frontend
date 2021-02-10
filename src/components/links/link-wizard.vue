@@ -866,7 +866,7 @@ export default {
 
       this.showSpinner = true;
       const formData = this.getFormData();
-      if (this.createdThrough === 'dashboard') {
+      if (this.createdThrough === 'dashboard' || this.createdThrough === 'onboarding') {
         formData.current_organization_id = this.$store.getters.getDefaultOrganizationId;
       }
       this.trackWidgetStepCompletedEvent(null);
