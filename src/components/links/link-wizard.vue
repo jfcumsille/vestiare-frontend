@@ -690,6 +690,9 @@ export default {
     customerId() {
       return this.$route.query.customer_id;
     },
+    preSelectedBankCode() {
+      return this.$route.query.pre_selected_bank;
+    },
     isBusiness() {
       return this.holderType === 'business';
     },
@@ -697,6 +700,9 @@ export default {
       return availableBanks.filter(
         (bank) => bank.isAvailable[this.holderType][this.product],
       );
+    },
+    supportedBanksCodes() {
+      return this.supportedBanks.map((bank) => bank.code);
     },
     currentWizard() {
       if (LINK_STEPS.includes(this.currentStep)) return 'link';
@@ -764,12 +770,25 @@ export default {
         this.$router.push('/links');
       }
     },
+    shouldSkipBankSelection(step) {
+      return step === 'select-bank' && this.supportedBanksCodes.includes(this.preSelectedBankCode);
+    },
+    selectBankFromQueryParam() {
+      const bank = this.supportedBanks.find(
+        (supportedBank) => supportedBank.code === this.preSelectedBankCode,
+      );
+      this.selectBank(bank);
+    },
     moveTo(step) {
       if (!PERMITTED_STEPS.includes(step)) {
         throw Error('Unrecognized step');
       }
-      this.trackWidgetStepCompletedEvent(step);
-      this.currentStep = step;
+      if (this.shouldSkipBankSelection(step)) {
+        this.selectBankFromQueryParam();
+      } else {
+        this.trackWidgetStepCompletedEvent(step);
+        this.currentStep = step;
+      }
     },
     selectBank(bank) {
       this.bank = bank;
