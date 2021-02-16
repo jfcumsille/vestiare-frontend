@@ -6,7 +6,7 @@
           :src="require('../assets/icons/google-icon.svg')"
           class="fill-current" />
       </template>
-      Login con Google
+      {{ actionButtonLabel }} con Google
     </action-button>
     <action-button tag="a" :href="githubAuthorizeUrl" class="mt-6" :has-lock-icon="false">
       <template #icon>
@@ -14,7 +14,7 @@
           :src="require('../assets/icons/github-icon.svg')"
           class="fill-current" />
       </template>
-      Login con Github
+      {{ actionButtonLabel }} con Github
     </action-button>
   </div>
 </template>
@@ -26,21 +26,32 @@ import auth0Helper from '../helpers/auth0_helper';
 
 export default {
   components: { ActionButton },
+  props: {
+    signsUp: { type: Boolean, default: false },
+  },
   data() {
     return { verifier: auth0Helper.generateVerifier() };
   },
   computed: {
     googleAuthorizeUrl() {
-      return auth0Helper.authorizationUri(this.challenge, 'google-oauth2');
+      return auth0Helper.authorizationUri(this.callbackPath, this.challenge, 'google-oauth2');
     },
     githubAuthorizeUrl() {
-      return auth0Helper.authorizationUri(this.challenge, 'github');
+      return auth0Helper.authorizationUri(this.callbackPath, this.challenge, 'github');
     },
     challenge() {
       return auth0Helper.generateChallenge(this.verifier);
     },
     redirectedFromAuth0() {
       return !!this.$route.query.code;
+    },
+    callbackPath() {
+      if (this.signsUp) return '/signup';
+      return '/login';
+    },
+    actionButtonLabel() {
+      if (this.signsUp) return 'Registrarse';
+      return 'Login';
     },
   },
   methods: {
