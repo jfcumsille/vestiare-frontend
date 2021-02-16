@@ -223,7 +223,12 @@ export default {
         this.showSpinner = false;
         const errorCode = error.response.data.error.code;
         if (errorCode === 'email_taken') {
-          this.$router.push({ path: 'login', query: { email: this.email } });
+          const query = {};
+
+          if (this.email) query.email = this.email;
+          else query.oauthEmailTaken = true;
+
+          this.$router.push({ path: 'login', query });
         } else {
           this.showFormError = true;
         }

@@ -23,6 +23,9 @@
            class="text-3xl font-medium text-gray-900 border-indigo-500">
           Hola nuevamente 👋
         </p>
+        <p v-if="showOauthMessage" class="text-red-700">
+          Tu correo ya está asociado a una cuenta de Fintoc. Puedes ingresar por la misma vía aquí 👇
+        </p>
       </div>
       <transition name="slide-fade">
         <p class="text-red-700 mt-6" v-if='showloginError'>Credenciales inválidas 👮🏽‍♀️</p>
@@ -89,6 +92,7 @@ export default {
       idToken: '',
       showloginError: false,
       showHelloBackMessage: false,
+      showOauthMessage: false,
       showSpinner: false,
     };
   },
@@ -131,9 +135,12 @@ export default {
       window.analytics.track('User Logged In');
     },
     fillInputIfEmailInQueryParam() {
-      if (this.$route.query.email) {
+      const { email: queryEmail, oauthEmailTaken } = this.$route.query;
+      if (queryEmail) {
         this.showHelloBackMessage = true;
         this.email = this.$route.query.email;
+      } else if (oauthEmailTaken) {
+        this.showOauthMessage = true;
       }
     },
   },
