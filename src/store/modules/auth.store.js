@@ -182,6 +182,7 @@ const actions = {
       last_name: formData.lastName,
       email: formData.email,
       password: formData.password,
+      token: formData.token,
     };
     const url = '/internal/v1/users';
     return axiosAuth.post(url, payload)

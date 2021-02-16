@@ -21,8 +21,15 @@
           </div>
         </div>
       </div>
+      <oauth-panel
+        :signs-up="true"
+        @start-loading="showSpinner = true"
+        @stop-loading="showSpinner = false"
+        @set-token="idToken = $event"
+        @submit="onSubmit" />
+      <hr class="mt-6 mx-auto w-4/5 block border-gray-400" />
       <form @submit.prevent="onSubmit" method="POST">
-        <div class="h-20">
+        <div class="h-20 mt-6">
           <div class="w-full flex flex-col">
             <input
                 class="appearance-none block w-full bg-grey-lighter text-grey-900
@@ -181,6 +188,7 @@
 import { required, email, minLength } from 'vuelidate/lib/validators';
 import actionButton from '../components/actionButton.vue';
 import Spinner from '../components/spinner.vue';
+import OauthPanel from './oauth-panel.vue';
 
 export default {
   data() {
@@ -189,6 +197,7 @@ export default {
       lastName: '',
       email: '',
       password: '',
+      idToken: '',
       showFormError: false,
       showSpinner: false,
     };
@@ -198,13 +207,14 @@ export default {
   },
   methods: {
     onSubmit() {
-      if (this.$v.$invalid) { return; }
+      if (this.idToken === '' && this.$v.$invalid) { return; }
 
       const formData = {
         name: this.name,
         lastName: this.lastName,
         email: this.email,
         password: this.password,
+        token: this.idToken,
       };
       this.showSpinner = true;
       this.$store.dispatch('signUp', formData).then(() => {
@@ -239,6 +249,7 @@ export default {
   components: {
     actionButton,
     Spinner,
+    OauthPanel,
   },
   validations: {
     email: {
