@@ -31,15 +31,15 @@
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
                   font-medium text-gray-600 uppercase tracking-wider">
-          Rut usuario
+          Usuario
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
                   font-medium text-gray-600 uppercase tracking-wider">
-          Rut empresa
+          Empresa
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
                   font-medium text-gray-600 uppercase tracking-wider">
-          Número de cuentas
+          Última Actualización
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
                   font-medium text-gray-600 uppercase tracking-wider">
@@ -51,7 +51,7 @@
     </thead>
     <tbody class="bg-white" name="list">
       <tr v-for='link in userLinks' v-bind:key='link.linkId'>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
           <div class="flex items-center">
             <div class="flex-shrink-0 h-10 w-10">
               <img class="h-10 w-10 rounded-full" :src="link.bank.smallLogo" />
@@ -64,19 +64,31 @@
             </div>
           </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div class="text-lg leading-5 text-gray-900">{{ link.rut | rutFilter}}</div>
-        </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div class="text-lg leading-5 text-gray-900">
-            {{ (link.holderType === 'business' ? link.holderId : '') | rutFilter }}
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+          <div v-show="link.holderType !== 'business'">
+            <div class="text-sm leading-5 font-medium text-gray-900">{{ link.holderName }}</div>
+            <div class="text-sm leading-5 text-gray-600">
+              {{ link.rut | rutFilter}}
+            </div>
+          </div>
+          <div v-show="link.holderType === 'business'" class="text-lg leading-5 text-gray-900">
+            {{ link.rut | rutFilter}}
           </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
-          <div class="text-lg leading-5 text-gray-900">
-            <p type="password">{{ link.numberOfAccounts }}</p></div>
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+          <div v-show="link.holderType === 'business'">
+            <div class="text-sm leading-5 font-medium text-gray-900">{{ link.holderName }}</div>
+            <div class="text-sm leading-5 text-gray-600">
+              {{ link.rut | rutFilter}}
+            </div>
+          </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+          <div class="text-sm text-left leading-5 text-gray-900">
+            <span>{{ formatDatetime(link.lastTimeRefreshed) }}</span>
+          </div>
+        </td>
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
           <div class="text-lg leading-5 text-gray-900">
             <toggle-button :color="{checked: 'rgba(52, 211, 153, 0.75)',
                                     unchecked: '#718096'}"
@@ -90,10 +102,10 @@
                @change="updateActive({ ...link })"/>
           </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
+        <td class="px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
                   leading-5 font-medium">
           <a href="#" @click="askForLinkDeletion(link.linkId)"
-            class="ml-6 px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-red-200
+            class="ml-4 px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-red-200
                       text-red-900 hover:bg-red-300">
             <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
           </a>
@@ -119,6 +131,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { mapGetters } from 'vuex';
 import LinkConfirmationModal from './link-confirmation-modal.vue';
 
@@ -144,6 +157,11 @@ export default {
   },
 
   methods: {
+    formatDatetime(datetime) {
+      const date = moment(datetime).format('DD MMMM YYYY HH:mm:ss');
+      return moment(datetime).isValid() ? date : null;
+    },
+
     trackLinkDeleted(linkId) {
       window.analytics.track('Link Deleted', { link_id: linkId });
     },
@@ -213,6 +231,10 @@ export default {
 </script>
 
 <style scoped>
+.max-w-xxs {
+  max-width: 12rem;
+}
+
 .list-enter-active, .list-leave-active {
   transition: all .3s;
 }
