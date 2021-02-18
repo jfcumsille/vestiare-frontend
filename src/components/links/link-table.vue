@@ -32,7 +32,7 @@
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
                   font-medium text-gray-600 uppercase tracking-wider">
-          Modo
+          Activo
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
       </tr>
@@ -66,13 +66,16 @@
         </td>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <div class="text-lg leading-5 text-gray-900">
-            <div
-              class="py-2 px-4 rounded-md w-16"
-              :class="{ 'bg-green-200': link.mode === 'test',
-                        'bg-blue-200': link.mode === 'live' }"
-            >
-              {{ link.mode }}
-            </div>
+            <toggle-button :color="{checked: 'rgba(52, 211, 153, 0.75)',
+                                    unchecked: '#718096'}"
+               :value="link.active"
+               :sync="true"
+               :width="60"
+               :height="28"
+               :fontSize="12"
+               :speed="250"
+               :labels="{checked: 'Sí', unchecked: 'No'}"
+               @change="updateLink({ linkId: link.linkId, active: !link.active })"/>
           </div>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
@@ -131,6 +134,10 @@ export default {
       return this.$store.dispatch('destroyUserLink', linkId).then(() => {
         this.trackLinkDeleted(linkId);
       });
+    },
+
+    async updateLink({ linkId, active }) {
+      return this.$store.dispatch('updateUserLink', { linkId, active });
     },
 
     async confirmDestroyLink() {

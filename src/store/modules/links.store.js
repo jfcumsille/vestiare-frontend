@@ -34,6 +34,14 @@ const mutations = {
     state.userLinks = state.userLinks.filter((link) => link.linkId !== linkId);
   },
 
+  updateUserLink(state, { linkId, active }) {
+    const updatedLink = state.userLinks.find((link) => link.linkId === linkId);
+    state.userLinks = state.userLinks.map((link) => (link.linkId !== linkId ? link : {
+      ...updatedLink,
+      active,
+    }));
+  },
+
   updateLoading(state, status) {
     state.loading = status;
   },
@@ -78,6 +86,21 @@ const actions = {
         return response;
       })
       .catch((error) => console.log(error));
+  },
+
+  updateUserLink(context, { linkId, active }) {
+    const url = '/internal/v1/links/dashboard';
+    const params = {
+      id: linkId,
+      current_organization_id: this.getters.getDefaultOrganizationId,
+    };
+    const formData = { link_data: { active } };
+    const headers = this.getters.authHeaders;
+    return axiosAuth.put(`${url}/${params.id}`, formData, { headers, params })
+      .then((response) => {
+        this.commit('updateUserLink', { linkId, active });
+        return response;
+      });
   },
 
   sendNewLinkRequest(context, formData) {
