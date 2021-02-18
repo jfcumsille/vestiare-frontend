@@ -10,6 +10,17 @@
       :onCancel="cancelLinkDeletion"
       :showSpinner="showSpinner"
       />
+  <link-confirmation-modal v-if="showPreventDeactivationModal"
+      :title='"Contraseña Inválida"'
+      :text='`La última vez que fuimos al banco con este link, las credenciales eran inválidas.
+             Hemos dejado de actualizar los movimientos de esta cuenta para evitar un bloqueo.
+             Si crees que esto es un error, podemos reactivar las actualizaciones apretando
+             Reintentar.`'
+      :leftButtonText="'Cancelar'"
+      :rightButtonText="'Reintentar'"
+      :onConfirm="confirmPreventRefreshDeactivation"
+      :onCancel="cancelPreventRefreshDeactivation"
+      :showSpinner="showSpinner"/>
 
   <table class="min-w-full">
     <thead class="bg-gray-100">
@@ -34,6 +45,7 @@
                   font-medium text-gray-600 uppercase tracking-wider">
           Activo
         </th>
+        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
       </tr>
     </thead>
@@ -75,7 +87,7 @@
                :fontSize="12"
                :speed="250"
                :labels="{checked: 'Sí', unchecked: 'No'}"
-               @change="updateLink({ linkId: link.linkId, active: !link.active })"/>
+               @change="updateActive({ ...link })"/>
           </div>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
@@ -85,6 +97,20 @@
                       text-red-900 hover:bg-red-300">
             <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
           </a>
+        </td>
+        <td class="pr-6 py-4 whitespace-no-wrap border-b border-gray-200">
+          <div class="flex flex-row justify-around text-lg leading-5 text-gray-900">
+            <a v-if="link.preventRefresh" href="#" @click="askForPreventDeactivation(link.linkId)"
+              class="inline-flex text-orange-900 text-xs leading-5 font-medium rounded-md">
+                <div
+                  class="py-1 px-2 rounded-md text-center bg-orange-300 bg-opacity-50
+                         hover:bg-orange-400 hover:bg-opacity-75"
+                >
+                  <font-awesome-icon icon="exclamation-circle" class="mr-1"/>
+                  <span>Contraseña Inválida</span>
+                </div>
+            </a>
+          </div>
         </td>
       </tr>
     </tbody>
@@ -101,7 +127,9 @@ export default {
     return {
       showSpinner: false,
       showDeleteModal: false,
+      showPreventDeactivationModal: false,
       linkToDestroy: null,
+      linkToUpdate: null,
     };
   },
 
@@ -125,9 +153,19 @@ export default {
       this.linkToDestroy = linkId;
     },
 
+    askForPreventDeactivation(linkId) {
+      this.showPreventDeactivationModal = true;
+      this.linkToUpdate = linkId;
+    },
+
     cancelLinkDeletion() {
       this.showDeleteModal = false;
       this.linkToDestroy = null;
+    },
+
+    cancelPreventRefreshDeactivation() {
+      this.showPreventDeactivationModal = false;
+      this.linkToUpdate = null;
     },
 
     async destroyLink(linkId) {
@@ -136,8 +174,8 @@ export default {
       });
     },
 
-    async updateLink({ linkId, active }) {
-      return this.$store.dispatch('updateUserLink', { linkId, active });
+    async updateLink({ linkId, preventRefresh, active }) {
+      return this.$store.dispatch('updateUserLink', { linkId, preventRefresh, active });
     },
 
     async confirmDestroyLink() {
@@ -149,6 +187,22 @@ export default {
       await this.destroyLink(this.linkToDestroy);
       this.showSpinner = false;
       this.showDeleteModal = false;
+    },
+
+    async updateActive({ linkId, active, preventRefresh }) {
+      await this.updateLink({ linkId, active: !active, preventRefresh });
+    },
+
+    async confirmPreventRefreshDeactivation() {
+      if (this.linkToUpdate === null) {
+        return;
+      }
+
+      this.showSpinner = true;
+      const updatingLink = this.userLinks.find((link) => link.linkId === this.linkToUpdate);
+      await this.updateLink({ ...updatingLink, preventRefresh: false });
+      this.showSpinner = false;
+      this.showPreventDeactivationModal = false;
     },
 
     translatedHolderType(holderType) {

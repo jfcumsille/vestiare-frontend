@@ -34,11 +34,12 @@ const mutations = {
     state.userLinks = state.userLinks.filter((link) => link.linkId !== linkId);
   },
 
-  updateUserLink(state, { linkId, active }) {
+  updateUserLink(state, { linkId, active, preventRefresh }) {
     const updatedLink = state.userLinks.find((link) => link.linkId === linkId);
     state.userLinks = state.userLinks.map((link) => (link.linkId !== linkId ? link : {
       ...updatedLink,
       active,
+      preventRefresh,
     }));
   },
 
@@ -88,17 +89,17 @@ const actions = {
       .catch((error) => console.log(error));
   },
 
-  updateUserLink(context, { linkId, active }) {
+  updateUserLink(context, { linkId, active, preventRefresh }) {
     const url = '/internal/v1/links/dashboard';
     const params = {
       id: linkId,
       current_organization_id: this.getters.getDefaultOrganizationId,
     };
-    const formData = { link_data: { active } };
+    const formData = { link_data: { active, prevent_refresh: preventRefresh } };
     const headers = this.getters.authHeaders;
     return axiosAuth.put(`${url}/${params.id}`, formData, { headers, params })
       .then((response) => {
-        this.commit('updateUserLink', { linkId, active });
+        this.commit('updateUserLink', { linkId, active, preventRefresh });
         return response;
       });
   },
