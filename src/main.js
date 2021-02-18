@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
 import VueClipboard from 'vue-clipboard2';
+import ToggleButton from 'vue-js-toggle-button';
 
 import { rutFilter, rutInputDirective } from 'vue-dni';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -21,6 +22,7 @@ library.add(
 );
 
 Vue.use(VueClipboard);
+Vue.use(ToggleButton);
 Vue.use(Vuelidate);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

@@ -37,7 +37,7 @@
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
       </tr>
     </thead>
-    <tbody class="bg-white" is="transition-group" name="list">
+    <tbody class="bg-white" name="list">
       <tr v-for='link in userLinks' v-bind:key='link.linkId'>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <div class="flex items-center">
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import LinkConfirmationModal from './link-confirmation-modal.vue';
 
 export default {
@@ -103,8 +103,8 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      userLinks: (state) => state.links.userLinks,
+    ...mapGetters({
+      userLinks: 'getUserLinks',
     }),
   },
 
