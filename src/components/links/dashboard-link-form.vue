@@ -4,7 +4,8 @@
     @linkCreated='onLinkCreated'
     :createdThrough="'dashboard'"
     :headers="formHeaders"
-    :product="product">
+    :product="product"
+    :mode="testModeFilter ? 'test' : 'live'">
   </link-wizard>
   <link-detail v-if="!showForm"
       :bank='bank'
@@ -17,6 +18,7 @@
 
 <script>
 
+import { mapState } from 'vuex';
 import apiClient from '../../api';
 import LinkDetail from './link-detail.vue';
 import LinkWizard from './link-wizard.vue';
@@ -40,6 +42,9 @@ export default {
     LinkDetail,
   },
   computed: {
+    ...mapState({
+      testModeFilter: (state) => state.links.testModeFilter,
+    }),
     formHeaders() {
       return this.$store.getters.authHeaders;
     },

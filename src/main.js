@@ -1,26 +1,32 @@
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
 import VueClipboard from 'vue-clipboard2';
+import ToggleButton from 'vue-js-toggle-button';
 
 import { rutFilter, rutInputDirective } from 'vue-dni';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faEye, faEdit, faTrash, faPlus, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
   faTimes, faBuilding, faUser, faDollarSign, faHandshake, faCheck, faKey, faUniversity,
-  faMobile,
+  faMobile, faExclamationCircle, faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
+import moment from 'moment';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
+moment.locale('es-cl');
+
 library.add(
   faEye, faEdit, faPlus, faTrash, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
   faTimes, faBuilding, faUser, faDollarSign, faHandshake, faCheck, faKey, faUniversity, faMobile,
+  faExclamationCircle, faQuestion,
 );
 
 Vue.use(VueClipboard);
+Vue.use(ToggleButton);
 Vue.use(Vuelidate);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

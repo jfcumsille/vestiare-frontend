@@ -6,6 +6,19 @@
         <spinner v-if="loadingLinks"></spinner>
       </div>
       <div v-if="!loadingLinks" class="flex flex-col">
+        <div class="flex justify-end mb-8 mr-1">
+          <h1 class="text-gray-900 font-semibold text-xl leading-9 mr-2">Modo</h1>
+          <toggle-button :css-colors="false" :color="{checked: '#8cdee2',
+                                  unchecked: '#7f7fe8'}"
+            :value="!testModeFilter"
+            :sync="true"
+            :width="90"
+            :height="35"
+            :fontSize="18"
+            :margin="3"
+            :labels="{checked: 'Live', unchecked: 'Test'}"
+            @change="updateLinksFilter()"/>
+        </div>
         <div class="overflow-x-auto">
           <div class="align-middle inline-block min-w-full overflow-hidden
                       sm:rounded-md border-gray-200">
@@ -23,13 +36,15 @@
               :class="{ 'text-xs': shouldShowTable }"
               class="px-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
                       text-gray-900 hover:bg-gray-300">
-              <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Nuevo link personas
+              <font-awesome-icon icon="plus" class="mt-1 mr-1"/>
+              {{ `Nuevo link ${testModeFilter ? 'personas de prueba' : 'personas'}` }}
             </router-link>
             <router-link to="/links/new?holder_type=business&product=movements"
               :class="{ 'text-xs': shouldShowTable }"
               class="px-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
                       text-gray-900 hover:bg-gray-300">
-              <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Nuevo link empresas
+              <font-awesome-icon icon="plus" class="mt-1 mr-1"/>
+              {{ `Nuevo link ${testModeFilter ? 'empresas de prueba' : 'empresas'}` }}
             </router-link>
           </div>
         </div>
@@ -58,10 +73,12 @@ export default {
     ...mapActions([
       'getUserLinks',
       'showOnboarding',
+      'updateLinksFilter',
     ]),
   },
   computed: {
     ...mapState({
+      testModeFilter: (state) => state.links.testModeFilter,
       userLinks: (state) => state.links.userLinks,
       loadingLinks: (state) => state.links.loading,
       show: (state) => state.onboarding.show,
