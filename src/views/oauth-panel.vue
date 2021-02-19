@@ -46,8 +46,8 @@ export default {
       return !!this.$route.query.code;
     },
     callbackPath() {
-      if (this.signsUp) return '/signup';
-      return '/login';
+      if (this.signsUp) return 'signup';
+      return 'login';
     },
     actionButtonLabel() {
       if (this.signsUp) return 'Registrarse';
