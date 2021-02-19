@@ -30,13 +30,13 @@ function oauthJWTPayload(code, verifier) {
   };
 }
 
-function authorizationUri(challenge, connection) {
+function authorizationUri(callbackPath, challenge, connection) {
   const params = {
     response_type: 'code',
     code_challenge: challenge,
     code_challenge_method: 'S256',
     client_id: AUTH0_CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
+    redirect_uri: `${REDIRECT_URI}/${callbackPath}`,
     scope: 'openid profile email',
     connection,
   };
