@@ -27,6 +27,12 @@
       <transition name="slide-fade">
         <p class="text-red-700 mt-6" v-if='showloginError'>Credenciales inválidas 👮🏽‍♀️</p>
       </transition>
+      <oauth-panel
+        @start-loading="showSpinner = true"
+        @stop-loading="showSpinner = false"
+        @set-token="idToken = $event"
+        @submit="submitForm" />
+      <hr class="mt-6 mx-auto w-4/5 block border-gray-400" />
       <form @submit.prevent="submitForm" class="mt-6">
         <div class="rounded-md shadow-sm">
           <input aria-label="Email address" name="email" type="email"
@@ -73,12 +79,14 @@
 import { required, email } from 'vuelidate/lib/validators';
 import Spinner from '../components/spinner.vue';
 import actionButton from '../components/actionButton.vue';
+import OauthPanel from './oauth-panel.vue';
 
 export default {
   data() {
     return {
       email: '',
       password: '',
+      idToken: '',
       showloginError: false,
       showHelloBackMessage: false,
       showSpinner: false,
@@ -93,15 +101,17 @@ export default {
   components: {
     actionButton,
     Spinner,
+    OauthPanel,
   },
   methods: {
     submitForm() {
-      if (this.$v.$invalid) {
+      if (this.idToken === '' && this.$v.$invalid) {
         throw Error('Invalid form');
       }
       const formData = {
         email: this.email,
         password: this.password,
+        idToken: this.idToken,
       };
       this.showSpinner = true;
       this.$store.dispatch('logIn', formData)

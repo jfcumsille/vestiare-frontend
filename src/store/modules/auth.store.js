@@ -149,7 +149,11 @@ const actions = {
   },
 
   logIn({ dispatch }, formData) {
-    const payload = { email: formData.email, password: formData.password };
+    const payload = {
+      email: formData.email,
+      password: formData.password,
+      token: formData.idToken,
+    };
     const url = '/internal/v1/sessions';
     return axiosAuth.post(url, payload)
       .then((response) => {

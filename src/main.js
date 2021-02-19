@@ -11,6 +11,7 @@ import {
   faMobile, faExclamationCircle, faQuestion,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { InlineSvgPlugin } from 'vue-inline-svg';
 
 import moment from 'moment';
 import App from './App.vue';
@@ -28,6 +29,7 @@ library.add(
 Vue.use(VueClipboard);
 Vue.use(ToggleButton);
 Vue.use(Vuelidate);
+Vue.use(InlineSvgPlugin);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.filter('rutFilter', rutFilter);
