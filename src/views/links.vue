@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 import LinkTable from '../components/links/link-table.vue';
 import Spinner from '../components/lib/spinner.vue';
 
@@ -77,9 +77,11 @@ export default {
     ]),
   },
   computed: {
+    ...mapGetters({
+      userLinks: 'getUserLinks',
+    }),
     ...mapState({
       testModeFilter: (state) => state.links.testModeFilter,
-      userLinks: (state) => state.links.userLinks,
       loadingLinks: (state) => state.links.loading,
       show: (state) => state.onboarding.show,
       skipped: (state) => state.onboarding.skipped,
