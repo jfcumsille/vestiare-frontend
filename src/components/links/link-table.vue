@@ -22,36 +22,47 @@
       :onCancel="cancelPreventRefreshDeactivation"
       :showSpinner="showSpinner"/>
 
-  <table class="min-w-full">
+  <table class="w-full table-fixed">
     <thead class="bg-gray-100">
       <tr>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                  font-medium text-gray-600 uppercase tracking-wider">
+                  font-medium text-gray-600 uppercase tracking-wider w-1/6">
           Banco
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                  font-medium text-gray-600 uppercase tracking-wider">
+                  font-medium text-gray-600 uppercase tracking-wider w-1/6">
           Usuario
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                  font-medium text-gray-600 uppercase tracking-wider">
+                  font-medium text-gray-600 uppercase tracking-wider w-1/6">
           Empresa
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                  font-medium text-gray-600 uppercase tracking-wider">
+                  font-medium text-gray-600 uppercase tracking-wider w-1/6">
           Última Actualización
         </th>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                  font-medium text-gray-600 uppercase tracking-wider">
+                  font-medium text-gray-600 uppercase tracking-wider w-8p">
           Activo
         </th>
-        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
-        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50"></th>
+        <th class="border-b border-gray-200 bg-gray-50 w-06p"/>
+        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 w-8p"></th>
+        <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 w-1/6"></th>
       </tr>
     </thead>
     <tbody class="bg-white" name="list">
+      <tr v-show="showNoLinkMessage">
+        <td colspan="8" class="bg-white border-b border-gray-200">
+          <div class="px-6 py-4 w-full text-center">
+            <h1 class="text-4xl mt-4">
+              Todavía no agregas ninguna credencial 👀
+            </h1>
+          </div>
+        </td>
+      </tr>
       <tr v-for='link in userLinks' v-bind:key='link.linkId'>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6
+                   overflow-hidden">
           <div class="flex items-center">
             <div class="flex-shrink-0 h-10 w-10">
               <img class="h-10 w-10 rounded-full" :src="link.bank.smallLogo" />
@@ -64,18 +75,18 @@
             </div>
           </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6 overflow-hidden">
           <div v-show="link.holderType !== 'business'">
             <div class="text-sm leading-5 font-medium text-gray-900">{{ link.holderName }}</div>
             <div class="text-sm leading-5 text-gray-600">
               {{ link.rut | rutFilter}}
             </div>
           </div>
-          <div v-show="link.holderType === 'business'" class="text-lg leading-5 text-gray-900">
+          <div v-show="link.holderType === 'business'" class="text-base leading-5 text-gray-900">
             {{ link.rut | rutFilter}}
           </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6 overflow-hidden">
           <div v-show="link.holderType === 'business'">
             <div class="text-sm leading-5 font-medium text-gray-900">{{ link.holderName }}</div>
             <div class="text-sm leading-5 text-gray-600">
@@ -83,12 +94,12 @@
             </div>
           </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6 overflow-hidden">
           <div class="text-sm text-left leading-5 text-gray-900">
             <span>{{ formatDatetime(link.lastTimeRefreshed) }}</span>
           </div>
         </td>
-        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 max-w-xxs overflow-hidden">
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6 overflow-hidden">
           <div class="text-lg leading-5 text-gray-900">
             <toggle-button :color="{checked: 'rgba(52, 211, 153, 0.75)',
                                     unchecked: '#718096'}"
@@ -102,15 +113,16 @@
                @change="updateActive({ ...link })"/>
           </div>
         </td>
+        <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6  w-06p"/>
         <td class="px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
                   leading-5 font-medium">
           <a href="#" @click="askForLinkDeletion(link.linkId)"
-            class="ml-4 px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-red-200
+            class="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-red-200
                       text-red-900 hover:bg-red-300">
             <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
           </a>
         </td>
-        <td class="pr-6 py-4 whitespace-no-wrap border-b border-gray-200">
+        <td class="pr-6 py-4 justify-center whitespace-no-wrap border-b border-gray-200">
           <div class="flex flex-row justify-around text-lg leading-5 text-gray-900">
             <a v-if="link.preventRefresh" href="#" @click="askForPreventDeactivation(link.linkId)"
               class="inline-flex text-orange-900 text-xs leading-5 font-medium rounded-md">
@@ -132,7 +144,7 @@
 
 <script>
 import moment from 'moment';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import LinkConfirmationModal from './link-confirmation-modal.vue';
 
 export default {
@@ -150,6 +162,12 @@ export default {
     ...mapGetters({
       userLinks: 'getUserLinks',
     }),
+    ...mapState({
+      loadingLinks: (state) => state.links.loading,
+    }),
+    showNoLinkMessage() {
+      return !this.loadingLinks && this.userLinks.length === 0;
+    },
   },
 
   components: {
@@ -231,8 +249,12 @@ export default {
 </script>
 
 <style scoped>
-.max-w-xxs {
-  max-width: 12rem;
+
+.w-8p {
+  width: 8%
+}
+.w-06p {
+  width: 0.666667%
 }
 
 .list-enter-active, .list-leave-active {

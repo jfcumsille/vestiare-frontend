@@ -1,6 +1,6 @@
 <template>
 <div class="bg-gray-200">
-  <main class="h-screen">
+  <main class="h-full min-h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative">
       <div class="grid place-items-center">
         <spinner v-if="loadingLinks"></spinner>
@@ -23,13 +23,7 @@
           <div class="align-middle inline-block min-w-full overflow-hidden
                       sm:rounded-md border-gray-200">
 
-            <link-table v-if="shouldShowTable" />
-
-            <div v-if="!shouldShowTable" class="text-center">
-              <h1 class="text-4xl mt-4">
-                Todavía no agregas ninguna credencial 👀
-              </h1>
-            </div>
+            <link-table/>
           </div>
           <div class="mt-4 text-right">
             <router-link to="/links/new?holder_type=individual&product=movements"
