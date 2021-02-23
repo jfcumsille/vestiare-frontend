@@ -1,9 +1,13 @@
 import axiosAuth from '../../axios-auth';
 import { findBankByCode } from '../../banks-helper';
 
+const parse = require('parse-link-header');
+
 const initialState = {
   userLiveLinks: [],
   userTestLinks: [],
+  testPagination: {},
+  livePagination: {},
   loading: true,
   mode: 'live',
 };
@@ -11,6 +15,10 @@ const initialState = {
 const getters = {
   getLinks(state) {
     return state.mode === 'live' ? state.userLiveLinks : state.userTestLinks;
+  },
+
+  getPagination(state) {
+    return state.mode === 'live' ? state.livePagination : state.testPagination;
   },
 };
 
@@ -63,6 +71,15 @@ const mutations = {
     const modeValue = state.mode === 'test' ? 'live' : 'test';
     state.mode = modeValue;
   },
+
+  updatePagination(state, { mode, currentPage, apiPagination }) {
+    if (mode === 'test') {
+      state.testPagination = { currentPage, lastPage: Number(apiPagination.last.page) };
+    }
+    if (mode === 'live') {
+      state.livePagination = { currentPage, lastPage: Number(apiPagination.last.page) };
+    }
+  },
 };
 
 const actions = {
@@ -71,13 +88,15 @@ const actions = {
     commit('updateMode');
   },
 
-  async getUserLinks({ commit }, { mode }) {
+  async getUserLinks({ commit }, { page, mode }) {
     return new Promise((resolve) => {
-      const url = `/internal/v1/links/dashboard?mode=${mode}`;
+      const url = `/internal/v1/links/dashboard?per_page=50&page=${page}&mode=${mode}`;
       const queryParams = { current_organization_id: this.getters.getDefaultOrganizationId };
       const { authHeaders } = this.getters;
       axiosAuth.get(url, { headers: { ...authHeaders }, params: queryParams })
         .then((response) => {
+          const apiPagination = parse(response.headers.link);
+          commit('updatePagination', { mode, currentPage: page, apiPagination });
           commit('updateUserLinks', { userLinks: response.data, mode });
           commit('updateLoading', false);
           resolve();

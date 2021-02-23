@@ -23,19 +23,24 @@
           <div class="align-middle inline-block min-w-full overflow-hidden
                       sm:rounded-md border-gray-200">
 
-            <link-table/>
+            <link-table :loading="loadingLinks"/>
+            <pagination v-if="pagination && pagination.currentPage" class="pl-2 py-2 float-right"
+              :currentPage="pagination.currentPage"
+              :lastPage="pagination.lastPage"
+              :paginate="selectPage"
+            />
           </div>
           <div class="mt-4 text-right">
             <router-link to="/links/new?holder_type=individual&product=movements"
               :class="{ 'text-xs': shouldShowTable }"
-              class="px-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
+              class="pr-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
                       text-gray-900 hover:bg-gray-300">
               <font-awesome-icon icon="plus" class="mt-1 mr-1"/>
               {{ `Nuevo link ${testMode ? 'personas de prueba' : 'personas'}` }}
             </router-link>
             <router-link to="/links/new?holder_type=business&product=movements"
               :class="{ 'text-xs': shouldShowTable }"
-              class="px-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
+              class="pl-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
                       text-gray-900 hover:bg-gray-300">
               <font-awesome-icon icon="plus" class="mt-1 mr-1"/>
               {{ `Nuevo link ${testMode ? 'empresas de prueba' : 'empresas'}` }}
@@ -52,8 +57,15 @@
 import { mapGetters, mapState, mapActions } from 'vuex';
 import LinkTable from '../components/links/link-table.vue';
 import Spinner from '../components/lib/spinner.vue';
+import Pagination from '../components/lib/pagination.vue';
+
 
 export default {
+  data() {
+    return {
+      loadingLinks: false,
+    };
+  },
   created() {
     this.getUserLinks({ page: 1, mode: 'live' });
     this.getUserLinks({ page: 1, mode: 'test' });
@@ -70,6 +82,16 @@ export default {
       'showOnboarding',
       'updateLinksMode',
     ]),
+    async selectPage(page) {
+      const mode = this.testMode ? 'test' : 'live';
+      this.loadingLinks = true;
+      try {
+        await this.getUserLinks({ page, mode });
+        this.loadingLinks = false;
+      } catch {
+        // TODO: notify error to user
+      }
+    },
   },
   computed: {
     ...mapGetters({
@@ -83,6 +105,7 @@ export default {
     }),
     ...mapGetters({
       userLinks: 'getLinks',
+      pagination: 'getPagination',
     }),
     shouldShowTable() {
       return !this.initLoading && this.userLinks.length !== 0;
@@ -91,6 +114,7 @@ export default {
   components: {
     LinkTable,
     Spinner,
+    Pagination,
   },
   watch: {
     show(newValue) {

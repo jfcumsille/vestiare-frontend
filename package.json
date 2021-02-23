@@ -21,6 +21,7 @@
     "humps": "^2.0.1",
     "link-module-alias": "^1.2.0",
     "moment": "^2.29.1",
+    "parse-link-header": "^1.0.1",
     "tailwind": "^4.0.0",
     "tailwindcss": "^1.8.0",
     "vue": "^2.6.11",

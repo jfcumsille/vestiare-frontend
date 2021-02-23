@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="relative w-full h-full">
   <link-confirmation-modal v-if="showDeleteModal"
       :title='"Eliminar Link"'
       :text='`¿Estás seguro que quieres borrar este link? El usuario tendrá que hacer
@@ -21,7 +21,13 @@
       :onConfirm="confirmPreventRefreshDeactivation"
       :onCancel="cancelPreventRefreshDeactivation"
       :showSpinner="showSpinner"/>
-
+  <div v-if="loading" class="flex justify-center">
+    <div class="absolute w-full h-full bg-white opacity-50 z-10"/>
+    <spinner class="absolute z-20 inset-y-2/5"
+             :widthClsName="'w-16'"
+             :heightClsName="'h-16'"
+             :borderClsName="'border-4 border-t-4'"/>
+  </div>
   <table class="w-full table-fixed">
     <thead class="bg-gray-100">
       <tr>
@@ -95,7 +101,7 @@
           </div>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6 overflow-hidden">
-          <div class="text-sm text-left leading-5 text-gray-900">
+          <div class="text-sm text-center leading-5 text-gray-900">
             <span>{{ formatDatetime(link.lastTimeRefreshed) }}</span>
           </div>
         </td>
@@ -122,7 +128,7 @@
             <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
           </a>
         </td>
-        <td class="pr-6 py-4 justify-center whitespace-no-wrap border-b border-gray-200">
+        <td class="pr-6 py-4 whitespace-no-wrap border-b border-gray-200">
           <div class="flex flex-row justify-around text-lg leading-5 text-gray-900">
             <a v-if="link.preventRefresh" href="#" @click="askForPreventDeactivation(link.linkId)"
               class="inline-flex text-orange-900 text-xs leading-5 font-medium rounded-md">
@@ -146,6 +152,7 @@
 import moment from 'moment';
 import { mapActions, mapGetters, mapState } from 'vuex';
 import LinkConfirmationModal from './link-confirmation-modal.vue';
+import Spinner from '../lib/spinner.vue';
 
 export default {
   data() {
@@ -156,6 +163,10 @@ export default {
       linkToDestroy: null,
       linkToUpdate: null,
     };
+  },
+
+  props: {
+    loading: Boolean,
   },
 
   computed: {
@@ -173,6 +184,7 @@ export default {
 
   components: {
     LinkConfirmationModal,
+    Spinner,
   },
 
   methods: {
