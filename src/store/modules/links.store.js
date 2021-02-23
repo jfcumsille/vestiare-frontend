@@ -2,20 +2,21 @@ import axiosAuth from '../../axios-auth';
 import { findBankByCode } from '../../banks-helper';
 
 const initialState = {
-  userLinks: [],
+  userLiveLinks: [],
+  userTestLinks: [],
   loading: true,
-  testModeFilter: false,
+  mode: 'live',
 };
 
 const getters = {
-  getUserLinks(state) {
-    return state.testModeFilter ? state.userLinks.filter((link) => link.mode === 'test') : state.userLinks.filter((link) => link.mode === 'live');
+  getLinks(state) {
+    return state.mode === 'live' ? state.userLiveLinks : state.userTestLinks;
   },
 };
 
 const mutations = {
-  updateUserLinks(state, userLinks) {
-    state.userLinks = userLinks.map((link) => ({
+  updateUserLinks(state, { userLinks, mode }) {
+    const links = userLinks.map((link) => ({
       bank: findBankByCode(link.institution.id),
       holderType: link.holder_type,
       holderId: link.holder_id,
@@ -28,10 +29,21 @@ const mutations = {
       active: link.active,
       lastTimeRefreshed: link.last_time_refreshed,
     }));
+    if (mode === 'test') {
+      state.userTestLinks = links;
+    }
+    if (mode === 'live') {
+      state.userLiveLinks = links;
+    }
   },
 
-  removeUserLink(state, linkId) {
-    state.userLinks = state.userLinks.filter((link) => link.linkId !== linkId);
+  removeUserLink(state, { linkId, mode }) {
+    if (mode === 'live') {
+      state.userLiveLinks = state.userLiveLinks.filter((link) => link.linkId !== linkId);
+    }
+    if (mode === 'test') {
+      state.userTestLinks = state.userTestLinks.filter((link) => link.linkId !== linkId);
+    }
   },
 
   updateUserLink(state, { linkId, active, preventRefresh }) {
@@ -47,33 +59,33 @@ const mutations = {
     state.loading = status;
   },
 
-  updateTestModeFilter(state) {
-    const currentValue = state.testModeFilter;
-    state.testModeFilter = !currentValue;
+  updateMode(state) {
+    const modeValue = state.mode === 'test' ? 'live' : 'test';
+    state.mode = modeValue;
   },
 };
 
 const actions = {
 
-  updateLinksFilter({ commit }) {
-    commit('updateTestModeFilter');
+  updateLinksMode({ commit }) {
+    commit('updateMode');
   },
 
-  getUserLinks({ commit }) {
-    commit('updateLoading', true);
-    return new Promise((resolve, reject) => {
-      const url = '/internal/v1/links/dashboard';
+  async getUserLinks({ commit }, { mode }) {
+    return new Promise((resolve) => {
+      const url = `/internal/v1/links/dashboard?mode=${mode}`;
       const queryParams = { current_organization_id: this.getters.getDefaultOrganizationId };
       const { authHeaders } = this.getters;
-      axiosAuth.get(url, { headers: authHeaders, params: queryParams }).then((response) => {
-        commit('updateUserLinks', response.data);
-        commit('updateLoading', false);
-        resolve();
-      }).catch((error) => reject(error));
+      axiosAuth.get(url, { headers: { ...authHeaders }, params: queryParams })
+        .then((response) => {
+          commit('updateUserLinks', { userLinks: response.data, mode });
+          commit('updateLoading', false);
+          resolve();
+        });
     });
   },
 
-  destroyUserLink(context, linkId) {
+  async destroyUserLink(context, { linkId, mode }) {
     const url = '/internal/v1/links/dashboard';
     const params = {
       id: linkId,
@@ -83,7 +95,7 @@ const actions = {
     return axiosAuth.delete(`${url}/${params.id}`, { headers, params: { current_organization_id: params.current_organization_id } })
       .then((response) => {
         // TODO: notify link deletion.
-        this.commit('removeUserLink', linkId);
+        this.commit('removeUserLink', { linkId, mode });
         return response;
       })
       .catch((error) => console.log(error));

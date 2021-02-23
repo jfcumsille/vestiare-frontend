@@ -144,7 +144,7 @@
 
 <script>
 import moment from 'moment';
-import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import LinkConfirmationModal from './link-confirmation-modal.vue';
 
 export default {
@@ -160,9 +160,10 @@ export default {
 
   computed: {
     ...mapGetters({
-      userLinks: 'getUserLinks',
+      userLinks: 'getLinks',
     }),
     ...mapState({
+      mode: (state) => state.links.mode,
       loadingLinks: (state) => state.links.loading,
     }),
     showNoLinkMessage() {
@@ -175,6 +176,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(['destroyUserLink']),
+
     formatDatetime(datetime) {
       const date = moment(datetime).format('DD MMMM YYYY HH:mm:ss');
       return moment(datetime).isValid() ? date : null;
@@ -204,8 +207,8 @@ export default {
       this.linkToUpdate = null;
     },
 
-    async destroyLink(linkId) {
-      return this.$store.dispatch('destroyUserLink', linkId).then(() => {
+    async destroyLink(linkId, mode) {
+      return this.destroyUserLink({ linkId, mode }).then(() => {
         this.trackLinkDeleted(linkId);
       });
     },
@@ -220,7 +223,7 @@ export default {
       }
 
       this.showSpinner = true;
-      await this.destroyLink(this.linkToDestroy);
+      await this.destroyLink(this.linkToDestroy, this.mode);
       this.showSpinner = false;
       this.showDeleteModal = false;
     },

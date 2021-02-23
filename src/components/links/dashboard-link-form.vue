@@ -5,7 +5,7 @@
     :createdThrough="'dashboard'"
     :headers="formHeaders"
     :product="product"
-    :mode="testModeFilter ? 'test' : 'live'">
+    :mode="mode">
   </link-wizard>
   <link-detail v-if="!showForm"
       :bank='bank'
@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     ...mapState({
-      testModeFilter: (state) => state.links.testModeFilter,
+      mode: (state) => state.links.mode,
     }),
     formHeaders() {
       return this.$store.getters.authHeaders;
