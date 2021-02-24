@@ -1,0 +1,3 @@
+setup:
+  project: fintoc-front
+  config: dev

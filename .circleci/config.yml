@@ -6,6 +6,11 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Install Doppler CLI
+          command: (curl -Ls https://cli.doppler.com/install.sh || wget -qO- https://cli.doppler.com/install.sh) | sudo sh
+
+
       - restore_cache:
           keys:
           - yarn-dependencies-{{ checksum "yarn.lock" }}
@@ -22,7 +27,7 @@ jobs:
 
       - run:
           name: Start Test Server
-          command: yarn serve --port=4444
+          command: doppler run -- yarn serve --port=4444
           background: true
 
       - run:
@@ -33,7 +38,7 @@ jobs:
 
       - run:
           name: Run jest tests
-          command: SKIP_JEST_PUPPETEER_SERVER=true yarn test --runInBand
+          command: doppler run -- yarn test --runInBand
 
   lint:
     docker:
