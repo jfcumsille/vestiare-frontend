@@ -22,6 +22,7 @@
                 :filterKey="'preventRefreshFilter'"
                 :onClick="this.selectFilter"/>
             </div>
+            <search-filter class="mx-1" :filterKey="'rutFilter'" :onClick="this.selectFilter"/>
           </div>
           <div class="flex justify-end">
             <h1 class="text-gray-900 font-semibold text-2xl leading-9 mr-2">Modo</h1>
@@ -76,6 +77,7 @@ import { mapGetters, mapState, mapActions } from 'vuex';
 import LinkTable from '../components/links/link-table.vue';
 import DropdownFilter from '../components/links/filters/dropdown-filter.vue';
 import CheckboxFilter from '../components/links/filters/checkbox-filter.vue';
+import SearchFilter from '../components/links/filters/search-filter.vue';
 import Spinner from '../components/lib/spinner.vue';
 import Pagination from '../components/lib/pagination.vue';
 
@@ -86,6 +88,7 @@ export default {
       loadingLinks: false,
       activeFilter: 'all',
       preventRefreshFilter: 'all',
+      rutFilter: null,
     };
   },
   async created() {
@@ -165,7 +168,8 @@ export default {
     filtersOn() {
       return Boolean(
         this.activeFilter
-        || this.preventRefreshFilter,
+        || this.preventRefreshFilter
+        || this.rutFilter,
       );
     },
   },
@@ -175,6 +179,7 @@ export default {
     Pagination,
     DropdownFilter,
     CheckboxFilter,
+    SearchFilter,
   },
   watch: {
     show(newValue) {
