@@ -6,24 +6,34 @@
         <spinner v-if="initLoading" :widthClsName="'w-64'" :heightClsName="'h-64'"></spinner>
       </div>
       <div v-if="!initLoading" class="flex flex-col">
-        <div class="flex justify-end mb-8 mr-1">
-          <h1 class="text-gray-900 font-semibold text-xl leading-9 mr-2">Modo</h1>
-          <toggle-button :css-colors="false" :color="{checked: '#8cdee2',
-                                  unchecked: '#7f7fe8'}"
-            :value="!testMode"
-            :sync="true"
-            :width="90"
-            :height="35"
-            :fontSize="18"
-            :margin="3"
-            :labels="{checked: 'Live', unchecked: 'Test'}"
-            @change="updateLinksMode()"/>
+        <span class="text-xl tracking-wider font-semibold py-1">Filtros</span>
+        <div class="flex justify-between mb-8 mr-1">
+          <div class="flex">
+            <dropdown-filter class="mr-1"
+                :onSelection="selectFilter"
+                :filterKey="'activeFilter'"
+                :options="{all: 'Todos', true:  'Activos', false: 'Inactivos'}"
+                :selected="this.activeFilter"/>
+          </div>
+          <div class="flex justify-end">
+            <h1 class="text-gray-900 font-semibold text-2xl leading-9 mr-2">Modo</h1>
+            <toggle-button :css-colors="false" :color="{checked: '#8cdee2',
+                                    unchecked: '#7f7fe8'}"
+              :value="!testMode"
+              :sync="true"
+              :width="100"
+              :height="36"
+              :fontSize="24"
+              :margin="4"
+              :labels="{checked: 'Live', unchecked: 'Test'}"
+              @change="updateLinksMode()"/>
+          </div>
         </div>
         <div class="overflow-x-auto">
           <div class="align-middle inline-block min-w-full overflow-hidden
                       sm:rounded-md border-gray-200">
 
-            <link-table :loading="loadingLinks"/>
+            <link-table :loading="loadingLinks" :filters="filtersOn"/>
             <pagination v-if="pagination && pagination.currentPage" class="pl-2 py-2 float-right"
               :currentPage="pagination.currentPage"
               :lastPage="pagination.lastPage"
@@ -56,6 +66,7 @@
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
 import LinkTable from '../components/links/link-table.vue';
+import DropdownFilter from '../components/links/filters/dropdown-filter.vue';
 import Spinner from '../components/lib/spinner.vue';
 import Pagination from '../components/lib/pagination.vue';
 
@@ -64,11 +75,15 @@ export default {
   data() {
     return {
       loadingLinks: false,
+      activeFilter: 'all',
     };
   },
-  created() {
-    this.getUserLinks({ page: 1, mode: 'live' });
-    this.getUserLinks({ page: 1, mode: 'test' });
+  async created() {
+    await Promise.all([
+      this.getUserLinks({ page: 1, mode: 'live', filters: {} }),
+      this.getUserLinks({ page: 1, mode: 'test', filters: {} }),
+    ]);
+    this.updateInitLoading(false);
     if (!this.skipped) {
       this.showOnboarding();
     }
@@ -81,12 +96,36 @@ export default {
       'getUserLinks',
       'showOnboarding',
       'updateLinksMode',
+      'updateInitLoading',
     ]),
-    async selectPage(page) {
-      const mode = this.testMode ? 'test' : 'live';
+
+    async selectFilter(value, filterKey) {
+      this.loadingLinks = true;
+      this[filterKey] = value;
+      try {
+        await Promise.all([
+          this.refreshLinks({ page: 1, mode: 'test' }),
+          this.refreshLinks({ page: 1, mode: 'live' }),
+        ]);
+        this.loadingLinks = false;
+      } catch {
+        // TODO: notify error to user
+      }
+    },
+
+    async refreshLinks({ page, mode }) {
+      const filters = {
+        active: this.activeFilter,
+        prevent: this.preventRefreshFilter,
+        rut: this.rutFilter,
+      };
+      await this.getUserLinks({ page, mode, filters });
+    },
+
+    async selectPage({ page, mode }) {
       this.loadingLinks = true;
       try {
-        await this.getUserLinks({ page, mode });
+        await this.refreshLinks({ page, mode });
         this.loadingLinks = false;
       } catch {
         // TODO: notify error to user
@@ -98,7 +137,7 @@ export default {
       userLinks: 'getLinks',
     }),
     ...mapState({
-      testMode: (state) => state.links.mode === 'test',
+      mode: (state) => state.links.mode,
       initLoading: (state) => state.links.loading,
       show: (state) => state.onboarding.show,
       skipped: (state) => state.onboarding.skipped,
@@ -110,11 +149,18 @@ export default {
     shouldShowTable() {
       return !this.initLoading && this.userLinks.length !== 0;
     },
+    testMode() {
+      return this.mode === 'test';
+    },
+    filtersOn() {
+      return Boolean(this.activeFilter);
+    },
   },
   components: {
     LinkTable,
     Spinner,
     Pagination,
+    DropdownFilter,
   },
   watch: {
     show(newValue) {
