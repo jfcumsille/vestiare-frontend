@@ -14,6 +14,14 @@
                 :filterKey="'activeFilter'"
                 :options="{all: 'Todos', true:  'Activos', false: 'Inactivos'}"
                 :selected="this.activeFilter"/>
+            <div class="mx-1 flex justify-between items-center bg-white border-1 sm:rounded-md
+                border border-gray-300 text-gray-900 py-2 px-4">
+              <span class="text-base font-medium">Contraseña</span>
+              <checkbox-filter
+                class="flex ml-4"
+                :filterKey="'preventRefreshFilter'"
+                :onClick="this.selectFilter"/>
+            </div>
           </div>
           <div class="flex justify-end">
             <h1 class="text-gray-900 font-semibold text-2xl leading-9 mr-2">Modo</h1>
@@ -67,6 +75,7 @@
 import { mapGetters, mapState, mapActions } from 'vuex';
 import LinkTable from '../components/links/link-table.vue';
 import DropdownFilter from '../components/links/filters/dropdown-filter.vue';
+import CheckboxFilter from '../components/links/filters/checkbox-filter.vue';
 import Spinner from '../components/lib/spinner.vue';
 import Pagination from '../components/lib/pagination.vue';
 
@@ -76,6 +85,7 @@ export default {
     return {
       loadingLinks: false,
       activeFilter: 'all',
+      preventRefreshFilter: 'all',
     };
   },
   async created() {
@@ -153,7 +163,10 @@ export default {
       return this.mode === 'test';
     },
     filtersOn() {
-      return Boolean(this.activeFilter);
+      return Boolean(
+        this.activeFilter
+        || this.preventRefreshFilter,
+      );
     },
   },
   components: {
@@ -161,6 +174,7 @@ export default {
     Spinner,
     Pagination,
     DropdownFilter,
+    CheckboxFilter,
   },
   watch: {
     show(newValue) {
