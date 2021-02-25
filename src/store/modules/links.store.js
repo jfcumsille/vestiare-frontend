@@ -54,9 +54,11 @@ const mutations = {
     }
   },
 
-  updateUserLink(state, { linkId, active, preventRefresh }) {
-    const updatedLink = state.userLinks.find((link) => link.linkId === linkId);
-    state.userLinks = state.userLinks.map((link) => (link.linkId !== linkId ? link : {
+  updateUserLink(state, {
+    linkId, key, active, preventRefresh,
+  }) {
+    const updatedLink = state[key].find((link) => link.linkId === linkId);
+    state[key] = state[key].map((link) => (link.linkId !== linkId ? link : {
       ...updatedLink,
       active,
       preventRefresh,
@@ -120,7 +122,9 @@ const actions = {
       .catch((error) => console.log(error));
   },
 
-  updateUserLink(context, { linkId, active, preventRefresh }) {
+  async updateUserLink(context, {
+    linkId, mode, active, preventRefresh,
+  }) {
     const url = '/internal/v1/links/dashboard';
     const params = {
       id: linkId,
@@ -130,7 +134,10 @@ const actions = {
     const headers = this.getters.authHeaders;
     return axiosAuth.put(`${url}/${params.id}`, formData, { headers, params })
       .then((response) => {
-        this.commit('updateUserLink', { linkId, active, preventRefresh });
+        const linksStateKey = mode === 'test' ? 'userTestLinks' : 'userLiveLinks';
+        this.commit('updateUserLink', {
+          linkId, key: linksStateKey, active, preventRefresh,
+        });
         return response;
       });
   },
