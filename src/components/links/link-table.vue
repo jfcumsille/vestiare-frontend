@@ -101,7 +101,7 @@
           </div>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6 overflow-hidden">
-          <div class="text-sm text-center leading-5 text-gray-900">
+          <div class="text-sm text-left leading-5 text-gray-900">
             <span>{{ formatDatetime(link.lastTimeRefreshed) }}</span>
           </div>
         </td>
@@ -188,7 +188,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['destroyUserLink']),
+    ...mapActions(['destroyUserLink', 'updateUserLink']),
 
     formatDatetime(datetime) {
       const date = moment(datetime).format('DD MMMM YYYY HH:mm:ss');
@@ -226,7 +226,12 @@ export default {
     },
 
     async updateLink({ linkId, preventRefresh, active }) {
-      return this.$store.dispatch('updateUserLink', { linkId, preventRefresh, active });
+      return this.updateUserLink({
+        linkId,
+        mode: this.mode,
+        preventRefresh,
+        active,
+      });
     },
 
     async confirmDestroyLink() {
