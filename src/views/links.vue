@@ -167,8 +167,8 @@ export default {
     },
     filtersOn() {
       return Boolean(
-        this.activeFilter
-        || this.preventRefreshFilter
+        (this.activeFilter !== 'all')
+        || (this.preventRefreshFilter !== 'all')
         || this.rutFilter,
       );
     },
