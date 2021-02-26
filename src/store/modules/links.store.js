@@ -101,7 +101,7 @@ const actions = {
   async getUserLinks({ commit }, { page, mode, filters }) {
     const filtersList = Object.entries(filters).filter((e) => e[1]).map((e) => `${e[0]}=${e[1]}`);
     const filtersParams = filtersList.join('&');
-    const ulrParams = `per_page=50&page=${page}&mode=${mode}&${filtersParams}`;
+    const ulrParams = `per_page=25&page=${page}&mode=${mode}&${filtersParams}`;
     return new Promise((resolve) => {
       const url = `/internal/v1/links/dashboard?${ulrParams}`;
       const queryParams = { current_organization_id: this.getters.getDefaultOrganizationId };
