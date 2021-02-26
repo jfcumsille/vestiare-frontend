@@ -61,7 +61,11 @@
         <td colspan="8" class="bg-white border-b border-gray-200">
           <div class="px-6 py-4 w-full text-center">
             <h1 class="text-4xl mt-4">
-              Todavía no agregas ninguna credencial 👀
+                {{
+                  filters || loading
+                    ? 'No encontramos los Links que buscas 🤷‍♂️'
+                    : 'Todavía no agregas ninguna credencial 👀 '
+                }}
             </h1>
           </div>
         </td>
@@ -167,6 +171,7 @@ export default {
 
   props: {
     loading: Boolean,
+    filters: Boolean,
   },
 
   computed: {
@@ -175,10 +180,10 @@ export default {
     }),
     ...mapState({
       mode: (state) => state.links.mode,
-      loadingLinks: (state) => state.links.loading,
+      initLoading: (state) => state.links.loading,
     }),
     showNoLinkMessage() {
-      return !this.loadingLinks && this.userLinks.length === 0;
+      return !this.initLoading && this.userLinks.length === 0;
     },
   },
 

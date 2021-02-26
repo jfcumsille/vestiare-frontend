@@ -17,6 +17,7 @@ module.exports = {
           cyan: '#7CD9DE',
           gray: '#474752',
           yellow: '#FFC403',
+          green: '#34d399',
         },
         tint: {
           blue: '#7f7fe8',

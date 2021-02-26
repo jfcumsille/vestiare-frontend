@@ -1,14 +1,14 @@
 <template>
   <div v-show="lastPage > 1" class="flex flex-row">
     <button
-      v-on:click="paginate(1)"
+      v-on:click="paginate(1, mode)"
       class="px-2 py-1 my-0.25 mr-0.25 text-sm font-medium bg-white border border-gray-300
              hover:bg-gray-700 focus:outline-none hover:text-white"
     >
       {{ 'Primera' }}
     </button>
     <button
-      v-on:click="paginate(Math.max(1, currentPage - 1))"
+      v-on:click="paginate(Math.max(1, currentPage - 1), mode)"
       class="px-2 py-1 m-0.25 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-700
              focus:outline-none hover:text-white"
     >
@@ -29,7 +29,7 @@
         {{ page }}
       </button>
       <button
-        v-on:click="paginate(page)"
+        v-on:click="paginate(page, mode)"
         v-show="page !== currentPage"
         class="px-2 py-1 m-0.25 text-sm font-medium bg-white border border-gray-300
                focus:outline-none hover:bg-gray-700 hover:text-white"
@@ -38,14 +38,14 @@
       </button>
     </div>
     <button
-      v-on:click="paginate(Math.min(lastPage, currentPage + 1))"
+      v-on:click="paginate(Math.min(lastPage, currentPage + 1), mode)"
       class="px-2 py-1 m-0.25 text-sm font-medium bg-white border border-gray-300 hover:bg-gray-700
              focus:outline-none hover:text-white"
     >
       {{ 'Siguiente' }}
     </button>
     <button
-      v-on:click="paginate(lastPage)"
+      v-on:click="paginate(lastPage, mode)"
       class="px-2 py-1 my-0.25 ml-0.25 text-sm font-medium bg-white border border-gray-300
              hover:bg-gray-700 focus:outline-none hover:text-white"
     >
@@ -55,11 +55,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
+
   data() {
     return {
       pagesSpread: 3,
     };
+  },
+
+  computed: {
+    ...mapState({
+      mode: (state) => state.links.mode,
+    }),
   },
 
   methods: {
