@@ -129,7 +129,7 @@ export default {
     async refreshLinks({ page, mode }) {
       const filters = {
         active: this.activeFilter,
-        prevent: this.preventRefreshFilter,
+        prevent_refresh: this.preventRefreshFilter,
         rut: this.rutFilter,
       };
       await this.getUserLinks({ page, mode, filters });
@@ -167,8 +167,8 @@ export default {
     },
     filtersOn() {
       return Boolean(
-        this.activeFilter
-        || this.preventRefreshFilter
+        (this.activeFilter !== 'all')
+        || (this.preventRefreshFilter !== 'all')
         || this.rutFilter,
       );
     },
