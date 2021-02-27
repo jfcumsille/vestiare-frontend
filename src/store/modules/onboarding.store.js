@@ -94,7 +94,8 @@ export default {
       commit('resetLink');
     },
     fetchApiKeys({ commit, dispatch, state }) {
-      apiClient.apiKeys.index(this.getters.authHeaders).then((response) => {
+      const params = { current_organization_id: this.getters.getDefaultOrganizationId };
+      apiClient.apiKeys.index(this.getters.authHeaders, params).then((response) => {
         const apiKey = response.data.find((key) => key.mode === state.mode && !key.isPublic);
         if (apiKey) {
           commit('setApiKey', { apiKey });
