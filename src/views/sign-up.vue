@@ -185,6 +185,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { required, email, minLength } from 'vuelidate/lib/validators';
 import actionButton from '../components/actionButton.vue';
 import Spinner from '../components/spinner.vue';
@@ -202,10 +203,15 @@ export default {
       showSpinner: false,
     };
   },
-  mounted() {
+  async mounted() {
     window.analytics.page('Signup');
+    const country = await this.getCountry();
+    if (country !== 'CL') {
+      this.$router.push('unavailable-country');
+    }
   },
   methods: {
+    ...mapActions(['getCountry']),
     onSubmit() {
       if (this.idToken === '' && this.$v.$invalid) { return; }
 

@@ -1,4 +1,5 @@
 import axiosAuth from '../../axios-auth';
+import apiClient from '../../api';
 
 const initialState = {
   idToken: localStorage.getItem('idToken') || '',
@@ -8,6 +9,7 @@ const initialState = {
   lastName: '',
   organizations: [],
   defaultOrganizationId: localStorage.getItem('defaultOrganizationId') || '',
+  country: null,
 };
 
 const getters = {
@@ -65,6 +67,10 @@ const mutations = {
   updateDefaultOrganizationId(state, defaultOrganizationId) {
     state.defaultOrganizationId = defaultOrganizationId;
     localStorage.setItem('defaultOrganizationId', defaultOrganizationId);
+  },
+
+  getCountry(state, country) {
+    state.country = country;
   },
 };
 
@@ -204,6 +210,13 @@ const actions = {
           dispatch('identifyUserEvent');
         });
       });
+  },
+
+  async getCountry({ commit }) {
+    const headers = this.getters.authHeaders;
+    const response = await apiClient.country.get(headers);
+    commit('getCountry', response.data.country);
+    return response.data.country;
   },
 };
 
