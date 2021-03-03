@@ -12,6 +12,8 @@ module.exports = {
         0.5: '0.125rem',
       },
       colors: {
+        main: '#5373f3',
+
         fintoc: {
           blue: '#030366',
           cyan: '#7CD9DE',
@@ -35,6 +37,15 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    backgroundColor: ['responsive', 'hover', 'focus', 'active'],
+    extend: {
+      backgroundColor: ['active', 'group-focus'],
+      borderColor: ['active', 'focus'],
+      borderWidth: ['hover', 'focus'],
+      fill: ['active', 'group-focus'],
+      textColor: ['active', 'group-focus'],
+    },
+  },
   plugins: [],
 };

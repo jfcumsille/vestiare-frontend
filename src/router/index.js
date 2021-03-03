@@ -15,6 +15,7 @@ import RequestNewBank from '../views/request-new-bank.vue';
 import ApiKeys from '../views/api-keys.vue';
 import Onboarding from '../views/onboarding.vue';
 import Error from '../views/error.vue';
+import UnavailableCountry from '../views/UnavailableCountry.vue';
 import { validateQueryParams } from '../helpers/widget_helper';
 
 Vue.use(VueRouter);
@@ -128,6 +129,10 @@ const routes = [
     name: 'error',
     component: Error,
     props: true,
+  }, {
+    path: '/unavailable-country',
+    name: 'unavailable-country',
+    component: UnavailableCountry,
   },
   {
     path: '*',
