@@ -1,5 +1,5 @@
 <template>
-<div class="relative h-screen overflow-hidden bg-sub">
+<div class="relative h-screen overflow-hidden bg-white">
     <div
       v-if="!isIntroduction"
       class="z-50 absolute top-0 left-0 ml-10 mt-10 text-2xl
