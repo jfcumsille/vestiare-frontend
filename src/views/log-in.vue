@@ -3,9 +3,9 @@
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <spinner v-if='showSpinner'></spinner>
     <div class="max-w-md w-full">
-      <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
+      <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-isologo.svg" alt="fintoc" />
       <div>
-        <h2 class="mt-6 text-center text-4xl leading-9 font-medium text-gray-900">
+        <h2 class="mt-6 text-center text-4xl text-gray-900 leading-9 font-medium">
           Ingresa a tu cuenta
         </h2>
         <p class="mt-2 text-center text-sm leading-5 text-gray-600">

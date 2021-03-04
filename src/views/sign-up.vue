@@ -2,7 +2,7 @@
 <div class="bg-gray-100 min-h-screen flex flex-col">
   <spinner v-if='showSpinner'></spinner>
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-    <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
+    <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-isologo.svg" alt="fintoc" />
     <h1 class="m-5 text-4xl text-center font-regular text-gray-900">
       Regístrate acá 👇
     </h1>

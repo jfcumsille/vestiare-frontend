@@ -1,5 +1,5 @@
 <template>
-<div class="bg-gray-200">
+<div class="bg-white">
   <main class="h-full min-h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative">
       <div class="grid place-items-center">
@@ -25,43 +25,42 @@
             <search-filter class="mx-1" :filterKey="'rutFilter'" :onClick="this.selectFilter"/>
           </div>
           <div class="flex justify-end">
-            <h1 class="text-gray-900 font-semibold text-2xl leading-9 mr-2">Modo</h1>
-            <toggle-button :css-colors="false" :color="{checked: '#8cdee2',
-                                    unchecked: '#7f7fe8'}"
+            <h1 class="text-gray-900 font-semibold text-xl leading-9 mr-2">Modo</h1>
+            <toggle-button class="mt-1" :css-colors="false" :color="{checked: '#475FF1',
+                                    unchecked: '#475FF1'}"
               :value="!testMode"
               :sync="true"
-              :width="100"
-              :height="36"
-              :fontSize="24"
-              :margin="4"
+              :width="70"
+              :height="26"
+              :fontSize="16"
+              :margin="6"
               :labels="{checked: 'Live', unchecked: 'Test'}"
               @change="updateLinksMode()"/>
           </div>
         </div>
         <div class="overflow-x-auto">
           <div class="align-middle inline-block min-w-full overflow-hidden
-                      sm:rounded-md border-gray-200">
+                      sm:rounded-md">
 
-            <link-table :loading="loadingLinks" :filters="filtersOn"/>
+            <link-table class="border border-gray-300"
+            :loading="loadingLinks" :filters="filtersOn"/>
             <pagination v-if="pagination && pagination.currentPage" class="pl-2 py-2 float-right"
               :currentPage="pagination.currentPage"
               :lastPage="pagination.lastPage"
               :paginate="selectPage"
             />
           </div>
-          <div class="mt-4 text-right">
+          <div class="mt-4 text-right flex flex-row justify-end space-x-2">
             <router-link to="/links/new?holder_type=individual&product=movements"
-              :class="{ 'text-xs': shouldShowTable }"
-              class="pr-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
-                      text-gray-900 hover:bg-gray-300">
-              <font-awesome-icon icon="plus" class="mt-1 mr-1"/>
+              class="text-center justify-content flex flex-col items-center
+                     font-medium rounded-md bg-main text-md
+                     text-white hover:bg-sub w-64 h-10 py-2">
               {{ `Nuevo link ${testMode ? 'personas de prueba' : 'personas'}` }}
             </router-link>
             <router-link to="/links/new?holder_type=business&product=movements"
-              :class="{ 'text-xs': shouldShowTable }"
-              class="pl-2 py-1 inline-flex text-l leading-5 font-semibold rounded-md bg-gray-200
-                      text-gray-900 hover:bg-gray-300">
-              <font-awesome-icon icon="plus" class="mt-1 mr-1"/>
+              class="text-center justify-content flex flex-col items-center
+                     font-medium rounded-md bg-main text-md
+                     text-white hover:bg-sub w-64 h-10 py-2">
               {{ `Nuevo link ${testMode ? 'empresas de prueba' : 'empresas'}` }}
             </router-link>
           </div>

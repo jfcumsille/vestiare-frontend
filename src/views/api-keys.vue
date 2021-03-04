@@ -1,5 +1,5 @@
 <template>
-<div class="bg-gray-200">
+<div>
   <main class="h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative">
       <spinner v-if="shouldShowSpinner"></spinner>
@@ -14,25 +14,27 @@
               </h1>
             </div>
           </div>
-          <div class="flex justify-between">
-            <div>
-              <p>
-                Public: La usarás en el
-                <a href="https://docs.fintoc.com/docs/integration" target="_blank" class="underline">
-                  Widget
-                </a>
-              </p>
-              <p>Secret: La usarás para llamar la API</p>
+          <div class="flex flex-col items-center justify-content">
+            <div class="mt-4 flex flex-row w-2/3 justify-between">
+              <div>
+                <p>
+                  Public: La usarás en el
+                  <a href="https://docs.fintoc.com/docs/integration" target="_blank" class="underline">
+                    Widget
+                  </a>
+                </p>
+                <p>Secret: La usarás para llamar la API</p>
+              </div>
+              <div>
+                <button @click="createApiKey"
+                  :class="{ 'text-xs': shouldShowTable }"
+                  class="px-3 py-2 inline-flex text-sm font-medium rounded-md
+                      hover:bg-sub focus:outline-none bg-main text-white">
+                  <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar API Key
+                </button>
+              </div>
             </div>
-            <div>
-              <button @click="createApiKey"
-                :class="{ 'text-xs': shouldShowTable }"
-                class="px-3 py-2 inline-flex text-sm font-medium rounded-md
-                     hover:bg-gray-700 focus:outline-none bg-gray-800 text-white">
-                <font-awesome-icon icon="plus" class="mt-1 mr-1"/> Agregar API Key
-              </button>
             </div>
-          </div>
         </div>
       </div>
     </div>

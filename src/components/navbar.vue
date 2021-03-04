@@ -1,56 +1,58 @@
 <template>
 <div>
-  <nav class="bg-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <nav>
+    <div class="w-screen mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
           <div class="flex-shrink-0">
             <router-link to="/">
-              <img class="h-8" src="../assets/images/fintoc-logo-white.png" alt="Fintoc" />
+              <img class="h-8" src="../assets/images/imagotipo.svg" alt="Fintoc" />
             </router-link>
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline">
-              <router-link to="/links" active-class="bg-gray-900 text-white"
-                  class="px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
-                         hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+              <router-link to="/links" active-class="text-main font-semibold"
+                  class="px-3 py-2 mt-2
+                  rounded-md text-base font-medium text-gray-800 hover:text-main
+                         focus:outline-none active:text-main">
                 Links
               </router-link>
-              <router-link to="/api-keys" active-class="bg-gray-900 text-white"
-                 class="ml-4
-                        px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
-                        hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+              <router-link to="/api-keys" active-class="text-main font-semibold"
+                  class="ml-4
+                  px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-main
+                         focus:outline-none active:text-main">
                 Api keys
               </router-link>
             </div>
           </div>
         </div>
         <div class="hidden md:block">
-          <div class="ml-4 flex items-center md:ml-6">
+          <div class="ml-4 flex items-center md:ml-6 mt-2">
             <a href="https://blog.fintoc.com"
                target="blank"
-               class="px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
-                      hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+               class="px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-main
+                         focus:outline-none active:text-main">
                Blog
             </a>
             <a href="https://docs.fintoc.com/"
                target="blank"
                class="ml-4
-                      px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
-                      hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700
-                      bg-gray-600">
+                      px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-main
+                         focus:outline-none active:text-main">
                Documentación
             </a>
             <!-- Profile dropdown -->
             <div class="ml-3 z-30 relative">
               <div>
-                <button class="max-w-xs flex items-center text-base rounded-full text-white
-                               focus:outline-none focus:shadow-solid"
+                <button class="
+                  px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-main
+                  focus:outline-none active:text-main"
                         id="user-menu"
                         aria-label="User menu"
                         aria-haspopup="true"
-                        @click="toggleShowDropDown">
-                  <font-awesome-icon icon="cog" class="mr-1 text-xl"/>
+                        @click="toggleShowDropDown"
+                        active-class="text-main font-semibold">
+                  Configuración
                 </button>
               </div>
               <transition name='drop-down-ease-out'>
@@ -59,8 +61,8 @@
                     class="origin-top-right absolute right-0 mr-1 mt-2 w-48 rounded-md shadow-lg">
                   <router-link
                       to="/user-profile"
-                      class="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200 w-full
-                             text-left rounded-t-md bg-white"
+                      class="block px-4 py-2 text-base text-gray-800 hover:text-main w-full
+                             text-left rounded-t-md bg-white font-medium"
                   >
                     Mi perfil
                   </router-link>
@@ -68,8 +70,8 @@
                       role="menu"
                       aria-orientation="vertical"
                       aria-labelledby="user-menu">
-                    <button class="block px-4 py-2 text-base text-gray-700 hover:bg-gray-200 w-full
-                                   text-left"
+                    <button class="block px-4 py-2 text-base text-gray-800 hover:text-main w-full
+                                   text-left font-medium"
                             role="menuitem"
                             @click='signOut'>
                       Salir
@@ -112,12 +114,12 @@
     </div>
     <div class="md:hidden" v-show='showDropDown'>
       <div class="px-2 pt-2 pb-3 sm:px-3">
-        <router-link to="/links" active-class="bg-gray-900 text-white"
+        <router-link to="/links" active-class="text-main font-semibold"
             class="block px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
                    hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
           Links
         </router-link>
-        <router-link to="/api-keys" active-class="bg-gray-900 text-white"
+        <router-link to="/api-keys" active-class="text-main font-semibold"
             class="mt-1
                    block px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
                    hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
@@ -125,10 +127,9 @@
         </router-link>
         <router-link
             to="/user-profile"
-            active-class="bg-gray-900 text-white"
-            class="block px-3 py-2 rounded-md text-base font-semibold text-gray-400
-                  hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
-                  focus:bg-gray-700"
+            active-class="text-main font-semibold"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
+                  focus:outline-none"
         >
           Mi perfil
         </router-link>
@@ -137,20 +138,20 @@
         <div class="px-2">
           <a href="https://blog.fintoc.com"
              target="blank"
-             class="block px-3 py-2 rounded-md text-base font-semibold text-gray-400
+             class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
                     hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
                     focus:bg-gray-700">
             Blog
           </a>
           <a href="https://docs.fintoc.com/"
              target="blank"
-             class="block px-3 py-2 rounded-md text-base font-semibold text-gray-400
+             class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
                     hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
                     focus:bg-gray-700">
             Documentación
           </a>
           <a href='#'
-             class="block px-3 py-2 rounded-md text-base font-semibold text-gray-400
+             class="block px-3 py-2 rounded-md text-base font-medium text-gray-400
                     hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white
                     focus:bg-gray-700"
              @click='signOut'>

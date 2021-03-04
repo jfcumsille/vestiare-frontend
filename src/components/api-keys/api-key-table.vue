@@ -1,11 +1,12 @@
 <template>
-<div>
-  <div v-for="mode in ['live', 'test']" v-bind:key='mode' class="pb-6">
+<div class="flex flex-col items-center justify-content">
+  <div v-for="mode in ['live', 'test']" v-bind:key='mode'
+  class="mt-6 rounded border border-gray-300 w-2/3 pb-6">
     <table class="min-w-full">
       <thead class="bg-gray-100">
         <tr>
-          <th class="px-6 py-2 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
-                    font-medium text-gray-600 uppercase tracking-wider w-4/6">
+          <th class="px-6 py-2 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4
+                    font-medium text-gray-800 uppercase tracking-wider w-4/6">
             {{ mode }} Keys
           </th>
           <th class="px-6 py-2 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
@@ -18,15 +19,15 @@
       <tbody class="bg-white">
         <tr v-for='apiKey in apiKeysByMode(mode)' v-bind:key='apiKey.id'>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-4/6">
-            <div class="flex">
-              <div class="api-key h-10
-                          bg-teal-200 py-2 px-4 rounded-md text-lg text-gray-900
+            <div class="flex w-4/5">
+              <div class="api-key h-10 text-white
+                          bg-main py-2 px-4 rounded-md text-md
                           rounded-r-none tracking-wider">
                 {{ apiKey.key }}
               </div>
-              <div class="flex-none bg-teal-200 hover:bg-teal-300 rounded-r-md">
+              <div class="flex-none bg-main focus:outline-none hover:opacity-75 rounded-r-md">
                 <button v-clipboard:copy='apiKey.key'
-                        class="text-lg py-2 px-3 h-10">
+                        class="text-lg py-2 px-3 focus:outline-none text-white h-10">
                   <font-awesome-icon icon="copy"/>
                 </button>
               </div>
@@ -34,7 +35,7 @@
           </td>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6">
             <div
-              class="text-lg font-regular text-gray-900 w-20 h-10
+              class="text-md font-regular text-gray-900 w-20 h-10
                     text-center bg-gray-200 py-2 px-2 rounded-md"
             >
               {{ mapApiKeyType(apiKey.isPublic) }}
@@ -43,7 +44,7 @@
           <td class="px-6 py-4 whitespace-no-wrap border-b h-10
                      border-gray-200 text-sm leading-5 font-medium w-1/6">
             <button v-if="mode !== 'test'" @click="destroyApiKey(apiKey.id)"
-              class="px-4 py-2 inline-flex text-lg leading-5 font-regular rounded-md bg-red-200
+              class="px-4 py-2 inline-flex text-md leading-5 font-regular rounded-md bg-red-200
                      text-red-900 hover:bg-red-300 align-middle">
               <font-awesome-icon icon="trash" class="mt-1 mr-1 h-3 align-middle"/>Borrar
             </button>

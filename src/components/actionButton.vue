@@ -4,7 +4,7 @@
           type="submit"
           class="group relative w-full flex justify-center py-4 px-4 border
                   border-transparent text-sm leading-5 font-medium rounded-md
-                  text-white fintoc-blue focus:outline-none transition duration-150
+                  text-white bg-main focus:outline-none transition duration-150
                   ease-in-out focus:opacity-50"
           :class="{ 'hover:opacity-50': !invalidForm, 'cursor-not-allowed': invalidForm }">
     <span

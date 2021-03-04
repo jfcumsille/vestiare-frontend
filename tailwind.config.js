@@ -12,7 +12,8 @@ module.exports = {
         0.5: '0.125rem',
       },
       colors: {
-        main: '#5373f3',
+        main: '#475FF1',
+        sub: '#6A8DF9',
 
         fintoc: {
           blue: '#030366',
