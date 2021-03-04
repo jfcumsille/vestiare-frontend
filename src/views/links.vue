@@ -2,8 +2,11 @@
 <div class="bg-white">
   <main class="h-full min-h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative">
-      <div class="grid place-items-center">
-        <spinner v-if="initLoading" :widthClsName="'w-64'" :heightClsName="'h-64'"></spinner>
+      <div class="grid mt-20 place-items-center">
+        <spinner
+          v-if="initLoading"
+          :widthClsName="'w-20'"
+          :heightClsName="'h-20'" :borderClsName="'border-2 border-t-2'"></spinner>
       </div>
       <div v-if="!initLoading" class="flex flex-col">
         <span class="text-xl tracking-wider font-semibold py-1">Filtros</span>

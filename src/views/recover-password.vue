@@ -1,9 +1,9 @@
 <template>
-<div class="bg-gray-100 min-h-screen flex flex-col">
+<div class="min-h-screen flex flex-col">
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <spinner v-if='showSpinner'></spinner>
     <div class="max-w-md w-full">
-      <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-logo.png" alt="fintoc" />
+      <img class="mx-auto h-12 w-auto" src="../assets/images/fintoc-isologo.svg" alt="fintoc" />
       <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3
                   shadow-md mb-4 mt-4"
           role="alert"

@@ -1,5 +1,5 @@
 <template>
-<div class="bg-gray-200">
+<div class="">
   <main class="h-screen">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
       <invalid-request :error='error' v-if="is400"></invalid-request>

@@ -1,5 +1,5 @@
 <template>
-<div class="bg-gray-100 min-h-screen flex flex-col">
+<div class="min-h-screen flex flex-col">
   <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
     <spinner v-if='showSpinner'></spinner>
     <div class="max-w-md w-full">
