@@ -29,6 +29,8 @@
       </div>
       <transition name="slide-fade">
         <p class="text-red-700 mt-6" v-if='showloginError'>Credenciales inválidas 👮🏽‍♀️</p>
+        <p class="text-red-700 mt-6" v-if='showUnconfirmedError'>Cuenta inactiva. Para ingresar
+          revisa el link que enviamos a tu correo ✉️</p>
       </transition>
       <oauth-panel
         @start-loading="showSpinner = true"
@@ -91,6 +93,7 @@ export default {
       password: '',
       idToken: '',
       showloginError: false,
+      showUnconfirmedError: false,
       showHelloBackMessage: false,
       showOauthMessage: false,
       showSpinner: false,
@@ -118,6 +121,8 @@ export default {
         idToken: this.idToken,
       };
       this.showSpinner = true;
+      this.showloginError = false;
+      this.showUnconfirmedError = false;
       this.$store.dispatch('logIn', formData)
         .then(() => {
           this.showSpinner = false;
@@ -125,9 +130,12 @@ export default {
           this.$router.push('/links');
         }).catch((error) => {
           this.showSpinner = false;
-          const codeError = error.response.data.error.type;
-          if (codeError === 'invalid_request_error') {
+          const codeError = error.response.data.error.code;
+          if (codeError === 'fintoc_invalid_credentials') {
             this.showloginError = true;
+          }
+          if (codeError === 'unconfirmed_email') {
+            this.showUnconfirmedError = true;
           }
         });
     },
