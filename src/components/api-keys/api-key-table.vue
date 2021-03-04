@@ -1,9 +1,9 @@
 <template>
 <div class="flex flex-col items-center justify-content">
   <div v-for="mode in ['live', 'test']" v-bind:key='mode'
-  class="mt-6 rounded border border-gray-300 w-2/3 pb-6">
-    <table class="min-w-full">
-      <thead class="bg-gray-100">
+  class="mt-6 rounded border-gray-300 w-4/5 min-width pb-6">
+    <table class="rounded">
+      <thead class="bg-gray-100 border">
         <tr>
           <th class="px-6 py-2 border-b border-gray-200 bg-gray-100 text-left text-xs leading-4
                     font-medium text-gray-800 uppercase tracking-wider w-4/6">
@@ -16,7 +16,7 @@
           <th class="px-6 py-2 border-b border-gray-200 bg-gray-50 w-1/6"></th>
         </tr>
       </thead>
-      <tbody class="bg-white">
+      <tbody class="bg-white border">
         <tr v-for='apiKey in apiKeysByMode(mode)' v-bind:key='apiKey.id'>
           <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-4/6">
             <div class="flex w-4/5">
@@ -41,7 +41,7 @@
               {{ mapApiKeyType(apiKey.isPublic) }}
             </div>
           </td>
-          <td class="px-6 py-4 whitespace-no-wrap border-b h-10
+          <td class="h-10
                      border-gray-200 text-sm leading-5 font-medium w-1/6">
             <button v-if="mode !== 'test'" @click="destroyApiKey(apiKey.id)"
               class="px-4 py-2 inline-flex text-md leading-5 font-regular rounded-md bg-red-200
@@ -96,3 +96,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.min-width {
+  min-width: 1100px;
+}
+</style>

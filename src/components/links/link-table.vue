@@ -1,5 +1,5 @@
 <template>
-<div class="relative w-full h-full">
+<div class="relative w-full h-full overflow-x-scroll">
   <link-confirmation-modal v-if="showDeleteModal"
       :title='"Eliminar Link"'
       :text='`¿Estás seguro que quieres borrar este link? El usuario tendrá que hacer
@@ -28,7 +28,7 @@
              :heightClsName="'h-16'"
              :borderClsName="'border-4 border-t-4'"/>
   </div>
-  <table class="w-full table-fixed">
+  <table class="w-full min-width table-fixed">
     <thead class="bg-gray-100">
       <tr>
         <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4
@@ -309,5 +309,9 @@ export default {
 .background-fade-enter-active,
 .background-fade-leave-active {
   transition: opacity .2s ease-out;
+}
+
+.min-width {
+  min-width: 1100px;
 }
 </style>
