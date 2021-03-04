@@ -2,7 +2,7 @@
 <div class="bg-white">
   <main class="h-full min-h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative">
-      <div class="grid mt-20 place-items-center">
+      <div class="grid place-items-center">
         <spinner
           v-if="initLoading"
           :widthClsName="'w-20'"
