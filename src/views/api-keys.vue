@@ -1,7 +1,7 @@
 <template>
 <div>
   <main class="h-screen">
-    <div class="max-w-full mx-auto p-6 lg:p-8 relative">
+    <div class="w-full mx-auto p-6 lg:p-8 relative">
       <spinner v-if="shouldShowSpinner"></spinner>
       <div class="flex flex-col">
         <div class="overflow-x-auto">

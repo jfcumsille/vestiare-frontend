@@ -1,7 +1,7 @@
 <template>
 <div class="flex flex-col items-center justify-content">
   <div v-for="mode in ['live', 'test']" v-bind:key='mode'
-  class="mt-6 rounded border-gray-300 w-4/5 min-width pb-6">
+  class="mt-6 rounded border-gray-300 w-96 min-width pb-6">
     <table class="rounded">
       <thead class="bg-gray-100 border">
         <tr>
