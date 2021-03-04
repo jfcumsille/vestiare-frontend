@@ -130,7 +130,6 @@ export default {
             this.showloginError = true;
           }
         });
-      this.showSpinner = false;
     },
     trackUserLoggedInEvent() {
       window.analytics.track('User Logged In');
