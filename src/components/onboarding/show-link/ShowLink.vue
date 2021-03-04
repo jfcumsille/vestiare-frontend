@@ -4,7 +4,7 @@
               border-2 border-gray-100 shadow-md">
     <div class="flex flex-col items-center justify-center mx-8 py-12">
       <div>
-        <img src="../../../assets/images/fintoc-isologo.png" class="h-16" />
+        <img src="../../../assets/images/isotipo.svg" class="h-16" />
       </div>
 
       <div class="py-2 text-center text-4xl pt-4 pb-8">

@@ -1,24 +1,9 @@
 <template>
-<div class="relative h-screen overflow-hidden">
-    <div v-if="!loading" class="grid-transform absolute flex w-full h-full
-                items-center z-index overflow-hidden">
-      <div class="absolute w-full overflow-hidden grid grid-cols-12 opacity-50">
-        <div class="bg-secondary-blue h-16 row-start-2 col-start-1 col-span-4" />
-        <div class="bg-fintoc-blue h-16 row-start-2 col-start-8 col-end-13" />
-        <div class="bg-fintoc-yellow row-start-3 h-16 col-start-9 col-end-13" />
-        <div class="bg-fintoc-cyan row-start-4 h-16 col-start-1 col-end-3" />
-        <div class="bg-gray-300 h-16 row-start-5 col-start-3 col-end-9" />
-        <div class="bg-gray-500 h-16 row-start-5 col-start-1 col-end-6" />
-        <div class="bg-secondary-blue h-16 row-start-5 col-start-11 col-end-13" />
-        <div class="bg-fintoc-cyan h-16 row-start-6 col-start-8 col-end-13" />
-        <div class="bg-fintoc-yellow h-16 row-start-6 col-start-1 col-end-2" />
-      </div>
-    </div>
-
+<div class="relative h-screen overflow-hidden bg-sub">
     <div
       v-if="!isIntroduction"
       class="z-50 absolute top-0 left-0 ml-10 mt-10 text-2xl
-      text-gray-400 cursor-pointer font-semibold"
+      text-white cursor-pointer font-semibold"
       @click="goToPreviousStep">
       Volver
     </div>
@@ -26,7 +11,7 @@
     <div
       v-if="!loading"
       class="z-50 absolute top-0 right-0 mr-10 mt-10 text-2xl
-      text-gray-400 cursor-pointer font-semibold"
+      text-white cursor-pointer font-semibold"
       @click="skip">
       Salir
     </div>
