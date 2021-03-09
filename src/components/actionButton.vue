@@ -8,7 +8,7 @@
                   ease-in-out focus:opacity-50"
           :class="{
             'hover:opacity-50': !invalidForm, 'cursor-not-allowed': invalidForm,
-            'bg-main': !widget, 'bg-fintoc-blue': widget
+            'bg-main': !widget, 'bg-fintoc-blue': widget, 'opacity-50': isDisabled
           }">
     <span
       class="absolute left-0 inset-y-0 flex items-center
@@ -39,6 +39,7 @@ export default {
     hasLockIcon: Boolean,
     invalidForm: Boolean,
     widget: Boolean,
+    isDisabled: Boolean,
   },
 };
 </script>

@@ -46,6 +46,7 @@ module.exports = {
       borderWidth: ['hover', 'focus'],
       fill: ['active', 'group-focus'],
       textColor: ['active', 'group-focus'],
+      opacity: ['disabled'],
     },
   },
   plugins: [],
