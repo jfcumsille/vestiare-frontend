@@ -125,7 +125,18 @@ const actions = {
       .catch((error) => { throw error; });
   },
 
-  identifyUserEvent(context) {
+  async confirmEmail(context, formData) {
+    const payload = {
+      confirmation_token: formData.confirmationToken,
+    };
+    const url = '/internal/v1/users/confirmation';
+    const userData = await axiosAuth.put(url, payload)
+      .then((response) => getUserDataFromAuthResponse(response))
+      .catch((error) => { throw error; });
+    return userData;
+  },
+
+  async identifyUserEvent(context) {
     window.analytics.identify(context.state.userId, {
       email: context.state.email,
       name: context.getters.getFullName,
