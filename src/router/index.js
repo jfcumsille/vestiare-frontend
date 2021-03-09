@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 
 import store from '../store';
 
+import ConfirmEmail from '../views/confirm-email.vue';
+import ConfirmationFailure from '../views/confirmation-failure.vue';
 import ChangePassword from '../views/change-password.vue';
 import LogIn from '../views/log-in.vue';
 import SignUp from '../views/sign-up.vue';
@@ -73,6 +75,11 @@ const routes = [
   {
     path: '/confirm-email',
     component: ConfirmEmail,
+    beforeEnter: guardApp,
+  },
+  {
+    path: '/confirm-email/failed',
+    component: ConfirmationFailure,
     beforeEnter: guardApp,
   },
   {
