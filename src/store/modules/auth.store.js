@@ -229,6 +229,12 @@ const actions = {
     commit('getCountry', response.data.country);
     return response.data.country;
   },
+
+  async sendConfirmationEmail(context, formData) {
+    const payload = { email: formData.email };
+    const url = '/internal/v1/users/confirmation';
+    return axiosAuth.post(url, payload);
+  },
 };
 
 export default {
