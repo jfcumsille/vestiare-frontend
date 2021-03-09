@@ -71,6 +71,11 @@ const routes = [
     beforeEnter: guardApp,
   },
   {
+    path: '/confirm-email',
+    component: ConfirmEmail,
+    beforeEnter: guardApp,
+  },
+  {
     path: '/links',
     component: Links,
     beforeEnter: guardLoginAndOnboarding,
