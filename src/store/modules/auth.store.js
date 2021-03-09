@@ -193,7 +193,7 @@ const actions = {
     commit('updateDefaultOrganizationId', payload.defaultOrganizationId);
   },
 
-  signUp({ dispatch }, formData) {
+  async signUp({ dispatch, commit }, formData) {
     const payload = {
       name: formData.name,
       last_name: formData.lastName,
@@ -205,9 +205,11 @@ const actions = {
     return axiosAuth.post(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
-        dispatch('saveSession', userData).then(() => {
-          dispatch('identifyUserEvent');
-        });
+        commit('saveSessionToStore', userData);
+        dispatch('identifyUserEvent');
+        if (userData && userData.idToken) {
+          commit('saveSessionToStorage', userData);
+        }
       });
   },
 
