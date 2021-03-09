@@ -58,6 +58,7 @@
                 id='intro-continue-btn'
                 :has-lock-icon="false"
                 :invalid-form="false"
+                :widget="true"
                 >
                 Continuar
               </action-button>
@@ -219,6 +220,7 @@
                   id='bank-login-submit-btn'
                   :has-lock-icon="true"
                   :invalid-form="$v.$invalid"
+                  :widget="true"
                   >
                   Ingresar
                 </action-button>
@@ -347,6 +349,7 @@
                   id='confirm-subscription-btn'
                   :has-lock-icon="true"
                   :invalid-form="false"
+                  :widget="true"
                   >
                   Continuar
                 </action-button>
@@ -433,6 +436,7 @@
                   id='second-factor-auth-btn'
                   :has-lock-icon="true"
                   :invalid-form="false"
+                  :widget="true"
                   >
                   Autorizar
                 </action-button>
@@ -504,6 +508,7 @@
                 id='subscription-exit-btn'
                 :has-lock-icon="false"
                 :invalid-form="false"
+                :widget="true"
                 >
                 Continuar
               </action-button>
@@ -540,6 +545,7 @@
               @click.native="moveTo('bank-log-in')"
               :has-lock-icon="false"
               :invalid-form="false"
+               :widget="true"
               >
               Continuar
             </action-button>

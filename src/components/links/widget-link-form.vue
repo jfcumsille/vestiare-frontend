@@ -6,7 +6,8 @@
     :createdThrough="'widget'"
     :headers="formHeaders"
     :extraFields="extraFields"
-    :product="product">
+    :product="product"
+    :mode="mode">
   </link-wizard>
 </div>
 </template>
@@ -38,6 +39,12 @@ export default {
     },
     formHeaders() {
       return { Authorization: this.apiKey };
+    },
+    mode() {
+      if (this.apiKey.includes('live')) {
+        return 'live';
+      }
+      return 'test';
     },
     extraFields() {
       return { callback_url: this.callbackUrl };

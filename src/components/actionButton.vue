@@ -6,7 +6,10 @@
                   border-transparent text-sm leading-5 font-medium rounded-md
                   text-white bg-main focus:outline-none transition duration-150
                   ease-in-out focus:opacity-50"
-          :class="{ 'hover:opacity-50': !invalidForm, 'cursor-not-allowed': invalidForm }">
+          :class="{
+            'hover:opacity-50': !invalidForm, 'cursor-not-allowed': invalidForm,
+            'bg-main': !widget, 'bg-fintoc-blue': widget
+          }">
     <span
       class="absolute left-0 inset-y-0 flex items-center
              pl-3 text-white opacity-25 transition
@@ -35,6 +38,7 @@ export default {
     tag: { type: String, default: 'button' },
     hasLockIcon: Boolean,
     invalidForm: Boolean,
+    widget: Boolean,
   },
 };
 </script>

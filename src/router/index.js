@@ -38,6 +38,7 @@ const guardApp = (to, from, next) => {
 
 const guardLoginAndOnboarding = async (to, from, next) => {
   if (store.getters.isUserLoggedIn) {
+    console.log(store.getters, store.state);
     if (store.state.onboarding.show === false) {
       next();
     } else {
