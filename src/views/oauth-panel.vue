@@ -1,31 +1,50 @@
 <template>
   <div class="flex flex-col mt-6">
-    <action-button tag="a" :href="googleAuthorizeUrl" :has-lock-icon="false">
-      <template #icon>
-        <inline-svg
-          :src="require('../assets/icons/google-icon.svg')"
-          class="fill-current" />
-      </template>
+    <a
+      :href="googleAuthorizeUrl"
+      class="mt-6 group relative w-full flex justify-center py-4 px-4 border
+              border-transparent text-sm leading-5 font-medium rounded-md
+              text-white bg-main focus:outline-none transition duration-150
+              ease-in-out focus:opacity-50">
+      <span
+        class="absolute left-0 inset-y-0 flex items-center
+                pl-3 text-white opacity-25 transition
+                ease-in-out duration-150">
+        <div class="h-5 w-5">
+          <inline-svg
+            :src="require('../assets/icons/google-icon.svg')"
+            class="fill-current" />
+        </div>
+      </span>
       {{ actionButtonLabel }} con Google
-    </action-button>
-    <action-button tag="a" :href="githubAuthorizeUrl" class="mt-6" :has-lock-icon="false">
-      <template #icon>
-        <inline-svg
-          :src="require('../assets/icons/github-icon.svg')"
-          class="fill-current" />
-      </template>
+    </a>
+
+    <a
+      :href="githubAuthorizeUrl"
+      class="mt-6 group relative w-full flex justify-center py-4 px-4 border
+              border-transparent text-sm leading-5 font-medium rounded-md
+              text-white bg-main focus:outline-none transition duration-150
+              ease-in-out focus:opacity-50">
+      <span
+        class="absolute left-0 inset-y-0 flex items-center
+                pl-3 text-white opacity-25 transition
+                ease-in-out duration-150">
+        <div class="h-5 w-5">
+          <inline-svg
+            :src="require('../assets/icons/github-icon.svg')"
+            class="fill-current" />
+        </div>
+      </span>
       {{ actionButtonLabel }} con Github
-    </action-button>
+    </a>
   </div>
 </template>
 
 <script>
-import ActionButton from '../components/actionButton.vue';
 import apiClient from '../api';
 import auth0Helper from '../helpers/auth0_helper';
 
 export default {
-  components: { ActionButton },
   props: {
     signsUp: { type: Boolean, default: false },
   },
