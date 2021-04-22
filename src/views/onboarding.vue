@@ -3,7 +3,7 @@
     <div
       v-if="!isIntroduction"
       class="z-50 absolute top-0 left-0 ml-10 mt-10 text-2xl
-      text-white cursor-pointer font-semibold"
+      text-gray-500 cursor-pointer font-semibold"
       @click="goToPreviousStep">
       Volver
     </div>
@@ -11,7 +11,7 @@
     <div
       v-if="!loading"
       class="z-50 absolute top-0 right-0 mr-10 mt-10 text-2xl
-      text-white cursor-pointer font-semibold"
+      text-gray-500 cursor-pointer font-semibold"
       @click="skip">
       Salir
     </div>
