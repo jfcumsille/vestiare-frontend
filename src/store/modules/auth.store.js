@@ -125,7 +125,18 @@ const actions = {
       .catch((error) => { throw error; });
   },
 
-  identifyUserEvent(context) {
+  async confirmEmail(context, formData) {
+    const payload = {
+      confirmation_token: formData.confirmationToken,
+    };
+    const url = '/internal/v1/users/confirmation';
+    const userData = await axiosAuth.put(url, payload)
+      .then((response) => getUserDataFromAuthResponse(response))
+      .catch((error) => { throw error; });
+    return userData;
+  },
+
+  async identifyUserEvent(context) {
     window.analytics.identify(context.state.userId, {
       email: context.state.email,
       name: context.getters.getFullName,
@@ -182,7 +193,7 @@ const actions = {
     commit('updateDefaultOrganizationId', payload.defaultOrganizationId);
   },
 
-  signUp({ dispatch }, formData) {
+  async signUp({ dispatch, commit }, formData) {
     const payload = {
       name: formData.name,
       last_name: formData.lastName,
@@ -194,9 +205,11 @@ const actions = {
     return axiosAuth.post(url, payload)
       .then((response) => {
         const userData = getUserDataFromAuthResponse(response);
-        dispatch('saveSession', userData).then(() => {
-          dispatch('identifyUserEvent');
-        });
+        commit('saveSessionToStore', userData);
+        dispatch('identifyUserEvent');
+        if (userData && userData.idToken) {
+          commit('saveSessionToStorage', userData);
+        }
       });
   },
 
@@ -217,6 +230,12 @@ const actions = {
     const response = await apiClient.country.get(headers);
     commit('getCountry', response.data.country);
     return response.data.country;
+  },
+
+  async sendConfirmationEmail(context, formData) {
+    const payload = { email: formData.email };
+    const url = '/internal/v1/users/confirmation';
+    return axiosAuth.post(url, payload);
   },
 };
 
