@@ -920,7 +920,8 @@ export default {
       apiClient.subscriptions.create(this.selectedAccount.id,
         this.customerId,
         this.linkToken,
-        this.headers)
+        this.headers,
+        this.extraFields.callback_url)
         .then((response) => {
           this.subscription = response.data;
           this.pollForSubscription();

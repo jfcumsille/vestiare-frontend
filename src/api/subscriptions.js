@@ -1,10 +1,11 @@
 import axiosInstance from './config';
 
-function create(accountId, customerId, linkToken, authenticationHeader) {
+function create(accountId, customerId, linkToken, authenticationHeader, callbackUrl) {
   return axiosInstance
     .post(`/internal/v1/accounts/${accountId}/subscriptions`, {
       customerId,
       linkToken,
+      callbackUrl,
     }, {
       headers: authenticationHeader,
     });
