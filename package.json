@@ -52,6 +52,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "_moduleAliases": {
-    "chilean-bank-images": "src/assets/images/banks/chile"
+    "chilean-bank-images": "src/assets/images/banks/chile",
+    "chilean-fiscal-images": "src/assets/images/fiscal/chile"
   }
 }

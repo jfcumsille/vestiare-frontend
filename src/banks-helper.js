@@ -28,6 +28,8 @@ import biceSmallLogo from 'chilean-bank-images/bice/small.png';
 import securityLogo from 'chilean-bank-images/banco-security/big.png';
 import securitySmallLogo from 'chilean-bank-images/banco-security/small.png';
 
+import siiLogo from 'chilean-fiscal-images/sii.svg';
+
 // Pending images.
 import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -48,6 +50,23 @@ const availableBanks = [
     isAvailable: {
       business: { subscription: false, movements: true },
       individual: { subscription: true, movements: true },
+    },
+  },
+  {
+    code: 'cl_fiscal_sii',
+    label: 'Servicio de Impuestos Internos',
+    logo: {
+      individual: siiLogo,
+      business: siiLogo,
+    },
+    smallLogo: siiLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
     },
   },
   {
