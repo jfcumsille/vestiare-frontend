@@ -20,19 +20,11 @@ const getters = {
 
 const mutations = {
   updateWebhookEndpoints(state, { userEndpoints, mode }) {
-    const webhookEndpoints = userEndpoints.map((subscribedEndpoint) => ({
-      id: subscribedEndpoint.id,
-      description: subscribedEndpoint.description,
-      url: subscribedEndpoint.url,
-      status: subscribedEndpoint.status,
-      mode: subscribedEndpoint.mode,
-      enabledEvents: subscribedEndpoint.enabledEvents,
-    }));
     if (mode === 'test') {
-      state.testWebhookEndpoints = webhookEndpoints;
+      state.testWebhookEndpoints = userEndpoints;
     }
     if (mode === 'live') {
-      state.liveWebhookEndpoints = webhookEndpoints;
+      state.liveWebhookEndpoints = userEndpoints;
     }
   },
   updateMode(state) {
@@ -53,6 +45,12 @@ const mutations = {
       state.testWebhookEndpoints = state.testWebhookEndpoints
         .filter((webhook) => webhook.id !== webhookEndpointId);
     }
+  },
+  updateWebhookEndpoint(state, { webhookEndpoint, mode }) {
+    const key = mode === 'live' ? 'liveWebhookEndpoints' : 'testWebhookEndpoints';
+    state[key] = state[key].map((webhook) => (webhook.id !== webhookEndpoint.id ? webhook : {
+      ...webhookEndpoint,
+    }));
   },
 };
 
@@ -80,6 +78,18 @@ const actions = {
     };
     apiClient.webhooks.destroy(headers, params).then(() => {
       commit('removeWebhookEndpoint', { webhookEndpointId, mode });
+    });
+  },
+  async updateWebhookEndpoint({ commit }, {
+    webhookEndpointId, requestBody, mode, apiKey,
+  }) {
+    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+    const params = {
+      id: webhookEndpointId,
+      current_organization_id: this.getters.getDefaultOrganizationId,
+    };
+    apiClient.webhooks.update(headers, params, requestBody).then((response) => {
+      commit('updateWebhookEndpoint', { webhookEndpoint: response.data, mode });
     });
   },
 };

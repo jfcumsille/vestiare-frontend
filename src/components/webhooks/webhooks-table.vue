@@ -85,7 +85,7 @@
               :fontSize="12"
               :speed="250"
               :labels="{checked: 'Sí', unchecked: 'No'}"
-              />
+              @change="updateEnabled(webhookEndpoint)"/>
           </div>
         </td>
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6  w-06p"/>
@@ -128,7 +128,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['destroyWebhookEndpoint']),
+    ...mapActions(['destroyWebhookEndpoint', 'updateWebhookEndpoint']),
     async deleteWebhookEndpoint(webhookEndpointId, mode) {
       const { liveKey, testKey } = this.userSecretKeys;
       return this.destroyWebhookEndpoint({ webhookEndpointId, mode, apiKey: mode === 'live' ? liveKey : testKey });
@@ -150,6 +150,13 @@ export default {
       await this.deleteWebhookEndpoint(this.webhookEndpointToDelete, this.mode);
       this.showSpinner = false;
       this.showDeleteModal = false;
+    },
+    async updateEnabled(webhookEndpoint) {
+      const data = { disabled: webhookEndpoint.status === 'enabled' };
+      const { liveKey, testKey } = this.userSecretKeys;
+      this.updateWebhookEndpoint({
+        webhookEndpointId: webhookEndpoint.id, requestBody: data, mode: this.mode, apiKey: this.mode === 'live' ? liveKey : testKey,
+      });
     },
   },
 };
