@@ -9,7 +9,7 @@ function create(headers, params) {
 }
 
 function destroy(headers, params) {
-  return axiosInstance.delete(`/v1/webhook_endpoints/${params.id}`, { headers: headers.headers, params: { current_organization_id: params.current_organization_id } });
+  return axiosInstance.delete(`/v1/webhook_endpoints/${params.id}`, { headers, params: { current_organization_id: params.current_organization_id } });
 }
 
 export default {

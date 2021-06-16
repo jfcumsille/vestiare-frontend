@@ -1,6 +1,6 @@
 <template>
 <div class="relative w-full h-full overflow-x-scroll">
-  <link-confirmation-modal v-if="showDeleteModal"
+  <confirmation-modal v-if="showDeleteModal"
       :title='"Eliminar Link"'
       :text='`¿Estás seguro que quieres borrar este link? El usuario tendrá que hacer
               login de nuevo en el banco para crearlo. Esta acción no se puede deshacer.`'
@@ -10,7 +10,7 @@
       :onCancel="cancelLinkDeletion"
       :showSpinner="showSpinner"
       />
-  <link-confirmation-modal v-if="showPreventDeactivationModal"
+  <confirmation-modal v-if="showPreventDeactivationModal"
       :title='"Contraseña Inválida"'
       :text='`La última vez que fuimos al banco con este link, las credenciales eran inválidas.
              Hemos dejado de actualizar los movimientos de esta cuenta para evitar un bloqueo.
@@ -155,7 +155,7 @@
 <script>
 import moment from 'moment';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import LinkConfirmationModal from './link-confirmation-modal.vue';
+import ConfirmationModal from '../lib/confirmation-modal.vue';
 import Spinner from '../lib/spinner.vue';
 
 export default {
@@ -188,7 +188,7 @@ export default {
   },
 
   components: {
-    LinkConfirmationModal,
+    ConfirmationModal,
     Spinner,
   },
 

@@ -1,5 +1,15 @@
 <template>
 <div class="relative w-full h-full overflow-x-scroll">
+  <confirmation-modal v-if="showDeleteModal"
+      :title='"Eliminar Webhook Endpoint"'
+      :text='`¿Estás seguro que quieres borrar este webhook endpoint?
+      Esta acción no se puede deshacer.`'
+      :leftButtonText="'Cancelar'"
+      :rightButtonText="'Eliminar'"
+      :onConfirm="confirmDeleteWebhookEndpoint"
+      :onCancel="cancelDeleteWebhookEndpoint"
+      :showSpinner="showSpinner"
+      />
   <div v-if="loading" class="flex justify-center">
     <div class="absolute w-full h-full bg-white opacity-50 z-10"/>
     <spinner class="absolute z-20 inset-y-2/5"
@@ -82,6 +92,7 @@
         <td class="px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
                   leading-5 font-medium">
           <a href="#"
+            @click="askToDeleteWebhookEndpoint(webhookEndpoint.id)"
             class="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-red-200
                       text-red-900 hover:bg-red-300">
             <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
@@ -96,6 +107,8 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex';
 import Spinner from '../lib/spinner.vue';
+import ConfirmationModal from '../lib/confirmation-modal.vue';
+
 
 export default {
   computed: {
@@ -111,10 +124,33 @@ export default {
 
   components: {
     Spinner,
+    ConfirmationModal,
   },
 
   methods: {
-    ...mapActions(['destroyUserLink', 'updateUserLink']),
+    ...mapActions(['destroyWebhookEndpoint']),
+    async deleteWebhookEndpoint(webhookEndpointId, mode) {
+      const { liveKey, testKey } = this.userSecretKeys;
+      return this.destroyWebhookEndpoint({ webhookEndpointId, mode, apiKey: mode === 'live' ? liveKey : testKey });
+    },
+    askToDeleteWebhookEndpoint(webhookEndpointId) {
+      console.log('trying to delete', webhookEndpointId);
+      this.showDeleteModal = true;
+      this.webhookEndpointToDelete = webhookEndpointId;
+    },
+    cancelDeleteWebhookEndpoint() {
+      this.showDeleteModal = false;
+      this.webhookEndpointToDelete = null;
+    },
+    async confirmDeleteWebhookEndpoint() {
+      if (this.webhookEndpointToDelete === null) {
+        return;
+      }
+      this.showSpinner = true;
+      await this.deleteWebhookEndpoint(this.webhookEndpointToDelete, this.mode);
+      this.showSpinner = false;
+      this.showDeleteModal = false;
+    },
   },
 };
 </script>

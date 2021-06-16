@@ -45,6 +45,15 @@ const mutations = {
   updateErrors(state, error) {
     if (state.mode === 'test') { state.testError = error; } else if (state.mode === 'live') state.liveError = error;
   },
+  removeWebhookEndpoint(state, { webhookEndpointId, mode }) {
+    if (mode === 'live') {
+      state.liveWebhookEndpoints = state.liveWebhookEndpoints
+        .filter((webhook) => webhook.id !== webhookEndpointId);
+    } else if (mode === 'test') {
+      state.testWebhookEndpoints = state.testWebhookEndpoints
+        .filter((webhook) => webhook.id !== webhookEndpointId);
+    }
+  },
 };
 
 const actions = {
@@ -62,6 +71,16 @@ const actions = {
   },
   updateWebhookEndpointsMode({ commit }) {
     commit('updateMode');
+  },
+  async destroyWebhookEndpoint({ commit }, { webhookEndpointId, apiKey, mode }) {
+    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+    const params = {
+      id: webhookEndpointId,
+      current_organization_id: this.getters.getDefaultOrganizationId,
+    };
+    apiClient.webhooks.destroy(headers, params).then(() => {
+      commit('removeWebhookEndpoint', { webhookEndpointId, mode });
+    });
   },
 };
 
