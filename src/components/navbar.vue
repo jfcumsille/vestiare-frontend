@@ -23,6 +23,12 @@
                          focus:outline-none active:text-main">
                 Api keys
               </router-link>
+              <router-link to="/webhooks" active-class="text-main font-semibold"
+                  class="ml-4
+                  px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:text-main
+                         focus:outline-none active:text-main">
+                Webhooks
+              </router-link>
             </div>
           </div>
         </div>
@@ -124,6 +130,12 @@
                    block px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
                    hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
           Api keys
+        </router-link>
+        <router-link to="/webhooks" active-class="text-main font-semibold"
+            class="mt-1
+                   block px-3 py-2 rounded-md text-base font-semibold text-gray-300 hover:text-white
+                   hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">
+          Webhooks
         </router-link>
         <router-link
             to="/user-profile"

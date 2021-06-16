@@ -8,6 +8,7 @@ import movements from './movements';
 import onboarding from './onboarding';
 import subscriptions from './subscriptions';
 import widgetConfig from './widgetConfig';
+import webhooks from './webhooks';
 
 
 const apiClient = {
@@ -21,6 +22,7 @@ const apiClient = {
   onboarding,
   subscriptions,
   widgetConfig,
+  webhooks,
 };
 
 export default apiClient;

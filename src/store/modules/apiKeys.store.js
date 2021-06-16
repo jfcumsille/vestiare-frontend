@@ -8,6 +8,11 @@ const getters = {
   userApiKeys() {
     return state.userApiKeys;
   },
+  userSecretKeys() {
+    const liveKey = state.userApiKeys.find((apiKey) => !apiKey.isPublic && apiKey.mode === 'live');
+    const testKey = state.userApiKeys.find((apiKey) => !apiKey.isPublic && apiKey.mode === 'test');
+    return { liveKey: liveKey ? liveKey.key : '', testKey: testKey ? testKey.key : '' };
+  },
 };
 
 const mutations = {

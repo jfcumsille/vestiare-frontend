@@ -11,6 +11,7 @@ import SignUp from '../views/sign-up.vue';
 import RecoverPassword from '../views/recover-password.vue';
 import Links from '../views/links.vue';
 import NewLink from '../views/new-link.vue';
+import Webhooks from '../views/webhooks.vue';
 import WidgetIframe from '../views/widget-iframe.vue';
 import UserProfile from '../views/user-profile.vue';
 import RequestNewBank from '../views/request-new-bank.vue';
@@ -90,6 +91,11 @@ const routes = [
   {
     path: '/links/new',
     component: NewLink,
+    beforeEnter: guardLoginAndOnboarding,
+  },
+  {
+    path: '/webhooks',
+    component: Webhooks,
     beforeEnter: guardLoginAndOnboarding,
   },
   {
