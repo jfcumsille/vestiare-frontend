@@ -7,6 +7,8 @@ const initialState = {
   loading: true,
   liveError: false,
   testError: false,
+  selectedWebhook: null,
+  webhookSelectedToDelete: null,
 };
 
 const getters = {
@@ -45,12 +47,36 @@ const mutations = {
       state.testWebhookEndpoints = state.testWebhookEndpoints
         .filter((webhook) => webhook.id !== webhookEndpointId);
     }
+    if (state.selectedWebhook) {
+      if (state.selectedWebhook.id === webhookEndpointId) state.selectedWebhook = null;
+    }
   },
   updateWebhookEndpoint(state, { webhookEndpoint, mode }) {
     const key = mode === 'live' ? 'liveWebhookEndpoints' : 'testWebhookEndpoints';
     state[key] = state[key].map((webhook) => (webhook.id !== webhookEndpoint.id ? webhook : {
       ...webhookEndpoint,
     }));
+    if (!state.selectedWebhook) return;
+    if (state.selectedWebhook.id === webhookEndpoint.id) state.selectedWebhook = webhookEndpoint;
+  },
+  updateSelectedWebhook(state, webhookEndpointId) {
+    if (!webhookEndpointId) state.selectedWebhook = null;
+    let selectedWebhook = state.liveWebhookEndpoints
+      .find((webhookEndpoint) => webhookEndpoint.id === webhookEndpointId);
+    if (selectedWebhook) {
+      state.mode = 'live';
+      state.selectedWebhook = selectedWebhook;
+      return;
+    }
+    selectedWebhook = state.testWebhookEndpoints
+      .find((webhookEndpoint) => webhookEndpoint.id === webhookEndpointId);
+    if (selectedWebhook) {
+      state.mode = 'test';
+      state.selectedWebhook = selectedWebhook;
+    }
+  },
+  updateWebhookSelectedToDelete(state, webhookEndpointId) {
+    state.webhookSelectedToDelete = webhookEndpointId;
   },
 };
 
@@ -69,6 +95,9 @@ const actions = {
   },
   updateWebhookEndpointsMode({ commit }) {
     commit('updateMode');
+  },
+  updateWebhookSelectedToDelete({ commit }, { webhookEndpointId }) {
+    commit('updateWebhookSelectedToDelete', webhookEndpointId);
   },
   async destroyWebhookEndpoint({ commit }, { webhookEndpointId, apiKey, mode }) {
     const headers = { ...this.getters.authHeaders, Authorization: apiKey };

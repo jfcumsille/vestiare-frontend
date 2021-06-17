@@ -1,15 +1,5 @@
 <template>
 <div class="relative w-full h-full overflow-x-scroll">
-  <confirmation-modal v-if="showDeleteModal"
-      :title='"Eliminar Webhook Endpoint"'
-      :text='`¿Estás seguro que quieres borrar este webhook endpoint?
-      Esta acción no se puede deshacer.`'
-      :leftButtonText="'Cancelar'"
-      :rightButtonText="'Eliminar'"
-      :onConfirm="confirmDeleteWebhookEndpoint"
-      :onCancel="cancelDeleteWebhookEndpoint"
-      :showSpinner="showSpinner"
-      />
   <div v-if="loading" class="flex justify-center">
     <div class="absolute w-full h-full bg-white opacity-50 z-10"/>
     <spinner class="absolute z-20 inset-y-2/5"
@@ -48,14 +38,16 @@
             <h1 class="text-4xl mt-4">
                 {{
                   loading
-                    ? 'No encontramos los webhooks que buscas 🤷‍♂️'
-                    : 'Todavía no suscribes ningún webhook 👀'
+                  ? 'No encontramos los webhooks que buscas 🤷‍♂️'
+                  : `Todavía no suscribes ningún webhook ${this.mode === 'test' ? 'de test ' : ''}👀`
                 }}
             </h1>
           </div>
         </td>
       </tr>
-      <tr v-for='webhookEndpoint in webhookEndpoints' v-bind:key='webhookEndpoint.id'>
+      <tr v-for='webhookEndpoint in webhookEndpoints' v-bind:key='webhookEndpoint.id'
+        @click="selectWebhookEndpoint(webhookEndpoint, $event)"
+        class="cursor-pointer hover:bg-gray-200">
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6
                   overflow-hidden">
           <div class="text-sm text-left leading-5 text-gray-900">
@@ -92,7 +84,7 @@
         <td class="px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
                   leading-5 font-medium">
           <a href="#"
-            @click="askToDeleteWebhookEndpoint(webhookEndpoint.id)"
+            @click.stop="askToDeleteWebhookEndpoint(webhookEndpoint.id)"
             class="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-red-200
                       text-red-900 hover:bg-red-300">
             <font-awesome-icon icon="trash" class="mt-1 mr-1"/> Borrar
@@ -105,14 +97,13 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 import Spinner from '../lib/spinner.vue';
-import ConfirmationModal from '../lib/confirmation-modal.vue';
 
 
 export default {
   computed: {
-    ...mapGetters(['userApiKeys', 'userSecretKeys', 'webhookEndpoints', 'errors']),
+    ...mapGetters(['webhookEndpoints']),
     ...mapState({
       mode: (state) => state.webhooks.mode,
       loading: (state) => state.webhooks.loading,
@@ -124,39 +115,19 @@ export default {
 
   components: {
     Spinner,
-    ConfirmationModal,
   },
 
   methods: {
-    ...mapActions(['destroyWebhookEndpoint', 'updateWebhookEndpoint']),
-    async deleteWebhookEndpoint(webhookEndpointId, mode) {
-      const { liveKey, testKey } = this.userSecretKeys;
-      return this.destroyWebhookEndpoint({ webhookEndpointId, mode, apiKey: mode === 'live' ? liveKey : testKey });
+    ...mapActions(['updateWebhookSelectedToDelete']),
+    selectWebhookEndpoint(webhookEndpoint, event) {
+      if (event.target.className.includes('switch')) return;
+      this.$router.push(`/webhooks/${webhookEndpoint.id}`);
     },
     askToDeleteWebhookEndpoint(webhookEndpointId) {
-      console.log('trying to delete', webhookEndpointId);
-      this.showDeleteModal = true;
-      this.webhookEndpointToDelete = webhookEndpointId;
+      this.updateWebhookSelectedToDelete({ webhookEndpointId });
     },
-    cancelDeleteWebhookEndpoint() {
-      this.showDeleteModal = false;
-      this.webhookEndpointToDelete = null;
-    },
-    async confirmDeleteWebhookEndpoint() {
-      if (this.webhookEndpointToDelete === null) {
-        return;
-      }
-      this.showSpinner = true;
-      await this.deleteWebhookEndpoint(this.webhookEndpointToDelete, this.mode);
-      this.showSpinner = false;
-      this.showDeleteModal = false;
-    },
-    async updateEnabled(webhookEndpoint) {
-      const data = { disabled: webhookEndpoint.status === 'enabled' };
-      const { liveKey, testKey } = this.userSecretKeys;
-      this.updateWebhookEndpoint({
-        webhookEndpointId: webhookEndpoint.id, requestBody: data, mode: this.mode, apiKey: this.mode === 'live' ? liveKey : testKey,
-      });
+    updateEnabled(webhookEndpoint) {
+      this.$emit('update-webhook-status', webhookEndpoint);
     },
   },
 };

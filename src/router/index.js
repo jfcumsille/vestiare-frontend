@@ -99,6 +99,11 @@ const routes = [
     beforeEnter: guardLoginAndOnboarding,
   },
   {
+    path: '/webhooks/:id',
+    component: Webhooks,
+    beforeEnter: guardLoginAndOnboarding,
+  },
+  {
     path: '/user-profile',
     component: UserProfile,
     beforeEnter: guardLoginAndOnboarding,
