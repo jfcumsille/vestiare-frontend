@@ -51,7 +51,6 @@
       </div>
       <div v-if="!loading && selectedWebhook" class="flex flex-col">
         <webhook-details
-          @ask-to-delete-webhook="askToDeleteWebhookEndpoint"
           @update-webhook-status="updateEnabled" />
       </div>
     </div>
@@ -72,27 +71,31 @@ export default {
     return {
       retrievingUserApiKeys: false,
       showSpinner: false,
+      webhookListsUpdated: 0,
     };
   },
   async created() {
     this.retrievingUserApiKeys = true;
     await this.$store.dispatch('getUserApiKeys');
-    this.retrievingUserApiKeys = false;
-  },
-  mounted() {
-    // window.analytics.page('Webhooks');
-    let unsubscribe = null;
-    this.initComponent(this.$route.params.id);
-    unsubscribe = this.$store.subscribe(({ type }) => {
+    const unsubscribe = this.$store.subscribe(async ({ type }) => {
       if (type === 'updateUserApiKeys') {
         const { liveKey, testKey } = this.userSecretKeys;
-        Promise.all([
-          this.$store.dispatch('getWebhookEndpoints', { mode: 'live', apiKey: liveKey }),
-          this.$store.dispatch('getWebhookEndpoints', { mode: 'test', apiKey: testKey }),
-        ]);
+        this.fetchWebhookEndpoints({ liveKey, testKey });
         unsubscribe();
       }
     });
+    const unsubscribe2 = this.$store.subscribe(async ({ type }) => {
+      if (type === 'updateWebhookEndpoints') {
+        if (this.webhookListsUpdated === 1) {
+          this.initComponent(this.$route.params.id);
+          unsubscribe2();
+        } else { this.webhookListsUpdated += 1; }
+      }
+    });
+    this.retrievingUserApiKeys = false;
+  },
+  destroyed() {
+    this.$store.commit('updateSelectedWebhook', null);
   },
   watch: {
     '$route.path': function changeSelected() {
@@ -107,15 +110,20 @@ export default {
       'updateWebhookEndpoint',
       'updateWebhookSelectedToDelete',
     ]),
+    async fetchWebhookEndpoints({ liveKey, testKey }) {
+      Promise.all([
+        this.$store.dispatch('getWebhookEndpoints', { mode: 'live', apiKey: liveKey }),
+        this.$store.dispatch('getWebhookEndpoints', { mode: 'test', apiKey: testKey }),
+      ]);
+    },
     initComponent(selectedWebhookId) {
       this.$store.commit('updateSelectedWebhook', selectedWebhookId);
+      if (!this.selectedWebhook && this.$route.params.id) this.$router.push('/webhooks');
     },
     async deleteWebhookEndpoint(webhookEndpointId, mode) {
       const { liveKey, testKey } = this.userSecretKeys;
-      return this.destroyWebhookEndpoint({ webhookEndpointId, mode, apiKey: mode === 'live' ? liveKey : testKey });
-    },
-    askToDeleteWebhookEndpoint(webhookEndpointId) {
-      this.updateWebhookSelectedToDelete({ webhookEndpointId });
+      await this.destroyWebhookEndpoint({ webhookEndpointId, mode, apiKey: mode === 'live' ? liveKey : testKey });
+      if (this.$route.params.id) this.$router.push('/webhooks');
     },
     cancelDeleteWebhookEndpoint() {
       this.updateWebhookSelectedToDelete({ webhookEndpointId: null });

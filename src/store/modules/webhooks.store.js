@@ -1,5 +1,8 @@
 import apiClient from '../../api';
 
+const initialWebhooksTest = {
+  testRequestBody: null,
+};
 const initialState = {
   liveWebhookEndpoints: [],
   testWebhookEndpoints: [],
@@ -9,6 +12,7 @@ const initialState = {
   testError: false,
   selectedWebhook: null,
   webhookSelectedToDelete: null,
+  ...initialWebhooksTest,
 };
 
 const getters = {
@@ -78,6 +82,9 @@ const mutations = {
   updateWebhookSelectedToDelete(state, webhookEndpointId) {
     state.webhookSelectedToDelete = webhookEndpointId;
   },
+  updateWebhookTestResponse(state, { requestBody }) {
+    state.testRequestBody = requestBody;
+  },
 };
 
 const actions = {
@@ -120,6 +127,19 @@ const actions = {
     apiClient.webhooks.update(headers, params, requestBody).then((response) => {
       commit('updateWebhookEndpoint', { webhookEndpoint: response.data, mode });
     });
+  },
+  async sendTestWebhookEvent({ commit }, {
+    webhookEndpointId, requestBody, apiKey,
+  }) {
+    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+    const params = {
+      id: webhookEndpointId,
+      current_organization_id: this.getters.getDefaultOrganizationId,
+    };
+    return apiClient.webhooks.sendTestWebhookEvent(headers, params, requestBody)
+      .then((response) => {
+        commit('updateWebhookTestResponse', response.data);
+      });
   },
 };
 

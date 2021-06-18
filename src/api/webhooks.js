@@ -16,9 +16,14 @@ function update(headers, params, requestBody) {
   return axiosInstance.put(`v1/webhook_endpoints/${params.id}`, requestBody, { headers, params: { current_organization_id: params.current_organization_id } });
 }
 
+function sendTestWebhookEvent(headers, params, requestBody) {
+  return axiosInstance.post(`v1/webhook_endpoints/${params.id}/test`, requestBody, { headers, params: { current_organization_id: params.current_organization_id } });
+}
+
 export default {
   index,
   create,
   destroy,
   update,
+  sendTestWebhookEvent,
 };
