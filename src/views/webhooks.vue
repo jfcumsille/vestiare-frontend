@@ -10,6 +10,9 @@
       :onCancel="cancelDeleteWebhookEndpoint"
       :showSpinner="showSpinner"
       />
+    <new-webhook-modal
+      v-if="showCreationModal"
+    />
   <main class="h-full min-h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative h-full">
       <div class="grid place-items-center">
@@ -39,7 +42,8 @@
             <webhook-table class="border border-gray-300"
               @update-webhook-status="updateEnabled"/>
             <div class="mt-4 text-right flex flex-row justify-end space-x-2">
-            <button to="/webhooks"
+            <button
+              @click="openCreateWebhookModal"
               class="text-center justify-content flex flex-col items-center
                      font-medium rounded-md bg-main text-md
                      text-white hover:bg-sub w-64 h-10 py-2">
@@ -64,6 +68,7 @@ import Spinner from '../components/lib/spinner.vue';
 import WebhookDetails from '../components/webhooks/webhook-details.vue';
 import WebhookTable from '../components/webhooks/webhooks-table.vue';
 import ConfirmationModal from '../components/lib/confirmation-modal.vue';
+import NewWebhookModal from '../components/webhooks/new-webhook-modal.vue';
 
 
 export default {
@@ -109,6 +114,7 @@ export default {
       'destroyWebhookEndpoint',
       'updateWebhookEndpoint',
       'updateWebhookSelectedToDelete',
+      'updateShowCreateModal',
     ]),
     async fetchWebhookEndpoints({ liveKey, testKey }) {
       Promise.all([
@@ -144,6 +150,9 @@ export default {
         webhookEndpointId: webhookEndpoint.id, requestBody: data, mode: this.mode, apiKey: this.mode === 'live' ? liveKey : testKey,
       });
     },
+    openCreateWebhookModal() {
+      this.updateShowCreateModal();
+    },
   },
   computed: {
     ...mapGetters(['userApiKeys', 'userSecretKeys', 'webhookEndpoints', 'errors']),
@@ -152,6 +161,7 @@ export default {
       loading: (state) => state.webhooks.loading,
       selectedWebhook: (state) => state.webhooks.selectedWebhook,
       webhookEndpointToDelete: (state) => state.webhooks.webhookSelectedToDelete,
+      showCreationModal: (state) => state.webhooks.showCreateModal,
     }),
     shouldShowTable() {
       return !this.loading && this.webhookEndpoints.length !== 0;
@@ -168,6 +178,7 @@ export default {
     WebhookTable,
     WebhookDetails,
     ConfirmationModal,
+    NewWebhookModal,
   },
 };
 </script>

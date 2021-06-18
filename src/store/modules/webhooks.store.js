@@ -13,6 +13,7 @@ const initialState = {
   selectedWebhook: null,
   webhookSelectedToDelete: null,
   ...initialWebhooksTest,
+  showCreateModal: false,
 };
 
 const getters = {
@@ -85,6 +86,13 @@ const mutations = {
   updateWebhookTestResponse(state, { requestBody }) {
     state.testRequestBody = requestBody;
   },
+  addWebhookEndpoint(state, { webhookEndpoint, mode }) {
+    const key = mode === 'live' ? 'liveWebhookEndpoints' : 'testWebhookEndpoints';
+    state[key].push(webhookEndpoint);
+  },
+  updateShowCreateModal(state) {
+    state.showCreateModal = !state.showCreateModal;
+  },
 };
 
 const actions = {
@@ -105,6 +113,9 @@ const actions = {
   },
   updateWebhookSelectedToDelete({ commit }, { webhookEndpointId }) {
     commit('updateWebhookSelectedToDelete', webhookEndpointId);
+  },
+  updateShowCreateModal({ commit }) {
+    commit('updateShowCreateModal');
   },
   async destroyWebhookEndpoint({ commit }, { webhookEndpointId, apiKey, mode }) {
     const headers = { ...this.getters.authHeaders, Authorization: apiKey };
@@ -140,6 +151,18 @@ const actions = {
       .then((response) => {
         commit('updateWebhookTestResponse', response.data);
       });
+  },
+  async createWebhookEndpoint({ commit }, { requestBody, apiKey, mode }) {
+    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+    const params = {
+      current_organization_id: this.getters.getDefaultOrganizationId,
+    };
+    return apiClient.webhooks.create(headers, params, requestBody)
+      .then((response) => {
+        commit('addWebhookEndpoint', { webhookEndpoint: response.data, mode });
+        return response.data.id;
+      })
+      .catch(() => false);
   },
 };
 
