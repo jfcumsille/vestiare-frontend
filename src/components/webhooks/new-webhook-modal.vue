@@ -134,9 +134,11 @@ export default {
       },
     };
   },
-  created() {
-    // TODO: get options from API
-    const options = ['account.refresh_intent.succeeded', 'link.credentials_changed'];
+  async created() {
+    let { options } = this;
+    if (options.length === 0) {
+      options = await this.getAvailableEventTypes();
+    }
     this.eventOptions = options.map((option) => ({ value: option, selected: false }));
   },
   components: {
@@ -145,6 +147,7 @@ export default {
   computed: {
     ...mapState({
       mode: (state) => state.webhooks.mode,
+      options: (state) => state.webhooks.supportedEventTypes,
     }),
     ...mapGetters(['webhookEndpoints']),
     selectedEvents() {
@@ -152,7 +155,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['createWebhookEndpoint', 'updateShowCreateModal']),
+    ...mapActions(['createWebhookEndpoint', 'updateShowCreateModal', 'getAvailableEventTypes']),
     createNewWebhook(requestBody) {
       this.createWebhookEndpoint({ requestBody, mode: this.mode })
         .then((createdId) => {

@@ -20,10 +20,15 @@ function sendTestWebhookEvent(headers, params, requestBody) {
   return axiosInstance.post(`/internal/v1/webhook_endpoints/${params.id}/test`, requestBody, { headers, params: { mode: params.mode, current_organization_id: params.current_organization_id } });
 }
 
+function getAvailableWebhookEventTypes(headers) {
+  return axiosInstance.get('/internal/v1/webhook_event_types', { headers });
+}
+
 export default {
   index,
   create,
   destroy,
   update,
   sendTestWebhookEvent,
+  getAvailableWebhookEventTypes,
 };

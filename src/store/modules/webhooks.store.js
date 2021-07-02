@@ -13,6 +13,7 @@ const initialState = {
   ...initialWebhooksTest,
   showCreateModal: false,
   showSendTestWebhookModal: false,
+  supportedEventTypes: [],
 };
 
 const getters = {
@@ -85,6 +86,9 @@ const mutations = {
   },
   updateShowSendTestWebhookModal(state) {
     state.showSendTestWebhookModal = !state.showSendTestWebhookModal;
+  },
+  updateEventTypes(state, { supportedEventTypes }) {
+    state.supportedEventTypes = supportedEventTypes;
   },
 };
 
@@ -161,6 +165,14 @@ const actions = {
         return response.data.id;
       })
       .catch(() => false);
+  },
+  async getAvailableEventTypes({ commit }) {
+    const headers = this.getters.authHeaders;
+    return apiClient.webhooks.getAvailableWebhookEventTypes(headers)
+      .then((response) => {
+        commit('updateEventTypes', { supportedEventTypes: response.data });
+        return response.data;
+      });
   },
 };
 
