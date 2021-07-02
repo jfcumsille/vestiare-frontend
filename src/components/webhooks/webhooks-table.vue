@@ -1,12 +1,5 @@
 <template>
 <div class="relative w-full h-full overflow-x-scroll">
-  <div v-if="loading" class="flex justify-center">
-    <div class="absolute w-full h-full bg-white opacity-50 z-10"/>
-    <spinner class="absolute z-20 inset-y-2/5"
-             :widthClsName="'w-16'"
-             :heightClsName="'h-16'"
-             :borderClsName="'border-4 border-t-4'"/>
-  </div>
   <table class="w-full min-width table-fixed">
     <thead class="bg-gray-100">
       <tr>
@@ -36,11 +29,7 @@
         <td colspan="8" class="bg-white border-b border-gray-200">
           <div class="px-6 py-4 w-full text-center">
             <h1 class="text-4xl mt-4">
-                {{
-                  loading
-                  ? 'No encontramos los webhooks que buscas 🤷‍♂️'
-                  : `Todavía no suscribes ningún webhook ${this.mode === 'test' ? 'de test ' : ''}👀`
-                }}
+                {{`Todavía no suscribes ningún webhook ${this.mode === 'test' ? 'de test ' : ''}👀`}}
             </h1>
           </div>
         </td>
@@ -98,27 +87,19 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex';
-import Spinner from '../lib/spinner.vue';
-
 
 export default {
   computed: {
     ...mapGetters(['webhookEndpoints']),
     ...mapState({
       mode: (state) => state.webhooks.mode,
-      loading: (state) => state.webhooks.loading,
     }),
     showNoEndpointsMessage() {
-      return !this.loading && this.webhookEndpoints.length === 0;
+      return this.webhookEndpoints.length === 0;
     },
   },
-
-  components: {
-    Spinner,
-  },
-
   methods: {
-    ...mapActions(['updateWebhookSelectedToDelete']),
+    ...mapActions(['updateWebhookSelectedToDelete', 'updateWebhookEndpoint']),
     selectWebhookEndpoint(webhookEndpoint, event) {
       if (event.target.className.includes('switch')) return;
       this.$router.push(`/webhooks/${webhookEndpoint.id}`);
@@ -127,7 +108,10 @@ export default {
       this.updateWebhookSelectedToDelete({ webhookEndpointId });
     },
     updateEnabled(webhookEndpoint) {
-      this.$emit('update-webhook-status', webhookEndpoint);
+      const data = { disabled: webhookEndpoint.status === 'enabled' };
+      this.updateWebhookEndpoint({
+        webhookEndpointId: webhookEndpoint.id, requestBody: data, mode: this.mode,
+      });
     },
   },
 };

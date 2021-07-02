@@ -8,20 +8,16 @@ const initialState = {
   testWebhookEndpoints: [],
   mode: 'live',
   loading: true,
-  liveError: false,
-  testError: false,
   selectedWebhook: null,
   webhookSelectedToDelete: null,
   ...initialWebhooksTest,
   showCreateModal: false,
+  showSendTestWebhookModal: false,
 };
 
 const getters = {
   webhookEndpoints(state) {
     return state.mode === 'test' ? [...state.testWebhookEndpoints].reverse() : [...state.liveWebhookEndpoints].reverse();
-  },
-  errors(state) {
-    return state.mode === 'test' ? state.testError : state.liveError;
   },
 };
 
@@ -37,12 +33,6 @@ const mutations = {
   updateMode(state) {
     const modeValue = state.mode === 'test' ? 'live' : 'test';
     state.mode = modeValue;
-  },
-  updateLoading(state, status) {
-    state.loading = status;
-  },
-  updateErrors(state, error) {
-    if (state.mode === 'test') { state.testError = error; } else if (state.mode === 'live') state.liveError = error;
   },
   removeWebhookEndpoint(state, { webhookEndpointId, mode }) {
     if (mode === 'live') {
@@ -93,19 +83,17 @@ const mutations = {
   updateShowCreateModal(state) {
     state.showCreateModal = !state.showCreateModal;
   },
+  updateShowSendTestWebhookModal(state) {
+    state.showSendTestWebhookModal = !state.showSendTestWebhookModal;
+  },
 };
 
 const actions = {
-  getWebhookEndpoints({ commit }, { mode, apiKey }) {
-    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
-    const params = { current_organization_id: this.getters.getDefaultOrganizationId };
-    apiClient.webhooks.index(headers, params).then((response) => {
+  async getWebhookEndpoints({ commit }, { mode }) {
+    const headers = this.getters.authHeaders;
+    const params = { current_organization_id: this.getters.getDefaultOrganizationId, mode };
+    return apiClient.webhooks.index(headers, params).then((response) => {
       commit('updateWebhookEndpoints', { userEndpoints: response.data, mode });
-      commit('updateLoading', false);
-      commit('updateErrors', false);
-    }).catch((error) => {
-      commit('updateErrors', error.response.data.error);
-      commit('updateLoading', false);
     });
   },
   updateWebhookEndpointsMode({ commit }) {
@@ -117,45 +105,55 @@ const actions = {
   updateShowCreateModal({ commit }) {
     commit('updateShowCreateModal');
   },
-  async destroyWebhookEndpoint({ commit }, { webhookEndpointId, apiKey, mode }) {
-    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+  updateShowSendTestWebhookModal({ commit }) {
+    commit('updateShowSendTestWebhookModal');
+  },
+  updateWebhookTestResponse({ commit }, { requestBody }) {
+    commit('updateWebhookTestResponse', { requestBody });
+  },
+  async destroyWebhookEndpoint({ commit }, { webhookEndpointId, mode }) {
+    const headers = this.getters.authHeaders;
     const params = {
       id: webhookEndpointId,
       current_organization_id: this.getters.getDefaultOrganizationId,
+      mode,
     };
     apiClient.webhooks.destroy(headers, params).then(() => {
       commit('removeWebhookEndpoint', { webhookEndpointId, mode });
     });
   },
   async updateWebhookEndpoint({ commit }, {
-    webhookEndpointId, requestBody, mode, apiKey,
+    webhookEndpointId, requestBody, mode,
   }) {
-    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+    const headers = this.getters.authHeaders;
     const params = {
       id: webhookEndpointId,
       current_organization_id: this.getters.getDefaultOrganizationId,
+      mode,
     };
     apiClient.webhooks.update(headers, params, requestBody).then((response) => {
       commit('updateWebhookEndpoint', { webhookEndpoint: response.data, mode });
     });
   },
   async sendTestWebhookEvent({ commit }, {
-    webhookEndpointId, requestBody, apiKey,
+    webhookEndpointId, requestBody,
   }) {
-    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+    const headers = this.getters.authHeaders;
     const params = {
       id: webhookEndpointId,
       current_organization_id: this.getters.getDefaultOrganizationId,
+      mode: 'test',
     };
     return apiClient.webhooks.sendTestWebhookEvent(headers, params, requestBody)
       .then((response) => {
         commit('updateWebhookTestResponse', response.data);
       });
   },
-  async createWebhookEndpoint({ commit }, { requestBody, apiKey, mode }) {
-    const headers = { ...this.getters.authHeaders, Authorization: apiKey };
+  async createWebhookEndpoint({ commit }, { requestBody, mode }) {
+    const headers = this.getters.authHeaders;
     const params = {
       current_organization_id: this.getters.getDefaultOrganizationId,
+      mode,
     };
     return apiClient.webhooks.create(headers, params, requestBody)
       .then((response) => {

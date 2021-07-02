@@ -146,7 +146,7 @@ export default {
     ...mapState({
       mode: (state) => state.webhooks.mode,
     }),
-    ...mapGetters(['userSecretKeys', 'webhookEndpoints']),
+    ...mapGetters(['webhookEndpoints']),
     selectedEvents() {
       return this.eventOptions.filter((option) => option.selected).map((option) => option.value);
     },
@@ -154,8 +154,7 @@ export default {
   methods: {
     ...mapActions(['createWebhookEndpoint', 'updateShowCreateModal']),
     createNewWebhook(requestBody) {
-      const { liveKey, testKey } = this.userSecretKeys;
-      this.createWebhookEndpoint({ requestBody, mode: this.mode, apiKey: this.mode === 'live' ? liveKey : testKey })
+      this.createWebhookEndpoint({ requestBody, mode: this.mode })
         .then((createdId) => {
           if (createdId) {
             this.updateShowCreateModal();

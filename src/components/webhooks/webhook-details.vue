@@ -2,10 +2,7 @@
 <div class="flex flex-col items-center justify-between">
   <webhook-send-modal
     v-if="showSendWebhookModal"
-    :showSpinner="showSpinner"
     :options="selectedWebhook.enabledEvents"
-    @confirm-send-webhook="confirmSendTestWebhookEvent"
-    @cancel-send-webhook="hideTestWebhookEventModal"
   />
   <div class="relative w-full overflow-x-scroll mb-8">
     <table class="w-full min-width table-fixed">
@@ -134,53 +131,31 @@
 </template>
 
 <script>
-import {
-  mapActions, mapGetters, mapState, mapMutations,
-} from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import webhookSendModal from './webhook-send-modal.vue';
 
 export default {
   components: { webhookSendModal },
-  data() {
-    return {
-      showSendWebhookModal: false,
-      showSpinner: false,
-    };
-  },
   computed: {
-    ...mapGetters([
-      'userSecretKeys',
-    ]),
     ...mapState({
       mode: (state) => state.webhooks.mode,
       selectedWebhook: (state) => state.webhooks.selectedWebhook,
+      showSendWebhookModal: (state) => state.webhooks.showSendTestWebhookModal,
     }),
   },
   methods: {
-    ...mapActions(['sendTestWebhookEvent', 'updateWebhookSelectedToDelete']),
-    ...mapMutations(['updateWebhookTestResponse']),
+    ...mapActions(['updateWebhookSelectedToDelete', 'updateWebhookEndpoint', 'updateShowSendTestWebhookModal']),
     showTestWebhookEventModal() {
-      this.showSendWebhookModal = true;
-    },
-    async confirmSendTestWebhookEvent(selectedEvent) {
-      this.showSpinner = true;
-      const webhookEndpointId = this.selectedWebhook.id;
-      const requestBody = { event: selectedEvent };
-      const { testKey } = this.userSecretKeys;
-      await this.sendTestWebhookEvent({
-        webhookEndpointId, requestBody, apiKey: testKey,
-      });
-      this.showSpinner = false;
-    },
-    hideTestWebhookEventModal() {
-      this.showSendWebhookModal = false;
-      this.updateWebhookTestResponse({});
+      this.updateShowSendTestWebhookModal();
     },
     askToDeleteWebhookEndpoint() {
       this.updateWebhookSelectedToDelete({ webhookEndpointId: this.selectedWebhook.id });
     },
     updateEnabled() {
-      this.$emit('update-webhook-status', this.selectedWebhook);
+      const data = { disabled: this.selectedWebhook.status === 'enabled' };
+      this.updateWebhookEndpoint({
+        webhookEndpointId: this.selectedWebhook.id, requestBody: data, mode: this.mode,
+      });
     },
     getBgColor() {
       return this.selectedWebhook.mode === 'test' ? 'bg-orange-300' : 'bg-fintoc-green';

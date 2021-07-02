@@ -91,17 +91,17 @@
 
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Spinner from '../lib/spinner.vue';
 
 export default {
   data() {
     return {
       selectedType: this.options[0],
+      showSpinner: false,
     };
   },
   props: {
-    showSpinner: Boolean,
     options: Array,
   },
   components: {
@@ -110,15 +110,24 @@ export default {
   computed: {
     ...mapState({
       requestBody: (state) => state.webhooks.testRequestBody,
+      selectedWebhook: (state) => state.webhooks.selectedWebhook,
     }),
 
   },
   methods: {
-    sendWebhookEventType() {
-      this.$emit('confirm-send-webhook', this.selectedType);
+    ...mapActions(['updateShowSendTestWebhookModal', 'updateWebhookTestResponse', 'sendTestWebhookEvent']),
+    async sendWebhookEventType() {
+      this.showSpinner = true;
+      const webhookEndpointId = this.selectedWebhook.id;
+      const requestBody = { event: this.selectedType };
+      await this.sendTestWebhookEvent({
+        webhookEndpointId, requestBody,
+      });
+      this.showSpinner = false;
     },
     cancelSendWebhookEvent() {
-      this.$emit('cancel-send-webhook');
+      this.updateShowSendTestWebhookModal();
+      this.updateWebhookTestResponse({ requestBody: null });
     },
   },
 };

@@ -39,14 +39,13 @@
         <div class="overflow-x-auto">
           <div class="align-middle inline-block min-w-full overflow-hidden
                       sm:rounded-md">
-            <webhook-table class="border border-gray-300"
-              @update-webhook-status="updateEnabled"/>
+            <webhook-table class="border border-gray-300" />
             <div class="mt-4 text-right flex flex-row justify-end space-x-2">
             <button
               @click="openCreateWebhookModal"
               class="text-center justify-content flex flex-col items-center
-                     font-medium rounded-md bg-main text-md
-                     text-white hover:bg-sub w-64 h-10 py-2">
+                    font-medium rounded-md bg-main text-md
+                    text-white hover:bg-sub w-64 h-10 py-2">
               {{ `Suscribir webhook ${testMode ? 'de prueba' : ''}` }}
             </button>
           </div>
@@ -54,8 +53,7 @@
         </div>
       </div>
       <div v-if="!loading && selectedWebhook" class="flex flex-col">
-        <webhook-details
-          @update-webhook-status="updateEnabled" />
+        <webhook-details />
       </div>
     </div>
   </main>
@@ -63,7 +61,9 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex';
+import {
+  mapGetters, mapState, mapActions, mapMutations,
+} from 'vuex';
 import Spinner from '../components/lib/spinner.vue';
 import WebhookDetails from '../components/webhooks/webhook-details.vue';
 import WebhookTable from '../components/webhooks/webhooks-table.vue';
@@ -74,33 +74,18 @@ import NewWebhookModal from '../components/webhooks/new-webhook-modal.vue';
 export default {
   data() {
     return {
-      retrievingUserApiKeys: false,
+      loading: true,
       showSpinner: false,
-      webhookListsUpdated: 0,
     };
   },
   async created() {
-    this.retrievingUserApiKeys = true;
-    await this.$store.dispatch('getUserApiKeys');
-    const unsubscribe = this.$store.subscribe(async ({ type }) => {
-      if (type === 'updateUserApiKeys') {
-        const { liveKey, testKey } = this.userSecretKeys;
-        this.fetchWebhookEndpoints({ liveKey, testKey });
-        unsubscribe();
-      }
-    });
-    const unsubscribe2 = this.$store.subscribe(async ({ type }) => {
-      if (type === 'updateWebhookEndpoints') {
-        if (this.webhookListsUpdated === 1) {
-          this.initComponent(this.$route.params.id);
-          unsubscribe2();
-        } else { this.webhookListsUpdated += 1; }
-      }
-    });
-    this.retrievingUserApiKeys = false;
+    this.loading = true;
+    await this.fetchWebhookEndpoints();
+    this.initComponent(this.$route.params.id);
+    this.loading = false;
   },
   destroyed() {
-    this.$store.commit('updateSelectedWebhook', null);
+    this.updateSelectedWebhook(null);
   },
   watch: {
     '$route.path': function changeSelected() {
@@ -116,19 +101,19 @@ export default {
       'updateWebhookSelectedToDelete',
       'updateShowCreateModal',
     ]),
-    async fetchWebhookEndpoints({ liveKey, testKey }) {
-      Promise.all([
-        this.$store.dispatch('getWebhookEndpoints', { mode: 'live', apiKey: liveKey }),
-        this.$store.dispatch('getWebhookEndpoints', { mode: 'test', apiKey: testKey }),
+    ...mapMutations(['updateSelectedWebhook']),
+    async fetchWebhookEndpoints() {
+      return Promise.all([
+        this.getWebhookEndpoints({ mode: 'live' }),
+        this.getWebhookEndpoints({ mode: 'test' }),
       ]);
     },
     initComponent(selectedWebhookId) {
-      this.$store.commit('updateSelectedWebhook', selectedWebhookId);
+      this.updateSelectedWebhook(selectedWebhookId);
       if (!this.selectedWebhook && this.$route.params.id) this.$router.push('/webhooks');
     },
     async deleteWebhookEndpoint(webhookEndpointId, mode) {
-      const { liveKey, testKey } = this.userSecretKeys;
-      await this.destroyWebhookEndpoint({ webhookEndpointId, mode, apiKey: mode === 'live' ? liveKey : testKey });
+      await this.destroyWebhookEndpoint({ webhookEndpointId, mode });
       if (this.$route.params.id) this.$router.push('/webhooks');
     },
     cancelDeleteWebhookEndpoint() {
@@ -143,29 +128,18 @@ export default {
       this.showSpinner = false;
       this.updateWebhookSelectedToDelete({ webhookEndpointId: null });
     },
-    async updateEnabled(webhookEndpoint) {
-      const data = { disabled: webhookEndpoint.status === 'enabled' };
-      const { liveKey, testKey } = this.userSecretKeys;
-      this.updateWebhookEndpoint({
-        webhookEndpointId: webhookEndpoint.id, requestBody: data, mode: this.mode, apiKey: this.mode === 'live' ? liveKey : testKey,
-      });
-    },
     openCreateWebhookModal() {
       this.updateShowCreateModal();
     },
   },
   computed: {
-    ...mapGetters(['userApiKeys', 'userSecretKeys', 'webhookEndpoints', 'errors']),
+    ...mapGetters(['webhookEndpoints']),
     ...mapState({
       mode: (state) => state.webhooks.mode,
-      loading: (state) => state.webhooks.loading,
       selectedWebhook: (state) => state.webhooks.selectedWebhook,
       webhookEndpointToDelete: (state) => state.webhooks.webhookSelectedToDelete,
       showCreationModal: (state) => state.webhooks.showCreateModal,
     }),
-    shouldShowTable() {
-      return !this.loading && this.webhookEndpoints.length !== 0;
-    },
     testMode() {
       return this.mode === 'test';
     },

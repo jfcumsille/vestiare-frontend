@@ -1,23 +1,23 @@
 import axiosInstance from './config';
 
 function index(headers, params) {
-  return axiosInstance.get('/v1/webhook_endpoints', { headers, params });
+  return axiosInstance.get('/internal/v1/webhook_endpoints', { headers, params });
 }
 
 function create(headers, params, requestBody) {
-  return axiosInstance.post('/v1/webhook_endpoints', requestBody, { headers, params });
+  return axiosInstance.post('/internal/v1/webhook_endpoints', requestBody, { headers, params });
 }
 
 function destroy(headers, params) {
-  return axiosInstance.delete(`/v1/webhook_endpoints/${params.id}`, { headers, params: { current_organization_id: params.current_organization_id } });
+  return axiosInstance.delete(`/internal/v1/webhook_endpoints/${params.id}`, { headers, params: { mode: params.mode, current_organization_id: params.current_organization_id } });
 }
 
 function update(headers, params, requestBody) {
-  return axiosInstance.put(`v1/webhook_endpoints/${params.id}`, requestBody, { headers, params: { current_organization_id: params.current_organization_id } });
+  return axiosInstance.put(`/internal/v1/webhook_endpoints/${params.id}`, requestBody, { headers, params: { mode: params.mode, current_organization_id: params.current_organization_id } });
 }
 
 function sendTestWebhookEvent(headers, params, requestBody) {
-  return axiosInstance.post(`v1/webhook_endpoints/${params.id}/test`, requestBody, { headers, params: { current_organization_id: params.current_organization_id } });
+  return axiosInstance.post(`/internal/v1/webhook_endpoints/${params.id}/test`, requestBody, { headers, params: { mode: params.mode, current_organization_id: params.current_organization_id } });
 }
 
 export default {
