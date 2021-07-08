@@ -8,7 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faEye, faEdit, faTrash, faPlus, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
   faTimes, faBuilding, faUser, faDollarSign, faHandshake, faCheck, faKey, faUniversity,
-  faMobile, faExclamationCircle, faQuestion, faSearch,
+  faMobile, faExclamationCircle, faQuestion, faSearch, faShare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { InlineSvgPlugin } from 'vue-inline-svg';
@@ -23,7 +23,7 @@ moment.locale('es-cl');
 library.add(
   faEye, faEdit, faPlus, faTrash, faLock, faCog, faCopy, faBolt, faShieldAlt, faChevronLeft,
   faTimes, faBuilding, faUser, faDollarSign, faHandshake, faCheck, faKey, faUniversity, faMobile,
-  faExclamationCircle, faQuestion, faSearch,
+  faExclamationCircle, faQuestion, faSearch, faShare,
 );
 
 Vue.use(VueClipboard);
