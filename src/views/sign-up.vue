@@ -232,9 +232,6 @@ export default {
     window.analytics.page('Signup');
     const country = await this.getCountry();
     console.log(country);
-    if (country !== 'CL') {
-      this.$router.push('unavailable-country');
-    }
   },
   methods: {
     ...mapActions(['getCountry', 'sendConfirmationEmail']),
