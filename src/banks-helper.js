@@ -30,6 +30,8 @@ import securitySmallLogo from 'chilean-bank-images/banco-security/small.png';
 
 import siiLogo from 'chilean-fiscal-images/sii.svg';
 
+import banamexLogo from 'mexican-bank-images/banamex/banamex.svg';
+
 // Pending images.
 import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
 /* eslint-enable import/no-extraneous-dependencies */
@@ -217,6 +219,23 @@ const availableBanks = [
     },
     isAvailable: {
       business: { subscription: false, movements: true },
+      individual: { subscription: false, movements: true },
+    },
+  },
+  {
+    code: 'mx_banco_banamex',
+    label: 'Banco Banamex',
+    logo: {
+      individual: banamexLogo,
+      business: banamexLogo,
+    },
+    smallLogo: banamexLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
       individual: { subscription: false, movements: true },
     },
   },
