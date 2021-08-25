@@ -53,6 +53,7 @@
   },
   "_moduleAliases": {
     "chilean-bank-images": "src/assets/images/banks/chile",
+    "mexican-bank-images": "src/assets/images/banks/mexico",
     "chilean-fiscal-images": "src/assets/images/fiscal/chile"
   }
 }
