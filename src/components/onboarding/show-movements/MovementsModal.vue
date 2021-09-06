@@ -40,10 +40,16 @@ export default {
     ...mapState({
       linkToken: (state) => state.onboarding.linkToken,
       accountId: (state) => state.onboarding.accounts[0].id,
-      apiKey: (state) => state.onboarding.apiKey.token,
+      apiKey: (state) => state.onboarding.apiKey,
     }),
+    token() {
+      if (this.apiKey) {
+        return this.apiKey.token;
+      }
+      return null;
+    },
     apiQuery() {
-      return `curl "api.fintoc.com/v1/accounts/${this.accountId}/movements?link_token=${this.linkToken}" -H "Authorization: ${this.token}"`;
+      return `curl "https://api.fintoc.com/v1/accounts/${this.accountId}/movements?link_token=${this.linkToken}" -H "Authorization: ${this.token}"`;
     },
   },
   methods: {
