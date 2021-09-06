@@ -48,7 +48,7 @@ export default {
       return null;
     },
     apiQuery() {
-      return `curl "api.fintoc.com/v1/accounts?link_token=${this.linkToken}" -H "Authorization: ${this.token}"`;
+      return `curl "https://api.fintoc.com/v1/accounts?link_token=${this.linkToken}" -H "Authorization: ${this.token}"`;
     },
   },
   methods: {
