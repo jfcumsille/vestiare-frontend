@@ -31,6 +31,7 @@ import securitySmallLogo from 'chilean-bank-images/banco-security/small.png';
 import siiLogo from 'chilean-fiscal-images/sii.svg';
 
 import banamexLogo from 'mexican-bank-images/banamex/banamex.svg';
+import bbvaLogo from 'mexican-bank-images/banamex/bbva.svg';
 
 // Pending images.
 import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
@@ -230,6 +231,23 @@ const availableBanks = [
       business: banamexLogo,
     },
     smallLogo: banamexLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
+  },
+  {
+    code: 'mx_banco_bbva',
+    label: 'Banco BBVA',
+    logo: {
+      individual: bbvaLogo,
+      business: bbvaLogo,
+    },
+    smallLogo: bbvaLogo,
     specialIndication: {
       business: null,
       individual: null,
