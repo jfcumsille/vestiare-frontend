@@ -88,8 +88,11 @@
         <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 w-1/6 overflow-hidden">
           <div v-show="link.holderType !== 'business'">
             <div class="text-sm leading-5 font-medium text-gray-900">{{ link.holderName }}</div>
-            <div class="text-sm leading-5 text-gray-600">
+            <div v-if="chileanRut(link.rut)" class="text-sm leading-5 text-gray-600">
               {{ link.rut | rutFilter }}
+            </div>
+            <div v-else class="text-sm leading-5 text-gray-600">
+              {{ link.rut }}
             </div>
           </div>
           <div v-show="link.holderType === 'business'" class="text-base leading-5 text-gray-900">
@@ -155,6 +158,7 @@
 <script>
 import moment from 'moment';
 import { mapActions, mapGetters, mapState } from 'vuex';
+import { rutValidator } from 'vue-dni';
 import ConfirmationModal from '../lib/confirmation-modal.vue';
 import Spinner from '../lib/spinner.vue';
 
@@ -268,6 +272,10 @@ export default {
 
     translatedHolderType(holderType) {
       return holderType === 'business' ? 'Empresas' : 'Personas';
+    },
+
+    chileanRut(rut) {
+      return rutValidator(rut);
     },
   },
 };
