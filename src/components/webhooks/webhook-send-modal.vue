@@ -46,7 +46,7 @@
             <div>
               <h3 class="">Solicitud</h3>
               <div class="bg-white max-h-full overflow-y-scroll text-xs">
-                <pre>{{JSON.stringify(requestBody, null, '  ')}}</pre>
+                <pre>{{JSON.stringify(decamelizeKeys(requestBody), null, '  ')}}</pre>
               </div>
             </div>
           </div>
@@ -91,6 +91,7 @@
 
 
 <script>
+import { decamelizeKeys } from 'humps';
 import { mapState, mapActions } from 'vuex';
 import Spinner from '../lib/spinner.vue';
 
