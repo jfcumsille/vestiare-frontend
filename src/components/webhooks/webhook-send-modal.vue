@@ -130,6 +130,9 @@ export default {
       this.updateShowSendTestWebhookModal();
       this.updateWebhookTestResponse({ requestBody: null });
     },
+    decamelizeKeys(object) {
+      return decamelizeKeys(object);
+    },
   },
 };
 </script>
