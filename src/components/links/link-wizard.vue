@@ -595,9 +595,9 @@ export default {
   data() {
     return {
       bank: '',
-      rut: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_USER_ID : '',
-      password: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_PASSWORD : '',
-      holderId: (this.createdThrough === 'onboarding' && this.mode === 'test') ? TEST_HOLDER_ID : '',
+      rut: (this.mode === 'test') ? TEST_USER_ID : '',
+      password: (this.mode === 'test') ? TEST_PASSWORD : '',
+      holderId: (this.mode === 'test') ? TEST_HOLDER_ID : '',
       currentStep: FIRST_STEP,
       errorCode: '',
       showSpinner: false,
@@ -630,15 +630,7 @@ export default {
       type: String,
       default: '',
     },
-    holderTypeOnboarding: {
-      type: String,
-      default: null,
-    },
     mode: String,
-    closeOnboarding: {
-      type: Boolean,
-      default: false,
-    },
   },
   components: {
     actionButton,
@@ -690,7 +682,6 @@ export default {
   },
   computed: {
     holderType() {
-      if (this.holderTypeOnboarding !== null) return this.holderTypeOnboarding;
       return this.$route.query['holder-type'] || this.$route.query.holder_type;
     },
     customerId() {
@@ -766,9 +757,7 @@ export default {
   methods: {
     cancelLinkCreation() {
       const redirectToUrl = this.$route.query.redirect_to;
-      if (this.closeOnboarding) {
-        this.$emit('onboarding-back');
-      } else if (redirectToUrl) {
+      if (redirectToUrl) {
         const validRedirectToURL = getValidUrl(redirectToUrl);
         const resultIsUserExited = 'result=user_exited';
         window.location = `${validRedirectToURL}?${resultIsUserExited}`;
@@ -891,7 +880,7 @@ export default {
 
       this.showSpinner = true;
       const formData = this.getFormData();
-      if (this.createdThrough === 'dashboard' || this.createdThrough === 'onboarding') {
+      if (this.createdThrough === 'dashboard') {
         formData.current_organization_id = this.$store.getters.getDefaultOrganizationId;
       }
       this.trackWidgetStepCompletedEvent(null);
