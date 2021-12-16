@@ -16,7 +16,6 @@ import WidgetIframe from '../views/widget-iframe.vue';
 import UserProfile from '../views/user-profile.vue';
 import RequestNewBank from '../views/request-new-bank.vue';
 import ApiKeys from '../views/api-keys.vue';
-import Onboarding from '../views/onboarding.vue';
 import Error from '../views/error.vue';
 import UnavailableCountry from '../views/UnavailableCountry.vue';
 import { validateQueryParams } from '../helpers/widget_helper';
@@ -36,18 +35,6 @@ const guardApp = (to, from, next) => {
     next('links');
   } else {
     next();
-  }
-};
-
-const guardLoginAndOnboarding = async (to, from, next) => {
-  if (store.getters.isUserLoggedIn) {
-    if (store.state.onboarding.show === false) {
-      next();
-    } else {
-      next('onboarding');
-    }
-  } else {
-    next('login');
   }
 };
 
@@ -85,41 +72,36 @@ const routes = [
   {
     path: '/links',
     component: Links,
-    beforeEnter: guardLoginAndOnboarding,
+    beforeEnter: guardLogin,
   },
   {
     path: '/links/new',
     component: NewLink,
-    beforeEnter: guardLoginAndOnboarding,
+    beforeEnter: guardLogin,
   },
   {
     path: '/webhooks',
     component: Webhooks,
-    beforeEnter: guardLoginAndOnboarding,
+    beforeEnter: guardLogin,
   },
   {
     path: '/webhooks/:id',
     component: Webhooks,
-    beforeEnter: guardLoginAndOnboarding,
+    beforeEnter: guardLogin,
   },
   {
     path: '/user-profile',
     component: UserProfile,
-    beforeEnter: guardLoginAndOnboarding,
+    beforeEnter: guardLogin,
   },
   {
     path: '/request-new-bank',
     component: RequestNewBank,
-    beforeEnter: guardLoginAndOnboarding,
+    beforeEnter: guardLogin,
   },
   {
     path: '/api-keys',
     component: ApiKeys,
-    beforeEnter: guardLoginAndOnboarding,
-  },
-  {
-    path: '/onboarding',
-    component: Onboarding,
     beforeEnter: guardLogin,
   },
   {
