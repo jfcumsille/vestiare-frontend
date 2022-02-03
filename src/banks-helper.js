@@ -1,40 +1,40 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // IMPORTANT: bank images should follow 5:1 (w:h) ratio.
-import bancoChileLogo from 'chilean-bank-images/banco-chile/big.png';
-import bancoChileBusinessLogo from 'chilean-bank-images/banco-chile/business-big.png';
-import bancoChileSmallLogo from 'chilean-bank-images/banco-chile/small.png';
+import bancoChileLogo from './assets/images/banks/chile/banco-chile/big.png';
+import bancoChileBusinessLogo from './assets/images/banks/chile/banco-chile/business-big.png';
+import bancoChileSmallLogo from './assets/images/banks/chile/banco-chile/small.png';
 
-import santanderLogo from 'chilean-bank-images/santander/big.png';
-import santanderSmallLogo from 'chilean-bank-images/santander/small.png';
+import santanderLogo from './assets/images/banks/chile/santander/big.png';
+import santanderSmallLogo from './assets/images/banks/chile/santander/small.png';
 
-import bciLogo from 'chilean-bank-images/bci/big.png';
-import bciSmallLogo from 'chilean-bank-images/bci/small.png';
+import bciLogo from './assets/images/banks/chile/bci/big.png';
+import bciSmallLogo from './assets/images/banks/chile/bci/small.png';
 
-import bci360Logo from 'chilean-bank-images/bci360/big.png';
-import bci360SmallLogo from 'chilean-bank-images/bci360/small.png';
+import bci360Logo from './assets/images/banks/chile/bci360/big.png';
+import bci360SmallLogo from './assets/images/banks/chile/bci360/small.png';
 
-import bancoEstadoLogo from 'chilean-bank-images/banco-estado/big.png';
-import bancoEstadoSmallLogo from 'chilean-bank-images/banco-estado/small.png';
+import bancoEstadoLogo from './assets/images/banks/chile/banco-estado/big.png';
+import bancoEstadoSmallLogo from './assets/images/banks/chile/banco-estado/small.png';
 
-import itauLogo from 'chilean-bank-images/itau/big.png';
-import itauSmallLogo from 'chilean-bank-images/itau/small.png';
+import itauLogo from './assets/images/banks/chile/itau/big.png';
+import itauSmallLogo from './assets/images/banks/chile/itau/small.png';
 
-import scotiabankLogo from 'chilean-bank-images/scotiabank/big.png';
-import scotiabankSmallLogo from 'chilean-bank-images/scotiabank/small.png';
+import scotiabankLogo from './assets/images/banks/chile/scotiabank/big.png';
+import scotiabankSmallLogo from './assets/images/banks/chile/scotiabank/small.png';
 
-import biceLogo from 'chilean-bank-images/bice/big.png';
-import biceSmallLogo from 'chilean-bank-images/bice/small.png';
+import biceLogo from './assets/images/banks/chile/bice/big.png';
+import biceSmallLogo from './assets/images/banks/chile/bice/small.png';
 
-import securityLogo from 'chilean-bank-images/banco-security/big.png';
-import securitySmallLogo from 'chilean-bank-images/banco-security/small.png';
+import securityLogo from './assets/images/banks/chile/banco-security/big.png';
+import securitySmallLogo from './assets/images/banks/chile/banco-security/small.png';
 
-import siiLogo from 'chilean-fiscal-images/sii.svg';
+import siiLogo from './assets/images/fiscal/chile/sii.svg';
 
-import banamexLogo from 'mexican-bank-images/banamex/banamex.svg';
-import bbvaLogo from 'mexican-bank-images/banamex/bbva.svg';
+import banamexLogo from './assets/images/banks/mexico/banamex/banamex.svg';
+import bbvaLogo from './assets/images/banks/mexico/banamex/bbva.svg';
 
 // Pending images.
-import falabellaLogo from 'chilean-bank-images/banco-falabella/falabella-complete.png';
+import falabellaLogo from './assets/images/banks/chile/banco-falabella/falabella-complete.png';
 /* eslint-enable import/no-extraneous-dependencies */
 
 const availableBanks = [
