@@ -24,6 +24,10 @@ function getAvailableWebhookEventTypes(headers) {
   return axiosInstance.get('/internal/v1/webhook_event_types', { headers });
 }
 
+function getWebhookSecret(headers, params) {
+  return axiosInstance.get(`/internal/v1/webhook_endpoints/${params.id}/secret`, { headers, params });
+}
+
 export default {
   index,
   create,
@@ -31,4 +35,5 @@ export default {
   update,
   sendTestWebhookEvent,
   getAvailableWebhookEventTypes,
+  getWebhookSecret,
 };

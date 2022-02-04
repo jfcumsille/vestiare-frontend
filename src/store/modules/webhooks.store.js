@@ -174,6 +174,15 @@ const actions = {
         return response.data;
       });
   },
+  async getWebhookSecret({ state }) {
+    const headers = this.getters.authHeaders;
+    const params = {
+      id: state.selectedWebhook.id,
+      current_organization_id: this.getters.getDefaultOrganizationId,
+      mode: state.selectedWebhook.mode,
+    };
+    return apiClient.webhooks.getWebhookSecret(headers, params);
+  },
 };
 
 export default {
