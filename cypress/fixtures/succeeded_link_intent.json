@@ -1,0 +1,35 @@
+{
+  "id": "li_OaWXV1prHnrznkrY",
+  "username": "416148503",
+  "holder_type": "individual",
+  "created_at": "2022-02-09T18:16:37.724Z",
+  "institution": {
+    "id": "cl_banco_de_chile",
+    "name": "Banco de Chile",
+    "country": "cl"
+  },
+  "status": "succeeded",
+  "mode": "test",
+  "reason": null,
+  "link": {
+    "id": "link_xO8N9X6jiAxXyVBv",
+    "holder_id": "416148503",
+    "username": "416148503",
+    "holder_type": "individual",
+    "created_at": "2021-12-07T18:43:35.688Z",
+    "institution": {
+      "id": "cl_banco_de_chile",
+      "name": "Banco de Chile",
+      "country": "cl"
+    },
+    "link_token": null,
+    "mode": "test",
+    "active": false,
+    "accounts_count": 4,
+    "holder_name": "Gregorio Longoria Flores",
+    "prevent_refresh": false,
+    "last_time_refreshed": "2022-02-08T17:42:27.632Z",
+    "temporary_link_token": "link_xO8N9X6jiAxXyVBv_token_s1pxh7yYM8P4F6FSt9YsKPoY"
+  },
+  "next_action": null
+}
