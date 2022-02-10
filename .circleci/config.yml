@@ -13,32 +13,31 @@ jobs:
 
       - restore_cache:
           keys:
-          - yarn-dependencies-{{ checksum "yarn.lock" }}
-          - yarn-dependencies-
+            - yarn-dependencies-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-dependencies-{{ .Branch }}
+            - yarn-dependencies
 
       - run:
           name: Install yarn dependencies
-          command: yarn install
+          command: yarn install --frozen-lockfile
 
       - save_cache:
-          key: yarn-dependencies-{{ checksum "yarn.lock" }}
+          key: yarn-dependencies-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
-            - node_modules
+            - ~/.cache ## cache both yarn and Cypress!
 
       - run:
           name: Start Test Server
-          command: doppler run -- yarn serve --port=4444
+          command: doppler run -- yarn serve --port=8080
           background: true
 
       - run:
           shell: /bin/sh
           command: |
-            wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 10 http://localhost:4444
+            wget --retry-connrefused --waitretry=1 --read-timeout=20 --timeout=15 -t 10 http://localhost:8080
             :
 
-      - run:
-          name: Run jest tests
-          command: doppler run -- yarn test --runInBand
+      - run: $(yarn bin)/cypress run
 
   lint:
     docker:
