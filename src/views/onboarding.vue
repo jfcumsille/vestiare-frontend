@@ -30,7 +30,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import Demo from './Demo.vue';
+import Demo from './demo/Demo.vue';
 import LinkCreated from '../components/onboarding/show-widget/LinkCreated.vue';
 import ShowAccounts from '../components/onboarding/show-accounts/ShowAccounts.vue';
 import ShowMovements from '../components/onboarding/show-movements/ShowMovements.vue';

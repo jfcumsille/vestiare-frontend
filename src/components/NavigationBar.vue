@@ -44,7 +44,6 @@
 
 <script>
 import FintocLogo from './FintocLogo.vue';
-// import Dropdown from './Dropdown.vue';
 
 export default {
   data() {
@@ -64,7 +63,6 @@ export default {
   },
   components: {
     FintocLogo,
-    // Dropdown,
   },
 };
 </script>

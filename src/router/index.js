@@ -19,7 +19,7 @@ import ApiKeys from '../views/api-keys.vue';
 import Onboarding from '../views/onboarding.vue';
 import Error from '../views/error.vue';
 import UnavailableCountry from '../views/UnavailableCountry.vue';
-import Demo from '../views/Demo.vue';
+import Demo from '../views/demo/Demo.vue';
 import { validateQueryParams } from '../helpers/widget_helper';
 
 Vue.use(VueRouter);
