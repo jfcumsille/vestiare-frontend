@@ -7,6 +7,7 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     '@vue/airbnb',
+    'plugin:cypress/recommended',
   ],
   parserOptions: {
     parser: 'babel-eslint',
@@ -19,6 +20,5 @@ module.exports = {
     page: true,
     browser: true,
     context: true,
-    jestPuppeteer: true,
   },
 };
