@@ -13,7 +13,8 @@
         <!-- Profile dropdown -->
             <div class="ml-8 z-30 relative">
               <div>
-                <button class="rounded-md router-link hover:text-main focus:outline-none active:text-main"
+                <button class="rounded-md router-link hover:text-main
+                focus:outline-none active:text-main"
                         id="user-menu"
                         aria-label="User menu"
                         aria-haspopup="true"
@@ -23,12 +24,15 @@
                 </button>
               </div>
               <transition name='drop-down-ease-out'>
-                <div v-show='showDropDown' class="w-40 origin-top-right absolute right-0 mt-2 rounded-md shadow-lg">
-                  <router-link to="/user-profile" class="px-3 py-2 rounded-b-md bg-white block router-link hover:text-main w-full text-left no-underline"> Mi perfil </router-link>
+                <div v-show='showDropDown' class="w-40 origin-top-right
+                absolute right-0 mt-2 rounded-md shadow-lg">
+                  <router-link to="/user-profile" class="px-3 py-2
+                  rounded-b-md bg-white block router-link
+                  hover:text-main w-full text-left no-underline"> Mi perfil </router-link>
                   <div class="bg-gray-200 h-px"/>
-                  <!-- <div class="" role="menu" aria-orientation="vertical" aria-labelledby="user-menu"> -->
-                  <button class="px-3 py-2 rounded-b-md bg-white block router-link hover:text-main w-full text-left font-medium" role="menuitem" @click='signOut'> Salir </button>
-                  <!-- </div> -->
+                  <button class="px-3 py-2 rounded-b-md bg-white
+                  block router-link hover:text-main
+                  w-full text-left font-medium" role="menuitem" @click='signOut'> Salir </button>
                 </div>
               </transition>
             </div>

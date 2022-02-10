@@ -81,7 +81,6 @@ export default {
       });
     },
     skip() {
-      console.log('skipping');
       this.skipOnboarding().then(() => {
         window.analytics.track('Skipped Onboarding', {
           step: this.currentStep,
