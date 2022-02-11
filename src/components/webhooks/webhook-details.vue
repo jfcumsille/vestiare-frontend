@@ -1,6 +1,7 @@
 <template>
 <div class="flex flex-col items-center justify-between">
   <webhook-send-modal
+    id="webhook-send-modal"
     v-if="showSendWebhookModal"
     :options="selectedWebhook.enabledEvents"
   />
@@ -57,6 +58,7 @@
               class="px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
                     leading-5 font-medium w-2/12">
             <button
+              id="send-test-webhook"
               @click="showTestWebhookEventModal"
               class="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-orange-300
                      text-orange-900 hover:bg-orange-400">

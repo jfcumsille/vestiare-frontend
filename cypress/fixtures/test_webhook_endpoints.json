@@ -1,0 +1,44 @@
+[
+  {
+    "id": "we_WqN6nO8PCYOZrwBy",
+    "description": null,
+    "url": "https://webhook.site/firstUrl",
+    "status": "enabled",
+    "mode": "test",
+    "secret": null,
+    "enabled_events": [
+      "account.refresh_intent.succeeded",
+      "account.refresh_intent.failed",
+      "account.refresh_intent.rejected"
+    ],
+    "created_at": "2021-12-14T19:26:01.865Z",
+    "object": "webhook_endpoint"
+  },
+  {
+    "id": "we_9o6xWOKMCkLqEQJG",
+    "description": "Some description",
+    "url": "https://webhook.site/secondUrl",
+    "status": "enabled",
+    "mode": "test",
+    "secret": null,
+    "enabled_events": [
+      "account.refresh_intent.succeeded"
+    ],
+    "created_at": "2022-02-07T16:34:24.271Z",
+    "object": "webhook_endpoint"
+  },
+  {
+    "id": "we_KrD893qyC63Zw02W",
+    "description": "Description 3",
+    "url": "https://webhook.site/thirdUrl",
+    "status": "enabled",
+    "mode": "test",
+    "secret": null,
+    "enabled_events": [
+      "account.refresh_intent.succeeded",
+      "link.refresh_intent.succeeded"
+    ],
+    "created_at": "2022-02-07T17:11:38.637Z",
+    "object": "webhook_endpoint"
+  }
+]
