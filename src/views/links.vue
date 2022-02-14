@@ -99,6 +99,9 @@ export default {
       this.getUserLinks({ page: 1, mode: 'test', filters: {} }),
     ]);
     this.updateInitLoading(false);
+    if (!this.skipped) {
+      this.showOnboarding();
+    }
   },
   mounted() {
     window.analytics.page('Links');
@@ -106,6 +109,7 @@ export default {
   methods: {
     ...mapActions([
       'getUserLinks',
+      'showOnboarding',
       'updateLinksMode',
       'updateInitLoading',
     ]),
@@ -150,6 +154,8 @@ export default {
     ...mapState({
       mode: (state) => state.links.mode,
       initLoading: (state) => state.links.loading,
+      show: (state) => state.onboarding.show,
+      skipped: (state) => state.onboarding.skipped,
     }),
     ...mapGetters({
       userLinks: 'getLinks',
@@ -176,6 +182,13 @@ export default {
     DropdownFilter,
     CheckboxFilter,
     SearchFilter,
+  },
+  watch: {
+    show(newValue) {
+      if (newValue) {
+        this.$router.push('/onboarding');
+      }
+    },
   },
 };
 </script>

@@ -4,7 +4,7 @@ const linkIntentsUrl = '/internal/v1/link_intents';
 const dashboardUrl = `${linkIntentsUrl}/dashboard`;
 const widgetUrl = `${linkIntentsUrl}/widget`;
 
-const privateEndpoints = ['dashboard'];
+const privateEndpoints = ['dashboard', 'onboarding'];
 
 // eslint-disable-next-line camelcase
 function create(formData, headers, createdThrough, mode) {
