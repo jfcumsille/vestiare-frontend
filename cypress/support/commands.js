@@ -24,6 +24,15 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+Cypress.Commands.add('login', () => {
+  cy.intercept(
+    { method: 'GET', url: '**/users/**' },
+    (req) => req.reply({ status: 200 }),
+  ).as('stubLogin');
+  window.localStorage.setItem('idToken', 'someIdToken');
+  window.localStorage.setItem('userId', 'someUserId');
+});
+
 Cypress.Commands.add('openWidget', (params) => {
   cy.visit(`/widget-iframe?${new URLSearchParams(params)}`);
   cy.get('#intro-continue-btn').click();

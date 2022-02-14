@@ -12,6 +12,7 @@
       />
     <new-webhook-modal
       v-if="showCreationModal"
+      id='new-webhook-modal'
     />
   <main class="h-full min-h-screen">
     <div class="max-w-full mx-auto p-6 lg:p-8 relative h-full">
@@ -42,6 +43,7 @@
             <webhook-table class="border border-gray-300" />
             <div class="mt-4 text-right flex flex-row justify-end space-x-2">
             <button
+            id="subscribe-webhook-button"
               @click="openCreateWebhookModal"
               class="text-center justify-content flex flex-col items-center
                     font-medium rounded-md bg-main text-md

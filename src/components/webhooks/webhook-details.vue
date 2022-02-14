@@ -1,6 +1,7 @@
 <template>
 <div class="flex flex-col items-center justify-between">
   <webhook-send-modal
+    id="webhook-send-modal"
     v-if="showSendWebhookModal"
     :options="selectedWebhook.enabledEvents"
   />
@@ -57,6 +58,7 @@
               class="px-4 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm
                     leading-5 font-medium w-2/12">
             <button
+              id="send-test-webhook"
               @click="showTestWebhookEventModal"
               class="px-2 py-1 inline-flex text-xs leading-5 font-medium rounded-md bg-orange-300
                      text-orange-900 hover:bg-orange-400">
@@ -89,7 +91,7 @@
           </tr>
         </thead>
         <tbody class="bg-white border">
-          <tr>
+          <tr class="h-16">
             <td class="px-6 py-4 border-b border-gray-200 w-1/4
                        text-left leading-5 text-gray-600 align-text-top">
               URL
@@ -99,7 +101,31 @@
               {{selectedWebhook.url}}
             </td>
           </tr>
-          <tr>
+          <tr class="h-16">
+            <td class="px-6 py-4 border-b border-gray-200 w-1/4
+                       text-left leading-5 text-gray-600 align-text-top">
+              Webhook Secret
+            </td>
+            <td class="px-6 py-4 border-b border-gray-200 w-3/4
+                       text-left leading-5 text-gray-900">
+              <button
+                v-if="!loadingSecret && !secret"
+                @click="showWebhookSecret"
+                type="button"
+                class="text-main px-2 py-1 font-bold rounded-md
+                       bg-gray-200 focus:outline-none w-24">
+                Revelar
+              </button>
+              <div v-if="loadingSecret"
+                  class="text-main px-2 py-1 font-bold rounded-md w-24
+                         flex justify-center bg-gray-200">
+                  <spinner :widthClsName="'w-5'" :heightClsName="'h-5'"
+                           :borderClsName="'border-4 border-t-4'" />
+              </div>
+              <p v-if="secret"> {{secret}} </p>
+            </td>
+          </tr>
+          <tr class="h-16">
             <td class="px-6 py-4 border-b border-gray-200 w-1/4
                        text-left leading-5 text-gray-600 align-text-top">
               Descripción
@@ -133,9 +159,11 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import webhookSendModal from './webhook-send-modal.vue';
+import Spinner from '../lib/spinner.vue';
+
 
 export default {
-  components: { webhookSendModal },
+  components: { webhookSendModal, Spinner },
   computed: {
     ...mapState({
       mode: (state) => state.webhooks.mode,
@@ -143,8 +171,14 @@ export default {
       showSendWebhookModal: (state) => state.webhooks.showSendTestWebhookModal,
     }),
   },
+  data() {
+    return {
+      secret: null,
+      loadingSecret: false,
+    };
+  },
   methods: {
-    ...mapActions(['updateWebhookSelectedToDelete', 'updateWebhookEndpoint', 'updateShowSendTestWebhookModal']),
+    ...mapActions(['updateWebhookSelectedToDelete', 'updateWebhookEndpoint', 'updateShowSendTestWebhookModal', 'getWebhookSecret']),
     showTestWebhookEventModal() {
       this.updateShowSendTestWebhookModal();
     },
@@ -162,6 +196,13 @@ export default {
     },
     getTextColor() {
       return this.selectedWebhook.mode === 'test' ? 'text-orange-900' : 'text-white';
+    },
+    showWebhookSecret() {
+      this.loadingSecret = true;
+      this.getWebhookSecret().then((response) => {
+        this.secret = response.data.secret;
+        this.loadingSecret = false;
+      });
     },
   },
 };
