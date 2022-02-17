@@ -31,7 +31,14 @@ import securitySmallLogo from './assets/images/banks/chile/banco-security/small.
 import siiLogo from './assets/images/fiscal/chile/sii.svg';
 
 import banamexLogo from './assets/images/banks/mexico/banamex/banamex.svg';
-import bbvaLogo from './assets/images/banks/mexico/banamex/bbva.svg';
+import bbvaLogo from './assets/images/banks/mexico/bbva/bbva.svg';
+import hscbLogo from './assets/images/banks/mexico/hsbc/hsbc.svg';
+import aztecaLogo from './assets/images/banks/mexico/azteca/azteca.svg';
+import heyBancoLogo from './assets/images/banks/mexico/hey_banco/hey_banco.svg';
+import santanderMxLogo from './assets/images/banks/mexico/santander/small.png';
+
+
+import satLogo from './assets/images/fiscal/mexico/sat.svg';
 
 // Pending images.
 import falabellaLogo from './assets/images/banks/chile/banco-falabella/falabella-complete.png';
@@ -248,6 +255,91 @@ const availableBanks = [
       business: bbvaLogo,
     },
     smallLogo: bbvaLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
+  },
+  {
+    code: 'mx_banco_hsbc',
+    label: 'Banco HSBC',
+    logo: {
+      individual: hscbLogo,
+      business: hscbLogo,
+    },
+    smallLogo: hscbLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
+  },
+  {
+    code: 'mx_banco_azteca',
+    label: 'Banco Azteca',
+    logo: {
+      individual: aztecaLogo,
+      business: aztecaLogo,
+    },
+    smallLogo: aztecaLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
+  },
+  {
+    code: 'mx_banco_santander',
+    label: 'Banco Santander',
+    logo: {
+      individual: santanderMxLogo,
+      business: santanderMxLogo,
+    },
+    smallLogo: santanderMxLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
+  },
+  {
+    code: 'mx_hey_banco',
+    label: 'Hey Banco',
+    logo: {
+      individual: heyBancoLogo,
+      business: heyBancoLogo,
+    },
+    smallLogo: heyBancoLogo,
+    specialIndication: {
+      business: null,
+      individual: null,
+    },
+    isAvailable: {
+      business: { subscription: false, movements: false },
+      individual: { subscription: false, movements: false },
+    },
+  },
+  {
+    code: 'mx_fiscal_sat',
+    label: 'Servicio de Impuestos Internos',
+    logo: {
+      individual: satLogo,
+      business: satLogo,
+    },
+    smallLogo: satLogo,
     specialIndication: {
       business: null,
       individual: null,
