@@ -1,5 +1,5 @@
 import client from '@/api/client';
-import { LogInResponse } from './interfaces';
+import { LogInResponse } from '@/api/interfaces/authentication';
 
 export const logIn = async (
   { email, password, token }: { email: string, password: string, token: string, },
