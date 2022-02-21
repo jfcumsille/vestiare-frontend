@@ -14,7 +14,7 @@ To run the dev server, just execute:
 $ npm run dev
 ```
 
-You should be able to navigate to `http://localhost:3000` and see the `Home` component with its counters.
+You should be able to navigate to `http://localhost:8080` and see the `Home` component with its counters.
 
 ## Linters
 
