@@ -1,9 +1,9 @@
 import client from '@/api/client';
-import { LogInResponse } from '@/api/interfaces/authentication';
+import { User } from '@/api/interfaces/user';
 
 export const logIn = async (
-  { email, password, token }: { email: string, password: string, token: string, },
-): Promise<LogInResponse> => {
+  { email, password, token }: { email: string, password: string, token: string },
+): Promise<User> => {
   const response = await client.post('/internal/v1/sessions', { email, password, token });
   return response.data;
 };

@@ -1,11 +1,7 @@
-import counter from './counter';
-import homeView from './views/home';
+import forms from './forms';
 
 export default {
   translation: {
-    counter,
-    views: {
-      home: homeView,
-    },
+    forms,
   },
 };

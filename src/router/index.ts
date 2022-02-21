@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Home from '@/views/Home.vue';
+import HomeView from '@/views/home/HomeView.vue';
+import LogInView from '@/views/login/LogInView.vue';
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: Home },
+  { path: '/', component: HomeView },
+  { path: '/login', component: LogInView },
 ];
 
 export default createRouter({
