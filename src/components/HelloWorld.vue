@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useTranslation } from '@/locales';
+
+const $t = useTranslation('views.home');
+const $tCounter = useTranslation('counter');
 
 const props = defineProps({
   msg: {
@@ -15,7 +19,7 @@ const count = ref(0);
   <h1>{{ props.msg }}</h1>
 
   <p>
-    Recommended IDE setup:
+    {{ $t('recommendation') }}
     <a
       href="https://code.visualstudio.com/"
       target="_blank"
@@ -27,7 +31,11 @@ const count = ref(0);
     >Volar</a>
   </p>
 
-  <p>See <code>README.md</code> for more information.</p>
+  <p>
+    {{ $t('moreInfo.preCode') }}
+    <code>{{ $t('moreInfo.code') }}</code>
+    {{ $t('moreInfo.postCode') }}
+  </p>
 
   <p>
     <a
@@ -47,11 +55,12 @@ const count = ref(0);
     type="button"
     @click="count++"
   >
-    count is: {{ count }}
+    {{ $tCounter('declarativeValue') }}: {{ count }}
   </button>
   <p>
-    Edit
-    <code>components/HelloWorld.vue</code> to test hot module replacement.
+    {{ $t('hmr.preCode') }}
+    <code>{{ $t('hmr.code') }}</code>
+    {{ $t('hmr.postCode') }}
   </p>
 </template>
 
