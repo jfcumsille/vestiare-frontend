@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
+import { REDIRECT_QUERY_KEY } from '@/constants';
 import GenericInput from '@/components/GenericInput.vue';
 
 const $store = useUserStore();
+const $route = useRoute();
+const $router = useRouter();
 const $t = useTranslation('forms.userData');
 
 const email = ref('');
@@ -18,6 +22,9 @@ const logIn = async () => {
   loading.value = true;
   try {
     await $store.logIn({ email: email.value, password: password.value, token: '' });
+    $router.push({
+      path: ($route.query[REDIRECT_QUERY_KEY] as string) || '/',
+    });
   } catch (err) {
     error.value = true;
   } finally {

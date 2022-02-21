@@ -34,6 +34,7 @@ export const useUserStore = defineStore('user', {
       }
       return {};
     },
+    authenticated: (state) => state.authenticationToken && state.email,
   },
 });
 
