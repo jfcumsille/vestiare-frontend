@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import { User } from '@/api/interfaces/user';
 import { useAuthenticationTokenStorage, useIdStorage, useEmailStorage } from '@/services/storage';
 import { authentication, user } from '@/api';
+import { LogInOptions, OptionalAuthenticationHeaders } from './interfaces';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -15,7 +16,7 @@ export const useUserStore = defineStore('user', {
       this.id = userData.id;
       this.email = userData.email;
     },
-    async logIn({ email, password, token }: { email: string, password: string, token: string }) {
+    async logIn({ email, password, token }: LogInOptions) {
       const userData = await authentication.logIn({ email, password, token });
       this.updateUserData(userData);
     },
@@ -25,7 +26,7 @@ export const useUserStore = defineStore('user', {
     },
   },
   getters: {
-    authenticationHeaders: (state): { Authorization: string, 'X-User-Email': string; } | Record<string, never> => {
+    authenticationHeaders: (state): OptionalAuthenticationHeaders => {
       if (state.authenticationToken && state.email) {
         return {
           Authorization: state.authenticationToken,

@@ -14,7 +14,6 @@ const $props = defineProps({
   },
 });
 const $emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
-// v-model="yourProperty"
 
 const onInput = ($event: Event) => {
   $emit('update:modelValue', ($event.target as HTMLInputElement).value);
