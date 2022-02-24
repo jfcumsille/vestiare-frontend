@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "lint": "run-p lint:*",
-    "lint:js": "eslint --ext .js,.ts,.vue .",
-    "lint:css": "stylelint **/*.{css,scss,vue}",
+    "lint:eslint": "eslint --ext .js,.ts,.vue .",
+    "lint:stylelint": "stylelint **/*.{css,scss,vue}",
     "test": "run-p test:*",
     "test:jest": "jest",
     "build": "vue-tsc --noEmit && vite build",
