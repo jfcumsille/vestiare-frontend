@@ -1,0 +1,30 @@
+version: 2.1
+jobs:
+  eslint:
+    docker:
+      - image: circleci/node:16.14
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Lint with ESLint
+          command: npm run lint:eslint
+  stylelint:
+    docker:
+      - image: circleci/node:16.14
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Lint with StyleLint
+          command: npm run lint:stylelint
+
+workflows:
+  linters:
+    jobs:
+      - eslint
+      - stylelint
