@@ -9,3 +9,11 @@ export const loginRequired = (to: RouteLocationNormalized) => {
     return { path: '/login', query: { [REDIRECT_QUERY_KEY]: to.path } };
   }
 };
+
+// eslint-disable-next-line consistent-return
+export const skipLogInIfAlreadyLoggedIn = (to: RouteLocationNormalized) => {
+  const $userStore = useUserStore();
+  if (to.path === '/login' && $userStore.authenticated) {
+    return { path: '/' };
+  }
+};

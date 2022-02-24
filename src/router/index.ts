@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '@/views/home/HomeView.vue';
 import LogInView from '@/views/login/LogInView.vue';
-import { loginRequired } from './guards';
+import { loginRequired, skipLogInIfAlreadyLoggedIn } from './guards';
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: HomeView },
@@ -14,5 +14,6 @@ const router = createRouter({
 });
 
 router.beforeEach(loginRequired);
+router.beforeEach(skipLogInIfAlreadyLoggedIn);
 
 export default router;
