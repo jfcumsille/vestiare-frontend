@@ -22,9 +22,23 @@ jobs:
       - run:
           name: Lint with StyleLint
           command: npm run lint:stylelint
+  build:
+    docker:
+      - image: circleci/node:16.14
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - run:
+          name: Build the application
+          command: npm run build
 
 workflows:
   linters:
     jobs:
       - eslint
       - stylelint
+  build:
+    jobs:
+      - build
