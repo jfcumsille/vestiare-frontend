@@ -76,6 +76,15 @@ jobs:
       - run:
           name: Test with Jest
           command: npm run test:jest
+  no-fixup-commits:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - run:
+          name: Check absence of fixup commits
+          command: |
+            ! git log master... | grep 'fixup!'
 
 workflows:
   linters:
@@ -88,3 +97,6 @@ workflows:
   tests:
     jobs:
       - jest
+  tidyness:
+    jobs:
+      - no-fixup-commits
