@@ -1,15 +1,18 @@
-import i18next from 'i18next';
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { links } from '@/api';
+import { Link } from '@/api/interfaces/links';
 
 export const useLinksStore = defineStore('links', {
   state: () => ({
-    language: i18next.language,
+    links: <Array<Link>>[],
+    loading: false,
   }),
   actions: {
     async getLinks(params: Record<string, string>) {
+      this.loading = true;
       const userLinks = await links.getLinks(params);
-      console.log(userLinks);
+      this.links = userLinks;
+      this.loading = false;
     },
   },
 });
