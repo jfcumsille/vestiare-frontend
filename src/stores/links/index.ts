@@ -1,5 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { links } from '@/api';
+import * as api from '@/api';
 import { Link } from '@/api/interfaces/links';
 
 export const useLinksStore = defineStore('links', {
@@ -14,7 +14,7 @@ export const useLinksStore = defineStore('links', {
       let result = [];
       while (result.length === 0) {
         /* eslint-disable-next-line no-await-in-loop */
-        result = await links.list(organization, { ...params, page });
+        result = await api.links.list(organization, { ...params, page });
         this.links = [...this.links, ...result];
         page += 1;
       }
@@ -25,7 +25,7 @@ export const useLinksStore = defineStore('links', {
         throw new Error('Invalid link');
       }
       const index = this.links.indexOf(link);
-      const updatedLink = await links.update(organization, link.id, data);
+      const updatedLink = await api.links.update(organization, link.id, data);
       this.links[index] = updatedLink;
     },
     async removeLink(organization: string, link: Link) {
@@ -33,7 +33,7 @@ export const useLinksStore = defineStore('links', {
         throw new Error('Invalid link');
       }
       const index = this.links.indexOf(link);
-      await links.remove(organization, link.id);
+      await api.links.remove(organization, link.id);
       this.links = [
         ...this.links.slice(0, index),
         ...this.links.slice(index + 1),

@@ -3,7 +3,7 @@ import { User } from '@/api/interfaces/user';
 import {
   useAuthenticationTokenStorage, useIdStorage, useEmailStorage, useDefaultOrganizationIdStorage,
 } from '@/services/storage';
-import { authentication, user } from '@/api';
+import * as api from '@/api';
 import { LogInOptions, OptionalAuthenticationHeaders } from './interfaces';
 
 export const useUserStore = defineStore('user', {
@@ -21,11 +21,11 @@ export const useUserStore = defineStore('user', {
       this.defaultOrganizationId = userData.defaultOrganizationId;
     },
     async logIn({ email, password, token }: LogInOptions) {
-      const userData = await authentication.logIn({ email, password, token });
+      const userData = await api.authentication.logIn({ email, password, token });
       this.updateUserData(userData);
     },
     async updateUser() {
-      const userData = await user.get(this.id);
+      const userData = await api.user.get(this.id);
       this.updateUserData(userData);
     },
   },
