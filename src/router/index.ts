@@ -1,8 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import { useUserStore } from '@/stores/user';
-import { REDIRECT_QUERY_KEY } from '@/constants';
 import HomeView from '@/views/home/HomeView.vue';
 import LogInView from '@/views/login/LogInView.vue';
+import { loginRequired, skipLogInIfAlreadyLoggedIn } from './guards';
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: HomeView },
@@ -14,12 +13,7 @@ const router = createRouter({
   routes,
 });
 
-// eslint-disable-next-line consistent-return
-router.beforeEach((to) => {
-  const $userStore = useUserStore();
-  if (to.path !== '/login' && !$userStore.authenticated) {
-    return { path: '/login', query: { [REDIRECT_QUERY_KEY]: to.path } };
-  }
-});
+router.beforeEach(loginRequired);
+router.beforeEach(skipLogInIfAlreadyLoggedIn);
 
 export default router;
