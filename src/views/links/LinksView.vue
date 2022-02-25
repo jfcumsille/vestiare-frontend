@@ -9,7 +9,7 @@ import LinksTableElement from './components/LinksTableElement.vue';
 const $userStore = useUserStore();
 const $linksStore = useLinksStore();
 
-const headers = ['Name', 'Bank', 'Last Refreshed', 'Status', 'Mode'];
+const headers = ['User', 'Bank', 'Last Refreshed', 'Status', 'Mode'];
 
 onMounted(() => $linksStore.getLinks({
   currentOrganizationId: $userStore.defaultOrganizationId,
@@ -17,17 +17,22 @@ onMounted(() => $linksStore.getLinks({
 </script>
 
 <template>
-  <LinksTable v-if="!$linksStore.loading">
-    <template #header>
-      <LinksTableHeader :headers="headers" />
-    </template>
+  <div class="flex justify-center w-full">
+    <LinksTable
+      v-if="!$linksStore.loading"
+      class="grow mt-6 mx-4 max-w-screen-2xl"
+    >
+      <template #header>
+        <LinksTableHeader :headers="headers" />
+      </template>
 
-    <template #content>
-      <LinksTableElement
-        v-for="link in $linksStore.links"
-        :key="link.id"
-        :link="link"
-      />
-    </template>
-  </LinksTable>
+      <template #content>
+        <LinksTableElement
+          v-for="link in $linksStore.links"
+          :key="link.id"
+          :link="link"
+        />
+      </template>
+    </LinksTable>
+  </div>
 </template>
