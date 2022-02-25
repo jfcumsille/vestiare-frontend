@@ -9,12 +9,12 @@ import LinksTable from './components/LinksTable.vue';
 import LinksTableHeader from './components/LinksTableHeader.vue';
 import LinksTableElement from './components/LinksTableElement.vue';
 import SearchBar from './components/SearchBar.vue';
+import DropDown from './components/DropDown.vue';
 
 const $userStore = useUserStore();
 const $linksStore = useLinksStore();
 
 const headers = ['User', 'Business', 'Bank', 'Last Refreshed', 'Active', ''];
-const search = ref('');
 
 const live = ref(true);
 const toggleLive = () => {
@@ -22,22 +22,54 @@ const toggleLive = () => {
 };
 const links = computed(() => (live.value ? $linksStore.liveLinks : $linksStore.testLinks));
 
+const activeFilter = ref('All');
+const activeOptions = ['All', 'Active', 'Inactive'];
+const selectActiveFilter = (value: string) => {
+  activeFilter.value = value;
+};
+const filterByActive = (rawLinks: Array<Link>) => {
+  if (activeFilter.value === 'All') {
+    return rawLinks;
+  }
+  if (activeFilter.value === 'Active') {
+    return rawLinks.filter((link) => link.active);
+  }
+  return rawLinks.filter((link) => !link.active);
+};
+
+const passwordFilter = ref('All');
+const passwordOptions = ['All', 'Valid', 'Invalid'];
+const selectPasswordFilter = (value: string) => {
+  passwordFilter.value = value;
+};
+const filterByPassword = (rawLinks: Array<Link>) => {
+  if (passwordFilter.value === 'All') {
+    return rawLinks;
+  }
+  if (passwordFilter.value === 'Valid') {
+    return rawLinks.filter((link) => !link.preventRefresh);
+  }
+  return rawLinks.filter((link) => link.preventRefresh);
+};
+
+const search = ref('');
 const sameId = (link: Link, searchValue: string) => {
-  if (link.holderId.includes(searchValue.trim())) {
+  if (link.holderId.includes(searchValue)) {
     return true;
   }
-  if (rutFormat(link.holderId).includes(searchValue.trim())) {
+  if (rutFormat(link.holderId).includes(searchValue)) {
     return true;
   }
   return false;
 };
-
-const filteredLinks = computed(() => {
+const filterBySearch = (rawLinks: Array<Link>) => {
   if (search.value.trim() === '') {
-    return links.value;
+    return rawLinks;
   }
-  return links.value.filter((link) => sameId(link, search.value));
-});
+  return rawLinks.filter((link) => sameId(link, search.value.trim()));
+};
+
+const filteredLinks = computed(() => filterByActive(filterByPassword(filterBySearch(links.value))));
 
 onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
 </script>
@@ -45,10 +77,26 @@ onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
 <template>
   <div class="flex justify-center w-full">
     <div class="grow flex justify-between mt-6 mx-4 max-w-screen-2xl">
-      <SearchBar
-        v-model="search"
-        placeholder="Search for a user ID"
-      />
+      <div class="flex justify-center">
+        <SearchBar
+          v-model="search"
+          placeholder="Search for a user ID"
+        />
+        <DropDown
+          class="ml-4"
+          name="Active"
+          :selected="activeFilter"
+          :options="activeOptions"
+          @select="selectActiveFilter"
+        />
+        <DropDown
+          class="ml-4"
+          name="Password"
+          :selected="passwordFilter"
+          :options="passwordOptions"
+          @select="selectPasswordFilter"
+        />
+      </div>
 
       <div class="flex flex-col justify-center">
         <div class="flex">
