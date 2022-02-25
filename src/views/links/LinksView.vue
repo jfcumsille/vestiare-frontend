@@ -90,4 +90,12 @@ onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
       </template>
     </LinksTable>
   </div>
+  <div
+    v-if="!filteredLinks.length"
+    class="flex justify-center w-full pt-4"
+  >
+    <p class="text-gray-900 text-3xl font-bold">
+      No Links found!
+    </p>
+  </div>
 </template>
