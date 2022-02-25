@@ -14,6 +14,14 @@ export const useLinksStore = defineStore('links', {
       this.links = userLinks;
       this.loading = false;
     },
+    async updateLink(organization: string, link: Link, data: Record<string, string | boolean>) {
+      if (!this.links.includes(link)) {
+        throw new Error('Invalid link');
+      }
+      const index = this.links.indexOf(link);
+      const updatedLink = await links.update(organization, link.id, data);
+      this.links[index] = updatedLink;
+    },
     async removeLink(organization: string, link: Link) {
       if (!this.links.includes(link)) {
         throw new Error('Invalid link');

@@ -12,6 +12,19 @@ export const get = async (
   return response.data;
 };
 
+export const update = async (
+  organization: string,
+  linkId: string,
+  data: Record<string, string | boolean>,
+): Promise<Link> => {
+  const response = await client.put(
+    `/internal/v1/links/dashboard/${linkId}`,
+    { linkData: data },
+    { params: { currentOrganizationId: organization } },
+  );
+  return response.data;
+};
+
 export const remove = async (organization: string, linkId: string) => {
   client.delete(
     `/internal/v1/links/dashboard/${linkId}`,

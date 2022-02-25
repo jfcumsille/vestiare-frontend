@@ -4,13 +4,26 @@ import { useUserStore } from '@/stores/user';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/api/interfaces/links';
 import GenericToggle from '@/components/GenericToggle.vue';
+import { ref } from 'vue';
 
 const $props = defineProps<{ link: Link }>();
 
 const $userStore = useUserStore();
 const $linksStore = useLinksStore();
 
-const removeLink = () => {
+const updating = ref(false);
+
+const toggleActive = async () => {
+  updating.value = true;
+  await $linksStore.updateLink(
+    $userStore.defaultOrganizationId,
+    $props.link,
+    { active: !$props.link.active },
+  );
+  updating.value = false;
+};
+
+const remove = () => {
   $linksStore.removeLink($userStore.defaultOrganizationId, $props.link);
 };
 </script>
@@ -42,12 +55,14 @@ const removeLink = () => {
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericToggle
         :active="$props.link.active"
+        :loading="updating"
+        @toggle="toggleActive"
       />
     </td>
     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
       <a
         class="text-red-600 cursor-pointer hover:underline"
-        @click="removeLink"
+        @click="remove"
       >Remove</a>
     </td>
   </tr>
