@@ -10,8 +10,14 @@ export const useLinksStore = defineStore('links', {
   actions: {
     async getLinks(organization: string, params: Record<string, string> = {}) {
       this.loading = true;
-      const userLinks = await links.list(organization, params);
-      this.links = userLinks;
+      let page = 1;
+      let result = [];
+      while (result.length === 0) {
+        /* eslint-disable-next-line no-await-in-loop */
+        result = await links.list(organization, { ...params, page });
+        this.links = [...this.links, ...result];
+        page += 1;
+      }
       this.loading = false;
     },
     async updateLink(organization: string, link: Link, data: Record<string, string | boolean>) {

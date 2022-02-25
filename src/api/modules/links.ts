@@ -3,7 +3,7 @@ import { Link } from '@/api/interfaces/links';
 
 export const list = async (
   organization: string,
-  params: Record<string, string> = {},
+  params: Record<string, string | number> = {},
 ): Promise<Array<Link>> => {
   const response = await client.get(
     '/internal/v1/links/dashboard',

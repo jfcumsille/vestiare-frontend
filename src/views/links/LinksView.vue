@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/api/interfaces/links';
 import GenericToggle from '@/components/GenericToggle.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LinksTable from './components/LinksTable.vue';
 import LinksTableHeader from './components/LinksTableHeader.vue';
 import LinksTableElement from './components/LinksTableElement.vue';
@@ -121,10 +122,7 @@ onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
     </div>
   </div>
   <div class="flex justify-center w-full">
-    <LinksTable
-      v-if="!$linksStore.loading"
-      class="grow mt-6 mx-4 max-w-screen-2xl"
-    >
+    <LinksTable class="grow mt-6 mx-4 max-w-screen-2xl">
       <template #header>
         <LinksTableHeader :headers="headers" />
       </template>
@@ -139,7 +137,13 @@ onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
     </LinksTable>
   </div>
   <div
-    v-if="!filteredLinks.length"
+    v-if="$linksStore.loading"
+    class="flex justify-center w-full pt-4"
+  >
+    <LoadingSpinner />
+  </div>
+  <div
+    v-if="!filteredLinks.length && !$linksStore.loading"
     class="flex justify-center w-full pt-4"
   >
     <p class="text-gray-900 text-3xl font-bold">
