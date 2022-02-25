@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { rutFormat } from 'rut-helpers';
 import { Link } from '@/api/interfaces/links';
+import GenericToggle from '@/components/GenericToggle.vue';
 
 const $props = defineProps<{ link: Link }>();
 </script>
@@ -27,7 +28,7 @@ const $props = defineProps<{ link: Link }>();
       {{ $props.link.lastTimeRefreshed || '-' }}
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      {{ $props.link.active ? 'Activo!' : 'Inactivo' }}
+      <GenericToggle :active="$props.link.active" />
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       {{ $props.link.mode }}
