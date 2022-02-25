@@ -10,7 +10,7 @@ export const useLinksStore = defineStore('links', {
   actions: {
     async getLinks(organization: string, params: Record<string, string> = {}) {
       this.loading = true;
-      const userLinks = await links.get(organization, params);
+      const userLinks = await links.list(organization, params);
       this.links = userLinks;
       this.loading = false;
     },

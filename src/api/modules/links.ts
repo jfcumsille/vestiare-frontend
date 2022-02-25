@@ -1,7 +1,7 @@
 import client from '@/api/client';
 import { Link } from '@/api/interfaces/links';
 
-export const get = async (
+export const list = async (
   organization: string,
   params: Record<string, string> = {},
 ): Promise<Array<Link>> => {
