@@ -1,0 +1,102 @@
+version: 2.1
+jobs:
+  eslint:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Lint with ESLint
+          command: npm run lint:eslint
+  stylelint:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Lint with StyleLint
+          command: npm run lint:stylelint
+  build:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Build the application
+          command: npm run build
+  jest:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Test with Jest
+          command: npm run test:jest
+  no-fixup-commits:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - run:
+          name: Check absence of fixup commits
+          command: |
+            ! git log master... | grep 'fixup!'
+
+workflows:
+  linters:
+    jobs:
+      - eslint
+      - stylelint
+  build:
+    jobs:
+      - build
+  tests:
+    jobs:
+      - jest
+  tidyness:
+    jobs:
+      - no-fixup-commits
