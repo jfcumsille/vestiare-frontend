@@ -54,7 +54,7 @@ const filterByPassword = (rawLinks: Array<Link>) => {
 };
 
 const search = ref('');
-const sameId = (link: Link, searchValue: string) => {
+const linkMatchesSearchId = (link: Link, searchValue: string) => {
   if (link.holderId.includes(searchValue)) {
     return true;
   }
@@ -67,7 +67,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
   if (search.value.trim() === '') {
     return rawLinks;
   }
-  return rawLinks.filter((link) => sameId(link, search.value.trim()));
+  return rawLinks.filter((link) => linkMatchesSearchId(link, search.value.trim()));
 };
 
 const filteredLinks = computed(() => filterByActive(filterByPassword(filterBySearch(links.value))));
