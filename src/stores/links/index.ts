@@ -34,6 +34,10 @@ export const useLinksStore = defineStore('links', {
       ];
     },
   },
+  getters: {
+    liveLinks: (state) => state.links.filter((link) => link.mode === 'live'),
+    testLinks: (state) => state.links.filter((link) => link.mode === 'test'),
+  },
 });
 
 if (import.meta.hot) {

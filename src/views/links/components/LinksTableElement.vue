@@ -50,9 +50,6 @@ const remove = () => {
       {{ $props.link.lastTimeRefreshed || '-' }}
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      {{ $props.link.mode }}
-    </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericToggle
         :active="$props.link.active"
         :loading="updating"
