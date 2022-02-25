@@ -31,18 +31,36 @@ const remove = () => {
 <template>
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
-      <p class="text-gray-900">
-        {{ $props.link.holderName }}
+      <div v-if="$props.link.holderType === 'individual'">
+        <p class="text-gray-900">
+          {{ $props.link.holderName }}
+        </p>
+        <p class="font-normal text-gray-600">
+          {{ rutFormat($props.link.holderId) }}
+        </p>
+      </div>
+      <p v-else>
+        -
       </p>
-      <p class="font-normal text-gray-600">
-        {{ rutFormat($props.link.holderId) }}
+    </td>
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <div v-if="$props.link.holderType === 'business'">
+        <p class="text-gray-900">
+          {{ $props.link.holderName }}
+        </p>
+        <p class="font-normal text-gray-600">
+          {{ rutFormat($props.link.holderId) }}
+        </p>
+      </div>
+      <p v-else>
+        -
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-medium">
         {{ $props.link.institution.name }}
       </p>
-      <p class="font-normal">
+      <p class="font-normal capitalize">
         {{ $props.link.holderType }}
       </p>
     </td>

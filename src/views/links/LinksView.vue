@@ -13,7 +13,7 @@ import SearchBar from './components/SearchBar.vue';
 const $userStore = useUserStore();
 const $linksStore = useLinksStore();
 
-const headers = ['User', 'Bank', 'Last Refreshed', 'Active', ''];
+const headers = ['User', 'Business', 'Bank', 'Last Refreshed', 'Active', ''];
 const search = ref('');
 
 const live = ref(true);
