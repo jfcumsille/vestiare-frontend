@@ -11,9 +11,7 @@ const $linksStore = useLinksStore();
 
 const headers = ['User', 'Bank', 'Last Refreshed', 'Status', 'Mode'];
 
-onMounted(() => $linksStore.getLinks({
-  currentOrganizationId: $userStore.defaultOrganizationId,
-}));
+onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
 </script>
 
 <template>
