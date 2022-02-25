@@ -9,7 +9,7 @@ import LinksTableElement from './components/LinksTableElement.vue';
 const $userStore = useUserStore();
 const $linksStore = useLinksStore();
 
-const headers = ['User', 'Bank', 'Last Refreshed', 'Active', 'Mode'];
+const headers = ['User', 'Bank', 'Last Refreshed', 'Mode', 'Active', ''];
 
 onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
 </script>

@@ -25,7 +25,7 @@ export const useUserStore = defineStore('user', {
       this.updateUserData(userData);
     },
     async updateUser() {
-      const userData = await user.getUser({ userId: this.id });
+      const userData = await user.get(this.id);
       this.updateUserData(userData);
     },
   },
