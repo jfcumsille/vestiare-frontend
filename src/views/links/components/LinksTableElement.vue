@@ -29,7 +29,7 @@ const remove = () => {
 </script>
 
 <template>
-  <tr class="bg-white border-b">
+  <tr class="bg-white border-b hover:bg-gray-100">
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-gray-900">
         {{ $props.link.holderName }}

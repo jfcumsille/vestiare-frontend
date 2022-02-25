@@ -3,7 +3,7 @@ const $props = defineProps<{ headers: Array<string> }>();
 </script>
 
 <template>
-  <thead class="bg-gray-50">
+  <thead class="bg-gray-100">
     <tr>
       <th
         v-for="header in $props.headers"
