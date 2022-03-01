@@ -12,6 +12,9 @@ export interface Link {
   preventRefresh: boolean
   username: string
   lastTimeRefreshed: string | null
-  accountsCount?: number
-  linkToken?: string
+}
+
+export interface CompleteLink extends Link {
+  accountsCount: number
+  linkToken: string
 }

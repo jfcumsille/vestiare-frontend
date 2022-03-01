@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { Link } from '@/api/interfaces/links';
-
 const $props = defineProps<{
-  link: Link,
+  linkToken: string,
 }>();
 
 const $emit = defineEmits<{(e: 'close'): void}>();
@@ -57,7 +55,7 @@ const close = () => {
               Your Link Token is:
             </p>
             <p class="text-base leading-relaxed text-black font-bold">
-              {{ $props.link.linkToken }}
+              {{ $props.linkToken }}
             </p>
           </div>
         </div>

@@ -16,7 +16,7 @@ const $props = defineProps<{
 
 const $emit = defineEmits<
   {(e: 'set-widget-opened', value: boolean): void,
-    (e: 'show-link', link: Link): void,
+    (e: 'show-link-token', linkToken: string): void,
   }
 >();
 
@@ -36,7 +36,7 @@ const onSuccess = async (link: Link) => {
   $emit('set-widget-opened', false);
   $linksStore.getLinks($userStore.defaultOrganizationId);
   const regeneratedLink = await api.links.regenerate(link.id);
-  $emit('show-link', regeneratedLink);
+  $emit('show-link-token', regeneratedLink.linkToken);
 };
 
 const onExit = () => {
