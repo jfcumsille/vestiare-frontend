@@ -10,6 +10,7 @@ export const useLinksStore = defineStore('links', {
   actions: {
     async getLinks(organization: string, params: Record<string, string> = {}) {
       this.loading = true;
+      this.links = [];
       let page = 1;
       let result = [];
       while (result.length === 0) {

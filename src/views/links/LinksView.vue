@@ -20,10 +20,16 @@ const $linksStore = useLinksStore();
 
 const headers = ['User', 'Business', 'Bank', 'Last Refreshed', 'Active', ''];
 
+const widgetOpened = ref(false);
+const setWidgetOpened = (value: boolean) => {
+  widgetOpened.value = value;
+};
+
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
 };
+
 const links = computed(() => (live.value ? $linksStore.liveLinks : $linksStore.testLinks));
 
 const activeFilter = ref('All');
@@ -73,7 +79,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
   return rawLinks.filter((link) => linkMatchesSearchId(link, search.value.trim()));
 };
 
-const filteredLinks = computed(() => filterByActive(filterByPassword(filterBySearch(links.value))));
+const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
 
 onMounted(() => {
   $linksStore.getLinks($userStore.defaultOrganizationId);
@@ -84,34 +90,31 @@ onMounted(() => {
 <template>
   <div class="flex justify-center w-full">
     <div class="grow flex justify-between mt-6 mx-4 max-w-screen-2xl">
-      <div class="flex justify-center">
+      <div class="flex my-auto">
         <SearchBar
           v-model="search"
           placeholder="Search for a user ID"
         />
         <DropDown
-          class="ml-4"
+          class="ml-4 my-auto"
           name="Active"
           :selected="activeFilter"
           :options="activeOptions"
           @select="selectActiveFilter"
         />
         <DropDown
-          class="ml-4"
+          class="ml-4 my-auto"
           name="Password"
           :selected="passwordFilter"
           :options="passwordOptions"
           @select="selectPasswordFilter"
         />
-      </div>
-
-      <div class="flex flex-col justify-center">
-        <div class="flex">
+        <div class="flex my-auto ml-6">
           <p
             class="pr-4 text-gray-900 text-md font-medium"
             :class="{ 'opacity-25': live }"
           >
-            Test Links
+            Test
           </p>
           <GenericToggle
             :active="live"
@@ -121,8 +124,43 @@ onMounted(() => {
             class="pl-4 text-gray-900 text-md font-medium"
             :class="{ 'opacity-25': !live }"
           >
-            Live Links
+            Live
           </p>
+        </div>
+      </div>
+
+      <div class="flex flex-col my-auto">
+        <div class="flex justify-center my-auto">
+          <LinkCreationButton
+            :live="live"
+            product="movements"
+            holder-type="individual"
+            :widget-opened="widgetOpened"
+            @set-widget-opened="setWidgetOpened"
+          />
+          <LinkCreationButton
+            :live="live"
+            product="movements"
+            holder-type="business"
+            :widget-opened="widgetOpened"
+            @set-widget-opened="setWidgetOpened"
+          />
+        </div>
+        <div class="mt-2 justify-center flex my-auto">
+          <LinkCreationButton
+            :live="live"
+            product="invoices"
+            holder-type="individual"
+            :widget-opened="widgetOpened"
+            @set-widget-opened="setWidgetOpened"
+          />
+          <LinkCreationButton
+            :live="live"
+            product="invoices"
+            holder-type="business"
+            :widget-opened="widgetOpened"
+            @set-widget-opened="setWidgetOpened"
+          />
         </div>
       </div>
     </div>
@@ -155,8 +193,5 @@ onMounted(() => {
     <p class="text-gray-900 text-3xl font-bold">
       No Links found!
     </p>
-  </div>
-  <div class="flex justify-center w-full pt-4">
-    <LinkCreationButton :live="live" />
   </div>
 </template>
