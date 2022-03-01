@@ -2,6 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useUserStore } from '@/stores/user';
+import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/api/interfaces/links';
 import GenericToggle from '@/components/GenericToggle.vue';
@@ -11,8 +12,10 @@ import LinksTableHeader from './components/LinksTableHeader.vue';
 import LinksTableElement from './components/LinksTableElement.vue';
 import SearchBar from './components/SearchBar.vue';
 import DropDown from './components/DropDown.vue';
+import LinkCreationButton from './components/LinkCreationButton.vue';
 
 const $userStore = useUserStore();
+const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
 const headers = ['User', 'Business', 'Bank', 'Last Refreshed', 'Active', ''];
@@ -72,7 +75,10 @@ const filterBySearch = (rawLinks: Array<Link>) => {
 
 const filteredLinks = computed(() => filterByActive(filterByPassword(filterBySearch(links.value))));
 
-onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
+onMounted(() => {
+  $linksStore.getLinks($userStore.defaultOrganizationId);
+  $apiKeysStore.getAPIKeys($userStore.defaultOrganizationId);
+});
 </script>
 
 <template>
@@ -149,5 +155,8 @@ onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
     <p class="text-gray-900 text-3xl font-bold">
       No Links found!
     </p>
+  </div>
+  <div class="flex justify-center w-full pt-4">
+    <LinkCreationButton :live="live" />
   </div>
 </template>
