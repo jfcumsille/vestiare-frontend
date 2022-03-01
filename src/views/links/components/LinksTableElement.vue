@@ -2,7 +2,7 @@
 import { rutFormat } from 'rut-helpers';
 import { useUserStore } from '@/stores/user';
 import { useLinksStore } from '@/stores/links';
-import { Link } from '@/api/interfaces/links';
+import { Link } from '@/interfaces/entities/links';
 import GenericToggle from '@/components/GenericToggle.vue';
 import { ref } from 'vue';
 

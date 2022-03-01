@@ -1,5 +1,5 @@
 import client from '@/api/client';
-import { User } from '@/api/interfaces/user';
+import { User } from '@/interfaces/entities/user';
 
 export const logIn = async (
   { email, password, token }: { email: string, password: string, token: string },

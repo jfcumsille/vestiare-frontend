@@ -4,7 +4,7 @@ import { rutFormat } from 'rut-helpers';
 import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
-import { Link } from '@/api/interfaces/links';
+import { Link } from '@/interfaces/entities/links';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LinksTable from './components/LinksTable.vue';
 import LinksTableHeader from './components/LinksTableHeader.vue';

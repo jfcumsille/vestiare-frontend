@@ -14,3 +14,5 @@ export interface Link {
   preventRefresh: boolean
   username: string
 }
+
+export type CompleteLink = Link

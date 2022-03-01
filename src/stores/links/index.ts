@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { Link } from '@/api/interfaces/links';
+import { Link } from '@/interfaces/entities/links';
 
 export const useLinksStore = defineStore('links', {
   state: () => ({

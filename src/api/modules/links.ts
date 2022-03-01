@@ -1,5 +1,5 @@
 import client from '@/api/client';
-import { Link, CompleteLink } from '@/api/interfaces/links';
+import { Link, CompleteLink } from '@/interfaces/entities/links';
 
 export const list = async (
   organization: string,
