@@ -31,3 +31,8 @@ export const remove = async (organization: string, linkId: string) => {
     { params: { currentOrganizationId: organization } },
   );
 };
+
+export const regenerate = async (linkId: string): Promise<Link> => {
+  const response = await client.post(`/internal/v1/links/dashboard/${linkId}/regenerate_link_token`);
+  return response.data;
+};
