@@ -1,11 +1,11 @@
-import { Organization } from './organizations';
+import { IOrganization } from './organizations';
 
-export interface User {
+export interface IUser {
   authenticationToken: string
   id: string
   email: string
   name: string
   lastName: string
-  organizations: Array<Organization>
+  organizations: Array<IOrganization>
   defaultOrganizationId: string
 }

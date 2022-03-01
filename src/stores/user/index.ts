@@ -1,11 +1,11 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { User } from '@/interfaces/entities/user';
+import { IUser } from '@/interfaces/entities/user';
 import {
   useAuthenticationTokenStorage, useIdStorage, useEmailStorage, useDefaultOrganizationIdStorage,
 } from '@/services/storage';
 import * as api from '@/api';
-import { LogInOptions } from '@/interfaces/options/logIn';
-import { OptionalAuthenticationHeaders } from '@/interfaces/authentication';
+import { ILogInOptions } from '@/interfaces/options/logIn';
+import { IOptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -15,13 +15,13 @@ export const useUserStore = defineStore('user', {
     defaultOrganizationId: useDefaultOrganizationIdStorage(),
   }),
   actions: {
-    updateUserData(userData: User) {
+    updateUserData(userData: IUser) {
       this.authenticationToken = userData.authenticationToken;
       this.id = userData.id;
       this.email = userData.email;
       this.defaultOrganizationId = userData.defaultOrganizationId;
     },
-    async logIn({ email, password, token }: LogInOptions) {
+    async logIn({ email, password, token }: ILogInOptions) {
       const userData = await api.authentication.logIn({ email, password, token });
       this.updateUserData(userData);
     },
@@ -31,7 +31,7 @@ export const useUserStore = defineStore('user', {
     },
   },
   getters: {
-    authenticationHeaders: (state): OptionalAuthenticationHeaders => {
+    authenticationHeaders: (state): IOptionalAuthenticationHeaders => {
       if (state.authenticationToken && state.email) {
         return {
           Authorization: state.authenticationToken,

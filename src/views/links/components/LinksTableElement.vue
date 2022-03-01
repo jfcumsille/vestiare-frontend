@@ -2,11 +2,11 @@
 import { rutFormat } from 'rut-helpers';
 import { useUserStore } from '@/stores/user';
 import { useLinksStore } from '@/stores/links';
-import { Link } from '@/interfaces/entities/links';
+import { ILink } from '@/interfaces/entities/links';
 import GenericToggle from '@/components/GenericToggle.vue';
 import { ref } from 'vue';
 
-const $props = defineProps<{ link: Link }>();
+const $props = defineProps<{ link: ILink }>();
 
 const $userStore = useUserStore();
 const $linksStore = useLinksStore();

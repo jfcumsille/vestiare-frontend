@@ -4,7 +4,7 @@ import { rutFormat } from 'rut-helpers';
 import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
-import { Link } from '@/interfaces/entities/links';
+import { ILink } from '@/interfaces/entities/links';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LinksTable from './components/LinksTable.vue';
 import LinksTableHeader from './components/LinksTableHeader.vue';
@@ -44,7 +44,7 @@ const activeOptions = ['All', 'Active', 'Inactive'];
 const selectActiveFilter = (value: string) => {
   activeFilter.value = value;
 };
-const filterByActive = (rawLinks: Array<Link>) => {
+const filterByActive = (rawLinks: Array<ILink>) => {
   if (activeFilter.value === 'All') {
     return rawLinks;
   }
@@ -59,7 +59,7 @@ const passwordOptions = ['All', 'Valid', 'Invalid'];
 const selectPasswordFilter = (value: string) => {
   passwordFilter.value = value;
 };
-const filterByPassword = (rawLinks: Array<Link>) => {
+const filterByPassword = (rawLinks: Array<ILink>) => {
   if (passwordFilter.value === 'All') {
     return rawLinks;
   }
@@ -70,7 +70,7 @@ const filterByPassword = (rawLinks: Array<Link>) => {
 };
 
 const search = ref('');
-const linkMatchesSearchId = (link: Link, searchValue: string) => {
+const linkMatchesSearchId = (link: ILink, searchValue: string) => {
   if (link.holderId.includes(searchValue)) {
     return true;
   }
@@ -79,7 +79,7 @@ const linkMatchesSearchId = (link: Link, searchValue: string) => {
   }
   return false;
 };
-const filterBySearch = (rawLinks: Array<Link>) => {
+const filterBySearch = (rawLinks: Array<ILink>) => {
   if (search.value.trim() === '') {
     return rawLinks;
   }
