@@ -1,14 +1,15 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { Link } from '@/interfaces/entities/links';
+import { ILink } from '@/interfaces/entities/links';
+import { IJSON } from '@/interfaces/utilities/json';
 
 export const useLinksStore = defineStore('links', {
   state: () => ({
-    links: <Array<Link>>[],
+    links: <Array<ILink>>[],
     loading: false,
   }),
   actions: {
-    async getLinks(organization: string, params: Record<string, string> = {}) {
+    async getLinks(organization: string, params: IJSON = {}) {
       this.loading = true;
       this.links = [];
       let page = 1;
@@ -21,7 +22,7 @@ export const useLinksStore = defineStore('links', {
       }
       this.loading = false;
     },
-    async updateLink(organization: string, link: Link, data: Record<string, string | boolean>) {
+    async updateLink(organization: string, link: ILink, data: IJSON) {
       if (!this.links.includes(link)) {
         throw new Error('Invalid link');
       }
@@ -29,7 +30,7 @@ export const useLinksStore = defineStore('links', {
       const updatedLink = await api.links.update(organization, link.id, data);
       this.links[index] = updatedLink;
     },
-    async removeLink(organization: string, link: Link) {
+    async removeLink(organization: string, link: ILink) {
       if (!this.links.includes(link)) {
         throw new Error('Invalid link');
       }
