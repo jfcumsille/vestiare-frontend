@@ -13,12 +13,21 @@ import LinksTableElement from './components/LinksTableElement.vue';
 import SearchBar from './components/SearchBar.vue';
 import DropDown from './components/DropDown.vue';
 import LinkCreationButton from './components/LinkCreationButton.vue';
+import NewLinkModal from './components/NewLinkModal.vue';
 
 const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
 const headers = ['User', 'Business', 'Bank', 'Last Refreshed', 'Active', ''];
+
+const createdLink = ref<Link | null>(null);
+const showLink = (link: Link) => {
+  createdLink.value = link;
+};
+const stopShowingLink = () => {
+  createdLink.value = null;
+};
 
 const widgetOpened = ref(false);
 const setWidgetOpened = (value: boolean) => {
@@ -88,6 +97,11 @@ onMounted(() => {
 </script>
 
 <template>
+  <NewLinkModal
+    v-if="createdLink"
+    :link="createdLink"
+    @close="stopShowingLink"
+  />
   <div class="flex justify-center w-full">
     <div class="grow flex justify-between mt-6 mx-4 max-w-screen-2xl">
       <div class="flex my-auto">
@@ -137,6 +151,7 @@ onMounted(() => {
             holder-type="individual"
             :widget-opened="widgetOpened"
             @set-widget-opened="setWidgetOpened"
+            @show-link="showLink"
           />
           <LinkCreationButton
             :live="live"
@@ -144,6 +159,7 @@ onMounted(() => {
             holder-type="business"
             :widget-opened="widgetOpened"
             @set-widget-opened="setWidgetOpened"
+            @show-link="showLink"
           />
         </div>
         <div class="mt-2 justify-center flex my-auto">
@@ -153,6 +169,7 @@ onMounted(() => {
             holder-type="individual"
             :widget-opened="widgetOpened"
             @set-widget-opened="setWidgetOpened"
+            @show-link="showLink"
           />
           <LinkCreationButton
             :live="live"
@@ -160,6 +177,7 @@ onMounted(() => {
             holder-type="business"
             :widget-opened="widgetOpened"
             @set-widget-opened="setWidgetOpened"
+            @show-link="showLink"
           />
         </div>
       </div>

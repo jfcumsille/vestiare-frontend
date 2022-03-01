@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
+import * as api from '@/api';
+import { Link } from '@/api/interfaces/links';
 import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
@@ -12,7 +14,11 @@ const $props = defineProps<{
   holderType: 'individual' | 'business',
 }>();
 
-const $emit = defineEmits<{(e: 'set-widget-opened', value: boolean): void }>();
+const $emit = defineEmits<
+  {(e: 'set-widget-opened', value: boolean): void,
+    (e: 'show-link', link: Link): void,
+  }
+>();
 
 const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
@@ -26,9 +32,11 @@ const buttonText = computed(() => {
 
 const fintoc = ref<Fintoc | null>(null);
 
-const onSuccess = () => {
-  $linksStore.getLinks($userStore.defaultOrganizationId);
+const onSuccess = async (link: Link) => {
   $emit('set-widget-opened', false);
+  $linksStore.getLinks($userStore.defaultOrganizationId);
+  const regeneratedLink = await api.links.regenerate(link.id);
+  $emit('show-link', regeneratedLink);
 };
 
 const onExit = () => {
