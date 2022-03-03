@@ -32,6 +32,8 @@ const buttonText = computed(() => {
 
 const fintoc = ref<Fintoc | null>(null);
 
+const disabledButton = computed(() => $props.widgetOpened || (fintoc.value === null));
+
 const onSuccess = async (link: Link) => {
   $emit('set-widget-opened', false);
   $linksStore.getLinks($userStore.defaultOrganizationId);
@@ -65,7 +67,7 @@ onMounted(async () => {
 
 <template>
   <button
-    :disabled="widgetOpened || (fintoc === null)"
+    :disabled="disabledButton"
     type="button"
     class="
       py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white
@@ -73,7 +75,7 @@ onMounted(async () => {
       hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700
       focus:text-blue-700 inline-flex items-center capitalize
     "
-    :class="{ 'opacity-50': widgetOpened || (fintoc === null) }"
+    :class="{ 'opacity-50': disabledButton }"
     @click="openWidget"
   >
     {{ buttonText }}
