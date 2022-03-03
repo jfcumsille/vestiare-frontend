@@ -1,0 +1,6 @@
+# Exclude: everything
+*
+
+# Include: application files
+!dist
+!nginx

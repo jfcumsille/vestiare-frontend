@@ -1,4 +1,26 @@
 version: 2.1
+commands:
+  release:
+    parameters:
+      application-name:
+        type: string
+
+    steps:
+      - setup_remote_docker:
+          version: 20.10.11
+      - run:
+          name: Setup Heroku
+          command: curl https://cli-assets.heroku.com/install.sh | sh
+      - run:
+          name: Log in to Heroku Container Registry
+          command: heroku container:login
+      - run:
+          name: Build and push
+          command: heroku container:push --app <<parameters.application-name>> web
+      - run:
+          name: Release
+          command: heroku container:release --app <<parameters.application-name>> web
+
 jobs:
   eslint:
     docker:
@@ -85,6 +107,48 @@ jobs:
           name: Check absence of fixup commits
           command: |
             ! git log master... | grep 'fixup!'
+  staging-deploy:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Build the application
+          command: npm run build
+      - release:
+          application-name: fintoc-stg-dashboard
+  production-deploy:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Build the application
+          command: npm run build
+      - release:
+          application-name: fintoc-dashboard
 
 workflows:
   linters:
@@ -100,3 +164,17 @@ workflows:
   tidyness:
     jobs:
       - no-fixup-commits
+  staging-deploy:
+    jobs:
+      - staging-deploy:
+          filters:
+            branches:
+              only:
+                - master
+  production-deploy:
+    jobs:
+      - production-deploy:
+          filters:
+            branches:
+              only:
+                - production
