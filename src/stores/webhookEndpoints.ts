@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
+import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 
 export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
   state: () => ({

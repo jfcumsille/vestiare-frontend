@@ -2,7 +2,7 @@ export interface WebhookEndpoint {
   id: string
   description?: string
   enabledEvents: Array<string>
-  mode: string
+  mode: 'live' | 'test'
   secret: string
   status: string
   url: string

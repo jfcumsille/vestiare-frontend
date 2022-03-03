@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
+import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
 
 const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
