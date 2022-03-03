@@ -1,4 +1,21 @@
 version: 2.1
+orbs:
+  heroku: circleci/heroku@1.2.6
+
+commands:
+  release:
+    parameters:
+      application-name:
+        type: string
+
+    steps:
+      - heroku/push-docker-image:
+          api-key: HEROKU_API_KEY
+          app-name: <<parameters.application-name>>
+      - heroku/release-docker-image:
+          api-key: HEROKU_API_KEY
+          app-name: <<parameters.application-name>>
+
 jobs:
   eslint:
     docker:
@@ -85,6 +102,42 @@ jobs:
           name: Check absence of fixup commits
           command: |
             ! git log master... | grep 'fixup!'
+  staging-deploy:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - release:
+          application-name: fintoc-stg-dashboard
+  production-deploy:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - release:
+          application-name: fintoc-dashboard
 
 workflows:
   linters:
@@ -100,3 +153,17 @@ workflows:
   tidyness:
     jobs:
       - no-fixup-commits
+  staging-deploy:
+    filters:
+      branches:
+        only:
+          - master
+    jobs:
+      - staging-deploy
+  production-deploy:
+    filters:
+      branches:
+        only:
+          - production
+    jobs:
+      - production-deploy
