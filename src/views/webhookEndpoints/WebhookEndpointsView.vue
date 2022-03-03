@@ -3,6 +3,7 @@ import { onMounted, computed, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import WebhookEndpointsTable from './components/WebhookEndpointsTable.vue';
 import WebhookEndpointsTableHeader from './components/WebhookEndpointsTableHeader.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
@@ -54,21 +55,32 @@ onMounted(() => {
     </div>
   </div>
   <div class="flex justify-center w-full">
-    <WebhookEndpointsTable
-      v-if="!$webhookEndpointsStore.loading"
-      class="grow mt-6 mx-4 max-w-screen-2xl"
-    >
+    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-2xl">
       <template #header>
         <WebhookEndpointsTableHeader :headers="headers" />
       </template>
 
       <template #content>
         <WebhookEndpointsTableElement
-          v-for="webhook in webhookEndpoints"
-          :key="webhook.id"
-          :webhook="webhook"
+          v-for="webhookEndpoint in webhookEndpoints"
+          :key="webhookEndpoint.id"
+          :webhook-endpoint="webhookEndpoint"
         />
       </template>
     </WebhookEndpointsTable>
+  </div>
+  <div
+    v-if="$webhookEndpointsStore.loading"
+    class="flex justify-center w-full pt-4"
+  >
+    <LoadingSpinner />
+  </div>
+  <div
+    v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
+    class="flex justify-center w-full pt-4"
+  >
+    <p class="text-gray-900 text-3xl font-bold">
+      No Links found!
+    </p>
   </div>
 </template>

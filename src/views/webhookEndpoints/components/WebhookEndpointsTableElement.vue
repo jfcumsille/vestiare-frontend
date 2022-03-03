@@ -5,7 +5,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
 
-const $props = defineProps<{ webhook: WebhookEndpoint }>();
+const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 const updating = ref(false);
@@ -13,13 +13,13 @@ const toggleActive = async () => {
   updating.value = true;
   await $webhookEndpointsStore.updateWebhook(
     $userStore.defaultOrganizationId,
-    $props.webhook,
-    { disabled: ($props.webhook.status === 'enabled') },
+    $props.webhookEndpoint,
+    { disabled: ($props.webhookEndpoint.status === 'enabled') },
   );
   updating.value = false;
 };
 const remove = () => {
-  $webhookEndpointsStore.removeWebhook($userStore.defaultOrganizationId, $props.webhook);
+  $webhookEndpointsStore.removeWebhook($userStore.defaultOrganizationId, $props.webhookEndpoint);
 };
 </script>
 
@@ -27,27 +27,27 @@ const remove = () => {
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-gray-900">
-        {{ $props.webhook.url }}
+        {{ $props.webhookEndpoint.url }}
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-normal text-gray-600">
-        {{ $props.webhook.description }}
+        {{ $props.webhookEndpoint.description }}
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-medium">
-        {{ $props.webhook.enabledEvents.length }}
+        {{ $props.webhookEndpoint.enabledEvents.length }}
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-normal">
-        {{ $props.webhook.status === 'enabled' }}
+        {{ $props.webhookEndpoint.status === 'enabled' }}
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericToggle
-        :active="$props.webhook.status ==='enabled'"
+        :active="$props.webhookEndpoint.status ==='enabled'"
         :loading="updating"
         @toggle="toggleActive"
       />
