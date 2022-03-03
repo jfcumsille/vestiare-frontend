@@ -6,6 +6,8 @@ commands:
         type: string
 
     steps:
+      - setup_remote_docker:
+          version: 20.10.11
       - run:
           name: Setup Heroku
           command: curl https://cli-assets.heroku.com/install.sh | sh
