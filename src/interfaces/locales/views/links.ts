@@ -18,4 +18,24 @@ export interface LinksViewLocale {
       },
     },
   },
+  creation: {
+    createAction: string,
+    individualBankingLink: string,
+    businessBankingLink: string,
+    individualFiscalLink: string,
+    businessFiscalLink: string,
+  },
+  table: {
+    headers: {
+      user: string,
+      business: string,
+      institution: string,
+      lastRefreshed: string,
+      active: string,
+    },
+    buttons: {
+      remove: string,
+    },
+    noLinksFound: string,
+  },
 }

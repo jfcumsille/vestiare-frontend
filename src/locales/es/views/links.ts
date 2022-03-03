@@ -20,4 +20,24 @@ export default <LinksViewLocale>{
       },
     },
   },
+  creation: {
+    createAction: 'Crear',
+    individualBankingLink: 'Link bancario individual',
+    businessBankingLink: 'Link bancario de empresa',
+    individualFiscalLink: 'Link fiscal individual',
+    businessFiscalLink: 'Link fiscal de empresa',
+  },
+  table: {
+    headers: {
+      user: 'Usuario',
+      business: 'Empresa',
+      institution: 'Institución',
+      lastRefreshed: 'Última Actualización',
+      active: 'Activo',
+    },
+    buttons: {
+      remove: 'Borrar',
+    },
+    noLinksFound: 'No se encontraron Links!',
+  },
 };

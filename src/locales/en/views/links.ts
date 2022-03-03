@@ -20,4 +20,24 @@ export default <LinksViewLocale>{
       },
     },
   },
+  creation: {
+    createAction: 'Create',
+    individualBankingLink: 'individual banking Link',
+    businessBankingLink: 'business banking Link',
+    individualFiscalLink: 'individual fiscal Link',
+    businessFiscalLink: 'business fiscal Link',
+  },
+  table: {
+    headers: {
+      user: 'User',
+      business: 'Business',
+      institution: 'Institution',
+      lastRefreshed: 'Last Refreshed',
+      active: 'Active',
+    },
+    buttons: {
+      remove: 'Remove',
+    },
+    noLinksFound: 'No Links found!',
+  },
 };

@@ -14,13 +14,11 @@ import NewLinkModal from './components/NewLinkModal.vue';
 import LinkFilters from './components/LinkFilters.vue';
 import LinkCreation from './components/LinkCreation.vue';
 
+const $t = useTranslation('views.links');
+
 const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
-
-const $t = useTranslation('views.links.filters');
-
-const headers = ['User', 'Business', 'Institution', 'Last Refreshed', 'Active', ''];
 
 const createdLinkToken = ref<string | null>(null);
 const showLinkToken = (linkToken: string) => {
@@ -128,7 +126,7 @@ onMounted(() => {
   <div class="flex justify-center w-full">
     <LinksTable class="grow mt-6 mx-4 max-w-screen-2xl">
       <template #header>
-        <LinksTableHeader :headers="headers" />
+        <LinksTableHeader />
       </template>
 
       <template #content>
@@ -151,7 +149,7 @@ onMounted(() => {
     class="flex justify-center w-full pt-4"
   >
     <p class="text-gray-900 text-3xl font-bold">
-      No Links found!
+      {{ $t('table.noLinksFound') }}
     </p>
   </div>
 </template>
