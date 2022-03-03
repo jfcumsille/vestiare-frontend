@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { rutFormat } from 'rut-helpers';
+import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
@@ -16,6 +17,8 @@ import LinkCreation from './components/LinkCreation.vue';
 const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
+
+const $t = useTranslation('views.links.filters');
 
 const headers = ['User', 'Business', 'Institution', 'Last Refreshed', 'Active', ''];
 
@@ -39,31 +42,31 @@ const toggleLive = () => {
 
 const links = computed(() => (live.value ? $linksStore.liveLinks : $linksStore.testLinks));
 
-const activeFilter = ref('All');
-const activeOptions = ['All', 'Active', 'Inactive'];
+const activeFilter = ref('all');
+const activeOptions = ['all', 'valid', 'invalid'];
 const selectActiveFilter = (value: string) => {
   activeFilter.value = value;
 };
 const filterByActive = (rawLinks: Array<Link>) => {
-  if (activeFilter.value === 'All') {
+  if (activeFilter.value === 'all') {
     return rawLinks;
   }
-  if (activeFilter.value === 'Active') {
+  if (activeFilter.value === 'valid') {
     return rawLinks.filter((link) => link.active);
   }
   return rawLinks.filter((link) => !link.active);
 };
 
-const passwordFilter = ref('All');
-const passwordOptions = ['All', 'Valid', 'Invalid'];
+const passwordFilter = ref('all');
+const passwordOptions = ['all', 'valid', 'invalid'];
 const selectPasswordFilter = (value: string) => {
   passwordFilter.value = value;
 };
 const filterByPassword = (rawLinks: Array<Link>) => {
-  if (passwordFilter.value === 'All') {
+  if (passwordFilter.value === 'all') {
     return rawLinks;
   }
-  if (passwordFilter.value === 'Valid') {
+  if (passwordFilter.value === 'valid') {
     return rawLinks.filter((link) => !link.preventRefresh);
   }
   return rawLinks.filter((link) => link.preventRefresh);

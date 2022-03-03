@@ -7,8 +7,8 @@ export default <LinksViewLocale>{
       label: 'Active',
       options: {
         all: 'All',
-        active: 'Active',
-        inactive: 'Inactive',
+        valid: 'Active',
+        invalid: 'Inactive',
       },
     },
     password: {

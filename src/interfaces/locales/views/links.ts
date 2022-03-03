@@ -5,8 +5,8 @@ export interface LinksViewLocale {
       label: string,
       options: {
         all: string,
-        active: string,
-        inactive: string
+        valid: string,
+        invalid: string
       },
     },
     password: {
