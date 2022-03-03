@@ -22,7 +22,7 @@ approval_rules:
         mode: random-users
     requires:
       count: 1
-      teams: ["paulamardones", "daleal", "parayab"]
+      users: ["paulamardones", "daleal", "parayab"]
   - name: a fintoc front maintainer has approved
     if:
       has_not_labels:
