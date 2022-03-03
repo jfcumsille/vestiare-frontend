@@ -120,6 +120,24 @@ jobs:
             - node_modules
       - release:
           application-name: fintoc-stg-dashboard
+  preview-deploy:
+    docker:
+      - image: cimg/node:16.14
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - node-modules-cache-{{ checksum "package-lock.json" }}
+          - node-modules-cache-
+      - run:
+          name: Install dependencies
+          command: npm ci
+      - save_cache:
+          key: node-modules-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - release:
+          application-name: fintoc-stg-dashboard
   production-deploy:
     docker:
       - image: cimg/node:16.14
@@ -153,6 +171,13 @@ workflows:
   tidyness:
     jobs:
       - no-fixup-commits
+  preview-deploy:
+    filters:
+      branches:
+        only:
+          - chore/implement-cd
+    jobs:
+      - preview-deploy
   staging-deploy:
     filters:
       branches:
