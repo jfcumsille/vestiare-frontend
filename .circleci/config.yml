@@ -172,23 +172,23 @@ workflows:
     jobs:
       - no-fixup-commits
   preview-deploy:
-    filters:
-      branches:
-        only:
-          - chore/implement-cd
     jobs:
-      - preview-deploy
+      - preview-deploy:
+          filters:
+            branches:
+              only:
+                - chore/implement-cd
   staging-deploy:
-    filters:
-      branches:
-        only:
-          - master
     jobs:
-      - staging-deploy
+      - staging-deploy:
+          filters:
+            branches:
+              only:
+                - master
   production-deploy:
-    filters:
-      branches:
-        only:
-          - production
     jobs:
-      - production-deploy
+      - production-deploy:
+          filters:
+            branches:
+              only:
+                - production
