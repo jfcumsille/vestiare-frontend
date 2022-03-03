@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
 
 const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
+
+const $t = useTranslation('views.webhookEndpoints.table.buttons');
+
 const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
+
 const updating = ref(false);
+
 const toggleActive = async () => {
   updating.value = true;
   await $webhookEndpointsStore.updateWebhook(
@@ -18,6 +24,7 @@ const toggleActive = async () => {
   );
   updating.value = false;
 };
+
 const remove = () => {
   $webhookEndpointsStore.removeWebhook($userStore.defaultOrganizationId, $props.webhookEndpoint);
 };
@@ -41,11 +48,6 @@ const remove = () => {
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      <p class="font-normal">
-        {{ $props.webhookEndpoint.status === 'enabled' }}
-      </p>
-    </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericToggle
         :active="$props.webhookEndpoint.status ==='enabled'"
         :loading="updating"
@@ -56,7 +58,7 @@ const remove = () => {
       <a
         class="text-red-600 cursor-pointer hover:underline"
         @click="remove"
-      >Remove</a>
+      >{{ $t('remove') }}</a>
     </td>
   </tr>
 </template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue';
+import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
@@ -8,10 +9,10 @@ import WebhookEndpointsTable from './components/WebhookEndpointsTable.vue';
 import WebhookEndpointsTableHeader from './components/WebhookEndpointsTableHeader.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
 
+const $t = useTranslation('views.webhookEndpoints');
+
 const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
-
-const headers = ['URL', 'Description', '# Subscribed events', 'Active', '', ''];
 
 const live = ref(true);
 const toggleLive = () => {
@@ -57,7 +58,7 @@ onMounted(() => {
   <div class="flex justify-center w-full">
     <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-2xl">
       <template #header>
-        <WebhookEndpointsTableHeader :headers="headers" />
+        <WebhookEndpointsTableHeader />
       </template>
 
       <template #content>
@@ -80,7 +81,7 @@ onMounted(() => {
     class="flex justify-center w-full pt-4"
   >
     <p class="text-gray-900 text-3xl font-bold">
-      No Links found!
+      {{ $t('table.noWebhookEndpointsFound') }}
     </p>
   </div>
 </template>
