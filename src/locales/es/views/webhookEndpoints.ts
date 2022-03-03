@@ -5,7 +5,7 @@ export default <WebhookEndpointsViewLocale>{
     headers: {
       url: 'URL',
       description: 'Descripción',
-      subscribedEventsAmount: '# Eventos Subscritos',
+      subscribedEventsAmount: 'Nº Eventos Suscritos',
       active: 'Activo',
     },
     buttons: {
