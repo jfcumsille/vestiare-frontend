@@ -1,9 +1,10 @@
 import client from '@/api/client';
-import { Link, CompleteLink } from '@/api/interfaces/links';
+import { Link, CompleteLink } from '@/interfaces/entities/links';
+import { Json } from '@/interfaces/utilities/json';
 
 export const list = async (
   organization: string,
-  params: Record<string, string | number> = {},
+  params: Json = {},
 ): Promise<Array<Link>> => {
   const response = await client.get(
     '/internal/v1/links/dashboard',
@@ -15,7 +16,7 @@ export const list = async (
 export const update = async (
   organization: string,
   linkId: string,
-  data: Record<string, string | boolean>,
+  data: Json,
 ): Promise<Link> => {
   const response = await client.put(
     `/internal/v1/links/dashboard/${linkId}`,

@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
 import * as api from '@/api';
-import { Link } from '@/api/interfaces/links';
+import { Link } from '@/interfaces/entities/links';
 import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';

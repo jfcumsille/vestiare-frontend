@@ -1,5 +1,5 @@
 import client from '@/api/client';
-import { APIKey } from '@/api/interfaces/apiKeys';
+import { APIKey } from '@/interfaces/entities/apiKeys';
 
 export const list = async (
   organization: string,

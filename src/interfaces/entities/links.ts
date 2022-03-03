@@ -8,7 +8,7 @@ export interface Link {
   holderName: string
   holderType: string
   institution: Institution
-  mode: string
+  mode: 'live' | 'test'
   preventRefresh: boolean
   username: string
   lastTimeRefreshed: string | null

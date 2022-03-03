@@ -1,4 +1,6 @@
-export default {
+import { FormsLocale } from '@/interfaces/locales/forms';
+
+export default <FormsLocale>{
   userData: {
     labels: {
       username: 'Username',
@@ -10,5 +12,4 @@ export default {
     },
     logIn: 'Log In!',
   },
-
 };

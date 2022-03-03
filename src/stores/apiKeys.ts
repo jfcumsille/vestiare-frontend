@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { APIKey } from '@/api/interfaces/apiKeys';
+import { APIKey } from '@/interfaces/entities/apiKeys';
 
 export const useAPIKeysStore = defineStore('apiKeys', {
   state: () => ({

@@ -1,5 +1,5 @@
 import client from '@/api/client';
-import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
+import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 
 export const list = async (organization: string): Promise<WebhookEndpoint[]> => {
   const params = { currentOrganizationId: organization };

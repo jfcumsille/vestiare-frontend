@@ -1,10 +1,11 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { User } from '@/api/interfaces/user';
+import { User } from '@/interfaces/entities/user';
 import {
   useAuthenticationTokenStorage, useIdStorage, useEmailStorage, useDefaultOrganizationIdStorage,
 } from '@/services/storage';
 import * as api from '@/api';
-import { LogInOptions, OptionalAuthenticationHeaders } from './interfaces';
+import { LogInOptions } from '@/interfaces/options/logIn';
+import { OptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
