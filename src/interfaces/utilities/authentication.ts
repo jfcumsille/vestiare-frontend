@@ -1,6 +1,6 @@
-export interface IAuthenticationHeaders {
+export interface AuthenticationHeaders {
   Authorization: string
   'X-User-Email': string
 }
 
-export type IOptionalAuthenticationHeaders = IAuthenticationHeaders | Record<string, never>
+export type OptionalAuthenticationHeaders = AuthenticationHeaders | Record<string, never>

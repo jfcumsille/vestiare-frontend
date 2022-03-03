@@ -1,3 +1,3 @@
-export interface IJSON {
-  [any: string]: string | number | boolean | null | IJSON
+export interface Json {
+  [any: string]: string | number | boolean | null | Json
 }

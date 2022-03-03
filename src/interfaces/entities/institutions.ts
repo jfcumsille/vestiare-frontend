@@ -1,4 +1,4 @@
-export interface IInstitution {
+export interface Institution {
   id: string
   country: string
   name: string

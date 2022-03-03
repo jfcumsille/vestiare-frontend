@@ -1,4 +1,4 @@
-export interface IOrganization {
+export interface Organization {
   id: string
   name: string
   refreshIntervalSec: number

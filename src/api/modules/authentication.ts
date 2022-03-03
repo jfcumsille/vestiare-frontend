@@ -1,8 +1,8 @@
 import client from '@/api/client';
-import { IUser } from '@/interfaces/entities/user';
-import { ILogInOptions } from '@/interfaces/options/logIn';
+import { User } from '@/interfaces/entities/user';
+import { LogInOptions } from '@/interfaces/options/logIn';
 
-export const logIn = async ({ email, password, token }: ILogInOptions): Promise<IUser> => {
+export const logIn = async ({ email, password, token }: LogInOptions): Promise<User> => {
   const response = await client.post('/internal/v1/sessions', { email, password, token });
   return response.data;
 };

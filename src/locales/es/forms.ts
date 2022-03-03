@@ -1,6 +1,6 @@
-import { IFormsLocale } from '@/interfaces/locales/forms';
+import { FormsLocale } from '@/interfaces/locales/forms';
 
-export default <IFormsLocale>{
+export default <FormsLocale>{
   userData: {
     labels: {
       username: 'Nombre de usuario',

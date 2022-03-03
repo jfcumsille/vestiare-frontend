@@ -1,4 +1,4 @@
-export interface IFormsLocale {
+export interface FormsLocale {
   userData: {
     labels: {
       username: string,

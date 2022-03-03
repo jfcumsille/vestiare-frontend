@@ -1,13 +1,13 @@
-import { IInstitution } from './institutions';
+import { Institution } from './institutions';
 
-export interface ILink {
+export interface Link {
   id: string
   active: boolean
   createdAt: string
   holderId: string
   holderName: string
   holderType: string
-  institution: IInstitution
+  institution: Institution
   lastTimeRefreshed?: string
   linkToken?: string
   mode: string
