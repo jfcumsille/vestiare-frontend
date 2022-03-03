@@ -1,32 +1,33 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
-import GenericToggle from '@/components/GenericToggle.vue';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import GenericToggle from '@/components/GenericToggle.vue';
 import WebhookEndpointsTable from './components/WebhookEndpointsTable.vue';
 import WebhookEndpointsTableHeader from './components/WebhookEndpointsTableHeader.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
 
 const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
+
 const headers = ['URL', 'Description', '# Subscribed events', 'Active', '', ''];
 
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
 };
-onMounted(() => {
-  $webhookEndpointsStore.get($userStore.defaultOrganizationId, 'live');
-  $webhookEndpointsStore.get($userStore.defaultOrganizationId, 'test');
-});
 
-const webhookEndpointsList = computed(
+const webhookEndpoints = computed(
   () => (
     live.value
       ? $webhookEndpointsStore.liveWebhookEndpoints
       : $webhookEndpointsStore.testWebhookEndpoints
   ),
 );
+
+onMounted(() => {
+  $webhookEndpointsStore.getWebhookEndpoints($userStore.defaultOrganizationId);
+});
 </script>
 
 <template>
@@ -63,7 +64,7 @@ const webhookEndpointsList = computed(
 
       <template #content>
         <WebhookEndpointsTableElement
-          v-for="webhook in webhookEndpointsList"
+          v-for="webhook in webhookEndpoints"
           :key="webhook.id"
           :webhook="webhook"
         />

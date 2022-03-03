@@ -4,16 +4,13 @@ import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
 
 export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
   state: () => ({
-    liveWebhookEndpoints: [] as WebhookEndpoint[],
-    testWebhookEndpoints: [] as WebhookEndpoint[],
+    webhookEndpoints: <Array<WebhookEndpoint>>[],
     loading: true,
   }),
   actions: {
-    async get(organization: string, mode: string) {
+    async getWebhookEndpoints(organization: string) {
       this.loading = true;
-      const webhookEndpointsList = await api.webhookEndpoints.list(organization, mode);
-      const key = mode === 'test' ? 'testWebhookEndpoints' : 'liveWebhookEndpoints';
-      this[key] = webhookEndpointsList;
+      this.webhookEndpoints = await api.webhookEndpoints.list(organization);
       this.loading = false;
     },
     async updateWebhook(
@@ -21,33 +18,38 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
       webhookEndpoint: WebhookEndpoint,
       data: Record<string, boolean>,
     ) {
-      const key = webhookEndpoint.mode === 'test' ? 'testWebhookEndpoints' : 'liveWebhookEndpoints';
-      if (!this[key].includes(webhookEndpoint)) {
-        throw new Error('Invalid Webhook Endpoint');
+      if (!this.webhookEndpoints.includes(webhookEndpoint)) {
+        throw new Error('Invalid webhook endpoint');
       }
-      const index = this[key].indexOf(webhookEndpoint);
+      const index = this.webhookEndpoints.indexOf(webhookEndpoint);
       const updatedWebhook = await api.webhookEndpoints.update(
         organization,
         webhookEndpoint.id,
         webhookEndpoint.mode,
         data,
       );
-      this[key][index] = updatedWebhook;
+      this.webhookEndpoints[index] = updatedWebhook;
     },
 
     async removeWebhook(organization: string, webhookEndpoint: WebhookEndpoint) {
-      const key = webhookEndpoint.mode === 'test' ? 'testWebhookEndpoints' : 'liveWebhookEndpoints';
-      if (!this[key].includes(webhookEndpoint)) {
-        throw new Error('Invalid Webhook Endpoint');
+      if (!this.webhookEndpoints.includes(webhookEndpoint)) {
+        throw new Error('Invalid webhook endpoint');
       }
-      const index = this[key].indexOf(webhookEndpoint);
+      const index = this.webhookEndpoints.indexOf(webhookEndpoint);
       await api.webhookEndpoints.remove(organization, webhookEndpoint.id, webhookEndpoint.mode);
-      this[key] = [
-        ...this[key].slice(0, index),
-        ...this[key].slice(index + 1),
+      this.webhookEndpoints = [
+        ...this.webhookEndpoints.slice(0, index),
+        ...this.webhookEndpoints.slice(index + 1),
       ];
     },
-
+  },
+  getters: {
+    liveWebhookEndpoints: (state) => state.webhookEndpoints.filter(
+      (webhookEndpoint) => webhookEndpoint.mode === 'live',
+    ),
+    testWebhookEndpoints: (state) => state.webhookEndpoints.filter(
+      (webhookEndpoint) => webhookEndpoint.mode === 'test',
+    ),
   },
 });
 

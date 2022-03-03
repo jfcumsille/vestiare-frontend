@@ -1,10 +1,16 @@
 import client from '@/api/client';
 import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
 
-export const list = async (organization: string, mode: string): Promise<WebhookEndpoint[]> => {
-  const params = { currentOrganizationId: organization, mode };
-  const response = await client.get('/internal/v1/webhook_endpoints', { params });
-  return response.data;
+export const list = async (organization: string): Promise<WebhookEndpoint[]> => {
+  const params = { currentOrganizationId: organization };
+  const livePromise = client.get('/internal/v1/webhook_endpoints', {
+    params: { ...params, mode: 'live' },
+  });
+  const testPromise = client.get('/internal/v1/webhook_endpoints', {
+    params: { ...params, mode: 'test' },
+  });
+  const responses = await Promise.all([livePromise, testPromise]);
+  return [].concat(...responses.map((response) => response.data));
 };
 
 export const update = async (
