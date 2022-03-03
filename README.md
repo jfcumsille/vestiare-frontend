@@ -6,6 +6,18 @@
 
 **We will be using `npm` for this repository**. I pinned the minimum `npm` version to `v8.0.0` so that we have almost the same `npm` version and the `package-lock.json` file doesn't get messed up every time someone runs `npm install`. Also, you need `node` with a version equal or higher than `16.0.0`.
 
+## Environment
+
+**Doppler comes configured with this project**. This means that you can use the default development environment variables just by running any command after `doppler run --`. For example, to build the application on your machine using the default `dev` environment from Doppler you should have to run the following command:
+
+```sh
+$ doppler run -- npm run build
+```
+
+This is important, as **every command can be run using Doppler**.
+
+You can also use a custom environment by skipping on the Doppler command and instead creating a `.env` file.
+
 ## Running the dev server
 
 To run the dev server, just execute:
