@@ -1,5 +1,10 @@
 version: 2.1
 commands:
+  install-doppler:
+    steps:
+      - run:
+          name: Install Doppler CLI
+          command: curl -Ls https://cli.doppler.com/install.sh | sudo sh
   release:
     parameters:
       application-name:
@@ -76,9 +81,10 @@ jobs:
           key: node-modules-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
+      - install-doppler
       - run:
           name: Build the application
-          command: npm run build
+          command: doppler run --token $CI_DOPPLER_TOKEN --config ci -- npm run build
   jest:
     docker:
       - image: cimg/node:16.14
@@ -95,9 +101,10 @@ jobs:
           key: node-modules-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
+      - install-doppler
       - run:
           name: Test with Jest
-          command: npm run test:jest
+          command: doppler run --token $CI_DOPPLER_TOKEN --config ci -- npm run test:jest
   no-fixup-commits:
     docker:
       - image: cimg/node:16.14
@@ -123,9 +130,10 @@ jobs:
           key: node-modules-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
+      - install-doppler
       - run:
           name: Build the application
-          command: npm run build
+          command: doppler run --token $STG_DOPPLER_TOKEN --config stg -- npm run build
       - release:
           application-name: fintoc-stg-dashboard
   production-deploy:
@@ -144,9 +152,10 @@ jobs:
           key: node-modules-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
+      - install-doppler
       - run:
           name: Build the application
-          command: npm run build
+          command: doppler run --token $PRD_DOPPLER_TOKEN --config prd -- npm run build
       - release:
           application-name: fintoc-dashboard
 
