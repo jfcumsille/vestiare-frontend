@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useTranslation } from '@/locales';
 import GenericCross from '@/components/GenericCross.vue';
+
+const $t = useTranslation('views.links.creation.modal');
 
 const $props = defineProps<{
   linkToken: string,
@@ -13,7 +16,7 @@ const close = () => {
 </script>
 
 <template>
-  <div class="fixed right-0 left-0 z-50 w-screen h-screen">
+  <div class="fixed left-0 top-0 z-50 w-screen h-screen">
     <div
       class="
         flex overflow-y-auto overflow-x-hidden justify-center items-center
@@ -24,7 +27,7 @@ const close = () => {
         <div class="relative bg-white rounded-lg shadow">
           <div class="flex justify-between items-start p-5 rounded-t border-b">
             <h3 class="text-xl font-semibold text-gray-900 lg:text-2xl">
-              Link created succesfully!
+              {{ $t('title') }}
             </h3>
             <button
               class="
@@ -41,11 +44,12 @@ const close = () => {
             </button>
           </div>
           <div class="p-6 space-y-6">
-            <p class="text-base leading-relaxed text-gray-500">
-              This Link Token will <span class="font-bold">only be showed once</span>,
-              so <span class="font-bold">make sure to copy and save it</span>.
-              Your Link Token is:
-            </p>
+            <!-- eslint-disable vue/no-v-html -->
+            <p
+              class="text-base leading-relaxed text-gray-500"
+              v-html="$t('contentHTML')"
+            />
+            <!-- eslint-enable vue/no-v-html -->
             <p class="text-base leading-relaxed text-black font-bold">
               {{ $props.linkToken }}
             </p>

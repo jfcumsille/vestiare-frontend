@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import { useTranslation } from '@/locales';
 
 const $props = defineProps<{
   name: string,
   selected: string,
   options: Array<string>,
+  translationNamespace: string,
 }>();
 
 const $emit = defineEmits<{(e: 'select', selected: string): void }>();
+
+const $t = useTranslation(`${$props.translationNamespace}.options`);
 
 const opened = ref(false);
 const dropDown = ref(null);
@@ -40,7 +44,7 @@ onClickOutside(dropDown, () => {
       "
       @click="toggle"
     >
-      {{ name }} - {{ selected }} <svg
+      {{ name }} - {{ $t(selected) }} <svg
         class="ml-2 w-4 h-4"
         fill="none"
         stroke="currentColor"
@@ -70,7 +74,7 @@ onClickOutside(dropDown, () => {
             class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
             @click="() => select(option)"
           >
-            {{ option }}
+            {{ $t(option) }}
           </span>
         </li>
       </ul>

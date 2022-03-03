@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { rutFormat } from 'rut-helpers';
+import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
@@ -7,6 +8,8 @@ import GenericToggle from '@/components/GenericToggle.vue';
 import { ref } from 'vue';
 
 const $props = defineProps<{ link: Link }>();
+
+const $t = useTranslation('views.links.table.buttons');
 
 const $userStore = useUserStore();
 const $linksStore = useLinksStore();
@@ -78,7 +81,7 @@ const remove = () => {
       <a
         class="text-red-600 cursor-pointer hover:underline"
         @click="remove"
-      >Remove</a>
+      >{{ $t('remove') }}</a>
     </td>
   </tr>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
+import { useTranslation } from '@/locales';
 import * as api from '@/api';
 import { Link } from '@/interfaces/entities/links';
 import { useUserStore } from '@/stores/user';
@@ -20,14 +21,16 @@ const $emit = defineEmits<
   }
 >();
 
+const $t = useTranslation('views.links.creation');
+
 const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
 const apiKey = computed(() => $apiKeysStore.searchKey(true, $props.live ? 'live' : 'test'));
 const buttonText = computed(() => {
-  const productTransformation = $props.product === 'movements' ? 'banking' : 'fiscal';
-  return `Create ${productTransformation} ${$props.holderType} Link!`;
+  const productTransformation = $props.product === 'movements' ? 'Banking' : 'Fiscal';
+  return `${$t('createAction')} ${$t(`${$props.holderType}${productTransformation}Link`)}!`;
 });
 
 const fintoc = ref<Fintoc | null>(null);
@@ -73,7 +76,7 @@ onMounted(async () => {
       py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white
       rounded-lg border border-gray-200 hover:bg-gray-100
       hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700
-      focus:text-blue-700 inline-flex items-center capitalize
+      focus:text-blue-700 inline-flex items-center
     "
     :class="{ 'opacity-50': disabledButton }"
     @click="openWidget"

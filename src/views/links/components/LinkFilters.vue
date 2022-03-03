@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTranslation } from '@/locales';
 import GenericToggle from '@/components/GenericToggle.vue';
 import SearchBar from './SearchBar.vue';
 import DropDown from './DropDown.vue';
@@ -11,6 +12,8 @@ const $props = defineProps<{
   passwordOptions: Array<string>,
   live: boolean,
 }>();
+
+const $t = useTranslation('views.links.filters');
 
 const $emit = defineEmits<{(e: 'update:search', value: string): void,
   (e: 'select-active-filter', value: string): void,
@@ -26,20 +29,22 @@ const onInput = ($event: Event) => {
 <template>
   <div class="flex my-auto">
     <SearchBar
-      placeholder="Search for a user ID"
+      :placeholder="$t('searchBarPlaceholder')"
       :model-value="$props.search"
       @input="onInput"
     />
     <DropDown
       class="ml-4 my-auto"
-      name="Active"
+      translation-namespace="views.links.filters.active"
+      :name="$t('active.label')"
       :selected="$props.activeFilter"
       :options="$props.activeOptions"
       @select="(value: string) => $emit('select-active-filter', value)"
     />
     <DropDown
       class="ml-4 my-auto"
-      name="Password"
+      translation-namespace="views.links.filters.password"
+      :name="$t('password.label')"
       :selected="$props.passwordFilter"
       :options="$props.passwordOptions"
       @select="(value: string) => $emit('select-password-filter', value)"
