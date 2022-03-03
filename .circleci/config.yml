@@ -1,7 +1,4 @@
 version: 2.1
-orbs:
-  heroku: circleci/heroku@1.2.6
-
 commands:
   release:
     parameters:
@@ -9,12 +6,18 @@ commands:
         type: string
 
     steps:
-      - heroku/push-docker-image:
-          api-key: HEROKU_API_KEY
-          app-name: <<parameters.application-name>>
-      - heroku/release-docker-image:
-          api-key: HEROKU_API_KEY
-          app-name: <<parameters.application-name>>
+      - run:
+          name: Setup Heroku
+          command: curl https://cli-assets.heroku.com/install.sh | sh
+      - run:
+          name: Log in to Heroku Container Registry
+          command: heroku container:login
+      - run:
+          name: Build and push
+          command: heroku container:push --app <<parameters.application-name>> web
+      - run:
+          name: Release
+          command: heroku container:release --app <<parameters.application-name>> web
 
 jobs:
   eslint:
