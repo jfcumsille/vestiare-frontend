@@ -1,24 +1,24 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { Webhook } from '@/api/interfaces/webhooks';
+import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
 
-export const useWebhooksStore = defineStore('webhooks', {
+export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
   state: () => ({
-    liveWebhookEndpoints: [] as Webhook[],
-    testWebhookEndpoints: [] as Webhook[],
+    liveWebhookEndpoints: [] as WebhookEndpoint[],
+    testWebhookEndpoints: [] as WebhookEndpoint[],
     loading: true,
   }),
   actions: {
     async get(organization: string, mode: string) {
       this.loading = true;
-      const webhooksList = await api.webhooks.list(organization, mode);
+      const webhookEndpointsList = await api.webhookEndpoints.list(organization, mode);
       const key = mode === 'test' ? 'testWebhookEndpoints' : 'liveWebhookEndpoints';
-      this[key] = webhooksList;
+      this[key] = webhookEndpointsList;
       this.loading = false;
     },
     async updateWebhook(
       organization: string,
-      webhookEndpoint: Webhook,
+      webhookEndpoint: WebhookEndpoint,
       data: Record<string, boolean>,
     ) {
       const key = webhookEndpoint.mode === 'test' ? 'testWebhookEndpoints' : 'liveWebhookEndpoints';
@@ -26,7 +26,7 @@ export const useWebhooksStore = defineStore('webhooks', {
         throw new Error('Invalid Webhook Endpoint');
       }
       const index = this[key].indexOf(webhookEndpoint);
-      const updatedWebhook = await api.webhooks.update(
+      const updatedWebhook = await api.webhookEndpoints.update(
         organization,
         webhookEndpoint.id,
         webhookEndpoint.mode,
@@ -35,13 +35,13 @@ export const useWebhooksStore = defineStore('webhooks', {
       this[key][index] = updatedWebhook;
     },
 
-    async removeWebhook(organization: string, webhookEndpoint: Webhook) {
+    async removeWebhook(organization: string, webhookEndpoint: WebhookEndpoint) {
       const key = webhookEndpoint.mode === 'test' ? 'testWebhookEndpoints' : 'liveWebhookEndpoints';
       if (!this[key].includes(webhookEndpoint)) {
         throw new Error('Invalid Webhook Endpoint');
       }
       const index = this[key].indexOf(webhookEndpoint);
-      await api.webhooks.remove(organization, webhookEndpoint.id, webhookEndpoint.mode);
+      await api.webhookEndpoints.remove(organization, webhookEndpoint.id, webhookEndpoint.mode);
       this[key] = [
         ...this[key].slice(0, index),
         ...this[key].slice(index + 1),
@@ -49,10 +49,8 @@ export const useWebhooksStore = defineStore('webhooks', {
     },
 
   },
-  getters: {
-  },
 });
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useWebhooksStore, import.meta.hot));
+  import.meta.hot.accept(acceptHMRUpdate(useWebhookEndpointsStore, import.meta.hot));
 }

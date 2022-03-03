@@ -1,4 +1,4 @@
-export interface Webhook {
+export interface WebhookEndpoint {
   id: string
   description?: string
   enabledEvents: Array<string>

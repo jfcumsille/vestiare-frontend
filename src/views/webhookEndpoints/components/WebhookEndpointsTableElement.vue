@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
 import { ref } from 'vue';
-import { useWebhooksStore } from '@/stores/webhooks';
-import { Webhook } from '@/api/interfaces/webhooks';
+import { useUserStore } from '@/stores/user';
+import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import { WebhookEndpoint } from '@/api/interfaces/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
 
-const $props = defineProps<{ webhook: Webhook }>();
+const $props = defineProps<{ webhook: WebhookEndpoint }>();
 const $userStore = useUserStore();
-const $webhooksStore = useWebhooksStore();
+const $webhookEndpointsStore = useWebhookEndpointsStore();
 const updating = ref(false);
 const toggleActive = async () => {
   updating.value = true;
-  await $webhooksStore.updateWebhook(
+  await $webhookEndpointsStore.updateWebhook(
     $userStore.defaultOrganizationId,
     $props.webhook,
     { disabled: ($props.webhook.status === 'enabled') },
@@ -19,7 +19,7 @@ const toggleActive = async () => {
   updating.value = false;
 };
 const remove = () => {
-  $webhooksStore.removeWebhook($userStore.defaultOrganizationId, $props.webhook);
+  $webhookEndpointsStore.removeWebhook($userStore.defaultOrganizationId, $props.webhook);
 };
 </script>
 
@@ -30,7 +30,7 @@ const remove = () => {
         {{ $props.webhook.url }}
       </p>
     </td>
-    <td>
+    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-normal text-gray-600">
         {{ $props.webhook.description }}
       </p>
@@ -45,7 +45,7 @@ const remove = () => {
         {{ $props.webhook.status === 'enabled' }}
       </p>
     </td>
-    <td>
+    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericToggle
         :active="$props.webhook.status ==='enabled'"
         :loading="updating"
