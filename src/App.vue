@@ -5,6 +5,8 @@ import { useLocaleStore } from '@/stores/locale';
 
 const $store = useLocaleStore();
 
+const brandLink = { text: 'Fintoc', path: '/links' };
+
 const navBarLinks = [
   {
     text: 'Links',
@@ -18,6 +20,9 @@ const navBarLinks = [
 </script>
 
 <template>
-  <NavBar :links="navBarLinks" />
+  <NavBar
+    :brand="brandLink"
+    :links="navBarLinks"
+  />
   <router-view :key="$store.language" />
 </template>
