@@ -26,6 +26,16 @@ export default <LinksViewLocale>{
     businessBankingLink: 'Link bancario de empresa',
     individualFiscalLink: 'Link fiscal individual',
     businessFiscalLink: 'Link fiscal de empresa',
+    modal: {
+      title: 'Link creado exitosamente!',
+      contentHTML: `
+        Este Link Token será mostrado
+        <span class="font-bold">solamente una vez</span>,
+        por lo que
+        <span class="font-bold">debes asegurarte de copiarlo y guardarlo</span>.
+        Tu Link Token es:
+      `,
+    },
   },
   table: {
     headers: {

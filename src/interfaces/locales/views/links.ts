@@ -24,6 +24,10 @@ export interface LinksViewLocale {
     businessBankingLink: string,
     individualFiscalLink: string,
     businessFiscalLink: string,
+    modal: {
+      title: string,
+      contentHTML: string,
+    },
   },
   table: {
     headers: {
