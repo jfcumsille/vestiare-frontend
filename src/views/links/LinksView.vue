@@ -2,25 +2,41 @@
 import { computed, onMounted, ref } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useUserStore } from '@/stores/user';
+import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/api/interfaces/links';
-import GenericToggle from '@/components/GenericToggle.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LinksTable from './components/LinksTable.vue';
 import LinksTableHeader from './components/LinksTableHeader.vue';
 import LinksTableElement from './components/LinksTableElement.vue';
-import SearchBar from './components/SearchBar.vue';
-import DropDown from './components/DropDown.vue';
+import NewLinkModal from './components/NewLinkModal.vue';
+import LinkFilters from './components/LinkFilters.vue';
+import LinkCreation from './components/LinkCreation.vue';
 
 const $userStore = useUserStore();
+const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
-const headers = ['User', 'Business', 'Bank', 'Last Refreshed', 'Active', ''];
+const headers = ['User', 'Business', 'Institution', 'Last Refreshed', 'Active', ''];
+
+const createdLinkToken = ref<string | null>(null);
+const showLinkToken = (linkToken: string) => {
+  createdLinkToken.value = linkToken;
+};
+const stopShowingLink = () => {
+  createdLinkToken.value = null;
+};
+
+const widgetOpened = ref(false);
+const setWidgetOpened = (value: boolean) => {
+  widgetOpened.value = value;
+};
 
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
 };
+
 const links = computed(() => (live.value ? $linksStore.liveLinks : $linksStore.testLinks));
 
 const activeFilter = ref('All');
@@ -70,55 +86,40 @@ const filterBySearch = (rawLinks: Array<Link>) => {
   return rawLinks.filter((link) => linkMatchesSearchId(link, search.value.trim()));
 };
 
-const filteredLinks = computed(() => filterByActive(filterByPassword(filterBySearch(links.value))));
+const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
 
-onMounted(() => $linksStore.getLinks($userStore.defaultOrganizationId));
+onMounted(() => {
+  $linksStore.getLinks($userStore.defaultOrganizationId);
+  $apiKeysStore.getAPIKeys($userStore.defaultOrganizationId);
+});
 </script>
 
 <template>
+  <NewLinkModal
+    v-if="createdLinkToken"
+    :link-token="createdLinkToken"
+    @close="stopShowingLink"
+  />
   <div class="flex justify-center w-full">
     <div class="grow flex justify-between mt-6 mx-4 max-w-screen-2xl">
-      <div class="flex justify-center">
-        <SearchBar
-          v-model="search"
-          placeholder="Search for a user ID"
-        />
-        <DropDown
-          class="ml-4"
-          name="Active"
-          :selected="activeFilter"
-          :options="activeOptions"
-          @select="selectActiveFilter"
-        />
-        <DropDown
-          class="ml-4"
-          name="Password"
-          :selected="passwordFilter"
-          :options="passwordOptions"
-          @select="selectPasswordFilter"
-        />
-      </div>
+      <LinkFilters
+        v-model:search="search"
+        :active-filter="activeFilter"
+        :active-options="activeOptions"
+        :password-filter="passwordFilter"
+        :password-options="passwordOptions"
+        :live="live"
+        @select-active-filter="selectActiveFilter"
+        @select-password-filter="selectPasswordFilter"
+        @toggle-live="toggleLive"
+      />
 
-      <div class="flex flex-col justify-center">
-        <div class="flex">
-          <p
-            class="pr-4 text-gray-900 text-md font-medium"
-            :class="{ 'opacity-25': live }"
-          >
-            Test Links
-          </p>
-          <GenericToggle
-            :active="live"
-            @toggle="toggleLive"
-          />
-          <p
-            class="pl-4 text-gray-900 text-md font-medium"
-            :class="{ 'opacity-25': !live }"
-          >
-            Live Links
-          </p>
-        </div>
-      </div>
+      <LinkCreation
+        :live="live"
+        :widget-opened="widgetOpened"
+        @set-widget-opened="setWidgetOpened"
+        @show-link-token="showLinkToken"
+      />
     </div>
   </div>
   <div class="flex justify-center w-full">

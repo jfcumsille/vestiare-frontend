@@ -8,9 +8,13 @@ export interface Link {
   holderName: string
   holderType: string
   institution: Institution
-  lastTimeRefreshed?: string
-  linkToken?: string
   mode: string
   preventRefresh: boolean
   username: string
+  lastTimeRefreshed: string | null
+}
+
+export interface CompleteLink extends Link {
+  accountsCount: number
+  linkToken: string
 }

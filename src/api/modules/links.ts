@@ -1,5 +1,5 @@
 import client from '@/api/client';
-import { Link } from '@/api/interfaces/links';
+import { Link, CompleteLink } from '@/api/interfaces/links';
 
 export const list = async (
   organization: string,
@@ -30,4 +30,9 @@ export const remove = async (organization: string, linkId: string) => {
     `/internal/v1/links/dashboard/${linkId}`,
     { params: { currentOrganizationId: organization } },
   );
+};
+
+export const regenerate = async (linkId: string): Promise<CompleteLink> => {
+  const response = await client.post(`/internal/v1/links/dashboard/${linkId}/regenerate_link_token`);
+  return response.data;
 };
