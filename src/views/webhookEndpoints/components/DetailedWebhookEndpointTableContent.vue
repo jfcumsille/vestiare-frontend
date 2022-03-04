@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import GenericBadge from '@/components/GenericBadge.vue';
 
 const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
@@ -10,12 +11,17 @@ const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
 const secret = ref<string | null>(null);
+const loading = ref(false);
 
 const revealWebhookEndpointSecret = async () => {
-  secret.value = await $webhookEndpointsStore.getWebhookEndpointSecret(
-    $userStore.defaultOrganizationId,
-    $props.webhookEndpoint,
-  );
+  if (!loading.value) {
+    loading.value = true;
+    secret.value = await $webhookEndpointsStore.getWebhookEndpointSecret(
+      $userStore.defaultOrganizationId,
+      $props.webhookEndpoint,
+    );
+    loading.value = false;
+  }
 };
 </script>
 
@@ -30,6 +36,20 @@ const revealWebhookEndpointSecret = async () => {
       <p class="font-normal text-gray-600">
         {{ $props.webhookEndpoint.url }}
       </p>
+    </td>
+  </tr>
+  <tr class="bg-white border-b hover:bg-gray-100">
+    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
+      <p class="text-gray-900">
+        Mode
+      </p>
+    </td>
+    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+      <GenericBadge
+        :text="$props.webhookEndpoint.mode"
+        class="capitalize"
+        :color="$props.webhookEndpoint.mode === 'live' ? 'green' : 'yellow'"
+      />
     </td>
   </tr>
   <tr class="bg-white border-b hover:bg-gray-100">
