@@ -50,6 +50,9 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
     testWebhookEndpoints: (state) => state.webhookEndpoints.filter(
       (webhookEndpoint) => webhookEndpoint.mode === 'test',
     ),
+    getById: (state) => (id: string) => state.webhookEndpoints.find(
+      (webhookEndpoint) => webhookEndpoint.id === id,
+    ),
   },
 });
 
