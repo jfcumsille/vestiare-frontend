@@ -29,7 +29,10 @@ const toggleActive = async () => {
 };
 
 const remove = () => {
-  $webhookEndpointsStore.removeWebhook($userStore.defaultOrganizationId, $props.webhookEndpoint);
+  $webhookEndpointsStore.removeWebhookEndpoint(
+    $userStore.defaultOrganizationId,
+    $props.webhookEndpoint,
+  );
 };
 
 const openDetailedView = () => {

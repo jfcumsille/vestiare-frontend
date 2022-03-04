@@ -4,6 +4,9 @@ import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import WebhookEndpointsTable from './components/WebhookEndpointsTable.vue';
+import WebhookEndpointsTableHeader from './components/WebhookEndpointsTableHeader.vue';
+import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
 
 const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
@@ -21,5 +24,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  {{ webhookEndpoint }}
+  <div class="flex justify-center w-full">
+    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-2xl">
+      <template #header>
+        <WebhookEndpointsTableHeader :headers="['Details', '']" />
+      </template>
+
+      <template #content>
+        <DetailedWebhookEndpointTableContent
+          v-if="webhookEndpoint !== undefined"
+          :webhook-endpoint="webhookEndpoint"
+        />
+      </template>
+    </WebhookEndpointsTable>
+  </div>
 </template>
