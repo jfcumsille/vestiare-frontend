@@ -7,9 +7,10 @@ import { REDIRECT_QUERY_KEY } from '@/constants';
 import GenericInput from '@/components/GenericInput.vue';
 
 const $store = useUserStore();
-const $route = useRoute();
-const $router = useRouter();
 const $t = useTranslation('forms.userData');
+
+const route = useRoute();
+const router = useRouter();
 
 const email = ref('');
 const password = ref('');
@@ -22,8 +23,8 @@ const logIn = async () => {
   loading.value = true;
   try {
     await $store.logIn({ email: email.value, password: password.value, token: '' });
-    $router.push({
-      path: ($route.query[REDIRECT_QUERY_KEY] as string) || '/',
+    router.push({
+      path: (route.query[REDIRECT_QUERY_KEY] as string) || '/',
     });
   } catch (err) {
     error.value = true;

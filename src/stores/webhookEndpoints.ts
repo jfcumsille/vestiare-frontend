@@ -30,8 +30,7 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
       );
       this.webhookEndpoints[index] = updatedWebhook;
     },
-
-    async removeWebhook(organization: string, webhookEndpoint: WebhookEndpoint) {
+    async removeWebhookEndpoint(organization: string, webhookEndpoint: WebhookEndpoint) {
       if (!this.webhookEndpoints.includes(webhookEndpoint)) {
         throw new Error('Invalid webhook endpoint');
       }
@@ -42,6 +41,14 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
         ...this.webhookEndpoints.slice(index + 1),
       ];
     },
+    async getWebhookEndpointSecret(organization: string, webhookEndpoint: WebhookEndpoint) {
+      const payload = await api.webhookEndpoints.getSecret(
+        organization,
+        webhookEndpoint.id,
+        webhookEndpoint.mode,
+      );
+      return payload.secret;
+    },
   },
   getters: {
     liveWebhookEndpoints: (state) => state.webhookEndpoints.filter(
@@ -49,6 +56,9 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
     ),
     testWebhookEndpoints: (state) => state.webhookEndpoints.filter(
       (webhookEndpoint) => webhookEndpoint.mode === 'test',
+    ),
+    getById: (state) => (id: string) => state.webhookEndpoints.find(
+      (webhookEndpoint) => webhookEndpoint.id === id,
     ),
   },
 });

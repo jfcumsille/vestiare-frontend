@@ -19,6 +19,14 @@ const toggleLive = () => {
   live.value = !live.value;
 };
 
+const tableHeaders = [
+  $t('table.headers.url'),
+  $t('table.headers.description'),
+  $t('table.headers.subscribedEventsAmount'),
+  $t('table.headers.active'),
+  '',
+];
+
 const webhookEndpoints = computed(
   () => (
     live.value
@@ -58,7 +66,7 @@ onMounted(() => {
   <div class="flex justify-center w-full">
     <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-2xl">
       <template #header>
-        <WebhookEndpointsTableHeader />
+        <WebhookEndpointsTableHeader :headers="tableHeaders" />
       </template>
 
       <template #content>

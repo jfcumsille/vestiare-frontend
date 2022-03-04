@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
@@ -12,6 +13,8 @@ const $t = useTranslation('views.webhookEndpoints.table.buttons');
 
 const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
+
+const router = useRouter();
 
 const updating = ref(false);
 
@@ -26,23 +29,39 @@ const toggleActive = async () => {
 };
 
 const remove = () => {
-  $webhookEndpointsStore.removeWebhook($userStore.defaultOrganizationId, $props.webhookEndpoint);
+  $webhookEndpointsStore.removeWebhookEndpoint(
+    $userStore.defaultOrganizationId,
+    $props.webhookEndpoint,
+  );
+};
+
+const openDetailedView = () => {
+  router.push({ path: `/webhook_endpoints/${$props.webhookEndpoint.id}` });
 };
 </script>
 
 <template>
   <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+    <td
+      class="py-4 px-6 text-sm font-medium whitespace-nowrap cursor-pointer"
+      @click="openDetailedView"
+    >
       <p class="text-gray-900">
         {{ $props.webhookEndpoint.url }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+    <td
+      class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap cursor-pointer"
+      @click="openDetailedView"
+    >
       <p class="font-normal text-gray-600">
         {{ $props.webhookEndpoint.description }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+    <td
+      class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap cursor-pointer"
+      @click="openDetailedView"
+    >
       <p class="font-medium">
         {{ $props.webhookEndpoint.enabledEvents.length }}
       </p>

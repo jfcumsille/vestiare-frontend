@@ -1,5 +1,6 @@
 import client from '@/api/client';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { WebhookEndpointSecret } from '@/interfaces/responses/webhookEndpoints';
 
 export const list = async (organization: string): Promise<WebhookEndpoint[]> => {
   const params = { currentOrganizationId: organization };
@@ -32,4 +33,16 @@ export const remove = async (organization: string, webhookEndpointId: string, mo
     `/internal/v1/webhook_endpoints/${webhookEndpointId}`,
     { params: { currentOrganizationId: organization, mode } },
   );
+};
+
+export const getSecret = async (
+  organization: string,
+  webhookEndpointId: string,
+  mode: string,
+): Promise<WebhookEndpointSecret> => {
+  const response = await client.get(
+    `/internal/v1/webhook_endpoints/${webhookEndpointId}/secret`,
+    { params: { currentOrganizationId: organization, mode } },
+  );
+  return response.data;
 };
