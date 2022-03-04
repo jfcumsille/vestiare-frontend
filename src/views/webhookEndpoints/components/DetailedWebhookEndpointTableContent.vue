@@ -55,6 +55,20 @@ const revealWebhookEndpointSecret = async () => {
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
       <p class="text-gray-900">
+        Active?
+      </p>
+    </td>
+    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+      <GenericBadge
+        :text="$props.webhookEndpoint.status === 'enabled' ? 'active' : 'inactive'"
+        class="capitalize"
+        :color="$props.webhookEndpoint.status === 'enabled' ? 'green' : 'red'"
+      />
+    </td>
+  </tr>
+  <tr class="bg-white border-b hover:bg-gray-100">
+    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
+      <p class="text-gray-900">
         Webhook Endpoint Secret
       </p>
     </td>
