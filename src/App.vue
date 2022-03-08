@@ -28,9 +28,11 @@ const navBarLinks = [
 
 onMounted(async () => {
   await $userStore.loadUser();
-  $apiKeysStore.loadAPIKeys();
-  $linksStore.loadLinks();
-  $webhookEndpointsStore.loadWebhookEndpoints();
+  if ($userStore.authenticated) {
+    $apiKeysStore.loadAPIKeys();
+    $linksStore.loadLinks();
+    $webhookEndpointsStore.loadWebhookEndpoints();
+  }
 });
 </script>
 
