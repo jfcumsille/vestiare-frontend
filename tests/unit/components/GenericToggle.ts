@@ -7,6 +7,7 @@ describe('GenericToggle', () => {
       props: { active: true },
     });
     const ball = wrapper.find('[data-test="ball"]');
+
     expect(ball.classes('translate-x-full')).toBe(true);
   });
 
@@ -15,6 +16,7 @@ describe('GenericToggle', () => {
       props: { active: true },
     });
     const pill = wrapper.find('[data-test="pill"]');
+
     expect(pill.classes().find((cls) => cls.includes('bg-blue'))).not.toBeUndefined();
   });
 
@@ -23,6 +25,7 @@ describe('GenericToggle', () => {
       props: { active: false },
     });
     const ball = wrapper.find('[data-test="ball"]');
+
     expect(ball.classes('translate-x-full')).toBe(false);
   });
 
@@ -31,6 +34,7 @@ describe('GenericToggle', () => {
       props: { active: false },
     });
     const pill = wrapper.find('[data-test="pill"]');
+
     expect(pill.classes().find((cls) => cls.includes('bg-blue'))).toBeUndefined();
   });
 

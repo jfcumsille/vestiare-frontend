@@ -7,6 +7,7 @@ describe('GenericBadge', () => {
     const wrapper = mount(GenericBadge, {
       props: { text, color: 'blue' },
     });
+
     expect(wrapper.text()).toMatch(text);
   });
 
@@ -15,6 +16,7 @@ describe('GenericBadge', () => {
     const wrapper = mount(GenericBadge, {
       props: { text: 'Something', color: invalidColor },
     });
+
     expect(wrapper.classes().some((cls) => cls.includes('bg-'))).toBe(false);
   });
 
@@ -23,6 +25,7 @@ describe('GenericBadge', () => {
       const wrapper = mount(GenericBadge, {
         props: { text: 'Something', color },
       });
+
       expect(wrapper.classes().filter((cls) => cls.includes(color)).length).toBe(2);
     });
   };

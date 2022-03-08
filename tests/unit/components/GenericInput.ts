@@ -7,7 +7,8 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: { modelValue: '', label: labelText },
     });
-    const label = wrapper.find('label span');
+    const label = wrapper.find('[data-test="label"]');
+
     expect(label.text()).toMatch(labelText);
   });
 
@@ -15,7 +16,8 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: { modelValue: '' },
     });
-    const label = wrapper.find('label span');
+    const label = wrapper.find('[data-test="label"]');
+
     expect(label.exists()).toBe(false);
   });
 
@@ -24,7 +26,8 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: { modelValue: '', placeholder: placeholderText },
     });
-    const input = wrapper.find('label input');
+    const input = wrapper.find('[data-test="input"]');
+
     expect(input.attributes().placeholder).toMatch(placeholderText);
   });
 
@@ -33,7 +36,8 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: { modelValue: inputText },
     });
-    const input = wrapper.find('label input');
+    const input = wrapper.find('[data-test="input"]');
+
     expect((<HTMLInputElement>input.element).value).toMatch(inputText);
   });
 
@@ -43,14 +47,13 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: { modelValue: originalInputText },
     });
-    const input = wrapper.find('label input');
+    const input = wrapper.find('[data-test="input"]');
 
     expect((<HTMLInputElement>input.element).value).toMatch(originalInputText);
 
     input.setValue(updatedInputText);
 
     const emitted = <Array<Array<unknown>>>wrapper.emitted('update:modelValue');
-
     expect(emitted).toHaveLength(1);
     expect(emitted[0][0]).toMatch(updatedInputText);
     expect((<HTMLInputElement>input.element).value).toMatch(updatedInputText);
@@ -60,7 +63,7 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: { modelValue: 'First Content' },
     });
-    const input = wrapper.find('label input');
+    const input = wrapper.find('[data-test="input"]');
 
     input.setValue('Second Content');
     input.setValue('Third Content');
