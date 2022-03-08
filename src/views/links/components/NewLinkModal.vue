@@ -4,7 +4,7 @@ import GenericCross from '@/components/GenericCross.vue';
 
 const $t = useTranslation('views.links.creation.modal');
 
-const $props = defineProps<{
+const props = defineProps<{
   linkToken: string,
 }>();
 
@@ -51,7 +51,7 @@ const close = () => {
             />
             <!-- eslint-enable vue/no-v-html -->
             <p class="text-base leading-relaxed text-black font-bold">
-              {{ $props.linkToken }}
+              {{ props.linkToken }}
             </p>
           </div>
         </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import LinkCreationButton from './LinkCreationButton.vue';
 
-const $props = defineProps<{
+const props = defineProps<{
   live: boolean,
   widgetOpened: boolean,
 }>();
@@ -18,36 +18,36 @@ const showLinkToken = (linkToken: string) => $emit('show-link-token', linkToken)
   <div class="flex flex-col my-auto">
     <div class="flex justify-center my-auto">
       <LinkCreationButton
-        :live="$props.live"
+        :live="props.live"
         product="movements"
         holder-type="individual"
-        :widget-opened="$props.widgetOpened"
+        :widget-opened="props.widgetOpened"
         @set-widget-opened="setWidgetOpened"
         @show-link-token="showLinkToken"
       />
       <LinkCreationButton
-        :live="$props.live"
+        :live="props.live"
         product="movements"
         holder-type="business"
-        :widget-opened="$props.widgetOpened"
+        :widget-opened="props.widgetOpened"
         @set-widget-opened="setWidgetOpened"
         @show-link-token="showLinkToken"
       />
     </div>
     <div class="mt-2 justify-center flex my-auto">
       <LinkCreationButton
-        :live="$props.live"
+        :live="props.live"
         product="invoices"
         holder-type="individual"
-        :widget-opened="$props.widgetOpened"
+        :widget-opened="props.widgetOpened"
         @set-widget-opened="setWidgetOpened"
         @show-link-token="showLinkToken"
       />
       <LinkCreationButton
-        :live="$props.live"
+        :live="props.live"
         product="invoices"
         holder-type="business"
-        :widget-opened="$props.widgetOpened"
+        :widget-opened="props.widgetOpened"
         @set-widget-opened="setWidgetOpened"
         @show-link="showLinkToken"
       />

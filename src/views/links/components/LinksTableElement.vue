@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
 import GenericToggle from '@/components/GenericToggle.vue';
-import { ref } from 'vue';
 
-const $props = defineProps<{ link: Link }>();
+const props = defineProps<{ link: Link }>();
 
 const $t = useTranslation('views.links.table.buttons');
 
@@ -17,26 +17,26 @@ const updating = ref(false);
 const toggleActive = async () => {
   updating.value = true;
   await $linksStore.updateLink(
-    $props.link,
-    { active: !$props.link.active },
+    props.link,
+    { active: !props.link.active },
   );
   updating.value = false;
 };
 
 const remove = () => {
-  $linksStore.removeLink($props.link);
+  $linksStore.removeLink(props.link);
 };
 </script>
 
 <template>
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
-      <div v-if="$props.link.holderType === 'individual'">
+      <div v-if="props.link.holderType === 'individual'">
         <p class="text-gray-900">
-          {{ $props.link.holderName }}
+          {{ props.link.holderName }}
         </p>
         <p class="font-normal text-gray-600">
-          {{ rutFormat($props.link.holderId) }}
+          {{ rutFormat(props.link.holderId) }}
         </p>
       </div>
       <p v-else>
@@ -44,12 +44,12 @@ const remove = () => {
       </p>
     </td>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
-      <div v-if="$props.link.holderType === 'business'">
+      <div v-if="props.link.holderType === 'business'">
         <p class="text-gray-900">
-          {{ $props.link.holderName }}
+          {{ props.link.holderName }}
         </p>
         <p class="font-normal text-gray-600">
-          {{ rutFormat($props.link.holderId) }}
+          {{ rutFormat(props.link.holderId) }}
         </p>
       </div>
       <p v-else>
@@ -58,18 +58,18 @@ const remove = () => {
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-medium">
-        {{ $props.link.institution.name }}
+        {{ props.link.institution.name }}
       </p>
       <p class="font-normal capitalize">
-        {{ $props.link.holderType }}
+        {{ props.link.holderType }}
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      {{ $props.link.lastTimeRefreshed || '-' }}
+      {{ props.link.lastTimeRefreshed || '-' }}
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericToggle
-        :active="$props.link.active"
+        :active="props.link.active"
         :loading="updating"
         @toggle="toggleActive"
       />

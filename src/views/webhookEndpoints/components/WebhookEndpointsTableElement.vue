@@ -6,7 +6,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
 
-const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
+const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
 const $t = useTranslation('views.webhookEndpoints.table.buttons');
 
@@ -19,18 +19,18 @@ const updating = ref(false);
 const toggleActive = async () => {
   updating.value = true;
   await $webhookEndpointsStore.updateWebhook(
-    $props.webhookEndpoint,
-    { disabled: ($props.webhookEndpoint.status === 'enabled') },
+    props.webhookEndpoint,
+    { disabled: (props.webhookEndpoint.status === 'enabled') },
   );
   updating.value = false;
 };
 
 const remove = () => {
-  $webhookEndpointsStore.removeWebhookEndpoint($props.webhookEndpoint);
+  $webhookEndpointsStore.removeWebhookEndpoint(props.webhookEndpoint);
 };
 
 const openDetailedView = () => {
-  router.push({ path: `/webhook_endpoints/${$props.webhookEndpoint.id}` });
+  router.push({ path: `/webhook_endpoints/${props.webhookEndpoint.id}` });
 };
 </script>
 
@@ -41,7 +41,7 @@ const openDetailedView = () => {
       @click="openDetailedView"
     >
       <p class="text-gray-900">
-        {{ $props.webhookEndpoint.url }}
+        {{ props.webhookEndpoint.url }}
       </p>
     </td>
     <td
@@ -49,7 +49,7 @@ const openDetailedView = () => {
       @click="openDetailedView"
     >
       <p class="font-normal text-gray-600">
-        {{ $props.webhookEndpoint.description }}
+        {{ props.webhookEndpoint.description }}
       </p>
     </td>
     <td
@@ -57,12 +57,12 @@ const openDetailedView = () => {
       @click="openDetailedView"
     >
       <p class="font-medium">
-        {{ $props.webhookEndpoint.enabledEvents.length }}
+        {{ props.webhookEndpoint.enabledEvents.length }}
       </p>
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericToggle
-        :active="$props.webhookEndpoint.status ==='enabled'"
+        :active="props.webhookEndpoint.status ==='enabled'"
         :loading="updating"
         @toggle="toggleActive"
       />
