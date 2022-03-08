@@ -2,20 +2,18 @@ import client from '@/api/client';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import { WebhookEndpointSecret } from '@/interfaces/responses/webhookEndpoints';
 
-export const list = async (organization: string): Promise<WebhookEndpoint[]> => {
-  const params = { currentOrganizationId: organization };
+export const list = async (): Promise<WebhookEndpoint[]> => {
   const livePromise = client.get('/internal/v1/webhook_endpoints', {
-    params: { ...params, mode: 'live' },
+    params: { mode: 'live' },
   });
   const testPromise = client.get('/internal/v1/webhook_endpoints', {
-    params: { ...params, mode: 'test' },
+    params: { mode: 'test' },
   });
   const responses = await Promise.all([livePromise, testPromise]);
   return [].concat(...responses.map((response) => response.data));
 };
 
 export const update = async (
-  organization: string,
   webhookEndpointId: string,
   mode: string,
   requestBody: Record<string, boolean>,
@@ -23,26 +21,24 @@ export const update = async (
   const response = await client.put(
     `/internal/v1/webhook_endpoints/${webhookEndpointId}`,
     requestBody,
-    { params: { currentOrganizationId: organization, mode } },
+    { params: { mode } },
   );
   return response.data;
 };
 
-export const remove = async (organization: string, webhookEndpointId: string, mode: string) => {
-  client.delete(
-    `/internal/v1/webhook_endpoints/${webhookEndpointId}`,
-    { params: { currentOrganizationId: organization, mode } },
-  );
+export const remove = async (webhookEndpointId: string, mode: string) => {
+  client.delete(`/internal/v1/webhook_endpoints/${webhookEndpointId}`, {
+    params: { mode },
+  });
 };
 
 export const getSecret = async (
-  organization: string,
   webhookEndpointId: string,
   mode: string,
 ): Promise<WebhookEndpointSecret> => {
   const response = await client.get(
     `/internal/v1/webhook_endpoints/${webhookEndpointId}/secret`,
-    { params: { currentOrganizationId: organization, mode } },
+    { params: { mode } },
   );
   return response.data;
 };

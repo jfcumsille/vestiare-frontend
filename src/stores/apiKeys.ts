@@ -8,9 +8,9 @@ export const useAPIKeysStore = defineStore('apiKeys', {
     loading: true,
   }),
   actions: {
-    async loadAPIKeys(organization: string, params: Record<string, string> = {}) {
+    async loadAPIKeys(params: Record<string, string> = {}) {
       this.loading = true;
-      this.apiKeys = await api.apiKeys.list(organization, params);
+      this.apiKeys = await api.apiKeys.list(params);
       this.loading = false;
     },
   },

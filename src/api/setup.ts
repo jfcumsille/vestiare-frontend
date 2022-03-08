@@ -8,6 +8,10 @@ export const setupAPIAuthInterceptors = () => {
       // eslint-disable-next-line no-param-reassign
       config.headers = { ...config.headers, ...$userStore.authenticationHeaders };
     }
+    if ($userStore.organizationParams) {
+      // eslint-disable-next-line no-param-reassign
+      config.params = { ...config.params, ...$userStore.organizationParams };
+    }
     return config;
   });
 };

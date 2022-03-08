@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
-import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
@@ -11,7 +10,6 @@ const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
 const $t = useTranslation('views.webhookEndpoints.table.buttons');
 
-const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
 const router = useRouter();
@@ -21,7 +19,6 @@ const updating = ref(false);
 const toggleActive = async () => {
   updating.value = true;
   await $webhookEndpointsStore.updateWebhook(
-    $userStore.defaultOrganizationId,
     $props.webhookEndpoint,
     { disabled: ($props.webhookEndpoint.status === 'enabled') },
   );
@@ -29,10 +26,7 @@ const toggleActive = async () => {
 };
 
 const remove = () => {
-  $webhookEndpointsStore.removeWebhookEndpoint(
-    $userStore.defaultOrganizationId,
-    $props.webhookEndpoint,
-  );
+  $webhookEndpointsStore.removeWebhookEndpoint($props.webhookEndpoint);
 };
 
 const openDetailedView = () => {

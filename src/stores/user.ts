@@ -33,7 +33,14 @@ export const useUserStore = defineStore('user', {
     },
   },
   getters: {
-    defaultOrganizationId: (state) => state.user?.defaultOrganizationId || '',
+    organizationParams: (state) => {
+      if (state.user?.defaultOrganizationId) {
+        return {
+          currentOrganizationId: state.user.defaultOrganizationId,
+        };
+      }
+      return {};
+    },
     authenticationHeaders: (state): OptionalAuthenticationHeaders => {
       if (state.auth.authenticationToken && state.auth.id && state.auth.email) {
         return {
