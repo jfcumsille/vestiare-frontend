@@ -8,7 +8,7 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
     loading: true,
   }),
   actions: {
-    async getWebhookEndpoints(organization: string) {
+    async loadWebhookEndpoints(organization: string) {
       this.loading = true;
       this.webhookEndpoints = await api.webhookEndpoints.list(organization);
       this.loading = false;

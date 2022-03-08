@@ -39,7 +39,7 @@ const disabledButton = computed(() => $props.widgetOpened || (fintoc.value === n
 
 const onSuccess = async (link: Link) => {
   $emit('set-widget-opened', false);
-  $linksStore.getLinks($userStore.defaultOrganizationId);
+  $linksStore.loadLinks($userStore.defaultOrganizationId);
   const regeneratedLink = await api.links.regenerate(link.id);
   $emit('show-link-token', regeneratedLink.linkToken);
 };

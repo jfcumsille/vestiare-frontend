@@ -5,10 +5,10 @@ import { APIKey } from '@/interfaces/entities/apiKeys';
 export const useAPIKeysStore = defineStore('apiKeys', {
   state: () => ({
     apiKeys: <Array<APIKey>>[],
-    loading: false,
+    loading: true,
   }),
   actions: {
-    async getAPIKeys(organization: string, params: Record<string, string> = {}) {
+    async loadAPIKeys(organization: string, params: Record<string, string> = {}) {
       this.loading = true;
       this.apiKeys = await api.apiKeys.list(organization, params);
       this.loading = false;

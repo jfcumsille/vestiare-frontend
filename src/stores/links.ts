@@ -6,10 +6,10 @@ import { Json } from '@/interfaces/utilities/json';
 export const useLinksStore = defineStore('links', {
   state: () => ({
     links: <Array<Link>>[],
-    loading: false,
+    loading: true,
   }),
   actions: {
-    async getLinks(organization: string, params: Json = {}) {
+    async loadLinks(organization: string, params: Json = {}) {
       this.loading = true;
       this.links = [];
       let page = 1;
