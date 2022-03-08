@@ -15,14 +15,15 @@ const props = defineProps<{
 
 const $t = useTranslation('views.links.filters');
 
-const $emit = defineEmits<{(e: 'update:search', value: string): void,
+const emit = defineEmits<{
+  (e: 'update:search', value: string): void,
   (e: 'select-active-filter', value: string): void,
   (e: 'select-password-filter', value: string): void,
   (e: 'toggle-live'): void,
 }>();
 
 const onInput = ($event: Event) => {
-  $emit('update:search', ($event.target as HTMLInputElement).value);
+  emit('update:search', ($event.target as HTMLInputElement).value);
 };
 </script>
 
@@ -39,7 +40,7 @@ const onInput = ($event: Event) => {
       :name="$t('active.label')"
       :selected="props.activeFilter"
       :options="props.activeOptions"
-      @select="(value: string) => $emit('select-active-filter', value)"
+      @select="(value: string) => emit('select-active-filter', value)"
     />
     <DropDown
       class="ml-4 my-auto"
@@ -47,7 +48,7 @@ const onInput = ($event: Event) => {
       :name="$t('password.label')"
       :selected="props.passwordFilter"
       :options="props.passwordOptions"
-      @select="(value: string) => $emit('select-password-filter', value)"
+      @select="(value: string) => emit('select-password-filter', value)"
     />
     <div class="flex my-auto ml-6">
       <p
@@ -58,7 +59,7 @@ const onInput = ($event: Event) => {
       </p>
       <GenericToggle
         :active="props.live"
-        @toggle="() => $emit('toggle-live')"
+        @toggle="() => emit('toggle-live')"
       />
       <p
         class="pl-4 text-gray-900 text-md font-medium"

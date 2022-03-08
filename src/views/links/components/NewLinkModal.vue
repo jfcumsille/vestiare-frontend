@@ -8,10 +8,10 @@ const props = defineProps<{
   linkToken: string,
 }>();
 
-const $emit = defineEmits<{(e: 'close'): void}>();
+const emit = defineEmits<{(e: 'close'): void}>();
 
 const close = () => {
-  $emit('close');
+  emit('close');
 };
 </script>
 

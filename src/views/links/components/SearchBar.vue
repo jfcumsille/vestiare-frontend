@@ -9,10 +9,10 @@ const props = defineProps({
     default: () => undefined,
   },
 });
-const $emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
 const onInput = ($event: Event) => {
-  $emit('update:modelValue', ($event.target as HTMLInputElement).value);
+  emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 </script>
 

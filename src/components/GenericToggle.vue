@@ -8,11 +8,11 @@ const props = withDefaults(defineProps<{
   loading: false,
 });
 
-const $emit = defineEmits<{(e: 'toggle'): void }>();
+const emit = defineEmits<{(e: 'toggle'): void }>();
 
 const onClick = () => {
   if (!props.loading) {
-    $emit('toggle');
+    emit('toggle');
   }
 };
 

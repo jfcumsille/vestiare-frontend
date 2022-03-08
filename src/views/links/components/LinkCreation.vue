@@ -6,12 +6,13 @@ const props = defineProps<{
   widgetOpened: boolean,
 }>();
 
-const $emit = defineEmits<{(e: 'set-widget-opened', value: boolean): void,
+const emit = defineEmits<{
+  (e: 'set-widget-opened', value: boolean): void,
   (e: 'show-link-token', linkToken: string): void,
 }>();
 
-const setWidgetOpened = (value: boolean) => $emit('set-widget-opened', value);
-const showLinkToken = (linkToken: string) => $emit('show-link-token', linkToken);
+const setWidgetOpened = (value: boolean) => emit('set-widget-opened', value);
+const showLinkToken = (linkToken: string) => emit('show-link-token', linkToken);
 </script>
 
 <template>

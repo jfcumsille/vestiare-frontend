@@ -14,11 +14,10 @@ const props = defineProps<{
   holderType: 'individual' | 'business',
 }>();
 
-const $emit = defineEmits<
-  {(e: 'set-widget-opened', value: boolean): void,
-    (e: 'show-link-token', linkToken: string): void,
-  }
->();
+const emit = defineEmits<{
+  (e: 'set-widget-opened', value: boolean): void,
+  (e: 'show-link-token', linkToken: string): void,
+}>();
 
 const $t = useTranslation('views.links.creation');
 
@@ -36,14 +35,14 @@ const fintoc = ref<Fintoc | null>(null);
 const disabledButton = computed(() => props.widgetOpened || (fintoc.value === null));
 
 const onSuccess = async (link: Link) => {
-  $emit('set-widget-opened', false);
+  emit('set-widget-opened', false);
   $linksStore.loadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
-  $emit('show-link-token', regeneratedLink.linkToken);
+  emit('show-link-token', regeneratedLink.linkToken);
 };
 
 const onExit = () => {
-  $emit('set-widget-opened', false);
+  emit('set-widget-opened', false);
 };
 
 const openWidget = () => {
@@ -56,7 +55,7 @@ const openWidget = () => {
       onSuccess,
       onExit,
     });
-    $emit('set-widget-opened', true);
+    emit('set-widget-opened', true);
     widget.open();
   }
 };

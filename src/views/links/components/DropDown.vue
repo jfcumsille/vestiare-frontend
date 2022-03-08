@@ -10,7 +10,7 @@ const props = defineProps<{
   translationNamespace: string,
 }>();
 
-const $emit = defineEmits<{(e: 'select', selected: string): void }>();
+const emit = defineEmits<{(e: 'select', selected: string): void }>();
 
 const $t = useTranslation(`${props.translationNamespace}.options`);
 
@@ -22,7 +22,7 @@ const toggle = () => {
 };
 
 const select = (option: string) => {
-  $emit('select', option);
+  emit('select', option);
   opened.value = false;
 };
 
