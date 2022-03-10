@@ -3,7 +3,7 @@ import { User } from '@/interfaces/entities/user';
 import { useAuthenticationTokenStorage, useIdStorage, useEmailStorage } from '@/services/storage';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
-import { LogInOptions } from '@/interfaces/options/logIn';
+import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
 import { OptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
 
 export const useUserStore = defineStore('user', {
@@ -31,6 +31,19 @@ export const useUserStore = defineStore('user', {
     async logIn({ email, password, token }: LogInOptions) {
       const userData = await api.authentication.logIn({ email, password, token });
       this.updateUserData(userData);
+    },
+    async signUp({
+      email, password, token, name, lastName, company, country,
+    }
+      : SignUpOptions) {
+      // TODO CHANGE BACKEND, ADD COMPANY AND COUNTRY
+      const userData = await api.authentication.signUp({
+        email, password, token, name, lastName, company, country,
+      });
+      this.updateUserData(userData);
+    },
+    async sendConfirmationEmail({ email }: { email: string }) {
+      await api.authentication.sendConfirmationEmail({ email });
     },
   },
   getters: {

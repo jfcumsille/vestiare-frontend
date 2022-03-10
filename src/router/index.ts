@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '@/views/home/HomeView.vue';
-import LogInView from '@/views/login/LogInView.vue';
+import LogInView from '@/views/login-signup/LogInView.vue';
+import SignUpView from '@/views/login-signup/SignUpView.vue';
 import LinksView from '@/views/links/LinksView.vue';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
 import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
@@ -15,6 +16,7 @@ const routes: RouteRecordRaw[] = [
     component: LogInView,
     beforeEnter: handleAuth0RedirectCallback,
   },
+  { path: '/signup', component: SignUpView },
   { path: '/links', component: LinksView },
   { path: '/webhook_endpoints', component: WebhookEndpointsView },
   {
