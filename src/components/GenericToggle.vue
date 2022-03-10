@@ -28,6 +28,7 @@ const loadingClasses = computed(() => (loading.value ? 'opacity-75 cursor-defaul
 
 <template>
   <div
+    data-test="pill"
     :class="`
         flex items-center cursor-pointer w-11 h-6 m-0
         rounded-full border border-gray-200
@@ -37,6 +38,7 @@ const loadingClasses = computed(() => (loading.value ? 'opacity-75 cursor-defaul
     @click="onClick"
   >
     <div
+      data-test="ball"
       :class="`
         rounded-full bg-white w-5 h-5
         ease-linear duration-75 ${translatedClass}
