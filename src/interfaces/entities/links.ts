@@ -1,3 +1,4 @@
+import { Nullable } from '@/interfaces/common';
 import { Institution } from './institutions';
 
 export interface Link {
@@ -11,7 +12,7 @@ export interface Link {
   mode: 'live' | 'test'
   preventRefresh: boolean
   username: string
-  lastTimeRefreshed: string | null
+  lastTimeRefreshed: Nullable<string>
 }
 
 export interface CompleteLink extends Link {

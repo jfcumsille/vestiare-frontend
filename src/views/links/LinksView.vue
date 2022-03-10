@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
+import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LinksTable from './components/LinksTable.vue';
@@ -16,7 +17,7 @@ const $t = useTranslation('views.links');
 
 const $linksStore = useLinksStore();
 
-const createdLinkToken = ref<string | null>(null);
+const createdLinkToken = ref<Nullable<string>>(null);
 const showLinkToken = (linkToken: string) => {
   createdLinkToken.value = linkToken;
 };

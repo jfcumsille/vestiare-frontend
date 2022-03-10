@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue';
 import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
 import { useTranslation } from '@/locales';
 import * as api from '@/api';
+import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
@@ -30,7 +31,7 @@ const buttonText = computed(() => {
   return `${$t('createAction')} ${$t(`${props.holderType}${productTransformation}Link`)}!`;
 });
 
-const fintoc = ref<Fintoc | null>(null);
+const fintoc = ref<Nullable<Fintoc>>(null);
 
 const disabledButton = computed(() => props.widgetOpened || (fintoc.value === null));
 
