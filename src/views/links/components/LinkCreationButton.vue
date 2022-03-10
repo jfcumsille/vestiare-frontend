@@ -8,56 +8,55 @@ import { Link } from '@/interfaces/entities/links';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 
-const $props = defineProps<{
+const props = defineProps<{
   widgetOpened: boolean,
   live: boolean,
   product: 'movements' | 'invoices',
   holderType: 'individual' | 'business',
 }>();
 
-const $emit = defineEmits<
-  {(e: 'set-widget-opened', value: boolean): void,
-    (e: 'show-link-token', linkToken: string): void,
-  }
->();
+const emit = defineEmits<{
+  (e: 'set-widget-opened', value: boolean): void,
+  (e: 'show-link-token', linkToken: string): void,
+}>();
 
 const $t = useTranslation('views.links.creation');
 
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
-const apiKey = computed(() => $apiKeysStore.searchKey(true, $props.live ? 'live' : 'test'));
+const apiKey = computed(() => $apiKeysStore.searchKey(true, props.live ? 'live' : 'test'));
 const buttonText = computed(() => {
-  const productTransformation = $props.product === 'movements' ? 'Banking' : 'Fiscal';
-  return `${$t('createAction')} ${$t(`${$props.holderType}${productTransformation}Link`)}!`;
+  const productTransformation = props.product === 'movements' ? 'Banking' : 'Fiscal';
+  return `${$t('createAction')} ${$t(`${props.holderType}${productTransformation}Link`)}!`;
 });
 
 const fintoc = ref<Nullable<Fintoc>>(null);
 
-const disabledButton = computed(() => $props.widgetOpened || (fintoc.value === null));
+const disabledButton = computed(() => props.widgetOpened || (fintoc.value === null));
 
 const onSuccess = async (link: Link) => {
-  $emit('set-widget-opened', false);
+  emit('set-widget-opened', false);
   $linksStore.loadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
-  $emit('show-link-token', regeneratedLink.linkToken);
+  emit('show-link-token', regeneratedLink.linkToken);
 };
 
 const onExit = () => {
-  $emit('set-widget-opened', false);
+  emit('set-widget-opened', false);
 };
 
 const openWidget = () => {
   if (fintoc.value !== null) {
     const widget = fintoc.value.create({
-      holderType: $props.holderType,
-      product: $props.product,
+      holderType: props.holderType,
+      product: props.product,
       publicKey: apiKey.value.token,
       webhookUrl: 'https://fintoc.com',
       onSuccess,
       onExit,
     });
-    $emit('set-widget-opened', true);
+    emit('set-widget-opened', true);
     widget.open();
   }
 };
