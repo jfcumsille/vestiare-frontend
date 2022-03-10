@@ -11,7 +11,7 @@ module.exports = {
     'airbnb-base',
     '@vue/typescript/recommended',
   ],
-  plugins: ['import'],
+  plugins: ['import', '@typescript-eslint'],
   parserOptions: {
     ecmaVersion: 2021,
   },
@@ -43,5 +43,8 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'no-spaced-func': 'off',
+    'func-call-spacing': 'off',
+    '@typescript-eslint/func-call-spacing': ['error'],
   },
 };

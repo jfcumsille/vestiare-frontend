@@ -1,29 +1,29 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-const $props = defineProps<{
+const props = withDefaults(defineProps<{
   active: boolean,
   loading?: boolean,
-}>();
+}>(), {
+  loading: false,
+});
 
-const loading = computed(() => ($props.loading === undefined ? false : $props.loading));
-
-const $emit = defineEmits<{(e: 'toggle'): void }>();
+const emit = defineEmits<{(e: 'toggle'): void }>();
 
 const onClick = () => {
-  if (!loading.value) {
-    $emit('toggle');
+  if (!props.loading) {
+    emit('toggle');
   }
 };
 
 const colorClasses = computed(() => {
-  if ($props.active) {
+  if (props.active) {
     return 'bg-blue-500';
   }
   return 'bg-gray-200';
 });
-const translatedClass = computed(() => ($props.active ? 'translate-x-full' : ''));
-const loadingClasses = computed(() => (loading.value ? 'opacity-75 cursor-default' : ''));
+const translatedClass = computed(() => (props.active ? 'translate-x-full' : ''));
+const loadingClasses = computed(() => (props.loading ? 'opacity-75 cursor-default' : ''));
 </script>
 
 <template>

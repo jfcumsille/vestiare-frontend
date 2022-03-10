@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const $props = defineProps({
+const props = defineProps({
   modelValue: {
     type: String,
     required: true,
@@ -9,10 +9,10 @@ const $props = defineProps({
     default: () => undefined,
   },
 });
-const $emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
 const onInput = ($event: Event) => {
-  $emit('update:modelValue', ($event.target as HTMLInputElement).value);
+  emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 </script>
 
@@ -40,8 +40,8 @@ const onInput = ($event: Event) => {
           focus:outline-none focus:ring-1 block w-80 pl-10 p-2.5
           focus:ring-blue-500 focus:border-blue-500
         "
-      :placeholder="$props.placeholder"
-      :value="$props.modelValue"
+      :placeholder="props.placeholder"
+      :value="props.modelValue"
       v-bind="$attrs"
       @input="onInput"
     >

@@ -7,7 +7,7 @@ import GenericBadge from '@/components/GenericBadge.vue';
 
 const $t = useTranslation('views.webhookEndpoints.table');
 
-const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
+const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
@@ -18,7 +18,7 @@ const revealWebhookEndpointSecret = async () => {
   if (!loading.value) {
     loading.value = true;
     secret.value = await $webhookEndpointsStore.getWebhookEndpointSecret(
-      $props.webhookEndpoint,
+      props.webhookEndpoint,
     );
     loading.value = false;
   }
@@ -34,7 +34,7 @@ const revealWebhookEndpointSecret = async () => {
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-normal text-gray-600">
-        {{ $props.webhookEndpoint.url }}
+        {{ props.webhookEndpoint.url }}
       </p>
     </td>
   </tr>
@@ -46,9 +46,9 @@ const revealWebhookEndpointSecret = async () => {
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericBadge
-        :text="$props.webhookEndpoint.mode"
+        :text="props.webhookEndpoint.mode"
         class="capitalize"
-        :color="$props.webhookEndpoint.mode === 'live' ? 'green' : 'yellow'"
+        :color="props.webhookEndpoint.mode === 'live' ? 'green' : 'yellow'"
       />
     </td>
   </tr>
@@ -60,9 +60,9 @@ const revealWebhookEndpointSecret = async () => {
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <GenericBadge
-        :text="$props.webhookEndpoint.status === 'enabled' ? 'active' : 'inactive'"
+        :text="props.webhookEndpoint.status === 'enabled' ? 'active' : 'inactive'"
         class="capitalize"
-        :color="$props.webhookEndpoint.status === 'enabled' ? 'green' : 'red'"
+        :color="props.webhookEndpoint.status === 'enabled' ? 'green' : 'red'"
       />
     </td>
   </tr>
@@ -94,7 +94,7 @@ const revealWebhookEndpointSecret = async () => {
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p class="font-normal text-gray-600">
-        {{ $props.webhookEndpoint.description }}
+        {{ props.webhookEndpoint.description }}
       </p>
     </td>
   </tr>
@@ -106,7 +106,7 @@ const revealWebhookEndpointSecret = async () => {
     </td>
     <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
       <p
-        v-for="event in $props.webhookEndpoint.enabledEvents"
+        v-for="event in props.webhookEndpoint.enabledEvents"
         :key="event"
         class="font-normal text-gray-600"
       >

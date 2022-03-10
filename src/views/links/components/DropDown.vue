@@ -3,16 +3,16 @@ import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 
-const $props = defineProps<{
+const props = defineProps<{
   name: string,
   selected: string,
   options: Array<string>,
   translationNamespace: string,
 }>();
 
-const $emit = defineEmits<{(e: 'select', selected: string): void }>();
+const emit = defineEmits<{(e: 'select', selected: string): void }>();
 
-const $t = useTranslation(`${$props.translationNamespace}.options`);
+const $t = useTranslation(`${props.translationNamespace}.options`);
 
 const opened = ref(false);
 const dropDown = ref(null);
@@ -22,7 +22,7 @@ const toggle = () => {
 };
 
 const select = (option: string) => {
-  $emit('select', option);
+  emit('select', option);
   opened.value = false;
 };
 
@@ -67,7 +67,7 @@ onClickOutside(dropDown, () => {
     >
       <ul class="py-1">
         <li
-          v-for="option in $props.options"
+          v-for="option in props.options"
           :key="option"
         >
           <span
