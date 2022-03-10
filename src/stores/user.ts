@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import { User } from '@/interfaces/entities/user';
 import { useAuthenticationTokenStorage, useIdStorage, useEmailStorage } from '@/services/storage';
 import * as api from '@/api';
+import { Nullable } from '@/interfaces/common';
 import { LogInOptions } from '@/interfaces/options/logIn';
 import { OptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
 
@@ -12,7 +13,7 @@ export const useUserStore = defineStore('user', {
       id: useIdStorage(),
       email: useEmailStorage(),
     },
-    user: <User | null>null,
+    user: <Nullable<User>>null,
   }),
   actions: {
     updateUserData(userData: User) {

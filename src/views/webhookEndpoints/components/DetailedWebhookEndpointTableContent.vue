@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import { Nullable } from '@/interfaces/common';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import GenericBadge from '@/components/GenericBadge.vue';
 
@@ -11,7 +12,7 @@ const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
-const secret = ref<string | null>(null);
+const secret = ref<Nullable<string>>(null);
 const loading = ref(false);
 
 const revealWebhookEndpointSecret = async () => {
