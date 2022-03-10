@@ -3,13 +3,23 @@ import { FormsLocale } from '@/interfaces/locales/forms';
 export default <FormsLocale>{
   userData: {
     labels: {
-      username: 'Username',
+      email: 'Email',
       password: 'Password',
+      name: 'First Name',
+      lastName: 'Last Name',
+      company: 'Company',
+      country: 'Country',
     },
     placeholders: {
-      username: 'jon.snow@fintoc.com',
+      email: 'jon.snow@fintoc.com',
       password: 'winteriscoming',
+      name: 'Jon',
+      lastName: 'Snow',
+      company: 'Fintoc',
+      country: 'Chile',
     },
-    logIn: 'Log In!',
+    logIn: 'Log in',
+    signUp: 'Sign up',
+    resendEmail: 'Resend verification email',
   },
 };

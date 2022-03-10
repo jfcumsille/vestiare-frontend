@@ -1,11 +1,11 @@
 export interface FormsLocale {
   userData: {
     labels: {
-      username: string,
+      email: string,
       password: string,
     },
     placeholders: {
-      username: string,
+      email: string,
       password: string,
     },
     logIn: string,
