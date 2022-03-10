@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useTranslation } from '@/locales';
-import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import GenericBadge from '@/components/GenericBadge.vue';
@@ -10,7 +9,6 @@ const $t = useTranslation('views.webhookEndpoints.table');
 
 const $props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
-const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
 const secret = ref<string | null>(null);
@@ -20,7 +18,6 @@ const revealWebhookEndpointSecret = async () => {
   if (!loading.value) {
     loading.value = true;
     secret.value = await $webhookEndpointsStore.getWebhookEndpointSecret(
-      $userStore.defaultOrganizationId,
       $props.webhookEndpoint,
     );
     loading.value = false;

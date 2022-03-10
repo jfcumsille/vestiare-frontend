@@ -6,36 +6,36 @@ import { Json } from '@/interfaces/utilities/json';
 export const useLinksStore = defineStore('links', {
   state: () => ({
     links: <Array<Link>>[],
-    loading: false,
+    loading: true,
   }),
   actions: {
-    async getLinks(organization: string, params: Json = {}) {
+    async loadLinks(params: Json = {}) {
       this.loading = true;
       this.links = [];
       let page = 1;
       let result = [];
       while (result.length === 0) {
         /* eslint-disable-next-line no-await-in-loop */
-        result = await api.links.list(organization, { ...params, page });
+        result = await api.links.list({ ...params, page });
         this.links = [...this.links, ...result];
         page += 1;
       }
       this.loading = false;
     },
-    async updateLink(organization: string, link: Link, data: Json) {
+    async updateLink(link: Link, data: Json) {
       if (!this.links.includes(link)) {
         throw new Error('Invalid link');
       }
       const index = this.links.indexOf(link);
-      const updatedLink = await api.links.update(organization, link.id, data);
+      const updatedLink = await api.links.update(link.id, data);
       this.links[index] = updatedLink;
     },
-    async removeLink(organization: string, link: Link) {
+    async removeLink(link: Link) {
       if (!this.links.includes(link)) {
         throw new Error('Invalid link');
       }
       const index = this.links.indexOf(link);
-      await api.links.remove(organization, link.id);
+      await api.links.remove(link.id);
       this.links = [
         ...this.links.slice(0, index),
         ...this.links.slice(index + 1),

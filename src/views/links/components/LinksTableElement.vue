@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
-import { useUserStore } from '@/stores/user';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
 import GenericToggle from '@/components/GenericToggle.vue';
@@ -11,7 +10,6 @@ const $props = defineProps<{ link: Link }>();
 
 const $t = useTranslation('views.links.table.buttons');
 
-const $userStore = useUserStore();
 const $linksStore = useLinksStore();
 
 const updating = ref(false);
@@ -19,7 +17,6 @@ const updating = ref(false);
 const toggleActive = async () => {
   updating.value = true;
   await $linksStore.updateLink(
-    $userStore.defaultOrganizationId,
     $props.link,
     { active: !$props.link.active },
   );
@@ -27,7 +24,7 @@ const toggleActive = async () => {
 };
 
 const remove = () => {
-  $linksStore.removeLink($userStore.defaultOrganizationId, $props.link);
+  $linksStore.removeLink($props.link);
 };
 </script>
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useTranslation } from '@/locales';
-import { useUserStore } from '@/stores/user';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -11,7 +10,6 @@ import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElem
 
 const $t = useTranslation('views.webhookEndpoints');
 
-const $userStore = useUserStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
 const live = ref(true);
@@ -34,10 +32,6 @@ const webhookEndpoints = computed(
       : $webhookEndpointsStore.testWebhookEndpoints
   ),
 );
-
-onMounted(() => {
-  $webhookEndpointsStore.getWebhookEndpoints($userStore.defaultOrganizationId);
-});
 </script>
 
 <template>

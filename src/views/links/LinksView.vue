@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
-import { useUserStore } from '@/stores/user';
-import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -16,8 +14,6 @@ import LinkCreation from './components/LinkCreation.vue';
 
 const $t = useTranslation('views.links');
 
-const $userStore = useUserStore();
-const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
 const createdLinkToken = ref<string | null>(null);
@@ -88,11 +84,6 @@ const filterBySearch = (rawLinks: Array<Link>) => {
 };
 
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
-
-onMounted(() => {
-  $linksStore.getLinks($userStore.defaultOrganizationId);
-  $apiKeysStore.getAPIKeys($userStore.defaultOrganizationId);
-});
 </script>
 
 <template>

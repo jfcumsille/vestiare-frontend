@@ -4,7 +4,6 @@ import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
 import { useTranslation } from '@/locales';
 import * as api from '@/api';
 import { Link } from '@/interfaces/entities/links';
-import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 
@@ -23,7 +22,6 @@ const $emit = defineEmits<
 
 const $t = useTranslation('views.links.creation');
 
-const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
@@ -39,7 +37,7 @@ const disabledButton = computed(() => $props.widgetOpened || (fintoc.value === n
 
 const onSuccess = async (link: Link) => {
   $emit('set-widget-opened', false);
-  $linksStore.getLinks($userStore.defaultOrganizationId);
+  $linksStore.loadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
   $emit('show-link-token', regeneratedLink.linkToken);
 };

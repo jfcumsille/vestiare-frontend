@@ -8,13 +8,12 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
     loading: true,
   }),
   actions: {
-    async getWebhookEndpoints(organization: string) {
+    async loadWebhookEndpoints() {
       this.loading = true;
-      this.webhookEndpoints = await api.webhookEndpoints.list(organization);
+      this.webhookEndpoints = await api.webhookEndpoints.list();
       this.loading = false;
     },
     async updateWebhook(
-      organization: string,
       webhookEndpoint: WebhookEndpoint,
       data: Record<string, boolean>,
     ) {
@@ -23,27 +22,25 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
       }
       const index = this.webhookEndpoints.indexOf(webhookEndpoint);
       const updatedWebhook = await api.webhookEndpoints.update(
-        organization,
         webhookEndpoint.id,
         webhookEndpoint.mode,
         data,
       );
       this.webhookEndpoints[index] = updatedWebhook;
     },
-    async removeWebhookEndpoint(organization: string, webhookEndpoint: WebhookEndpoint) {
+    async removeWebhookEndpoint(webhookEndpoint: WebhookEndpoint) {
       if (!this.webhookEndpoints.includes(webhookEndpoint)) {
         throw new Error('Invalid webhook endpoint');
       }
       const index = this.webhookEndpoints.indexOf(webhookEndpoint);
-      await api.webhookEndpoints.remove(organization, webhookEndpoint.id, webhookEndpoint.mode);
+      await api.webhookEndpoints.remove(webhookEndpoint.id, webhookEndpoint.mode);
       this.webhookEndpoints = [
         ...this.webhookEndpoints.slice(0, index),
         ...this.webhookEndpoints.slice(index + 1),
       ];
     },
-    async getWebhookEndpointSecret(organization: string, webhookEndpoint: WebhookEndpoint) {
+    async getWebhookEndpointSecret(webhookEndpoint: WebhookEndpoint) {
       const payload = await api.webhookEndpoints.getSecret(
-        organization,
         webhookEndpoint.id,
         webhookEndpoint.mode,
       );
