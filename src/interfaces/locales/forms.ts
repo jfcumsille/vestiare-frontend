@@ -8,6 +8,5 @@ export interface FormsLocale {
       email: string,
       password: string,
     },
-    logIn: string,
   },
 }

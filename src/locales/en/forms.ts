@@ -18,8 +18,5 @@ export default <FormsLocale>{
       company: 'Fintoc',
       country: 'Chile',
     },
-    logIn: 'Log in',
-    signUp: 'Sign up',
-    resendEmail: 'Resend verification email',
   },
 };
