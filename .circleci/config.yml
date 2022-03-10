@@ -113,7 +113,7 @@ jobs:
       - run:
           name: Check absence of fixup commits
           command: |
-            ! git log master... | grep 'fixup!'
+            ! git log main... | grep 'fixup!'
   staging-deploy:
     docker:
       - image: cimg/node:16.14
@@ -179,7 +179,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
   production-deploy:
     jobs:
       - production-deploy:
