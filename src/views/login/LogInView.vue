@@ -22,7 +22,7 @@ watch([email, password], () => { error.value = false; });
 const logIn = async () => {
   loading.value = true;
   try {
-    await $store.logIn({ email: email.value, password: password.value, token: '' });
+    await $store.logIn({ email: email.value, password: password.value });
     router.push({
       path: (route.query[REDIRECT_QUERY_KEY] as string) || '/',
     });
