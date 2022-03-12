@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router';
 import { useStorage } from '@vueuse/core';
 import { camelizeKeys } from 'humps';
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '@/constants';
+import { OAuthToken } from '@/interfaces/responses/auth0';
 
 const REDIRECT_URI = `${window.location.origin}/login`;
 
@@ -76,11 +77,11 @@ export const loginWithRedirect = async (connection: 'github' | 'google-oauth2') 
   window.location.href = authorizationUri;
 };
 
-export const handleRedirectCallback = async () => {
+export const handleRedirectCallback = async (): Promise<OAuthToken> => {
   const route = useRoute();
   const codeVerifier = useStorage('code-verifier', '');
   const code = (route.query.code as string) || '';
   const oAuthJWTBody = buildOAuthJWTBody(code, codeVerifier.value);
   const response = await axios.post(`https://${AUTH0_DOMAIN}/oauth/token`, oAuthJWTBody);
-  return camelizeKeys(response.data);
+  return camelizeKeys(response.data) as unknown as OAuthToken;
 };
