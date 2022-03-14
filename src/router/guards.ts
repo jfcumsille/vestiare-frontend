@@ -1,6 +1,6 @@
 import { RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { REDIRECT_QUERY_KEY } from '@/constants';
+import { REDIRECT_QUERY_KEY } from '@/constants/router';
 
 // eslint-disable-next-line consistent-return
 export const loginRequired = (to: RouteLocationNormalized) => {

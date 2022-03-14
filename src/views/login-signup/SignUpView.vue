@@ -3,7 +3,8 @@ import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import { REDIRECT_QUERY_KEY } from '@/constants';
+import { REDIRECT_QUERY_KEY } from '@/constants/router';
+import { TERMS_AND_CONDITIONS, PRIVACY_POLICY, CONTACT } from '@/constants/texts';
 import GenericInput from '@/components/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
@@ -164,14 +165,14 @@ const logIn = () => {
                     {{ $tSignUp('accept') }}
                     <a
                       class="text-primary-main"
-                      href="https://fintoc.com/legal/terminos-y-condiciones-para-desarrolladores#terminos-y-condiciones"
+                      :href="TERMS_AND_CONDITIONS"
                     >
                       {{ $tSignUp('terms') }}
                     </a>
                     {{ $tSignUp('and') }}
                     <a
                       class="text-primary-main"
-                      href="https://fintoc.com/legal/politicas-de-privacidad-para-usuarios-finales"
+                      :href="PRIVACY_POLICY"
                     >
                       {{ $tSignUp('privacyPolicy') }}
                     </a>
@@ -250,7 +251,7 @@ const logIn = () => {
           </div>
           <a
             class="mt-4 text-primary-main font-medium z-10"
-            href="https://fintoc.com/contact"
+            :href="CONTACT"
           >
             {{ $tSignUp('contactSales') }}
           </a>

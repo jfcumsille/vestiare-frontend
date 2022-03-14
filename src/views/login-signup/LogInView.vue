@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import { REDIRECT_QUERY_KEY } from '@/constants';
+import { REDIRECT_QUERY_KEY } from '@/constants/router';
 import GenericInput from '@/components/GenericInput.vue';
 import Circle from '@/components/images/CircleBackground.vue';
 import Dots from '@/components/images/DotsGrid.vue';
