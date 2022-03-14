@@ -92,7 +92,7 @@ describe('GenericDropDown', () => {
     });
 
     const name = wrapper.find('[data-test="dropDownName"]');
-    expect(name).not.toBeDefined();
+    expect(name.exists()).toBe(false);
   });
 
   it('renders text color white when textColor is white', () => {
@@ -168,6 +168,6 @@ describe('GenericDropDown', () => {
     });
 
     const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes('bg-blue-300'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('ring-blue-300'))).not.toBeUndefined();
   });
 });

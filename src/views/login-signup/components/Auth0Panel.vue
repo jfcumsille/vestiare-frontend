@@ -12,8 +12,8 @@ const props = withDefaults(defineProps<{
   isSignup: false,
 });
 
-const googleAuthorizeUrl = ref<string | null>(null);
-const githubAuthorizeUrl = ref<string | null>(null);
+const googleAuthorizeUrl = ref('');
+const githubAuthorizeUrl = ref('');
 
 const actionButtonLabel = computed(() => {
   if (props.isSignup) {

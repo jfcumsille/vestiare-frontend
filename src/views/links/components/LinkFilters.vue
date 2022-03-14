@@ -40,7 +40,7 @@ const onInput = ($event: Event) => {
       :name="$t('active.label')"
       :selected="$props.activeFilter"
       :options="$props.activeOptions"
-      :show-name="true"
+      show-name
       text-color="white"
       bg-color="blue-700"
       bg-hover-color="blue-800"
@@ -53,7 +53,7 @@ const onInput = ($event: Event) => {
       :name="$t('password.label')"
       :selected="$props.passwordFilter"
       :options="$props.passwordOptions"
-      :show-name="true"
+      show-name
       text-color="white"
       bg-color="blue-700"
       bg-hover-color="blue-800"

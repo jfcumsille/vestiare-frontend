@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import ChevronDown from './images/ChevronDown.vue';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   name: string,
   selected: string,
   options: Array<string>,
@@ -12,7 +12,9 @@ const props = defineProps<{
   bgColor: string,
   bgHoverColor: string,
   focusRingColor: string,
-}>();
+}>(), {
+  showName: false,
+});
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
 

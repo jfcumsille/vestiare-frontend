@@ -18,7 +18,7 @@
       r="5"
       fill="url(#paint0_linear_482_454)"
       fill-opacity="0.64"
-      style="mix-blend-mode:overlay"
+      style="mix-blend-mode: overlay;"
     />
     <defs>
       <linearGradient

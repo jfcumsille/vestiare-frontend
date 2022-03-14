@@ -8,11 +8,11 @@ const props = withDefaults(defineProps<{
   rightText?: string,
   rightHRef?: string,
 }>(), {
-  label: null,
-  placeholder: null,
+  label: undefined,
+  placeholder: undefined,
   hasRightLink: false,
-  rightText: null,
-  rightHRef: null,
+  rightText: undefined,
+  rightHRef: undefined,
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
