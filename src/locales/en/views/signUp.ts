@@ -3,6 +3,7 @@ import { SignUpViewLocale } from '@/interfaces/locales/views/signUp';
 export default <SignUpViewLocale>{
   texts: {
     title: 'Build with Fintoc',
+    country: 'Country',
     accept: 'I accept the',
     terms: 'Terms & Conditions',
     and: 'and',

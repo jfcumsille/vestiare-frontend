@@ -1,6 +1,6 @@
 import client from '@/api/client';
 import { User } from '@/interfaces/entities/user';
-import { LogInOptions, SignUpOptions } from '@/interfaces/options/logIn';
+import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
 
 export const logIn = async ({ email, password, token }: LogInOptions): Promise<User> => {
   const response = await client.post('/internal/v1/sessions', { email, password, token });
@@ -9,17 +9,15 @@ export const logIn = async ({ email, password, token }: LogInOptions): Promise<U
 
 export const signUp = async (
   {
-    email, password, name, lastName, company, country,
+    email, password, token, name, lastName, company, country,
   }: SignUpOptions,
 ): Promise<User> => {
   const response = await client.post('/internal/v1/users', {
-    email, password, name, lastName, company, country,
+    email, password, token, name, lastName, company, country,
   });
   return response.data;
 };
 
-export const sendConfirmationEmail = async (
-  { email }: { email: string },
-): Promise<void> => {
+export const sendConfirmationEmail = async (email: string) => {
   await client.post('/internal/v1/users/confirmation', { email });
 };

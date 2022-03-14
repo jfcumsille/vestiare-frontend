@@ -18,6 +18,5 @@ export default <FormsLocale>{
       company: 'Fintoc',
       country: 'Chile',
     },
-    logIn: 'Iniciar Sesión!',
   },
 };

@@ -36,14 +36,13 @@ export const useUserStore = defineStore('user', {
       email, password, token, name, lastName, company, country,
     }
       : SignUpOptions) {
-      // TODO CHANGE BACKEND, ADD COMPANY AND COUNTRY
       const userData = await api.authentication.signUp({
         email, password, token, name, lastName, company, country,
       });
       this.updateUserData(userData);
     },
-    async sendConfirmationEmail({ email }: { email: string }) {
-      await api.authentication.sendConfirmationEmail({ email });
+    async sendConfirmationEmail(email: string) {
+      await api.authentication.sendConfirmationEmail(email);
     },
   },
   getters: {
