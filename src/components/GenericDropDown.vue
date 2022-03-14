@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { useTranslation } from '@/locales';
+import ChevronDown from './images/ChevronDown.vue';
 
 const props = defineProps<{
   name: string,
   selected: string,
   options: Array<string>,
-  translationNamespace: string,
+  showName: boolean,
+  textColor: string,
+  bgColor: string,
+  bgHoverColor: string,
+  focusRingColor: string,
 }>();
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
-
-const $t = useTranslation(`${props.translationNamespace}.options`);
 
 const opened = ref(false);
 const dropDown = ref(null);
@@ -37,31 +39,28 @@ onClickOutside(dropDown, () => {
     class="mt-1"
   >
     <button
-      class="
-        text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
-        focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5
-        text-center inline-flex items-center
-      "
+      data-test="dropDownButton"
+      :class="`
+        text-${textColor} bg-${bgColor} hover:bg-${bgHoverColor} focus:ring-2 justify-between
+        focus:ring-${focusRingColor} font-medium rounded-md text-sm px-4 py-2.5 shadow-sm
+        text-center inline-flex items-center w-full border border-slate-300 h-12
+      `"
       @click="toggle"
     >
-      {{ name }} - {{ $t(selected) }} <svg
-        class="ml-2 w-4 h-4"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      ><path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M19 9l-7 7-7-7"
-      /></svg>
+      <span
+        v-if="showName"
+        data-test="dropDownName"
+        class="mr-1"
+      > {{ name }} - </span>
+      {{ selected }}
+      <ChevronDown />
     </button>
 
     <div
+      data-test="dropDownList"
       class="
         absolute z-10 w-44 text-base list-none bg-white rounded cursor-pointer
-        divide-y divide-gray-100 shadow
+        divide-y divide-gray-100 shadow-lg
       "
       :class="{ hidden: !opened }"
     >
@@ -71,10 +70,10 @@ onClickOutside(dropDown, () => {
           :key="option"
         >
           <span
-            class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100"
+            class="block py-2 px-4 text-sm text-gray-700 font-normal hover:bg-gray-100"
             @click="() => select(option)"
           >
-            {{ $t(option) }}
+            {{ option }}
           </span>
         </li>
       </ul>
