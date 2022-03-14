@@ -6,7 +6,7 @@ import LinksView from '@/views/links/LinksView.vue';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
 import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
 
-import { loginRequired, skipLogInIfAlreadyLoggedIn } from './guards';
+import { loginRequired, skipLogInIfAlreadyLoggedIn, skipSignUpIfAlreadyLoggedIn } from './guards';
 import { handleAuth0RedirectCallback } from './handlers';
 
 const routes: RouteRecordRaw[] = [
@@ -32,5 +32,6 @@ const router = createRouter({
 
 router.beforeEach(loginRequired);
 router.beforeEach(skipLogInIfAlreadyLoggedIn);
+router.beforeEach(skipSignUpIfAlreadyLoggedIn);
 
 export default router;

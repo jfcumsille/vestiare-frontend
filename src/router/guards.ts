@@ -17,3 +17,11 @@ export const skipLogInIfAlreadyLoggedIn = (to: RouteLocationNormalized) => {
     return { path: '/' };
   }
 };
+
+// eslint-disable-next-line consistent-return
+export const skipSignUpIfAlreadyLoggedIn = (to: RouteLocationNormalized) => {
+  const $userStore = useUserStore();
+  if (to.path === '/signup' && $userStore.authenticated) {
+    return { path: '/' };
+  }
+};

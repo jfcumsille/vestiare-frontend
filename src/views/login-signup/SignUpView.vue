@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { REDIRECT_QUERY_KEY } from '@/constants';
 import GenericInput from '@/components/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
+import GenericDropDown from '@/components/GenericDropDown.vue';
+import BulletPoint from '@/components/images/BulletPoint.vue';
+import Circle from '@/components/images/CircleBackground.vue';
+import Dots from '@/components/images/DotsGrid.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
-import DropDown from './components/DropDown.vue';
-import BulletPoint from './components/BulletPoint.vue';
-import Circle from './components/CircleBackground.vue';
-import Dots from './components/DotsGrid.vue';
 
 const $store = useUserStore();
 const $route = useRoute();
@@ -34,13 +34,14 @@ const completed = ref(false);
 
 watch([email, password], () => { error.value = false; });
 const isChecked = ref(false);
-const isSignUpEnabled = computed(() => (isChecked.value && name.value !== '' && lastName.value !== '' && email.value !== '' && password.value !== ''));
+const isSignUpEnabled = computed(() => (isChecked.value
+&& name.value && lastName.value && email.value && password.value));
 const isEmailResent = ref(false);
 
 const signUp = async () => {
   loading.value = true;
   try {
-    const formData = {
+    await $store.signUp({
       email: email.value,
       password: password.value,
       token: '',
@@ -48,8 +49,7 @@ const signUp = async () => {
       lastName: lastName.value,
       country: country.value,
       company: company.value,
-    };
-    await $store.signUp(formData);
+    });
     completed.value = true;
   } catch (err) {
     error.value = true;
@@ -61,10 +61,7 @@ const signUp = async () => {
 
 const resendVerificationEmail = async () => {
   try {
-    const formData = {
-      email: email.value,
-    };
-    await $store.sendConfirmationEmail(formData);
+    await $store.sendConfirmationEmail(email.value);
     isEmailResent.value = true;
   } catch (err) {
     error.value = true;
@@ -81,12 +78,9 @@ const logIn = () => {
 
 <template>
   <div class="h-full w-full">
-    <Spinner
-      v-if="loading"
-    />
     <div
       v-if="!completed"
-      class="relative flex flex-row justify-center p-20"
+      class="relative flex flex-row justify-center p-20 z-10"
     >
       <div class="relative">
         <Circle class="absolute top-0 left-0 -ml-28 -mt-12 z-0" />
@@ -99,9 +93,7 @@ const logIn = () => {
             {{ $tSignUp('title') }}
           </div>
 
-          <Auth0Panel
-            :signs-up="true"
-          />
+          <Auth0Panel is-signup />
 
           <div class="my-7 h-px bg-border-bg-gray-300" />
 
@@ -132,10 +124,14 @@ const logIn = () => {
                 <div class="block mb-1 text-sm font-medium text-txt-sec-cap">
                   Country
                 </div>
-                <DropDown
-                  name="Country"
+                <GenericDropDown
+                  :name="$tSignUp('country')"
                   :selected="country"
                   :options="countryOptions"
+                  text-color="txt-body"
+                  bg-color="white"
+                  bg-hover-color="gray-100"
+                  focus-ring-color="gray-300"
                   @select="selectCountryFilter"
                 />
               </div>
@@ -187,15 +183,20 @@ const logIn = () => {
             <div>
               <button
                 class="
-                  mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
+                  flex mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
                   rounded text-white bg-primary-main hover:bg-primary-main-hover
-                  disabled:cursor-default h-12
-                  disabled:bg-gray-300
+                  disabled:cursor-default disabled:bg-gray-300
+                  justify-center h-12
                 "
                 :disabled="!isSignUpEnabled"
                 @click="signUp"
               >
-                {{ $tSignUp('signUp') }}
+                <Spinner
+                  v-if="loading"
+                />
+                <span
+                  v-if="!loading"
+                > {{ $tSignUp('signUp') }} </span>
               </button>
               <span
                 v-if="error"

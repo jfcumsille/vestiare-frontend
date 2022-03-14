@@ -6,13 +6,19 @@ import GithubLogo from './GithubLogo.vue';
 
 const $t = useTranslation('views.auth0Panel.texts');
 
-const props = defineProps<{ signsUp: boolean }>();
+const props = withDefaults(defineProps<{
+  isSignup: boolean,
+}>(), {
+  isSignup: false,
+});
 
 const googleAuthorizeUrl = ref<string | null>(null);
 const githubAuthorizeUrl = ref<string | null>(null);
 
 const actionButtonLabel = computed(() => {
-  if (props.signsUp) return $t('signUpWith');
+  if (props.isSignup) {
+    return $t('signUpWith');
+  }
   return $t('logInWith');
 });
 
