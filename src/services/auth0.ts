@@ -76,7 +76,7 @@ export const loginWithRedirect = async (connection: 'github' | 'google-oauth2') 
   window.location.href = authorizationUri;
 };
 
-export const handleRedirectCallback = async (code: string): Promise<OAuthToken> => {
+export const exchangeCodeForToken = async (code: string): Promise<OAuthToken> => {
   const codeVerifier = useStorage('code-verifier', '');
   const oAuthJWTBody = buildOAuthJWTBody(code, codeVerifier.value);
   const response = await axios.post(`https://${AUTH0_DOMAIN}/oauth/token`, oAuthJWTBody);
