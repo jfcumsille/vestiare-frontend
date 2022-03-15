@@ -1,19 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   modelValue: string,
   label?: string,
   placeholder?: string,
-  hasRightLink?: boolean,
   rightText?: string,
   rightHRef?: string,
-}>(), {
-  label: undefined,
-  placeholder: undefined,
-  hasRightLink: false,
-  rightText: undefined,
-  rightHRef: undefined,
-});
+}>();
+
+const hasRightLink = computed(() => props.rightText && props.rightHRef);
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
@@ -31,7 +27,7 @@ const onInput = ($event: Event) => {
     >
       {{ props.label }}
       <a
-        v-if="props.hasRightLink"
+        v-if="hasRightLink"
         :href="props.rightHRef"
         class="font-medium text-primary-main text-sm"
       >

@@ -59,7 +59,6 @@ const logIn = async () => {
           <GenericInput
             v-model="password"
             type="password"
-            has-right-link
             :right-text="$tLogIn('forgotPassword')"
             right-h-ref="/forgotpassword"
             :label="$tForms('labels.password')"

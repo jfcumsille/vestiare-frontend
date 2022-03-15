@@ -45,7 +45,7 @@ describe('GenericDropDown', () => {
         options: optionsText,
         name: 'something',
         selected: 'something',
-        textColor: 'something2',
+        textColor: 'something',
         showName: true,
         bgColor: 'something',
         bgHoverColor: 'something',
@@ -58,10 +58,9 @@ describe('GenericDropDown', () => {
   });
 
   it('renders name in button text if showName is true', () => {
-    const textColor = 'white';
     const wrapper = mount(GenericDropDown, {
       props: {
-        textColor,
+        textColor: 'something',
         name: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
@@ -77,10 +76,9 @@ describe('GenericDropDown', () => {
   });
 
   it('doesnt renders name in button text if showName is false', () => {
-    const textColor = 'white';
     const wrapper = mount(GenericDropDown, {
       props: {
-        textColor,
+        textColor: 'something',
         name: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
@@ -130,7 +128,7 @@ describe('GenericDropDown', () => {
     });
 
     const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes('bg-blue-700'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes(`bg-${bgColor}`))).not.toBeUndefined();
   });
 
   it('renders bg hover color blue-800 when bgColor is blue-800', () => {
@@ -149,7 +147,7 @@ describe('GenericDropDown', () => {
     });
 
     const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes('bg-blue-800'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes(`bg-${bgHoverColor}`))).not.toBeUndefined();
   });
 
   it('renders focus ring color blue-300 when ring color is blue-300', () => {
@@ -168,6 +166,6 @@ describe('GenericDropDown', () => {
     });
 
     const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes('ring-blue-300'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes(`ring-${focusRingColor}`))).not.toBeUndefined();
   });
 });
