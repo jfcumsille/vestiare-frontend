@@ -9,7 +9,7 @@ import Circle from '@/components/images/CircleBackground.vue';
 import Dots from '@/components/images/DotsGrid.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
-const $store = useUserStore();
+const userStore = useUserStore();
 const $tForms = useTranslation('forms.userData');
 const $tLogIn = useTranslation('views.logIn.texts');
 
@@ -26,7 +26,7 @@ watch([email, password], () => { error.value = false; });
 const logIn = async () => {
   loading.value = true;
   try {
-    await $store.logIn({ email: email.value, password: password.value });
+    await userStore.logIn({ email: email.value, password: password.value });
     router.push({
       path: (route.query[REDIRECT_QUERY_KEY] as string) || '/',
     });
