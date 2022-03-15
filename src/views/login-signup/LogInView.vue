@@ -44,7 +44,7 @@ const logIn = async () => {
       <Circle class="h-72 w-72 absolute bottom-0 left-0 -ml-24 z-0 -mb-16" />
       <Dots class="absolute top-0 right-0 -mr-28 -mt-12 z-0" />
       <div class="bg-white relative p-10 rounded-md border border-bg-gray-200 drop-shadow-md z-10">
-        <div class="mb-5 font-medium text-2xl text-txt-heading">
+        <div class="mb-5 font-medium text-2xl text-heading-txt-color">
           {{ $tLogIn('title') }}
         </div>
         <Auth0Panel />
@@ -86,7 +86,7 @@ const logIn = async () => {
               !
             </span>
           </div>
-          <div class="mt-6 text-center text-txt-body text-sm font-normal ">
+          <div class="mt-6 text-center text-body-txt-color text-sm font-normal ">
             {{ $tLogIn('dontHaveAccount') }}
             <a
               href="/signup"

@@ -91,7 +91,7 @@ const logIn = () => {
           class="bg-white relative p-10 rounded-md border
           border-bg-gray-200 drop-shadow-md z-10"
         >
-          <div class="mb-5 font-medium text-2xl text-txt-heading">
+          <div class="mb-5 font-medium text-2xl text-heading-txt-color">
             {{ $tSignUp('title') }}
           </div>
 
@@ -123,7 +123,7 @@ const logIn = () => {
               />
 
               <div class="block w-full">
-                <div class="block mb-1 text-sm font-medium text-txt-sec-cap">
+                <div class="block mb-1 text-sm font-medium text-sec-cap-txt-color">
                   Country
                 </div>
                 <GenericDropDown
@@ -156,7 +156,10 @@ const logIn = () => {
                     class="w-4 h-4 accent-primary-main hover:accent-primary-main"
                   >
                   <label
-                    class="ml-2 form-check-label inline-block text-txt-body text-sm font-normal"
+                    class="
+                      ml-2 form-check-label inline-block
+                      text-body-txt-color text-sm font-normal
+                    "
                     for="flexCheckDefault"
                   >
                     {{ $tSignUp('accept') }}
@@ -205,7 +208,7 @@ const logIn = () => {
             </div>
 
             <div
-              class="mt-6 text-center text-txt-body text-sm font-normal"
+              class="mt-6 text-center text-body-txt-color text-sm font-normal"
             >
               {{ $tSignUp('alreadyHaveAccount') }}
               <a
@@ -223,25 +226,25 @@ const logIn = () => {
         <Dots class="absolute top-0 right-0 -mr-10 -mt-6 z-0" />
         <Circle class="h-32 w-32 absolute top-0 left-0 ml-5 mt-48 z-0" />
         <div class="ml-20 flex flex-col min-w-400px max-w-400px z-10">
-          <div class="text-lg text-txt-heading">
+          <div class="text-lg text-heading-txt-color">
             {{ $tSignUp('infoTitle') }}
           </div>
           <div class="z-10">
             <div class="mt-4 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
-              <div class="ml-3 text-base text-txt-body font-light">
+              <div class="ml-3 text-base text-body-txt-color font-light">
                 {{ $tSignUp('infoPoint1') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
-              <div class="ml-3 text-base text-txt-body font-light">
+              <div class="ml-3 text-base text-body-txt-color font-light">
                 {{ $tSignUp('infoPoint2') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
-              <div class="ml-3 text-base text-txt-body font-light">
+              <div class="ml-3 text-base text-body-txt-color font-light">
                 {{ $tSignUp('infoPoint3') }}
               </div>
             </div>
@@ -266,10 +269,10 @@ const logIn = () => {
           class="flex flex-col bg-white px-20 py-16 relative
           rounded-md border border-bg-gray-200 drop-shadow-md z-10"
         >
-          <div class="font-medium text-3xl text-txt-heading">
+          <div class="font-medium text-3xl text-heading-txt-color">
             {{ $tSignUp('verifyEmail') }}
           </div>
-          <div class="mt-8 text-txt-body font-light min-w-400px max-w-400px">
+          <div class="mt-8 text-body-txt-color font-light min-w-400px max-w-400px">
             {{ name }},
             {{ $tSignUp('thankYou') }}
             <span class="font-normal">
@@ -277,10 +280,10 @@ const logIn = () => {
             </span>
             {{ $tSignUp('verifyAccount') }}
           </div>
-          <div class="text-center font-light mt-4 text-txt-body">
+          <div class="text-center font-light mt-4 text-body-txt-color">
             {{ $tSignUp('didntReceive') }}
             <button
-              class="text-primary-main font-normal disabled:text-txt-disable"
+              class="text-primary-main font-normal disabled:text-disable-txt-color"
               :disabled="isEmailResent"
               @click="resendVerificationEmail"
             >

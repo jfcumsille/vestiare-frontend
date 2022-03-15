@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<{
 const colorClasses = computed(() => (
   props.isColorPrimary
     ? 'text-white bg-primary-main hover:bg-primary-main-hover focus:ring-primary-border border-primary-border'
-    : 'text-txt-body bg-white hover:bg-gray-100 focus:ring-bg-gray-300 border-slate-300'
+    : 'text-body-txt-color bg-white hover:bg-gray-100 focus:ring-bg-gray-300 border-slate-300'
 ));
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();

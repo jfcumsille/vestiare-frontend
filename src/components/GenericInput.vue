@@ -23,7 +23,7 @@ const onInput = ($event: Event) => {
     <span
       v-if="props.label"
       data-test="label"
-      class="flex flex-row justify-between mb-1 text-sm font-medium text-txt-sec-cap"
+      class="flex flex-row justify-between mb-1 text-sm font-medium text-sec-cap-txt-color"
     >
       {{ props.label }}
       <a
@@ -38,7 +38,7 @@ const onInput = ($event: Event) => {
       data-test="input"
       class="
         block w-full px-3 py-2 bg-white border border-slate-300 rounded-md
-        text-sm text-txt-body shadow-sm placeholder-slate-400 focus:outline-none
+        text-sm text-body-txt-color shadow-sm placeholder-slate-400 focus:outline-none
         focus:border-primary-main focus:ring-1 focus:ring-primary-main h-12
       "
       :placeholder="props.placeholder"

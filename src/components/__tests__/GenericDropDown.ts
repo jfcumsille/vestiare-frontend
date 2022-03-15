@@ -90,7 +90,7 @@ describe('GenericDropDown', () => {
     });
 
     const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes('text-txt-body'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('text-body-txt-color'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-white'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-gray-100'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-gray-300'))).not.toBeUndefined();
