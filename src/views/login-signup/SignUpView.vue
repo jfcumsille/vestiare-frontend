@@ -35,8 +35,9 @@ const completed = ref(false);
 
 watch([email, password], () => { error.value = false; });
 const isChecked = ref(false);
-const isSignUpEnabled = computed(() => (isChecked.value
-&& name.value && lastName.value && email.value && password.value));
+const isSignUpEnabled = computed(() => (
+  isChecked.value && name.value && lastName.value && email.value && password.value
+));
 const isEmailResent = ref(false);
 
 const signUp = async () => {
@@ -52,7 +53,7 @@ const signUp = async () => {
       company: company.value,
     });
     completed.value = true;
-  } catch (err) {
+  } catch {
     error.value = true;
     completed.value = false;
   } finally {
@@ -64,7 +65,7 @@ const resendVerificationEmail = async () => {
   try {
     await $store.sendConfirmationEmail(email.value);
     isEmailResent.value = true;
-  } catch (err) {
+  } catch {
     error.value = true;
   }
 };

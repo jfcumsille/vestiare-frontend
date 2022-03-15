@@ -30,7 +30,7 @@ const logIn = async () => {
     router.push({
       path: (route.query[REDIRECT_QUERY_KEY] as string) || '/',
     });
-  } catch (err) {
+  } catch {
     error.value = true;
   } finally {
     loading.value = false;

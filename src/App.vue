@@ -26,21 +26,21 @@ const navBarLinks = [
   },
 ];
 
-watch(() => $userStore.authenticated, () => {
+const loadUserData = () => {
   if ($userStore.authenticated) {
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();
   }
+};
+
+watch(() => $userStore.authenticated, () => {
+  loadUserData();
 });
 
 onMounted(async () => {
   await $userStore.loadUser();
-  if ($userStore.authenticated) {
-    $apiKeysStore.loadAPIKeys();
-    $linksStore.loadLinks();
-    $webhookEndpointsStore.loadWebhookEndpoints();
-  }
+  loadUserData();
 });
 </script>
 

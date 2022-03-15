@@ -7,22 +7,18 @@ const props = withDefaults(defineProps<{
   name: string,
   selected: string,
   options: Array<string>,
-  showName: boolean,
-  isColorPrimary: boolean,
+  showName?: boolean,
+  isColorPrimary?: boolean,
 }>(), {
   showName: false,
   isColorPrimary: false,
 });
 
-const buttonClass = computed(() => {
-  let classData = 'focus:ring-2 justify-between font-medium rounded-md text-sm px-4 py-2.5 shadow-sm text-center inline-flex items-center w-full border h-12';
-  if (props.isColorPrimary) {
-    classData += ' text-white bg-primary-main hover:bg-primary-main-hover focus:ring-primary-border border-primary-border ';
-  } else {
-    classData += ' text-txt-body bg-white hover:bg-gray-100 focus:ring-bg-gray-300 border-slate-300';
-  }
-  return classData;
-});
+const colorClasses = computed(() => (
+  props.isColorPrimary
+    ? 'text-white bg-primary-main hover:bg-primary-main-hover focus:ring-primary-border border-primary-border'
+    : 'text-txt-body bg-white hover:bg-gray-100 focus:ring-bg-gray-300 border-slate-300'
+));
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
 
@@ -50,7 +46,11 @@ onClickOutside(dropDown, () => {
   >
     <button
       data-test="dropDownButton"
-      :class="buttonClass"
+      :class="`
+        focus:ring-2 justify-between font-medium rounded-md text-sm
+        px-4 py-2.5 shadow-sm text-center inline-flex items-center
+        w-full border h-12 ${colorClasses}
+      `"
       @click="toggle"
     >
       <span

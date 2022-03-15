@@ -38,21 +38,21 @@ const onInput = ($event: Event) => {
       class="ml-4 my-auto"
       translation-namespace="views.links.filters.active"
       :name="$t('active.label')"
-      :selected="$props.activeFilter"
-      :options="$props.activeOptions"
+      :selected="props.activeFilter"
+      :options="props.activeOptions"
       show-name
       is-color-primary
-      @select="(value: string) => $emit('select-active-filter', value)"
+      @select="(value: string) => emit('select-active-filter', value)"
     />
     <GenericDropDown
       class="ml-4 my-auto"
       translation-namespace="views.links.filters.password"
       :name="$t('password.label')"
-      :selected="$props.passwordFilter"
-      :options="$props.passwordOptions"
+      :selected="props.passwordFilter"
+      :options="props.passwordOptions"
       show-name
       is-color-primary
-      @select="(value: string) => $emit('select-password-filter', value)"
+      @select="(value: string) => emit('select-password-filter', value)"
     />
     <div class="flex my-auto ml-6">
       <p

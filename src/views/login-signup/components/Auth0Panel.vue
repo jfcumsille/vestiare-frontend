@@ -7,7 +7,7 @@ import GithubLogo from './GithubLogo.vue';
 const $t = useTranslation('auth0Panel.texts');
 
 const props = withDefaults(defineProps<{
-  isSignup: boolean,
+  isSignup?: boolean,
 }>(), {
   isSignup: false,
 });
