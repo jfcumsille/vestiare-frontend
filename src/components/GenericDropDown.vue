@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import ChevronDown from './images/ChevronDown.vue';
 
@@ -8,12 +8,20 @@ const props = withDefaults(defineProps<{
   selected: string,
   options: Array<string>,
   showName: boolean,
-  textColor: string,
-  bgColor: string,
-  bgHoverColor: string,
-  focusRingColor: string,
+  isColorPrimary: boolean,
 }>(), {
   showName: false,
+  isColorPrimary: false,
+});
+
+const buttonClass = computed(() => {
+  let classData = 'focus:ring-2 justify-between font-medium rounded-md text-sm px-4 py-2.5 shadow-sm text-center inline-flex items-center w-full border h-12';
+  if (props.isColorPrimary) {
+    classData += ' text-white bg-primary-main hover:bg-primary-main-hover focus:ring-primary-border border-primary-border ';
+  } else {
+    classData += ' text-txt-body bg-white hover:bg-gray-100 focus:ring-bg-gray-300 border-slate-300';
+  }
+  return classData;
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -42,11 +50,7 @@ onClickOutside(dropDown, () => {
   >
     <button
       data-test="dropDownButton"
-      :class="`
-        text-${textColor} bg-${bgColor} hover:bg-${bgHoverColor} focus:ring-2 justify-between
-        focus:ring-${focusRingColor} font-medium rounded-md text-sm px-4 py-2.5 shadow-sm
-        text-center inline-flex items-center w-full border border-slate-300 h-12
-      `"
+      :class="buttonClass"
       @click="toggle"
     >
       <span

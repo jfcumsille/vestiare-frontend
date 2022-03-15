@@ -129,10 +129,6 @@ const logIn = () => {
                   :name="$tSignUp('country')"
                   :selected="country"
                   :options="countryOptions"
-                  text-color="txt-body"
-                  bg-color="white"
-                  bg-hover-color="gray-100"
-                  focus-ring-color="gray-300"
                   @select="selectCountryFilter"
                 />
               </div>

@@ -41,10 +41,7 @@ const onInput = ($event: Event) => {
       :selected="$props.activeFilter"
       :options="$props.activeOptions"
       show-name
-      text-color="white"
-      bg-color="blue-700"
-      bg-hover-color="blue-800"
-      focus-ring-color="blue-300"
+      is-color-primary
       @select="(value: string) => $emit('select-active-filter', value)"
     />
     <GenericDropDown
@@ -54,10 +51,7 @@ const onInput = ($event: Event) => {
       :selected="$props.passwordFilter"
       :options="$props.passwordOptions"
       show-name
-      text-color="white"
-      bg-color="blue-700"
-      bg-hover-color="blue-800"
-      focus-ring-color="blue-300"
+      is-color-primary
       @select="(value: string) => $emit('select-password-filter', value)"
     />
     <div class="flex my-auto ml-6">
