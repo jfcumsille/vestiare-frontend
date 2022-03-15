@@ -9,11 +9,8 @@ describe('GenericDropDown', () => {
         name,
         selected: 'something',
         options: ['something1', 'something2'],
-        textColor: 'something2',
         showName: true,
-        bgColor: 'something',
-        bgHoverColor: 'something',
-        focusRingColor: 'something',
+        isColorPrimary: true,
       },
     });
 
@@ -27,11 +24,8 @@ describe('GenericDropDown', () => {
         selected: selectedText,
         name: 'something',
         options: ['something1', 'something2'],
-        textColor: 'something2',
         showName: true,
-        bgColor: 'something',
-        bgHoverColor: 'something',
-        focusRingColor: 'something',
+        isColorPrimary: true,
       },
     });
 
@@ -45,11 +39,8 @@ describe('GenericDropDown', () => {
         options: optionsText,
         name: 'something',
         selected: 'something',
-        textColor: 'something',
         showName: true,
-        bgColor: 'something',
-        bgHoverColor: 'something',
-        focusRingColor: 'something',
+        isColorPrimary: true,
       },
     });
 
@@ -60,14 +51,11 @@ describe('GenericDropDown', () => {
   it('renders name in button text if showName is true', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
-        textColor: 'something',
         name: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
         showName: true,
-        bgColor: 'something',
-        bgHoverColor: 'something',
-        focusRingColor: 'something',
+        isColorPrimary: true,
       },
     });
 
@@ -78,14 +66,11 @@ describe('GenericDropDown', () => {
   it('doesnt renders name in button text if showName is false', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
-        textColor: 'something',
         name: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
         showName: false,
-        bgColor: 'something',
-        bgHoverColor: 'something',
-        focusRingColor: 'something',
+        isColorPrimary: true,
       },
     });
 
@@ -93,79 +78,41 @@ describe('GenericDropDown', () => {
     expect(name.exists()).toBe(false);
   });
 
-  it('renders text color white when textColor is white', () => {
-    const textColor = 'white';
+  it('renders default white colors for button when isPrimaryColor is false', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
-        textColor,
         name: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
         showName: true,
-        bgColor: 'something',
-        bgHoverColor: 'something',
-        focusRingColor: 'something',
+        isColorPrimary: false,
+      },
+    });
+
+    const button = wrapper.find('[data-test="dropDownButton"]');
+    expect(button.classes().find((cls) => cls.includes('text-txt-body'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('bg-white'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('bg-gray-100'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('bg-gray-300'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('border-slate-300'))).not.toBeUndefined();
+  });
+
+  it('renders primary colors for button when isPrimaryColor is true', () => {
+    const wrapper = mount(GenericDropDown, {
+      props: {
+        name: 'something',
+        selected: 'something',
+        options: ['something1', 'something2'],
+        showName: true,
+        isColorPrimary: true,
       },
     });
 
     const button = wrapper.find('[data-test="dropDownButton"]');
     expect(button.classes().find((cls) => cls.includes('text-white'))).not.toBeUndefined();
-  });
-
-  it('renders background color blue-700 when bgColor is blue-700', () => {
-    const bgColor = 'blue-700';
-    const wrapper = mount(GenericDropDown, {
-      props: {
-        bgColor,
-        name: 'something',
-        selected: 'something',
-        options: ['something1', 'something2'],
-        showName: true,
-        textColor: 'something',
-        bgHoverColor: 'something',
-        focusRingColor: 'something',
-      },
-    });
-
-    const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes(`bg-${bgColor}`))).not.toBeUndefined();
-  });
-
-  it('renders bg hover color blue-800 when bgColor is blue-800', () => {
-    const bgHoverColor = 'blue-800';
-    const wrapper = mount(GenericDropDown, {
-      props: {
-        bgHoverColor,
-        name: 'something',
-        selected: 'something',
-        options: ['something1', 'something2'],
-        showName: true,
-        textColor: 'something',
-        bgColor: 'something',
-        focusRingColor: 'something',
-      },
-    });
-
-    const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes(`bg-${bgHoverColor}`))).not.toBeUndefined();
-  });
-
-  it('renders focus ring color blue-300 when ring color is blue-300', () => {
-    const focusRingColor = 'blue-300';
-    const wrapper = mount(GenericDropDown, {
-      props: {
-        focusRingColor,
-        name: 'something',
-        selected: 'something',
-        options: ['something1', 'something2'],
-        showName: true,
-        textColor: 'something',
-        bgColor: 'something',
-        bgHoverColor: 'something',
-      },
-    });
-
-    const button = wrapper.find('[data-test="dropDownButton"]');
-    expect(button.classes().find((cls) => cls.includes(`ring-${focusRingColor}`))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('bg-primary-main'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('bg-primary-main-hover'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('ring-primary-border'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('border-primary-border'))).not.toBeUndefined();
   });
 });
