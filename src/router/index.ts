@@ -6,10 +6,15 @@ import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.
 import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
 
 import { loginRequired, skipLogInIfAlreadyLoggedIn } from './guards';
+import { handleAuth0RedirectCallback } from './handlers';
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: HomeView },
-  { path: '/login', component: LogInView },
+  {
+    path: '/login',
+    component: LogInView,
+    beforeEnter: handleAuth0RedirectCallback,
+  },
   { path: '/links', component: LinksView },
   { path: '/webhook_endpoints', component: WebhookEndpointsView },
   {
