@@ -34,8 +34,7 @@ export const useUserStore = defineStore('user', {
     },
     async signUp({
       email, password, token, name, lastName, company, country,
-    }
-      : SignUpOptions) {
+    }: SignUpOptions) {
       const userData = await api.authentication.signUp({
         email, password, token, name, lastName, company, country,
       });

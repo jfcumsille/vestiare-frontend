@@ -4,7 +4,7 @@ import { useTranslation } from '@/locales';
 import GoogleLogo from './GoogleLogo.vue';
 import GithubLogo from './GithubLogo.vue';
 
-const $t = useTranslation('views.auth0Panel.texts');
+const $t = useTranslation('auth0Panel.texts');
 
 const props = withDefaults(defineProps<{
   isSignup: boolean,

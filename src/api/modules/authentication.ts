@@ -7,11 +7,9 @@ export const logIn = async ({ email, password, token }: LogInOptions): Promise<U
   return response.data;
 };
 
-export const signUp = async (
-  {
-    email, password, token, name, lastName, company, country,
-  }: SignUpOptions,
-): Promise<User> => {
+export const signUp = async ({
+  email, password, token, name, lastName, company, country,
+}: SignUpOptions): Promise<User> => {
   const response = await client.post('/internal/v1/users', {
     email, password, token, name, lastName, company, country,
   });
