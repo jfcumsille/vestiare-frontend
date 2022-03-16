@@ -1,6 +1,6 @@
 import axios, { AxiosRequestTransformer, AxiosResponseTransformer } from 'axios';
 import { camelizeKeys, decamelizeKeys } from 'humps';
-import { BASE_API_HOST } from '@/constants';
+import { BASE_API_HOST } from '@/constants/api';
 
 const client = axios.create({
   baseURL: BASE_API_HOST,

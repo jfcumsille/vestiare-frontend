@@ -1,0 +1,43 @@
+<template>
+  <svg
+    width="10"
+    height="10"
+    viewBox="0 0 10 10"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <circle
+      cx="5"
+      cy="5"
+      r="5"
+      fill="#3753FF"
+    />
+    <circle
+      cx="5"
+      cy="5"
+      r="5"
+      fill="url(#paint0_linear_482_454)"
+      fill-opacity="0.64"
+      style="mix-blend-mode: overlay;"
+    />
+    <defs>
+      <linearGradient
+        id="paint0_linear_482_454"
+        x1="9.38889"
+        y1="-7.76786"
+        x2="18.2933"
+        y2="3.3692"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop
+          stop-color="white"
+        />
+        <stop
+          offset="1"
+          stop-color="white"
+          stop-opacity="0"
+        />
+      </linearGradient>
+    </defs>
+  </svg>
+</template>

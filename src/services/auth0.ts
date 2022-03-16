@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useStorage } from '@vueuse/core';
 import { camelizeKeys } from 'humps';
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '@/constants';
+import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '@/constants/api';
 import { OAuthToken } from '@/interfaces/responses/auth0';
 
 const REDIRECT_URI = `${window.location.origin}/login`;

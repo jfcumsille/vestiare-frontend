@@ -11,7 +11,7 @@ export interface Link {
   institution: Institution
   mode: 'live' | 'test'
   preventRefresh: boolean
-  username: string
+  email: string
   lastTimeRefreshed: Nullable<string>
 }
 

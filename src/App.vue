@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useLocaleStore } from '@/stores/locale';
 import { useAPIKeysStore } from '@/stores/apiKeys';
@@ -26,13 +26,21 @@ const navBarLinks = [
   },
 ];
 
-onMounted(async () => {
-  await $userStore.loadUser();
+const loadUserData = () => {
   if ($userStore.authenticated) {
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();
   }
+};
+
+watch(() => $userStore.authenticated, () => {
+  loadUserData();
+});
+
+onMounted(async () => {
+  await $userStore.loadUser();
+  loadUserData();
 });
 </script>
 
