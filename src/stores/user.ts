@@ -48,6 +48,9 @@ export const useUserStore = defineStore('user', {
     async sendConfirmationEmail(email: string) {
       await api.authentication.sendConfirmationEmail(email);
     },
+    async sendResetPasswordEmail(email: string) {
+      await api.authentication.sendResetPasswordEmail(email);
+    },
   },
   getters: {
     organizationParams: (state) => {

@@ -19,3 +19,7 @@ export const signUp = async ({
 export const sendConfirmationEmail = async (email: string) => {
   await client.post('/internal/v1/users/confirmation', { email });
 };
+
+export const sendResetPasswordEmail = async (email: string) => {
+  await client.post('/internal/v1/users/password', { email });
+};
