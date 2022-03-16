@@ -10,7 +10,6 @@ import Spinner from '@/components/LoadingSpinner.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import BulletPoint from '@/components/images/BulletPoint.vue';
 import Circle from '@/components/images/CircleBackground.vue';
-import Dots from '@/components/images/DotsGrid.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
 const router = useRouter();
@@ -78,11 +77,19 @@ const logIn = () => {
   <div class="h-full w-full">
     <div
       v-if="!completed"
-      class="relative flex flex-row justify-center p-20 z-10"
+      class="relative flex flex-row justify-center px-20 pb-20 pt-12 z-10"
     >
       <div class="relative">
-        <Circle class="absolute top-0 left-0 -ml-28 -mt-12 z-0" />
-        <Dots class="absolute bottom-0 right-0 -mr-16 -mb-12 z-0" />
+        <Circle
+          class="w-72 absolute top-0 left-0 -ml-28 -mt-8 z-0"
+          fill="#F2F4FF"
+          opacity="0.5"
+        />
+        <Circle
+          class="w-40 absolute top-0 left-0 -ml-5 -mt-14 z-0"
+          fill="#D7DDFF"
+          opacity="0.5"
+        />
         <div
           class="bg-white relative p-10 rounded-md border
           border-bg-gray-200 drop-shadow-md z-10"
@@ -93,7 +100,7 @@ const logIn = () => {
 
           <Auth0Panel is-signup />
 
-          <div class="my-7 h-px bg-border-bg-gray-300" />
+          <div class="my-7 h-px bg-gray-300" />
 
           <div class="grow w-full flex flex-col justify-center">
             <div class="flex flex-row mb-4 ">
@@ -219,10 +226,18 @@ const logIn = () => {
       </div>
 
       <div class="relative">
-        <Dots class="absolute top-0 right-0 -mr-10 -mt-6 z-0" />
-        <Circle class="h-32 w-32 absolute top-0 left-0 ml-5 mt-48 z-0" />
-        <div class="ml-20 flex flex-col min-w-400px max-w-400px z-10">
-          <div class="text-lg text-heading-txt-color">
+        <Circle
+          class="w-48 absolute top-0 right-0 mr-2 mt-40 z-2"
+          fill="#D7DDFF"
+          opacity="0.3"
+        />
+        <Circle
+          class="w-72 absolute top-0 right-0 -mr-28 -mt-2 z-1"
+          fill="#F2F4FF"
+          opacity="0.5"
+        />
+        <div class="ml-20 flex flex-col min-w-md max-w-md">
+          <div class="text-lg text-heading-txt-color z-10">
             {{ $tSignUp('infoTitle') }}
           </div>
           <div class="z-10">
@@ -259,16 +274,29 @@ const logIn = () => {
       class="relative justify-center flex p-20"
     >
       <div class="relative">
-        <Dots class="absolute top-0 left-0 -ml-20 -mt-12 z-0" />
-        <Circle class="h-64 w-72 absolute bottom-0 right-0 -mr-24 -mb-16 z-0" />
+        <Circle
+          class="w-72 absolute top-0 left-0 -ml-28 -mt-8 z-0"
+          fill="#F2F4FF"
+          opacity="0.5"
+        />
+        <Circle
+          class="w-40 absolute top-0 left-0 -ml-5 -mt-14 z-0"
+          fill="#D7DDFF"
+          opacity="0.5"
+        />
+        <Circle
+          class="w-52 absolute bottom-0 right-0 -mr-16 -mb-16 z-0"
+          fill="#F2F4FF"
+          opacity="0.75"
+        />
         <div
           class="flex flex-col bg-white px-20 py-16 relative
-          rounded-md border border-bg-gray-200 drop-shadow-md z-10"
+          rounded-md border border-bg-gray-200 drop-shadow-md z-10  max-w-xl"
         >
           <div class="font-medium text-3xl text-heading-txt-color">
             {{ $tSignUp('verifyEmail') }}
           </div>
-          <div class="mt-8 text-body-txt-color font-light min-w-400px max-w-400px">
+          <div class="mt-8 text-body-txt-color font-light">
             {{ name }},
             {{ $tSignUp('thankYou') }}
             <span class="font-normal">

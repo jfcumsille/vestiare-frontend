@@ -17,11 +17,21 @@ module.exports = {
       },
       maxWidth: {
         '10px': '10px',
-        '400px': '400px',
       },
       minWidth: {
         '10px': '10px',
-        '400px': '400px',
+        xs: '20rem',
+        sm: '24rem',
+        md: '28rem',
+        lg: '32rem',
+        xl: '36rem',
+      },
+      zIndex: {
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
       },
     },
   },
