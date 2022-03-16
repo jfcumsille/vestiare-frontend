@@ -1,4 +1,4 @@
-import { Auth0PanelLocale } from '@/interfaces/locales/views/auth0panel';
+import { Auth0PanelLocale } from '@/interfaces/locales/auth0panel';
 
 export default <Auth0PanelLocale>{
   texts: {

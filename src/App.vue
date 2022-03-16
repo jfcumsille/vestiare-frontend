@@ -16,8 +16,6 @@ const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
-const brandLink = { text: 'Fintoc', path: '/links' };
-
 const navBarLinks = [
   {
     text: 'Links',
@@ -49,7 +47,6 @@ onMounted(async () => {
 
 <template>
   <NavBar
-    :brand="brandLink"
     :links="navBarLinks"
   />
   <div
