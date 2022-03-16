@@ -52,13 +52,16 @@ const logIn = async () => {
         fill="#F2F4FF"
         opacity="0.75"
       />
-      <div class="bg-white relative p-10 rounded-md border border-bg-gray-200 drop-shadow-md z-10">
+      <div
+        class="max-w-xl bg-white relative p-10 rounded-md border
+        border-bg-gray-200 drop-shadow-md z-10"
+      >
         <div class="mb-5 font-medium text-2xl text-heading-txt-color">
           {{ $tLogIn('title') }}
         </div>
         <Auth0Panel />
-        <div class="my-7 h-px bg-border-bg-gray-300" />
-        <div class="px-4 max-w-screen-md flex flex-col justify-center">
+        <div class="my-7 h-px bg-gray-300" />
+        <div class="flex flex-col justify-center">
           <GenericInput
             v-model="email"
             :label="$tForms('labels.email')"

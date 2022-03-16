@@ -102,8 +102,8 @@ const logIn = () => {
 
           <div class="my-7 h-px bg-gray-300" />
 
-          <div class="grow w-full flex flex-col justify-center">
-            <div class="flex flex-row mb-4 ">
+          <div class="grow flex flex-col justify-center">
+            <div class="flex flex-row mb-4">
               <GenericInput
                 v-model="name"
                 :label="$tForms('labels.name')"
@@ -117,7 +117,7 @@ const logIn = () => {
                 class="w-full"
               />
             </div>
-            <div class="flex flex-row items-end mb-4 ">
+            <div class="flex flex-row items-end mb-4">
               <GenericInput
                 v-model="company"
                 :label="$tForms('labels.company')"
@@ -127,7 +127,7 @@ const logIn = () => {
 
               <div class="block w-full">
                 <div class="block mb-1 text-sm font-medium text-sec-cap-txt-color">
-                  Country
+                  {{ $tSignUp('country') }}
                 </div>
                 <GenericDropDown
                   :name="$tSignUp('country')"
@@ -293,10 +293,10 @@ const logIn = () => {
           class="flex flex-col bg-white px-20 py-16 relative
           rounded-md border border-bg-gray-200 drop-shadow-md z-10  max-w-xl"
         >
-          <div class="font-medium text-3xl text-heading-txt-color">
+          <div class="font-medium text-2xl text-heading-txt-color">
             {{ $tSignUp('verifyEmail') }}
           </div>
-          <div class="mt-8 text-body-txt-color font-light">
+          <div class="mt-4 text-body-txt-color font-light">
             {{ name }},
             {{ $tSignUp('thankYou') }}
             <span class="font-normal">
@@ -315,7 +315,7 @@ const logIn = () => {
             </button>
           </div>
           <button
-            class="mt-8 bg-primary-main text-center text-white font-semibold py-3 rounded w-96"
+            class="mt-8 bg-primary-main text-center text-white font-semibold py-3 rounded"
             :disabled="loading"
             @click="logIn"
           >

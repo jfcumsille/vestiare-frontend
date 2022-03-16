@@ -17,7 +17,7 @@ const router = useRouter();
 const email = ref('');
 const error = ref(false);
 const loading = ref(false);
-const completed = ref(true);
+const completed = ref(false);
 const isEmailResent = ref(false);
 
 watch(email, () => { error.value = false; });

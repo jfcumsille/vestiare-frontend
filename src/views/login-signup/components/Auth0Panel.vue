@@ -22,7 +22,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
   <div>
     <button
       class="
-        p-3 w-96 bg-white flex flex-row rounded-md border items-center
+        p-3 bg-white flex flex-row rounded-md border items-center
         justify-center drop-shadow-md border-bg-gray-200 text-center
         text-body-txt-color font-bold
       "
@@ -32,7 +32,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
     </button>
     <button
       class="
-        mt-5 p-3 w-96 bg-white flex flex-row rounded-md border items-center
+        mt-5 p-3 bg-white flex flex-row rounded-md border items-center
         justify-center drop-shadow-md border-bg-gray-200 text-center
         text-body-txt-color font-bold
       "
