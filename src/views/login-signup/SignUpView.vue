@@ -75,7 +75,6 @@ const logIn = () => {
     path: ($route.query[REDIRECT_QUERY_KEY] as string) || '/',
   });
 };
-
 </script>
 
 <template>
