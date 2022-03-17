@@ -23,7 +23,7 @@ const selectionClasses = (link: Link) => {
 
 const logOut = () => {
   userStore.logOut();
-  router.push({ path: '/' });
+  window.location.href = '/';
 };
 </script>
 
