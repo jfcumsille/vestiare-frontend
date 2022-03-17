@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 
 interface Link {
   text: string
@@ -8,13 +9,21 @@ interface Link {
 
 const props = defineProps<{ brand: Link, links: Link[] }>();
 
+const router = useRouter();
 const route = useRoute();
+
+const userStore = useUserStore();
 
 const selectionClasses = (link: Link) => {
   if (route.path === link.path) {
     return 'text-blue-700';
   }
   return 'text-gray-700 hover:text-blue-700';
+};
+
+const logOut = () => {
+  userStore.logOut();
+  router.push({ path: '/' });
 };
 </script>
 
@@ -41,6 +50,12 @@ const selectionClasses = (link: Link) => {
             >
               {{ link.text }}
             </router-link>
+          </li>
+          <li
+            class="cursor-pointer"
+            @click="logOut"
+          >
+            Log Out
           </li>
         </ul>
       </div>
