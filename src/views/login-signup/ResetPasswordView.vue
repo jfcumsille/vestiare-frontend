@@ -9,7 +9,7 @@ import Circle from '@/components/images/CircleBackground.vue';
 
 const userStore = useUserStore();
 const $tForms = useTranslation('forms.userData');
-const $tForgotPassword = useTranslation('views.forgotPassword.texts');
+const $tResetPassword = useTranslation('views.resetPassword.texts');
 
 const route = useRoute();
 const router = useRouter();
@@ -51,7 +51,7 @@ const logIn = () => {
 </script>
 
 <template>
-  <div class="relative justify-center flex p-20">
+  <div class="md:p-20 py-20 px-10 relative justify-center flex">
     <div class="relative">
       <Circle
         class="w-72 absolute top-0 left-0 -ml-28 -mt-8 z-0"
@@ -73,27 +73,27 @@ const logIn = () => {
         rounded-md border border-bg-gray-200 drop-shadow-md z-10"
       >
         <div class="font-medium text-2xl text-heading-txt-color">
-          {{ $tForgotPassword('title') }}
+          {{ $tResetPassword('title') }}
         </div>
         <div
           v-if="!completed"
           class="mt-4 mb-6 text-body-txt-color font-light"
         >
-          {{ $tForgotPassword('subtitle') }}
+          {{ $tResetPassword('subtitle') }}
         </div>
         <div
           v-if="completed"
           class="text-left font-light mt-4 mb-6 text-body-txt-color"
         >
-          {{ $tForgotPassword('checkYourEmail') }}
+          {{ $tResetPassword('checkYourEmail') }}
           <span class="font-medium">{{ email }}</span>
-          {{ $tForgotPassword('subtitleCompleted') }}
+          {{ $tResetPassword('subtitleCompleted') }}
           <button
             class="text-primary-main font-normal disabled:text-disable-txt-color"
             :disabled="isEmailResent"
             @click="resendResetPasswordEmail"
           >
-            {{ $tForgotPassword('resendEmail') }}
+            {{ $tResetPassword('resendEmail') }}
           </button>
         </div>
         <GenericInput
@@ -108,7 +108,7 @@ const logIn = () => {
           :disabled="loading"
           @click="resetPassword"
         >
-          {{ $tForgotPassword('continue') }}
+          {{ $tResetPassword('continue') }}
         </button>
         <button
           v-if="completed"
@@ -116,14 +116,14 @@ const logIn = () => {
           :disabled="loading"
           @click="logIn"
         >
-          {{ $tForgotPassword('logIn') }}
+          {{ $tResetPassword('logIn') }}
         </button>
         <a
           v-if="!completed"
           href="/login"
           class="mt-6 text-primary-main text-center font-medium text-sm"
         >
-          {{ $tForgotPassword('backToLogin') }}
+          {{ $tResetPassword('backToLogin') }}
         </a>
       </div>
     </div>

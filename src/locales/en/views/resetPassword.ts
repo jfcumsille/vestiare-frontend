@@ -1,6 +1,6 @@
-import { ForgotPasswordViewLocale } from '@/interfaces/locales/views/forgotPassword';
+import { ResetPasswordViewLocale } from '@/interfaces/locales/views/resetPassword';
 
-export default <ForgotPasswordViewLocale>{
+export default <ResetPasswordViewLocale>{
   texts: {
     title: 'Reset your password',
     subtitle: 'Enter the email associated to your account and we’ll send you a link to reset your password',

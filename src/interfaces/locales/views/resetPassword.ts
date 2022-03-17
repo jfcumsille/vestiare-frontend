@@ -1,4 +1,4 @@
-export interface ForgotPasswordViewLocale {
+export interface ResetPasswordViewLocale {
   texts: {
     title: string,
     subtitle: string,
