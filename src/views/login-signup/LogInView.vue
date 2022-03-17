@@ -35,8 +35,8 @@ const logIn = async () => {
 </script>
 
 <template>
-  <div class="p-20 h-full w-full flex justify-center">
-    <div class="relative">
+  <div class="md:p-20 py-20 px-10 h-full w-full flex justify-center overflow-x-hidden">
+    <div class="relative w-full max-w-md min-w-max">
       <Circle
         class="w-72 absolute top-0 right-0 -mr-28 -mt-10 z-0"
         fill="#F2F4FF"
@@ -52,10 +52,7 @@ const logIn = async () => {
         fill="#F2F4FF"
         opacity="0.75"
       />
-      <div
-        class="max-w-xl bg-white relative p-10 rounded-md border
-        border-bg-gray-200 drop-shadow-md z-10"
-      >
+      <div class="bg-white relative p-10 rounded-md border border-bg-gray-200 drop-shadow-md z-10">
         <div class="mb-5 font-medium text-2xl text-heading-txt-color">
           {{ $tLogIn('title') }}
         </div>

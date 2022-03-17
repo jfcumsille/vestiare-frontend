@@ -74,19 +74,19 @@ const logIn = () => {
 </script>
 
 <template>
-  <div class="h-full w-full">
+  <div class="h-full w-full flex justify-center overflow-x-hidden">
     <div
       v-if="!completed"
-      class="relative flex flex-row justify-center px-20 pb-20 pt-12 z-10"
+      class="relative flex flex-col lg:flex-row items-start justify-center px-20 pb-20 pt-12"
     >
-      <div class="relative">
+      <div class="relative w-full max-w-md min-w-max">
         <Circle
           class="w-72 absolute top-0 left-0 -ml-28 -mt-8 z-0"
           fill="#F2F4FF"
           opacity="0.5"
         />
         <Circle
-          class="w-40 absolute top-0 left-0 -ml-5 -mt-14 z-0"
+          class="w-40 absolute top-0 left-0 -ml-5 -mt-12 z-0"
           fill="#D7DDFF"
           opacity="0.5"
         />
@@ -225,7 +225,7 @@ const logIn = () => {
         </div>
       </div>
 
-      <div class="relative">
+      <div class="relative mt-16 mb-20 lg:ml-20 lg:mt-5">
         <Circle
           class="w-48 absolute top-0 right-0 mr-2 mt-40 z-2"
           fill="#D7DDFF"
@@ -236,7 +236,7 @@ const logIn = () => {
           fill="#F2F4FF"
           opacity="0.5"
         />
-        <div class="ml-20 flex flex-col min-w-md max-w-md">
+        <div class="flex flex-col min-w-xs max-w-md">
           <div class="text-lg text-heading-txt-color z-10">
             {{ $tSignUp('infoTitle') }}
           </div>

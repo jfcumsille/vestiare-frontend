@@ -1,0 +1,30 @@
+<template>
+  <svg
+    width="12"
+    height="10"
+    viewBox="0 0 12 10"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect
+      width="12"
+      height="2"
+      rx="0.5"
+      fill="#060235"
+    />
+    <rect
+      y="4"
+      width="12"
+      height="2"
+      rx="0.5"
+      fill="#060235"
+    />
+    <rect
+      y="8"
+      width="12"
+      height="2"
+      rx="0.5"
+      fill="#060235"
+    />
+  </svg>
+</template>
