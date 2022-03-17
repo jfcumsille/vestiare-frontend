@@ -5,11 +5,11 @@ export interface LogInOptions {
 }
 
 export interface SignUpOptions {
-  email: string
-  password: string
-  token: string
-  name: string
-  lastName: string
-  company: string
-  country: string
+  email?: string
+  password?: string
+  token?: string
+  name?: string
+  lastName?: string
+  company?: string
+  country?: string
 }

@@ -14,9 +14,19 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     component: LogInView,
-    beforeEnter: handleAuth0RedirectCallback,
+    beforeEnter: [
+      skipLogInIfAlreadyLoggedIn,
+      handleAuth0RedirectCallback,
+    ],
   },
-  { path: '/signup', component: SignUpView },
+  {
+    path: '/signup',
+    component: SignUpView,
+    beforeEnter: [
+      skipSignUpIfAlreadyLoggedIn,
+      handleAuth0RedirectCallback,
+    ],
+  },
   { path: '/links', component: LinksView },
   { path: '/webhook_endpoints', component: WebhookEndpointsView },
   {
@@ -31,7 +41,5 @@ const router = createRouter({
 });
 
 router.beforeEach(loginRequired);
-router.beforeEach(skipLogInIfAlreadyLoggedIn);
-router.beforeEach(skipSignUpIfAlreadyLoggedIn);
 
 export default router;

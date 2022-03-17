@@ -46,7 +46,6 @@ const signUp = async () => {
     await $store.signUp({
       email: email.value,
       password: password.value,
-      token: '',
       name: name.value,
       lastName: lastName.value,
       country: country.value,
