@@ -43,6 +43,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    '@typescript-eslint/no-unused-vars': ['error'],
     'no-spaced-func': 'off',
     'func-call-spacing': 'off',
     '@typescript-eslint/func-call-spacing': ['error'],
