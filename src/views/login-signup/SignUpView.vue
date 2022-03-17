@@ -271,7 +271,7 @@ const logIn = () => {
     </div>
     <div
       v-if="completed"
-      class="relative justify-center flex p-20"
+      class="md:p-20 py-20 px-10 relative justify-center flex"
     >
       <div class="relative">
         <Circle
