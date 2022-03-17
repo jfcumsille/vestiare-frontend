@@ -13,8 +13,8 @@ export const useLinksStore = defineStore('links', {
       this.loading = true;
       this.links = [];
       let page = 1;
-      let result = [];
-      while (result.length === 0) {
+      let result: Array<Link> | undefined;
+      while (result === undefined || result.length !== 0) {
         /* eslint-disable-next-line no-await-in-loop */
         result = await api.links.list({ ...params, page });
         this.links = [...this.links, ...result];
