@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import HomeView from '@/views/home/HomeView.vue';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
 import LinksView from '@/views/links/LinksView.vue';
@@ -10,7 +9,7 @@ import { loginRequired, skipLogInIfAlreadyLoggedIn, skipSignUpIfAlreadyLoggedIn 
 import { handleAuth0RedirectCallback } from './handlers';
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: HomeView },
+  { path: '/', redirect: () => ({ path: '/links' }) },
   {
     path: '/login',
     component: LogInView,

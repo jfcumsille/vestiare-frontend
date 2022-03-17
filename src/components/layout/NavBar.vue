@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 
 interface Link {
@@ -9,7 +9,6 @@ interface Link {
 
 const props = defineProps<{ brand: Link, links: Link[] }>();
 
-const router = useRouter();
 const route = useRoute();
 
 const userStore = useUserStore();
@@ -23,7 +22,7 @@ const selectionClasses = (link: Link) => {
 
 const logOut = () => {
   userStore.logOut();
-  router.push({ path: '/' });
+  window.location.href = '/';
 };
 </script>
 
