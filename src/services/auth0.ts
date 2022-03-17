@@ -64,7 +64,7 @@ const buildOAuthJWTBody = (
   redirect_uri: `${window.location.origin}/${mode}`,
 });
 
-export const loginWithRedirect = async (
+export const authenticateWithRedirect = async (
   connection: 'github' | 'google-oauth2',
   mode: 'login' | 'signup',
 ) => {

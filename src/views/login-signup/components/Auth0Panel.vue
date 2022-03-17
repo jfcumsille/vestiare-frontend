@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useTranslation } from '@/locales';
-import { loginWithRedirect } from '@/services/auth0';
+import { authenticateWithRedirect } from '@/services/auth0';
 import GoogleLogo from './GoogleLogo.vue';
 import GithubLogo from './GithubLogo.vue';
 
@@ -26,7 +26,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
         justify-center drop-shadow-md border-bg-gray-200 text-center
         text-body-txt-color font-bold
       "
-      @click="loginWithRedirect('google-oauth2', mode)"
+      @click="authenticateWithRedirect('google-oauth2', mode)"
     >
       <GoogleLogo class="mr-4" /> {{ buttonLabel }} Google
     </button>
@@ -36,7 +36,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
         justify-center drop-shadow-md border-bg-gray-200 text-center
         text-body-txt-color font-bold
       "
-      @click="loginWithRedirect('github', mode)"
+      @click="authenticateWithRedirect('github', mode)"
     >
       <GithubLogo class="mr-4" /> {{ buttonLabel }} Github
     </button>

@@ -10,7 +10,7 @@ export const storeRedirection = (to: string) => {
   redirection.value = to;
 };
 
-export const generateToStoredRedirectionOrHomeContent = () => {
+export const generateRedirectionContent = () => {
   const redirectionRef = useRedirectionStorage();
   const redirection = redirectionRef.value;
   redirectionRef.value = null;
@@ -18,5 +18,5 @@ export const generateToStoredRedirectionOrHomeContent = () => {
 };
 
 export const toStoredRedirectionOrHome = (router: Router) => {
-  router.push(generateToStoredRedirectionOrHomeContent());
+  router.push(generateRedirectionContent());
 };
