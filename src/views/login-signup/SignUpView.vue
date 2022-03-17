@@ -103,29 +103,29 @@ const logIn = () => {
           <div class="my-7 h-px bg-gray-300" />
 
           <div class="grow flex flex-col justify-center">
-            <div class="flex flex-row mb-4">
+            <div class="flex flex-col lg:flex-row lg:mb-4">
               <GenericInput
                 v-model="name"
                 :label="$tForms('labels.name')"
                 :placeholder="$tForms('placeholders.name')"
-                class="mr-3 w-full"
+                class="mr-3 w-full mb-2 lg:mb-0"
               />
               <GenericInput
                 v-model="lastName"
                 :label="$tForms('labels.lastName')"
                 :placeholder="$tForms('placeholders.lastName')"
-                class="w-full"
+                class="w-full mb-2 lg:mb-0"
               />
             </div>
-            <div class="flex flex-row items-end mb-4">
+            <div class="flex flex-col lg:flex-row lg:mb-4">
               <GenericInput
                 v-model="company"
                 :label="$tForms('labels.company')"
                 :placeholder="$tForms('placeholders.company')"
-                class="mr-3 w-full"
+                class="mr-3 w-full mb-2 lg:mb-0"
               />
 
-              <div class="block w-full">
+              <div class="block w-full mb-4 lg:mb-0">
                 <div class="block mb-1 text-sm font-medium text-sec-cap-txt-color">
                   {{ $tSignUp('country') }}
                 </div>
@@ -236,7 +236,7 @@ const logIn = () => {
           fill="#F2F4FF"
           opacity="0.5"
         />
-        <div class="flex flex-col min-w-xs max-w-md">
+        <div class="flex flex-col min-w-fit max-w-md">
           <div class="text-lg text-heading-txt-color z-10">
             {{ $tSignUp('infoTitle') }}
           </div>
@@ -291,7 +291,7 @@ const logIn = () => {
         />
         <div
           class="flex flex-col bg-white px-20 py-16 relative
-          rounded-md border border-bg-gray-200 drop-shadow-md z-10  max-w-xl"
+          rounded-md border border-bg-gray-200 drop-shadow-md z-10 max-w-xl"
         >
           <div class="font-medium text-2xl text-heading-txt-color">
             {{ $tSignUp('verifyEmail') }}
