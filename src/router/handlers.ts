@@ -7,10 +7,11 @@ import { generateToStoredRedirectionOrHomeContent } from '@/services/redirection
 export const handleAuth0RedirectCallback = async (to: RouteLocationNormalized) => {
   const $userStore = useUserStore();
   if (to.query.code) {
-    const tokenData = await exchangeCodeForToken(to.query.code as string);
     if (to.path === '/login') {
+      const tokenData = await exchangeCodeForToken(to.query.code as string, 'login');
       await $userStore.logIn({ token: tokenData.idToken });
     } else { // to.path === '/signup'
+      const tokenData = await exchangeCodeForToken(to.query.code as string, 'signup');
       await $userStore.signUp({ token: tokenData.idToken });
     }
     return generateToStoredRedirectionOrHomeContent();

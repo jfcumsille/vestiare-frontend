@@ -13,6 +13,8 @@ const props = withDefaults(defineProps<{
   isSignup: false,
 });
 
+const mode = computed(() => (props.isSignup ? 'signup' : 'login'));
+
 const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logInWith')));
 </script>
 
@@ -24,7 +26,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
         justify-center drop-shadow-md border-bg-gray-200 text-center
         text-body-txt-color font-bold
       "
-      @click="loginWithRedirect('google-oauth2')"
+      @click="loginWithRedirect('google-oauth2', mode)"
     >
       <GoogleLogo class="mr-4" /> {{ buttonLabel }} Google
     </button>
@@ -34,7 +36,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
         justify-center drop-shadow-md border-bg-gray-200 text-center
         text-body-txt-color font-bold
       "
-      @click="loginWithRedirect('github')"
+      @click="loginWithRedirect('github', mode)"
     >
       <GithubLogo class="mr-4" /> {{ buttonLabel }} Github
     </button>

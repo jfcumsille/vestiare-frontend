@@ -4,8 +4,6 @@ import { camelizeKeys } from 'humps';
 import { AUTH0_DOMAIN, AUTH0_CLIENT_ID } from '@/constants/api';
 import { OAuthToken } from '@/interfaces/responses/auth0';
 
-const REDIRECT_URI = `${window.location.origin}/login`;
-
 // Most of the helper methods in this file are practically a
 // copy of Auth0's own SDK methods
 // https://github.com/auth0/auth0-spa-js/blob/bb70a9a9cd392cf25525f654b974b60ee0720922/src/utils.ts
@@ -39,13 +37,14 @@ const bufferToBase64UrlEncoded = (input: number[] | Uint8Array | ArrayBuffer) =>
 const buildAuthorizationUri = (
   challenge: string,
   connection: 'github' | 'google-oauth2',
+  mode: 'login' | 'signup',
 ) => {
   const params = {
     response_type: 'code',
     code_challenge: challenge,
     code_challenge_method: 'S256',
     client_id: AUTH0_CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
+    redirect_uri: `${window.location.origin}/${mode}`,
     scope: 'openid profile email',
     connection,
   };
@@ -56,29 +55,36 @@ const buildAuthorizationUri = (
 const buildOAuthJWTBody = (
   code: string,
   verifier: string,
+  mode: 'login' | 'signup',
 ) => ({
   grant_type: 'authorization_code',
   client_id: AUTH0_CLIENT_ID,
   code_verifier: verifier,
   code,
-  redirect_uri: REDIRECT_URI,
+  redirect_uri: `${window.location.origin}/${mode}`,
 });
 
-export const loginWithRedirect = async (connection: 'github' | 'google-oauth2') => {
+export const loginWithRedirect = async (
+  connection: 'github' | 'google-oauth2',
+  mode: 'login' | 'signup',
+) => {
   const codeVerifier = useStorage('code-verifier', '');
   codeVerifier.value = createRandomString();
 
   const codeChallengeBuffer = await sha256(codeVerifier.value);
   const codeChallenge = bufferToBase64UrlEncoded(codeChallengeBuffer);
 
-  const authorizationUri = buildAuthorizationUri(codeChallenge, connection);
+  const authorizationUri = buildAuthorizationUri(codeChallenge, connection, mode);
 
   window.location.href = authorizationUri;
 };
 
-export const exchangeCodeForToken = async (code: string): Promise<OAuthToken> => {
+export const exchangeCodeForToken = async (
+  code: string,
+  mode: 'login' | 'signup',
+): Promise<OAuthToken> => {
   const codeVerifier = useStorage('code-verifier', '');
-  const oAuthJWTBody = buildOAuthJWTBody(code, codeVerifier.value);
+  const oAuthJWTBody = buildOAuthJWTBody(code, codeVerifier.value, mode);
   const response = await axios.post(`https://${AUTH0_DOMAIN}/oauth/token`, oAuthJWTBody);
   return camelizeKeys(response.data) as unknown as OAuthToken;
 };
