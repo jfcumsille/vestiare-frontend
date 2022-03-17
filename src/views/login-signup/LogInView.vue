@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import { REDIRECT_QUERY_KEY } from '@/constants/router';
+import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/GenericInput.vue';
 import Circle from '@/components/images/CircleBackground.vue';
 import Dots from '@/components/images/DotsGrid.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
+const router = useRouter();
+
 const userStore = useUserStore();
 const $tForms = useTranslation('forms.userData');
 const $tLogIn = useTranslation('views.logIn.texts');
-
-const route = useRoute();
-const router = useRouter();
 
 const email = ref('');
 const password = ref('');
@@ -27,9 +26,7 @@ const logIn = async () => {
   loading.value = true;
   try {
     await userStore.logIn({ email: email.value, password: password.value });
-    router.push({
-      path: (route.query[REDIRECT_QUERY_KEY] as string) || '/',
-    });
+    toStoredRedirectionOrHome(router);
   } catch {
     error.value = true;
   } finally {

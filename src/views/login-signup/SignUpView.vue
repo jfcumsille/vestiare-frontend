@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import { REDIRECT_QUERY_KEY } from '@/constants/router';
 import { TERMS_AND_CONDITIONS, PRIVACY_POLICY, CONTACT } from '@/constants/texts';
+import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
@@ -13,9 +13,9 @@ import Circle from '@/components/images/CircleBackground.vue';
 import Dots from '@/components/images/DotsGrid.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
+const router = useRouter();
+
 const $store = useUserStore();
-const $route = useRoute();
-const $router = useRouter();
 const $tForms = useTranslation('forms.userData');
 const $tSignUp = useTranslation('views.signUp.texts');
 
@@ -46,7 +46,6 @@ const signUp = async () => {
     await $store.signUp({
       email: email.value,
       password: password.value,
-      token: '',
       name: name.value,
       lastName: lastName.value,
       country: country.value,
@@ -71,9 +70,7 @@ const resendVerificationEmail = async () => {
 };
 
 const logIn = () => {
-  $router.push({
-    path: ($route.query[REDIRECT_QUERY_KEY] as string) || '/',
-  });
+  toStoredRedirectionOrHome(router);
 };
 </script>
 

@@ -40,6 +40,11 @@ export const useUserStore = defineStore('user', {
       });
       this.updateUserData(userData);
     },
+    logOut() {
+      this.auth.authenticationToken = '';
+      this.auth.id = '';
+      this.auth.email = '';
+    },
     async sendConfirmationEmail(email: string) {
       await api.authentication.sendConfirmationEmail(email);
     },
