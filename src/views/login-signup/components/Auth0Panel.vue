@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useTranslation } from '@/locales';
+import { loginWithRedirect } from '@/services/auth0';
 import GoogleLogo from './GoogleLogo.vue';
 import GithubLogo from './GithubLogo.vue';
 
@@ -12,33 +13,30 @@ const props = withDefaults(defineProps<{
   isSignup: false,
 });
 
-const googleAuthorizeUrl = ref('');
-const githubAuthorizeUrl = ref('');
-
-const actionButtonLabel = computed(() => {
-  if (props.isSignup) {
-    return $t('signUpWith');
-  }
-  return $t('logInWith');
-});
-
+const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logInWith')));
 </script>
 
 <template>
   <div>
-    <a
-      :href="googleAuthorizeUrl"
-      class="p-3 w-96 bg-white flex flex-row rounded-md border items-center w-96
-      justify-center drop-shadow-md border-bg-gray-200 text-center text-body-txt-color font-bold"
+    <button
+      class="
+        p-3 w-96 bg-white flex flex-row rounded-md border items-center
+        justify-center drop-shadow-md border-bg-gray-200 text-center
+        text-body-txt-color font-bold
+      "
+      @click="loginWithRedirect('google-oauth2')"
     >
-      <GoogleLogo class="mr-4" /> {{ actionButtonLabel }} Google
-    </a>
-    <a
-      :href="githubAuthorizeUrl"
-      class="mt-5 p-3 w-96 bg-white flex flex-row rounded-md border items-center w-96
-      justify-center drop-shadow-md border-bg-gray-200 text-center text-body-txt-color font-bold"
+      <GoogleLogo class="mr-4" /> {{ buttonLabel }} Google
+    </button>
+    <button
+      class="
+        mt-5 p-3 w-96 bg-white flex flex-row rounded-md border items-center
+        justify-center drop-shadow-md border-bg-gray-200 text-center
+        text-body-txt-color font-bold
+      "
+      @click="loginWithRedirect('github')"
     >
-      <GithubLogo class="mr-4" /> {{ actionButtonLabel }} Github
-    </a>
+      <GithubLogo class="mr-4" /> {{ buttonLabel }} Github
+    </button>
   </div>
 </template>
