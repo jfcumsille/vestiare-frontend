@@ -5,6 +5,7 @@ import LinksView from '@/views/links/LinksView.vue';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
 import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
 
+import { enableLoader, disableLoader } from './loader';
 import { loginRequired, skipLogInIfAlreadyLoggedIn, skipSignUpIfAlreadyLoggedIn } from './guards';
 import { handleAuth0RedirectCallback } from './handlers';
 
@@ -39,6 +40,10 @@ const router = createRouter({
   routes,
 });
 
+enableLoader(router);
+
 router.beforeEach(loginRequired);
+
+disableLoader(router);
 
 export default router;
