@@ -85,6 +85,7 @@ export const exchangeCodeForToken = async (
 ): Promise<OAuthToken> => {
   const codeVerifier = useStorage('code-verifier', '');
   const oAuthJWTBody = buildOAuthJWTBody(code, codeVerifier.value, mode);
+  codeVerifier.value = null;
   const response = await axios.post(`https://${AUTH0_DOMAIN}/oauth/token`, oAuthJWTBody);
   return camelizeKeys(response.data) as unknown as OAuthToken;
 };
