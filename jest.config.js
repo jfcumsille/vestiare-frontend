@@ -1,13 +1,10 @@
 module.exports = {
-  moduleFileExtensions: [
-    'js',
-    'ts',
-    'json',
-    'vue',
-  ],
+  testEnvironment: 'jsdom',
+  moduleFileExtensions: ['ts', 'vue', 'js', 'json'],
+  extensionsToTreatAsEsm: ['.ts'],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
-    '^.+\\.vue$': 'vue-jest',
+    '^.+\\.ts$': 'esbuild-jest',
+    '^.+\\.vue$': '@vue/vue3-jest',
   },
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
