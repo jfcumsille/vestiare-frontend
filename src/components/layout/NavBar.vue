@@ -57,7 +57,7 @@ const navBarPublicLinks = [
   },
 ];
 
-const selectionClasses = (path) => {
+const selectionClasses = (path: string) => {
   if (route.path === path) {
     return 'text-blue-700';
   }
