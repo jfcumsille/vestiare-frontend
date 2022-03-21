@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRouterStore } from '@/stores/router';
 import { useLocaleStore } from '@/stores/locale';
@@ -16,16 +16,7 @@ const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
-const navBarLinks = [
-  {
-    text: 'Links',
-    path: '/links',
-  },
-  {
-    text: 'Webhook Endpoints',
-    path: '/webhook_endpoints',
-  },
-];
+const isLoggedIn = computed(() => ($userStore.authenticated !== ''));
 
 const loadUserData = () => {
   if ($userStore.authenticated) {
@@ -43,11 +34,17 @@ onMounted(async () => {
   await $userStore.loadUser();
   loadUserData();
 });
+
+const logOut = () => {
+  $userStore.logOut();
+  window.location.href = '/';
+};
 </script>
 
 <template>
   <NavBar
-    :links="navBarLinks"
+    :is-logged-in="isLoggedIn"
+    @log-out="logOut"
   />
   <div
     v-if="$routerStore.loading"

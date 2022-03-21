@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import {
@@ -17,17 +16,10 @@ import MenuIcon from '@/components/images/MenuIcon.vue';
 import ChileIcon from '@/components/images/ChileIcon.vue';
 import MexicoIcon from '@/components/images/MexicoIcon.vue';
 
-interface Link {
-  text: string
-  path: string
-}
-
-const userStore = useUserStore();
-const $t = useTranslation('navBar.texts');
-const props = defineProps<{ links: Link[] }>();
+const props = defineProps<{ isLoggedIn: boolean }>();
 const route = useRoute();
+const $t = useTranslation('navBar.texts');
 
-const isLoggedIn = computed(() => (userStore.authenticated));
 const isLargeWidth = computed(() => (widthType.value === 'lg'));
 
 const isMenuOpen = ref(false);
@@ -35,7 +27,18 @@ const pressMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const navBarFintocLinks = [
+const navBarInternalLinks = [
+  {
+    text: 'Links',
+    path: '/links',
+  },
+  {
+    text: 'Webhook Endpoints',
+    path: '/webhook_endpoints',
+  },
+];
+
+const navBarPublicLinks = [
   {
     text: $t('docs'),
     href: DOCS,
@@ -54,41 +57,43 @@ const navBarFintocLinks = [
   },
 ];
 
-const selectionClasses = (link: Link) => {
-  if (route.path === link.path) {
+const selectionClasses = (path) => {
+  if (route.path === path) {
     return 'text-blue-700';
   }
   return 'text-gray-700 hover:text-blue-700';
 };
 
+const emit = defineEmits<{(e: 'log-out'): void }>();
+
 const logOut = () => {
-  userStore.logOut();
-  window.location.href = '/';
+  emit('log-out');
 };
 </script>
 
 <template>
-  <nav class="border-gray-200 px-2 py-6 rounded mx-4">
+  <nav>
     <div
       class="
-        container flex flex-wrap items-center
-        justify-between mx-auto max-w-screen-lg min-w-max
+        container flex flex-wrap items-center p-6
+        justify-between mx-auto max-w-screen-xl min-w-max
       "
     >
       <a
-        :href="isLoggedIn ? '/' : FINTOC_HOME"
+        data-test="fintocLogo"
+        :href="props.isLoggedIn ? '/' : FINTOC_HOME"
       >
         <FintocLogo
-          data-test="fintocLogo"
           class="h-6 w-min"
         />
       </a>
       <div
-        v-if="!isLoggedIn && isLargeWidth"
+        v-if="!props.isLoggedIn && isLargeWidth"
         class="block w-auto text-heading-txt-color font-medium mx-auto"
+        data-test="navBarPublicLinks"
       >
         <a
-          v-for="link in navBarFintocLinks"
+          v-for="link in navBarPublicLinks"
           :key="link.text"
           class="ml-8 hover:text-primary-main"
           :href="link.href"
@@ -97,7 +102,7 @@ const logOut = () => {
         </a>
       </div>
       <div
-        v-if="!isLoggedIn && isLargeWidth"
+        v-if="!props.isLoggedIn && isLargeWidth"
       >
         <a
           class="ml-8 text-primary-main hover:text-primary-main-hover font-medium"
@@ -115,7 +120,7 @@ const logOut = () => {
         </a>
       </div>
       <div
-        v-if="!isLoggedIn && !isLargeWidth"
+        v-if="!props.isLoggedIn && !isLargeWidth"
         class="flex flex-row"
       >
         <ChileIcon class="h-6 w-6 mr-3" />
@@ -127,17 +132,18 @@ const logOut = () => {
         </button>
       </div>
       <div
-        v-if="isLoggedIn"
+        v-if="props.isLoggedIn"
         class="block w-auto"
+        data-test="navBarInternalLinks"
       >
-        <ul class="flex mt-4 flex-row space-x-8 text-sm font-medium">
+        <ul class="flex flex-row space-x-8 text-sm font-medium">
           <li
-            v-for="link in props.links"
+            v-for="link in navBarInternalLinks"
             :key="link.path"
           >
             <router-link
               :to="link.path"
-              :class="`block p-0 ${selectionClasses(link)}`"
+              :class="`block p-0 ${selectionClasses(link.path)}`"
             >
               {{ link.text }}
             </router-link>
@@ -152,37 +158,41 @@ const logOut = () => {
       </div>
     </div>
     <div
-      v-if="!isLoggedIn && !isLargeWidth && isMenuOpen"
-      class="
-        mt-4 p-2 flex flex-col text-heading-txt-color
-        font-medium bg-primary-surface rounded-lg
-      "
+      v-if="!props.isLoggedIn && !isLargeWidth && isMenuOpen"
+      class="px-4 w-full bg-white fixed z-20"
     >
-      <a
-        v-for="link in navBarFintocLinks"
-        :key="link.text"
+      <div
         class="
-          px-3 py-2 border-b-4 border-primary-main border-opacity-0
-          hover:border-opacity-100 hover:text-primary-main
+          pt-1 pb-2 bg-primary-surface flex flex-col
+          text-heading-txt-color font-medium rounded-lg transition-all ease-out duration-500
         "
-        :href="link.href"
       >
-        {{ link.text }}
-      </a>
-      <a
-        class="px-3 py-2 text-primary-main hover:text-primary-main-hover font-medium"
-        href="/login"
-      >
-        {{ $t('logIn') }}
-      </a>
-      <a
-        class="
-            mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
-            text-white bg-primary-main hover:bg-primary-main-hover justify-center"
-        href="/signup"
-      >
-        {{ $t('getAPIKeys') }}
-      </a>
+        <a
+          v-for="link in navBarPublicLinks"
+          :key="link.text"
+          class="
+            px-3 py-2 border-b-4 border-primary-main border-opacity-0
+            hover:border-opacity-100 hover:text-primary-main
+          "
+          :href="link.href"
+        >
+          {{ link.text }}
+        </a>
+        <a
+          class="mx-2 px-3 py-2 text-primary-main hover:text-primary-main-hover font-medium"
+          href="/login"
+        >
+          {{ $t('logIn') }}
+        </a>
+        <a
+          class="
+              mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
+              text-white bg-primary-main hover:bg-primary-main-hover justify-center"
+          href="/signup"
+        >
+          {{ $t('getAPIKeys') }}
+        </a>
+      </div>
     </div>
   </nav>
 </template>
