@@ -20,7 +20,7 @@ const webhookEndpoint = computed(() => (
 
 <template>
   <div class="flex justify-center w-full">
-    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-2xl">
+    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
         <WebhookEndpointsTableHeader :headers="[$t('details'), '']" />
       </template>

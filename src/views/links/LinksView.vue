@@ -94,7 +94,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
     @close="stopShowingLink"
   />
   <div class="flex justify-center w-full">
-    <div class="grow flex justify-between mt-6 mx-4 max-w-screen-2xl">
+    <div class="grow flex justify-between mt-6 mx-4 max-w-screen-xl">
       <LinkFilters
         v-model:search="search"
         :active-filter="activeFilter"
@@ -116,7 +116,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
     </div>
   </div>
   <div class="flex justify-center w-full">
-    <LinksTable class="grow mt-6 mx-4 max-w-screen-2xl">
+    <LinksTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
         <LinksTableHeader />
       </template>

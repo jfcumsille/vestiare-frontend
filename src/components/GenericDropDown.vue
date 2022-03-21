@@ -56,7 +56,7 @@ onClickOutside(dropDown, () => {
       <span
         v-if="showName"
         data-test="dropDownName"
-        class="mr-1"
+        class="mr-1 min-w-fit"
       > {{ name }} - </span>
       {{ selected }}
       <ChevronDown />

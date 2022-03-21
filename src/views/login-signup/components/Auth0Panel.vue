@@ -24,7 +24,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       class="
         p-3 bg-white flex flex-row rounded-md border items-center
         justify-center drop-shadow-md border-bg-gray-200 text-center
-        text-body-txt-color font-bold
+        text-body-txt-color font-bold w-full
       "
       @click="authenticateWithRedirect('google-oauth2', mode)"
     >
@@ -34,7 +34,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       class="
         mt-5 p-3 bg-white flex flex-row rounded-md border items-center
         justify-center drop-shadow-md border-bg-gray-200 text-center
-        text-body-txt-color font-bold
+        text-body-txt-color font-bold w-full
       "
       @click="authenticateWithRedirect('github', mode)"
     >
