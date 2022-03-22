@@ -16,7 +16,7 @@ const router = useRouter();
 
 const $store = useUserStore();
 const $tForms = useTranslation('forms.userData');
-const $tSignUp = useTranslation('views.signUp.texts');
+const $tSignUp = useTranslation('views.signUp');
 
 const name = ref('');
 const lastName = ref('');

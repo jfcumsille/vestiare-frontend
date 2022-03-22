@@ -1,6 +1,4 @@
 export interface Auth0PanelLocale {
-  texts: {
-    logInWith: string,
-    signUpWith: string,
-  },
+  logInWith: string,
+  signUpWith: string,
 }

@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import GenericInput from '@/components/GenericInput.vue';
 import Circle from '@/components/images/CircleBackground.vue';
 
 const userStore = useUserStore();
+const router = useRouter();
 const $tForms = useTranslation('forms.userData');
-const $tResetPassword = useTranslation('views.resetPassword.texts');
+const $tResetPassword = useTranslation('views.resetPassword');
 
 const email = ref('');
 const error = ref(false);
@@ -39,7 +41,7 @@ const resendResetPasswordEmail = async () => {
 };
 
 const logIn = () => {
-  window.location.href = '/login';
+  router.push({ path: '/login' });
 };
 </script>
 

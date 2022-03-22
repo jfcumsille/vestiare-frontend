@@ -5,7 +5,7 @@ import { authenticateWithRedirect } from '@/services/auth0';
 import GoogleLogo from './GoogleLogo.vue';
 import GithubLogo from './GithubLogo.vue';
 
-const $t = useTranslation('auth0Panel.texts');
+const $t = useTranslation('auth0Panel');
 
 const props = withDefaults(defineProps<{
   isSignup?: boolean,

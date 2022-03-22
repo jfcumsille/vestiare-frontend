@@ -12,7 +12,7 @@ const router = useRouter();
 
 const userStore = useUserStore();
 const $tForms = useTranslation('forms.userData');
-const $tLogIn = useTranslation('views.logIn.texts');
+const $tLogIn = useTranslation('views.logIn');
 
 const email = ref('');
 const password = ref('');
