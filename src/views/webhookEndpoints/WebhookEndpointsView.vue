@@ -36,7 +36,7 @@ const webhookEndpoints = computed(
 
 <template>
   <div class="flex justify-center w-full">
-    <div class="grow flex justify-end mt-6 mx-4 max-w-screen-2xl">
+    <div class="grow flex justify-end mt-6 mx-4 max-w-screen-xl">
       <div class="flex">
         <p
           class="pr-4 text-gray-900 text-md font-medium"
@@ -58,7 +58,7 @@ const webhookEndpoints = computed(
     </div>
   </div>
   <div class="flex justify-center w-full">
-    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-2xl">
+    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
         <WebhookEndpointsTableHeader :headers="tableHeaders" />
       </template>

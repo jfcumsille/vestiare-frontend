@@ -5,6 +5,7 @@ module.exports = {
       colors: {
         'primary-main': '#3753FF',
         'primary-main-hover': '#384AC8',
+        'primary-surface': '#F2F4FF',
         'primary-border': '#A5B0FF',
         'heading-txt-color': '#060235',
         'body-txt-color': '#4A4672',
@@ -17,11 +18,21 @@ module.exports = {
       },
       maxWidth: {
         '10px': '10px',
-        '400px': '400px',
       },
       minWidth: {
         '10px': '10px',
-        '400px': '400px',
+        xs: '20rem',
+        sm: '24rem',
+        md: '28rem',
+        lg: '32rem',
+        xl: '36rem',
+      },
+      zIndex: {
+        1: '1',
+        2: '2',
+        3: '3',
+        4: '4',
+        5: '5',
       },
     },
   },
