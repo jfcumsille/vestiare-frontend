@@ -85,7 +85,7 @@ jobs:
       - run:
           name: Build the application
           command: doppler run --token $CI_DOPPLER_TOKEN --config ci -- npm run build
-  jest:
+  vitest:
     docker:
       - image: cimg/node:16.14
     steps:
@@ -103,8 +103,8 @@ jobs:
             - node_modules
       - install-doppler
       - run:
-          name: Test with Jest
-          command: doppler run --token $CI_DOPPLER_TOKEN --config ci -- npm run test:jest
+          name: Test with Vitest
+          command: doppler run --token $CI_DOPPLER_TOKEN --config ci -- npm run test:vitest
   no-fixup-commits:
     docker:
       - image: cimg/node:16.14
@@ -169,7 +169,7 @@ workflows:
       - build
   tests:
     jobs:
-      - jest
+      - vitest
   tidyness:
     jobs:
       - no-fixup-commits
