@@ -1,55 +1,51 @@
 import { mount } from '@vue/test-utils';
-import i18next from 'i18next';
+import { setupLocales } from '@/locales';
 import NavBar from '../NavBar.vue';
-import en from '../../../locales/en';
-import es from '../../../locales/es';
 
 jest.mock('vue-router', () => ({
   useRoute: jest.fn(() => ({ name: '/' })),
   createRouter: jest.fn(() => ({ history: '', routes: '' })),
 }));
 
-i18next.init({
-  lng: 'en',
-  resources: {
-    en,
-    es,
-  },
-});
+const getWrapper = (isLoggedIn: boolean) => {
+  const wrapper = mount(NavBar, {
+    props: {
+      isLoggedIn,
+    },
+  });
+  return wrapper;
+};
 
 describe('NavBar', () => {
-  describe('if logged in', () => {
-    const wrapper = mount(NavBar, {
-      props: {
-        isLoggedIn: true,
-      },
-    });
-    it('show internal nav bar links', () => {
+  beforeAll(() => {
+    setupLocales();
+  });
+  describe('when logged in', () => {
+    it('shows internal nav bar links', () => {
+      const wrapper = getWrapper(true);
       const navBarInternalLinks = wrapper.find('[data-test="navBarInternalLinks"]');
       expect(navBarInternalLinks.exists()).toBe(true);
       const navBarPublicLinks = wrapper.find('[data-test="navBarPublicLinks"]');
       expect(navBarPublicLinks.exists()).toBe(false);
     });
-    it('fintoc logo redirect to /', () => {
+    it('redirects to \'/\' when clicking the fintoc logo', () => {
+      const wrapper = getWrapper(true);
       const fintocLogo = wrapper.find('[data-test="fintocLogo"]');
       expect(fintocLogo.exists()).toBe(true);
       expect(fintocLogo.attributes('href')).toEqual('/');
     });
   });
 
-  describe('if not logged in', () => {
-    const wrapper = mount(NavBar, {
-      props: {
-        isLoggedIn: false,
-      },
-    });
-    it('show public nav bar links', () => {
+  describe('when not logged in', () => {
+    it('shows public nav bar links', () => {
+      const wrapper = getWrapper(false);
       const navBarPublicLinks = wrapper.find('[data-test="navBarPublicLinks"]');
       expect(navBarPublicLinks.exists()).toBe(true);
       const navBarInternalLinks = wrapper.find('[data-test="navBarInternalLinks"]');
       expect(navBarInternalLinks.exists()).toBe(false);
     });
-    it('fintoc logo redirect to fintoc.com', () => {
+    it('fintoc logo redirects to fintoc.com', () => {
+      const wrapper = getWrapper(false);
       const fintocLogo = wrapper.find('[data-test="fintocLogo"]');
       expect(fintocLogo.exists()).toBe(true);
       expect(fintocLogo.attributes('href')).toEqual('https://fintoc.com');

@@ -17,8 +17,9 @@ import ChileIcon from '@/components/images/ChileIcon.vue';
 import MexicoIcon from '@/components/images/MexicoIcon.vue';
 
 const props = defineProps<{ isLoggedIn: boolean }>();
+const emit = defineEmits<{(e: 'log-out'): void }>();
 const route = useRoute();
-const $t = useTranslation('navBar.texts');
+const $t = useTranslation('navBar');
 
 const isLargeWidth = computed(() => (widthType.value === 'lg'));
 
@@ -63,8 +64,6 @@ const selectionClasses = (path: string) => {
   }
   return 'text-gray-700 hover:text-blue-700';
 };
-
-const emit = defineEmits<{(e: 'log-out'): void }>();
 
 const logOut = () => {
   emit('log-out');

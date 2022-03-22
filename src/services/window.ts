@@ -1,16 +1,14 @@
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
+import { useWindowSize } from '@vueuse/core';
 
-const windowWidth = ref(window.innerWidth);
-
-window.onresize = () => {
-  windowWidth.value = window.innerWidth;
-};
+const { width } = useWindowSize();
 
 export const widthType = computed(() => {
-  if (windowWidth.value < 680) return 's';
-  if (windowWidth.value >= 680 && windowWidth.value < 1000) return 'md';
-  if (windowWidth.value >= 1000) return 'lg';
-  return null;
+  if (width.value < 680) {
+    return 's';
+  }
+  if (width.value < 1000) {
+    return 'md';
+  }
+  return 'lg';
 });
-
-export const width = computed(() => windowWidth.value);
