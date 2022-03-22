@@ -29,6 +29,7 @@ module.exports = {
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
+    'import/core-modules': ['vitest'],
   },
   rules: {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
