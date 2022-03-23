@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch, computed } from 'vue';
+import { onMounted, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRouterStore } from '@/stores/router';
 import { useLocaleStore } from '@/stores/locale';
@@ -15,8 +15,6 @@ const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
-
-const isLoggedIn = computed(() => ($userStore.authenticated !== ''));
 
 const loadUserData = () => {
   if ($userStore.authenticated) {
@@ -34,18 +32,10 @@ onMounted(async () => {
   await $userStore.loadUser();
   loadUserData();
 });
-
-const logOut = () => {
-  $userStore.logOut();
-  window.location.href = '/';
-};
 </script>
 
 <template>
-  <NavBar
-    :is-logged-in="isLoggedIn"
-    @log-out="logOut"
-  />
+  <NavBar />
   <div
     v-if="$routerStore.loading"
     class="flex justify-center w-full h-96"
