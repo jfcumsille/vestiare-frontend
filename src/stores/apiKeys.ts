@@ -13,6 +13,18 @@ export const useAPIKeysStore = defineStore('apiKeys', {
       this.apiKeys = await api.apiKeys.list(params);
       this.loading = false;
     },
+    async createAPIKey(params: Record<string, string> = {}) {
+      this.loading = true;
+      await api.apiKeys.create(params);
+      await this.loadAPIKeys(params);
+      this.loading = false;
+    },
+    async destroyAPIKey(params: Record<string, string> = {}) {
+      this.loading = true;
+      await api.apiKeys.destroy(params);
+      await this.loadAPIKeys(params);
+      this.loading = false;
+    },
   },
   getters: {
     searchKey: (state) => (isPublic: boolean, mode: 'live' | 'test') => state.apiKeys.filter(

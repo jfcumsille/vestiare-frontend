@@ -7,7 +7,10 @@ module.exports = {
         'primary-main-hover': '#384AC8',
         'primary-surface': '#F2F4FF',
         'primary-border': '#A5B0FF',
-        'primary-surface': '#F2F4FF',
+        'warning-main': '#EA780E',
+        'warning-main-hover': '#D16603',
+        'warning-surface': '#FFF2E7',
+        'warning-border': '#FFCA99',
         'heading-txt-color': '#060235',
         'body-txt-color': '#4A4672',
         'sec-cap-txt-color': '#656289',
@@ -19,6 +22,7 @@ module.exports = {
       },
       maxWidth: {
         '10px': '10px',
+        xxs: '16rem',
       },
       minWidth: {
         '10px': '10px',
