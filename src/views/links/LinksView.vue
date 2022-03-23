@@ -15,6 +15,15 @@ import LinkCreation from './components/LinkCreation.vue';
 
 const $t = useTranslation('views.links');
 
+const headers = [
+  $t('table.headers.user'),
+  $t('table.headers.business'),
+  $t('table.headers.institution'),
+  $t('table.headers.lastRefreshed'),
+  $t('table.headers.active'),
+  '',
+];
+
 const $linksStore = useLinksStore();
 
 const createdLinkToken = ref<Nullable<string>>(null);
@@ -118,7 +127,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
   <div class="flex justify-center w-full">
     <LinksTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
-        <LinksTableHeader />
+        <LinksTableHeader :headers="headers" />
       </template>
 
       <template #content>

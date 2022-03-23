@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
 import ResetPasswordView from '@/views/login-signup/ResetPasswordView.vue';
+import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
 import LinksView from '@/views/links/LinksView.vue';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
 import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
@@ -40,6 +41,7 @@ const routes: RouteRecordRaw[] = [
       skipResetPasswordIfAlreadyLoggedIn,
     ],
   },
+  { path: '/api_keys', component: ApiKeysView },
   { path: '/links', component: LinksView },
   { path: '/webhook_endpoints', component: WebhookEndpointsView },
   {

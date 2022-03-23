@@ -7,6 +7,7 @@ module.exports = {
         'primary-main-hover': '#384AC8',
         'primary-surface': '#F2F4FF',
         'primary-border': '#A5B0FF',
+        'primary-surface': '#F2F4FF',
         'heading-txt-color': '#060235',
         'body-txt-color': '#4A4672',
         'sec-cap-txt-color': '#656289',

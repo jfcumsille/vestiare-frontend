@@ -30,6 +30,10 @@ const pressMenu = () => {
 
 const navBarInternalLinks = [
   {
+    text: 'API Keys',
+    path: '/api_keys',
+  },
+  {
     text: 'Links',
     path: '/links',
   },
