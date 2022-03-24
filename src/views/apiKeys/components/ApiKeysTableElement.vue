@@ -3,38 +3,24 @@ import { ref, computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import ThreeDots from '@/components/images/ThreeDots.vue';
-// import InfoIcon from '@/components/images/InfoIcon.vue';
+import InfoIcon from '@/components/images/InfoIcon.vue';
 import CopyIcon from '@/components/images/CopyIcon.vue';
 import EyeIcon from '@/components/images/EyeIcon.vue';
 
 const props = defineProps<{ apiKey: APIKey }>();
 const emit = defineEmits<{
-  (e: 'open-modal', key: APIKey, name: string): void,
+  (e: 'destroy-api-key', key: APIKey): void,
   (e: 'activate-secret-key'): void,
 }>();
 
 const $t = useTranslation('views.apiKeys.table.element');
 
-// const hoverInfoIcon = ref(false);
-// const hoverInfoText = ref(false);
-const isActivateLiveSecretKey = computed(() => (props.apiKey.id === 'liveSecretKeyToActivate'));
-const isLiveSecretKey = computed(() => (!props.apiKey.isPublic && props.apiKey.mode === 'live'));
 const name = computed(() => {
   if (props.apiKey.isPublic) {
     return $t('publicKey');
   }
   return $t('secretKey');
 });
-
-// const keyInfo = computed(() => {
-//   if (props.apiKey.isPublic) {
-//     return $t('publicKeyInfo');
-//   }
-//   return $t('secretKeyInfo');
-// });
-
-// const createdDate = ref('Dec 05 2022');
-// const createdTime = ref('14:45');
 
 const showKey = ref(false);
 const toggleKey = () => {
@@ -45,29 +31,39 @@ const copyKey = () => {
   navigator.clipboard.writeText(props.apiKey.token);
 };
 
-const showModalConfigKeys = ref(false);
+const isActivateLiveSecretKey = computed(() => (props.apiKey.id === 'liveSecretKeyToActivate'));
+const isLiveSecretKey = computed(() => (!props.apiKey.isPublic && props.apiKey.mode === 'live'));
+const showConfigKeysModal = ref(false);
 const handleConfigKeys = () => {
-  showModalConfigKeys.value = !showModalConfigKeys.value;
+  showConfigKeysModal.value = !showConfigKeysModal.value;
 };
 
 const handleDeleteKey = () => {
-  emit('open-modal', props.apiKey, name.value);
-  showModalConfigKeys.value = false;
+  emit('destroy-api-key', props.apiKey);
+  showConfigKeysModal.value = false;
 };
 const handleActivateKey = () => {
   emit('activate-secret-key');
 };
 
-// const handleEndHoverText = () => {
-//   hoverInfoText.value = false;
-//   hoverInfoIcon.value = false;
-// };
+const hoverInfoIcon = ref(false);
+const hoverInfoText = ref(false);
+const keyInfo = computed(() => {
+  if (props.apiKey.isPublic) {
+    return $t('publicKeyInfo');
+  }
+  return $t('secretKeyInfo');
+});
+const handleEndHoverText = () => {
+  hoverInfoText.value = false;
+  hoverInfoIcon.value = false;
+};
 
-// const handleEndHoverIcon = () => {
-//   if (!hoverInfoText.value) {
-//     hoverInfoIcon.value = false;
-//   }
-// };
+const handleEndHoverIcon = () => {
+  if (!hoverInfoText.value) {
+    hoverInfoIcon.value = false;
+  }
+};
 </script>
 
 <template>
@@ -78,23 +74,23 @@ const handleActivateKey = () => {
     <td class="px-5 py-7 text-md h-full">
       <div class="flex flex-row items-center">
         {{ name }}
-        <!-- <div
+        <div
           @mouseover="hoverInfoIcon = true"
           @mouseleave="handleEndHoverIcon"
         >
-          <InfoIcon class="ml-2" />
+          <InfoIcon class="h-10 ml-2" />
           <div
             v-show="hoverInfoIcon"
             class="
-                absolute left-0 ml-32 mt-2 p-2 break-words w-40
-                bg-red-200 rounded-md border border-bg-gray-200 drop-shadow-md pr-10 inline-block
+                absolute left-0 ml-36 -mt-2 px-3 py-2 break-words max-w-xxs whitespace-normal
+                bg-white rounded-md border border-bg-gray-200 drop-shadow-md text-sm
               "
             @mouseover="hoverInfoText = true"
             @mouseleave="handleEndHoverText"
           >
             {{ keyInfo }}
           </div>
-        </div> -->
+        </div>
       </div>
     </td>
     <td class="font-normal m-2">
@@ -136,14 +132,6 @@ const handleActivateKey = () => {
         {{ $t('activateSecretKey') }}
       </button>
     </td>
-    <!-- <td class="px-5 py-4">
-      <p class="text-md">
-        {{ createdDate }}
-      </p>
-      <p class="text-sm">
-        {{ createdTime }}
-      </p>
-    </td> -->
     <td
       v-if="!isActivateLiveSecretKey && isLiveSecretKey"
       class="pl-3"
@@ -155,7 +143,7 @@ const handleActivateKey = () => {
     </td>
   </tr>
   <div
-    v-if="showModalConfigKeys"
+    v-if="showConfigKeysModal"
     class="
       absolute right-0 -mt-6 -mr-16 px-4 py-3
       bg-white rounded-md border border-bg-gray-200 drop-shadow-md

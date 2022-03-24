@@ -2,7 +2,6 @@
 import { computed, ref } from 'vue';
 import { useTranslation } from '@/locales';
 import { useAPIKeysStore } from '@/stores/apiKeys';
-import { useUserStore } from '@/stores/user';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
@@ -12,16 +11,14 @@ import ApiKeysTableElement from './components/ApiKeysTableElement.vue';
 
 const $t = useTranslation('views.apiKeys');
 const apiKeysStore = useAPIKeysStore();
-const userStore = useUserStore();
 
 const headers = [
   $t('table.headers.name'),
   $t('table.headers.token'),
-  // $t('table.headers.created'),
   '',
 ];
 
-const isLiveMode = ref(false);
+const isLiveMode = ref(true);
 const mode = computed(() => (isLiveMode.value ? 'live' : 'test'));
 const publicKey = computed(() => apiKeysStore.searchKey(true, mode.value));
 const secretKey = computed(() => apiKeysStore.searchKey(false, mode.value));
@@ -30,11 +27,14 @@ const toggle = () => {
   isLiveMode.value = !isLiveMode.value;
 };
 
-const createAPIKey = async (params: Record<string, string>) => {
-  await apiKeysStore.createAPIKey(params);
+const createAPIKey = async () => {
+  await apiKeysStore.createAPIKey();
 };
 
-const destroyAPIKey = async (params: Record<string, string>) => {
+const destroyAPIKey = async (key: APIKey) => {
+  const params: Record<string, string> = {
+    id: key.id,
+  };
   await apiKeysStore.destroyAPIKey(params);
 };
 
@@ -45,10 +45,6 @@ const secretKeyToActivate: APIKey = {
   mode: 'live',
 };
 
-const activateSecretKey = () => {
-  const orgParams = userStore.organizationParams;
-  createAPIKey(orgParams);
-};
 </script>
 
 <template>
@@ -112,13 +108,13 @@ const activateSecretKey = () => {
                 v-if="secretKey"
                 :key="secretKey.id"
                 :api-key="secretKey"
-                @open-modal="destroyAPIKey"
+                @destroy-api-key="destroyAPIKey"
               />
               <ApiKeysTableElement
                 v-if="!secretKey"
                 :key="secretKeyToActivate.id"
                 :api-key="secretKeyToActivate"
-                @activate-secret-key="activateSecretKey"
+                @activate-secret-key="createAPIKey"
               />
             </template>
           </LinksTable>
