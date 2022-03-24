@@ -3,59 +3,82 @@ import { ref } from 'vue';
 import { decamelizeKeys } from 'humps';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import GenericModal from '@/components/GenericModal.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
+
+const emit = defineEmits<{ (e: 'close'): void }>();
 
 const webhookEndpointsStore = useWebhookEndpointsStore();
 
 const selectedEvent = ref<string>(props.webhookEndpoint.enabledEvents[0]);
 const webhookBody = ref('');
+const requestSent = ref(false);
+const loading = ref(false);
 
 const selectEvent = (event: string) => {
   selectedEvent.value = event;
 };
 
 const sendTestWebhook = async () => {
+  requestSent.value = true;
+  loading.value = true;
+
   const response = await webhookEndpointsStore.sendTestWebhook(
     props.webhookEndpoint,
     selectedEvent.value,
   );
 
+  loading.value = false;
   webhookBody.value = JSON.stringify(
     decamelizeKeys(response.requestBody as object),
     null,
     2,
   );
 };
+
+const close = () => {
+  emit('close');
+};
 </script>
 
 <template>
-  <h2 class="text-2xl my-2">
-    Send a Test Webhook
-  </h2>
-  <div class="flex">
-    <div class="w-1/2">
-      <div class="flex">
-        <GenericDropDown
-          class="inline-block"
-          :options="props.webhookEndpoint.enabledEvents"
-          :selected="selectedEvent"
-          @select="selectEvent"
-        />
-        <button
-          class="
+  <GenericModal
+    title="Send Test Webhook"
+    @close="close"
+  >
+    <div
+      v-if="!requestSent"
+      class="flex"
+    >
+      <GenericDropDown
+        class="inline-block"
+        :options="props.webhookEndpoint.enabledEvents"
+        :selected="selectedEvent"
+        @select="selectEvent"
+      />
+      <button
+        class="
             mt-1 ml-2 px-4 rounded-md cursor-pointer
             text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
           "
-          @click="sendTestWebhook"
-        >
-          Send Test Webhook
-        </button>
-      </div>
+        @click="sendTestWebhook"
+      >
+        Send Test Webhook
+      </button>
     </div>
-    <div class="w-1/2">
+    <div v-else>
+      <div
+        v-if="loading"
+        class="w-full flex"
+      >
+        <div class="mx-auto">
+          <LoadingSpinner />
+        </div>
+      </div>
       <pre><code>{{ webhookBody }}</code></pre>
     </div>
-  </div>
+  </GenericModal>
 </template>

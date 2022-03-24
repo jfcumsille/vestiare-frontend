@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
-import TestWebhook from './components/TestWebhook.vue';
+import TestWebhookModal from './components/TestWebhookModal.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
 
@@ -14,14 +14,30 @@ const $webhookEndpointsStore = useWebhookEndpointsStore();
 
 const route = useRoute();
 
+const testWebhookModalOpened = ref(false);
+
 const webhookEndpoint = computed(() => (
   $webhookEndpointsStore.getById(route.params.webhookEndpointId as string)
 ));
 
 const showTestButton = computed(() => webhookEndpoint.value?.mode === 'test');
+const showWebhookModal = computed(() => (
+  testWebhookModalOpened.value
+    && webhookEndpoint.value
+    && webhookEndpoint.value.mode === 'test'
+));
+
+const toggleWebhookModal = () => {
+  testWebhookModalOpened.value = !testWebhookModalOpened.value;
+};
 </script>
 
 <template>
+  <TestWebhookModal
+    v-if="showWebhookModal"
+    :webhook-endpoint="webhookEndpoint!"
+    @close="toggleWebhookModal"
+  />
   <div class="flex justify-center w-full">
     <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
@@ -41,7 +57,15 @@ const showTestButton = computed(() => webhookEndpoint.value?.mode === 'test');
     class="flex justify-center w-full"
   >
     <div class="grow mt-6 mx-4 max-w-screen-xl">
-      <TestWebhook :webhook-endpoint="webhookEndpoint" />
+      <button
+        class="
+            h-12 mt-1 ml-2 px-4 rounded-md cursor-pointer
+            text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
+          "
+        @click="toggleWebhookModal"
+      >
+        Send Test Webhook
+      </button>
     </div>
   </div>
 </template>
