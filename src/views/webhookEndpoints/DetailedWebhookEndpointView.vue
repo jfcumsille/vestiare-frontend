@@ -6,6 +6,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
+import TestWebhook from './components/TestWebhook.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
 
@@ -16,6 +17,8 @@ const route = useRoute();
 const webhookEndpoint = computed(() => (
   $webhookEndpointsStore.getById(route.params.webhookEndpointId as string)
 ));
+
+const showTestButton = computed(() => webhookEndpoint.value?.mode === 'test');
 </script>
 
 <template>
@@ -32,5 +35,13 @@ const webhookEndpoint = computed(() => (
         />
       </template>
     </GenericTable>
+  </div>
+  <div
+    v-if="webhookEndpoint && showTestButton"
+    class="flex justify-center w-full"
+  >
+    <div class="grow mt-6 mx-4 max-w-screen-2xl">
+      <TestWebhook :webhook-endpoint="webhookEndpoint" />
+    </div>
   </div>
 </template>
