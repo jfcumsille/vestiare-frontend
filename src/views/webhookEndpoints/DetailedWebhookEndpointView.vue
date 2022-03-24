@@ -40,7 +40,7 @@ const showTestButton = computed(() => webhookEndpoint.value?.mode === 'test');
     v-if="webhookEndpoint && showTestButton"
     class="flex justify-center w-full"
   >
-    <div class="grow mt-6 mx-4 max-w-screen-2xl">
+    <div class="grow mt-6 mx-4 max-w-screen-xl">
       <TestWebhook :webhook-endpoint="webhookEndpoint" />
     </div>
   </div>

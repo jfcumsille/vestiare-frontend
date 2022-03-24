@@ -46,6 +46,9 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
       );
       return payload.secret;
     },
+    async sendTestWebhook(webhookEndpoint: WebhookEndpoint, event: string) {
+      return api.webhookEndpoints.sendTestWebhook(webhookEndpoint.id, event);
+    },
   },
   getters: {
     liveWebhookEndpoints: (state) => state.webhookEndpoints.filter(
