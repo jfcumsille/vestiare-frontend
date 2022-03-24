@@ -48,5 +48,6 @@ module.exports = {
     'no-spaced-func': 'off',
     'func-call-spacing': 'off',
     '@typescript-eslint/func-call-spacing': ['error'],
+    'vue/require-default-prop': 'off',
   },
 };

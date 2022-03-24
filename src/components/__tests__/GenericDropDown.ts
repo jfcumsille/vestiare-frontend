@@ -3,29 +3,13 @@ import { mount } from '@vue/test-utils';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 
 describe('GenericDropDown', () => {
-  it('renders props.name when passed', () => {
-    const name = 'Country';
-    const wrapper = mount(GenericDropDown, {
-      props: {
-        name,
-        selected: 'something',
-        options: ['something1', 'something2'],
-        showName: true,
-        isColorPrimary: true,
-      },
-    });
-
-    expect(wrapper.text()).toMatch(name);
-  });
-
   it('renders props.selected when passed', () => {
     const selectedText = 'Chile';
     const wrapper = mount(GenericDropDown, {
       props: {
         selected: selectedText,
-        name: 'something',
+        textPrefix: 'something',
         options: ['something1', 'something2'],
-        showName: true,
         isColorPrimary: true,
       },
     });
@@ -38,9 +22,8 @@ describe('GenericDropDown', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
         options: optionsText,
-        name: 'something',
+        textPrefix: 'something',
         selected: 'something',
-        showName: true,
         isColorPrimary: true,
       },
     });
@@ -49,43 +32,39 @@ describe('GenericDropDown', () => {
     optionsText.forEach((option) => expect(list.text()).toContain(option));
   });
 
-  it('renders name in button text if showName is true', () => {
+  it('renders props.textPrefix when passed', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
-        name: 'something',
+        textPrefix: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
-        showName: true,
         isColorPrimary: true,
       },
     });
 
-    const name = wrapper.find('[data-test="dropDownName"]');
-    expect(name).toBeDefined();
+    const textPrefix = wrapper.find('[data-test="dropDownTextPrefix"]');
+    expect(textPrefix).toBeDefined();
   });
 
-  it('doesnt renders name in button text if showName is false', () => {
+  it('doesn\'t render prefix when props.textPrefix is not passed', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
-        name: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
-        showName: false,
         isColorPrimary: true,
       },
     });
 
-    const name = wrapper.find('[data-test="dropDownName"]');
-    expect(name.exists()).toBe(false);
+    const textPrefix = wrapper.find('[data-test="dropDownTextPrefix"]');
+    expect(textPrefix.exists()).toBe(false);
   });
 
   it('renders default white colors for button when isPrimaryColor is false', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
-        name: 'something',
+        textPrefix: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
-        showName: true,
         isColorPrimary: false,
       },
     });
@@ -101,10 +80,9 @@ describe('GenericDropDown', () => {
   it('renders primary colors for button when isPrimaryColor is true', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
-        name: 'something',
+        textPrefix: 'something',
         selected: 'something',
         options: ['something1', 'something2'],
-        showName: true,
         isColorPrimary: true,
       },
     });

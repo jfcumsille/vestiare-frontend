@@ -130,7 +130,6 @@ const logIn = () => {
                   {{ $tSignUp('country') }}
                 </div>
                 <GenericDropDown
-                  :name="$tSignUp('country')"
                   :selected="country"
                   :options="countryOptions"
                   @select="selectCountryFilter"

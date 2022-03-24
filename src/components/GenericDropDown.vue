@@ -4,23 +4,21 @@ import { onClickOutside } from '@vueuse/core';
 import ChevronDown from './images/ChevronDown.vue';
 
 const props = withDefaults(defineProps<{
-  name: string,
   selected: string,
   options: Array<string>,
-  showName?: boolean,
+  textPrefix?: string,
   isColorPrimary?: boolean,
 }>(), {
-  showName: false,
   isColorPrimary: false,
 });
+
+const emit = defineEmits<{(e: 'select', selected: string): void }>();
 
 const colorClasses = computed(() => (
   props.isColorPrimary
     ? 'text-white bg-primary-main hover:bg-primary-main-hover focus:ring-primary-border border-primary-border'
     : 'text-body-txt-color bg-white hover:bg-gray-100 focus:ring-bg-gray-300 border-slate-300'
 ));
-
-const emit = defineEmits<{(e: 'select', selected: string): void }>();
 
 const opened = ref(false);
 const dropDown = ref(null);
@@ -53,19 +51,20 @@ onClickOutside(dropDown, () => {
       `"
       @click="toggle"
     >
-      <span
-        v-if="showName"
-        data-test="dropDownName"
-        class="mr-1 min-w-fit"
-      > {{ name }} - </span>
-      {{ selected }}
+      <p>
+        <span
+          v-if="textPrefix"
+          data-test="dropDownTextPrefix"
+        >{{ textPrefix }} -</span>
+        {{ selected }}
+      </p>
       <ChevronDown />
     </button>
 
     <div
       data-test="dropDownList"
       class="
-        absolute z-10 w-44 text-base list-none bg-white rounded cursor-pointer
+        absolute z-10 text-base list-none bg-white rounded cursor-pointer
         divide-y divide-gray-100 shadow-lg
       "
       :class="{ hidden: !opened }"
