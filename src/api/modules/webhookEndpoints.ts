@@ -51,7 +51,7 @@ export const sendTestWebhook = async (
   event: string,
 ): Promise<Json> => {
   const response = await client.post(
-    `/internal/v1/webhook_endpoints/${webhookEndpointId}/test`,
+    `${BASE_PATH}/${webhookEndpointId}/test`,
     { event },
     { params: { mode: 'test' } },
   );
