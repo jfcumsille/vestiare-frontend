@@ -32,10 +32,6 @@ const setModalOpened = (value: boolean) => {
   modalOpened.value = value;
 };
 
-const createWebhookEndpoint = () => {
-  setModalOpened(false);
-};
-
 const webhookEndpoints = computed(
   () => (
     live.value
@@ -48,6 +44,7 @@ const webhookEndpoints = computed(
 <template>
   <WebhookEndpointCreationModal
     v-if="modalOpened"
+    :live="live"
     @close="() => setModalOpened(false)"
   />
   <div class="flex justify-center w-full">
@@ -60,7 +57,6 @@ const webhookEndpoints = computed(
         :live="live"
         :modal-opened="modalOpened"
         @open-modal="() => setModalOpened(true)"
-        @create="createWebhookEndpoint"
       />
     </div>
   </div>

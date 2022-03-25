@@ -1,5 +1,6 @@
 import client from '@/api/client';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { WebhookEndpointCreationOptions } from '@/interfaces/options/webhookEndpoints';
 import { WebhookEndpointSecret } from '@/interfaces/responses/webhookEndpoints';
 import { Json } from '@/interfaces/utilities/json';
 
@@ -16,9 +17,17 @@ export const list = async (): Promise<WebhookEndpoint[]> => {
   return [].concat(...responses.map((response) => response.data));
 };
 
+export const create = async (
+  requestBody: WebhookEndpointCreationOptions,
+  mode: 'live' | 'test',
+): Promise<WebhookEndpoint> => {
+  const response = await client.post(BASE_PATH, requestBody, { params: { mode } });
+  return response.data;
+};
+
 export const update = async (
   webhookEndpointId: string,
-  mode: string,
+  mode: 'live' | 'test',
   requestBody: Record<string, boolean>,
 ): Promise<WebhookEndpoint> => {
   const response = await client.put(
@@ -37,7 +46,7 @@ export const remove = async (webhookEndpointId: string, mode: string) => {
 
 export const getSecret = async (
   webhookEndpointId: string,
-  mode: string,
+  mode: 'live' | 'test',
 ): Promise<WebhookEndpointSecret> => {
   const response = await client.get(
     `${BASE_PATH}/${webhookEndpointId}/secret`,

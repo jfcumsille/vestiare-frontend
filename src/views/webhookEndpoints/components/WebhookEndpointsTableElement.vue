@@ -18,7 +18,7 @@ const updating = ref(false);
 
 const toggleActive = async () => {
   updating.value = true;
-  await $webhookEndpointsStore.updateWebhook(
+  await $webhookEndpointsStore.updateWebhookEndpoint(
     props.webhookEndpoint,
     { disabled: (props.webhookEndpoint.status === 'enabled') },
   );

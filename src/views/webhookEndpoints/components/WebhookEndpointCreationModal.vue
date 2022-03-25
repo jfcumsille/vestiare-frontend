@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/GenericInput.vue';
 import GenericTextArea from '@/components/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
 
-const emit = defineEmits<{
-  (e: 'close'): void,
-  (e: 'create', data: any): void,
-}>();
+const props = defineProps<{ live: boolean }>();
+
+const emit = defineEmits<{ (e: 'close'): void }>();
 
 const eventNames = [
   'link.credentials_changed',
@@ -21,6 +21,8 @@ const eventNames = [
   'link.refresh_intent.failed',
   'account.refresh_intent.rejected',
 ];
+
+const webhookEndpointsStore = useWebhookEndpointsStore();
 
 const url = ref('');
 const description = ref('');
@@ -48,11 +50,21 @@ const areValidEvents = () => {
   return false;
 };
 
-const createWebhookEndpoint = () => {
+const createWebhookEndpoint = async () => {
   const urlIsValid = isValidUrl(url.value);
   const eventsAreValid = areValidEvents();
   if (urlIsValid && eventsAreValid) {
-    emit('create', {});
+    loading.value = true;
+    await webhookEndpointsStore.createWebhookEndpoint(
+      {
+        url: url.value,
+        description: description.value.trim() === '' ? undefined : description.value,
+        enabledEvents: events.value.filter((event) => event.checked).map((event) => event.name),
+      },
+      props.live ? 'live' : 'test',
+    );
+    loading.value = false;
+    emit('close');
   }
 };
 

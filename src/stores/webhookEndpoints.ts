@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { WebhookEndpointCreationOptions } from '@/interfaces/options/webhookEndpoints';
 
 export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
   state: () => ({
@@ -13,7 +14,14 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
       this.webhookEndpoints = await api.webhookEndpoints.list();
       this.loading = false;
     },
-    async updateWebhook(
+    async createWebhookEndpoint(
+      options: WebhookEndpointCreationOptions,
+      mode: 'live' | 'test',
+    ) {
+      const webhookEndpoint = await api.webhookEndpoints.create(options, mode);
+      this.webhookEndpoints = [...this.webhookEndpoints, webhookEndpoint];
+    },
+    async updateWebhookEndpoint(
       webhookEndpoint: WebhookEndpoint,
       data: Record<string, boolean>,
     ) {
