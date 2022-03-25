@@ -20,14 +20,16 @@ const close = () => {
     :title="$t('title')"
     @close="close"
   >
-    <!-- eslint-disable vue/no-v-html -->
-    <p
-      class="text-base leading-relaxed text-gray-500"
-      v-html="$t('contentHTML')"
-    />
-    <!-- eslint-enable vue/no-v-html -->
-    <p class="text-base leading-relaxed text-black font-bold">
-      {{ props.linkToken }}
-    </p>
+    <div class="space-y-6">
+      <!-- eslint-disable vue/no-v-html -->
+      <p
+        class="text-base leading-relaxed text-gray-500"
+        v-html="$t('contentHTML')"
+      />
+      <!-- eslint-enable vue/no-v-html -->
+      <p class="text-base leading-relaxed text-black font-bold">
+        {{ props.linkToken }}
+      </p>
+    </div>
   </GenericModal>
 </template>
