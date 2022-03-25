@@ -41,11 +41,11 @@ const routes: RouteRecordRaw[] = [
       skipResetPasswordIfAlreadyLoggedIn,
     ],
   },
-  { path: '/api_keys', component: ApiKeysView },
+  { path: '/api-keys', component: ApiKeysView },
   { path: '/links', component: LinksView },
-  { path: '/webhook_endpoints', component: WebhookEndpointsView },
+  { path: '/webhook-endpoints', component: WebhookEndpointsView },
   {
-    path: '/webhook_endpoints/:webhookEndpointId',
+    path: '/webhook-endpoints/:webhookEndpointId',
     component: DetailedWebhookEndpointView,
   },
 ];

@@ -30,7 +30,7 @@ const remove = () => {
 };
 
 const openDetailedView = () => {
-  router.push({ path: `/webhook_endpoints/${props.webhookEndpoint.id}` });
+  router.push({ path: `/webhook-endpoints/${props.webhookEndpoint.id}` });
 };
 </script>
 

@@ -21,7 +21,7 @@ const userStore = useUserStore();
 const route = useRoute();
 const $t = useTranslation('navBar');
 
-const isLoggedIn = computed(() => (userStore.authenticated !== ''));
+const isLoggedIn = computed(() => (userStore.authenticated));
 const isLargeWidth = computed(() => (widthType.value === 'lg'));
 
 const isMenuOpen = ref(false);
@@ -32,7 +32,7 @@ const pressMenu = () => {
 const navBarInternalLinks = [
   {
     text: 'API Keys',
-    path: '/api_keys',
+    path: '/api-keys',
   },
   {
     text: 'Links',
@@ -40,7 +40,7 @@ const navBarInternalLinks = [
   },
   {
     text: 'Webhook Endpoints',
-    path: '/webhook_endpoints',
+    path: '/webhook-endpoints',
   },
 ];
 
