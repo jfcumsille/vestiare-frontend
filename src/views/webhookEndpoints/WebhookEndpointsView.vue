@@ -4,8 +4,8 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import GenericToggle from '@/components/GenericToggle.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import WebhookEndpointsTable from './components/WebhookEndpointsTable.vue';
-import WebhookEndpointsTableHeader from './components/WebhookEndpointsTableHeader.vue';
+import GenericTable from '@/components/GenericTable.vue';
+import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
@@ -58,9 +58,9 @@ const webhookEndpoints = computed(
     </div>
   </div>
   <div class="flex justify-center w-full">
-    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-xl">
+    <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
-        <WebhookEndpointsTableHeader :headers="tableHeaders" />
+        <GenericTableHeader :headers="tableHeaders" />
       </template>
 
       <template #content>
@@ -70,7 +70,7 @@ const webhookEndpoints = computed(
           :webhook-endpoint="webhookEndpoint"
         />
       </template>
-    </WebhookEndpointsTable>
+    </GenericTable>
   </div>
   <div
     v-if="$webhookEndpointsStore.loading"

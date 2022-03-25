@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
@@ -16,11 +17,11 @@ import MenuIcon from '@/components/images/MenuIcon.vue';
 import ChileIcon from '@/components/images/ChileIcon.vue';
 import MexicoIcon from '@/components/images/MexicoIcon.vue';
 
-const props = defineProps<{ isLoggedIn: boolean }>();
-const emit = defineEmits<{(e: 'log-out'): void }>();
+const userStore = useUserStore();
 const route = useRoute();
 const $t = useTranslation('navBar');
 
+const isLoggedIn = computed(() => (userStore.authenticated));
 const isLargeWidth = computed(() => (widthType.value === 'lg'));
 
 const isMenuOpen = ref(false);
@@ -30,12 +31,16 @@ const pressMenu = () => {
 
 const navBarInternalLinks = [
   {
+    text: 'API Keys',
+    path: '/api-keys',
+  },
+  {
     text: 'Links',
     path: '/links',
   },
   {
     text: 'Webhook Endpoints',
-    path: '/webhook_endpoints',
+    path: '/webhook-endpoints',
   },
 ];
 
@@ -60,13 +65,14 @@ const navBarPublicLinks = [
 
 const selectionClasses = (path: string) => {
   if (route.path === path) {
-    return 'text-blue-700';
+    return 'text-primary-main';
   }
-  return 'text-gray-700 hover:text-blue-700';
+  return 'text-gray-700 hover:text-primary-main';
 };
 
 const logOut = () => {
-  emit('log-out');
+  userStore.logOut();
+  window.location.href = '/';
 };
 </script>
 
@@ -80,14 +86,14 @@ const logOut = () => {
     >
       <a
         data-test="fintocLogo"
-        :href="props.isLoggedIn ? '/' : FINTOC_HOME"
+        :href="isLoggedIn ? '/' : FINTOC_HOME"
       >
         <FintocLogo
           class="h-6 w-min"
         />
       </a>
       <div
-        v-if="!props.isLoggedIn && isLargeWidth"
+        v-if="!isLoggedIn && isLargeWidth"
         class="block w-auto text-heading-txt-color font-medium mx-auto"
         data-test="navBarPublicLinks"
       >
@@ -101,7 +107,7 @@ const logOut = () => {
         </a>
       </div>
       <div
-        v-if="!props.isLoggedIn && isLargeWidth"
+        v-if="!isLoggedIn && isLargeWidth"
       >
         <a
           class="ml-8 text-primary-main hover:text-primary-main-hover font-medium"
@@ -119,7 +125,7 @@ const logOut = () => {
         </a>
       </div>
       <div
-        v-if="!props.isLoggedIn && !isLargeWidth"
+        v-if="!isLoggedIn && !isLargeWidth"
         class="flex flex-row"
       >
         <ChileIcon class="h-6 w-6 mr-3" />
@@ -131,7 +137,7 @@ const logOut = () => {
         </button>
       </div>
       <div
-        v-if="props.isLoggedIn"
+        v-if="isLoggedIn"
         class="block w-auto"
         data-test="navBarInternalLinks"
       >
@@ -157,7 +163,7 @@ const logOut = () => {
       </div>
     </div>
     <div
-      v-if="!props.isLoggedIn && !isLargeWidth && isMenuOpen"
+      v-if="!isLoggedIn && !isLargeWidth && isMenuOpen"
       class="px-4 w-full bg-white fixed z-20"
     >
       <div

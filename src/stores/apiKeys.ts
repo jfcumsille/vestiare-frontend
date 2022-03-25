@@ -8,9 +8,21 @@ export const useAPIKeysStore = defineStore('apiKeys', {
     loading: true,
   }),
   actions: {
-    async loadAPIKeys(params: Record<string, string> = {}) {
+    async loadAPIKeys() {
       this.loading = true;
-      this.apiKeys = await api.apiKeys.list(params);
+      this.apiKeys = await api.apiKeys.list();
+      this.loading = false;
+    },
+    async createAPIKey() {
+      this.loading = true;
+      await api.apiKeys.create();
+      await this.loadAPIKeys();
+      this.loading = false;
+    },
+    async destroyAPIKey(keyId: string) {
+      this.loading = true;
+      await api.apiKeys.destroy(keyId);
+      await this.loadAPIKeys();
       this.loading = false;
     },
   },

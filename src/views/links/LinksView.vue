@@ -6,14 +6,23 @@ import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import LinksTable from './components/LinksTable.vue';
-import LinksTableHeader from './components/LinksTableHeader.vue';
+import GenericTable from '@/components/GenericTable.vue';
+import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import LinksTableElement from './components/LinksTableElement.vue';
 import NewLinkModal from './components/NewLinkModal.vue';
 import LinkFilters from './components/LinkFilters.vue';
 import LinkCreation from './components/LinkCreation.vue';
 
 const $t = useTranslation('views.links');
+
+const headers = [
+  $t('table.headers.user'),
+  $t('table.headers.business'),
+  $t('table.headers.institution'),
+  $t('table.headers.lastRefreshed'),
+  $t('table.headers.active'),
+  '',
+];
 
 const $linksStore = useLinksStore();
 
@@ -116,9 +125,9 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
     </div>
   </div>
   <div class="flex justify-center w-full">
-    <LinksTable class="grow mt-6 mx-4 max-w-screen-xl">
+    <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
-        <LinksTableHeader />
+        <GenericTableHeader :headers="headers" />
       </template>
 
       <template #content>
@@ -128,7 +137,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
           :link="link"
         />
       </template>
-    </LinksTable>
+    </GenericTable>
   </div>
   <div
     v-if="$linksStore.loading"

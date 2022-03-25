@@ -12,13 +12,13 @@ describe('GenericToggle', () => {
     expect(ball.classes('translate-x-full')).toBe(true);
   });
 
-  it('renders pill blue when props.active is true', () => {
+  it('renders pill primary when props.active is true', () => {
     const wrapper = mount(GenericToggle, {
       props: { active: true },
     });
     const pill = wrapper.find('[data-test="pill"]');
 
-    expect(pill.classes().find((cls) => cls.includes('bg-blue'))).not.toBeUndefined();
+    expect(pill.classes().find((cls) => cls.includes('bg-primary'))).not.toBeUndefined();
   });
 
   it('renders ball to the left when props.active is true', () => {
@@ -30,13 +30,13 @@ describe('GenericToggle', () => {
     expect(ball.classes('translate-x-full')).toBe(false);
   });
 
-  it('renders pill blue when props.active is true', () => {
+  it('renders pill primary when props.active is true', () => {
     const wrapper = mount(GenericToggle, {
       props: { active: false },
     });
     const pill = wrapper.find('[data-test="pill"]');
 
-    expect(pill.classes().find((cls) => cls.includes('bg-blue'))).toBeUndefined();
+    expect(pill.classes().find((cls) => cls.includes('bg-primary'))).toBeUndefined();
   });
 
   it('triggers an event when the component is clicked while not loading', () => {

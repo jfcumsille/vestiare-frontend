@@ -18,7 +18,7 @@ const onClick = () => {
 
 const colorClasses = computed(() => {
   if (props.active) {
-    return 'bg-blue-500';
+    return 'bg-primary-main';
   }
   return 'bg-gray-200';
 });

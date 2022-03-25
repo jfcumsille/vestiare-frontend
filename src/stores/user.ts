@@ -70,7 +70,12 @@ export const useUserStore = defineStore('user', {
       }
       return {};
     },
-    authenticated: (state) => state.auth.authenticationToken && state.auth.id && state.auth.email,
+    authenticated: (state) => {
+      if (state.auth.authenticationToken && state.auth.id && state.auth.email) {
+        return true;
+      }
+      return false;
+    },
   },
 });
 

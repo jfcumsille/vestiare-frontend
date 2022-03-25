@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{ headers: Array<string> }>();
+const props = defineProps<{
+  headers: string[]
+}>();
 </script>
 
 <template>
