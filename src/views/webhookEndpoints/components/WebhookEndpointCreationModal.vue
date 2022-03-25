@@ -5,9 +5,13 @@ import GenericInput from '@/components/GenericInput.vue';
 import GenericTextArea from '@/components/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
 
-const emit = defineEmits<{ (e: 'close'): void }>();
+const emit = defineEmits<{
+  (e: 'close'): void,
+  (e: 'create', data: any): void,
+}>();
 
-const eventNames = ['link.credentials_changed',
+const eventNames = [
+  'link.credentials_changed',
   'payment_intent.succeeded',
   'payment_intent.failed',
   'account.refresh_intent.succeeded',
@@ -21,14 +25,12 @@ const eventNames = ['link.credentials_changed',
 const url = ref('');
 const description = ref('');
 const events = ref(eventNames.map((name) => ({ name, checked: false })));
+const loading = ref(false);
 
 const urlError = ref('');
+const eventsError = ref('');
 
 const isValidUrl = (possibleUrl: string) => {
-  if (possibleUrl === '') {
-    urlError.value = '';
-    return true;
-  }
   const expression = /^https:\/\/[^ ".]+\.[^ "]+$/;
   if (expression.test(possibleUrl)) {
     urlError.value = '';
@@ -38,7 +40,24 @@ const isValidUrl = (possibleUrl: string) => {
   return false;
 };
 
+const areValidEvents = () => {
+  if (events.value.some((event) => event.checked)) {
+    return true;
+  }
+  eventsError.value = 'At least one event is required to be selected';
+  return false;
+};
+
+const createWebhookEndpoint = () => {
+  const urlIsValid = isValidUrl(url.value);
+  const eventsAreValid = areValidEvents();
+  if (urlIsValid && eventsAreValid) {
+    emit('create', {});
+  }
+};
+
 watch(url, () => isValidUrl(url.value));
+watch(events.value, () => { eventsError.value = ''; });
 </script>
 
 <template>
@@ -67,6 +86,28 @@ watch(url, () => isValidUrl(url.value));
         v-model="event.checked"
         :text="event.name"
       />
+      <p
+        v-if="eventsError"
+        class="mt-1 text-sm font-bold text-red-600"
+      >
+        {{ eventsError }}
+      </p>
+    </div>
+    <div class="w-full flex justify-end">
+      <button
+        :disabled="loading"
+        type="button"
+        class="
+          py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white
+          rounded-lg border border-gray-200 hover:bg-gray-100
+          hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700
+          focus:text-blue-700 inline-flex items-center
+        "
+        :class="{ 'opacity-50': loading }"
+        @click="createWebhookEndpoint"
+      >
+        Create Webhook Endpoint
+      </button>
     </div>
   </GenericModal>
 </template>
