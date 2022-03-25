@@ -14,7 +14,7 @@ export default <ApiKeysViewLocale>{
       publicKey: 'Public Key',
       secretKey: 'Secret Key',
       publicKeyInfo: 'The Public Key is used to identify your account inside Fintoc and is needed for integrating the Widget.',
-      secretKeyInfo: 'The Secret Key is used to authenticate any request made to the Fintoc API. ',
+      secretKeyInfo: 'The Secret Key is used to authenticate any request made to the Fintoc API.',
       rotate: 'Rotate',
       delete: 'Delete',
       activateSecretKey: 'Activate Secret Key',

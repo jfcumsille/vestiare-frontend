@@ -17,5 +17,5 @@ export const create = async (
 export const destroy = async (
   params: Record<string, string> = {},
 ): Promise<void> => {
-  await client.delete(`/v1/api_keys/${params.id}`, { params: { current_organization_id: params.current_organization_id } });
+  await client.delete(`/v1/api_keys/${params.id}`, { params });
 };

@@ -16,13 +16,13 @@ export const useAPIKeysStore = defineStore('apiKeys', {
     async createAPIKey(params: Record<string, string> = {}) {
       this.loading = true;
       await api.apiKeys.create(params);
-      await this.loadAPIKeys(params);
+      await this.loadAPIKeys();
       this.loading = false;
     },
     async destroyAPIKey(params: Record<string, string> = {}) {
       this.loading = true;
       await api.apiKeys.destroy(params);
-      await this.loadAPIKeys(params);
+      await this.loadAPIKeys();
       this.loading = false;
     },
   },
