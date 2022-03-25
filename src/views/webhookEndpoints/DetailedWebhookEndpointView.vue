@@ -3,8 +3,8 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import WebhookEndpointsTable from './components/WebhookEndpointsTable.vue';
-import WebhookEndpointsTableHeader from './components/WebhookEndpointsTableHeader.vue';
+import GenericTable from '@/components/GenericTable.vue';
+import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
@@ -20,9 +20,9 @@ const webhookEndpoint = computed(() => (
 
 <template>
   <div class="flex justify-center w-full">
-    <WebhookEndpointsTable class="grow mt-6 mx-4 max-w-screen-xl">
+    <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
       <template #header>
-        <WebhookEndpointsTableHeader :headers="[$t('details'), '']" />
+        <GenericTableHeader :headers="[$t('details'), '']" />
       </template>
 
       <template #content>
@@ -31,6 +31,6 @@ const webhookEndpoint = computed(() => (
           :webhook-endpoint="webhookEndpoint"
         />
       </template>
-    </WebhookEndpointsTable>
+    </GenericTable>
   </div>
 </template>
