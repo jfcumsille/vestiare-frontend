@@ -1,4 +1,5 @@
 import { Nullable } from '@/interfaces/common';
+import { Mode } from '@/interfaces/utilities/enums';
 import { Institution } from './institutions';
 
 export interface Link {
@@ -9,7 +10,7 @@ export interface Link {
   holderName: string
   holderType: string
   institution: Institution
-  mode: 'live' | 'test'
+  mode: Mode
   preventRefresh: boolean
   email: string
   lastTimeRefreshed: Nullable<string>

@@ -1,6 +1,8 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { Mode } from '@/interfaces/utilities/enums';
+import { WebhookEndpointCreationOptions } from '@/interfaces/options/webhookEndpoints';
 
 export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
   state: () => ({
@@ -13,7 +15,14 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
       this.webhookEndpoints = await api.webhookEndpoints.list();
       this.loading = false;
     },
-    async updateWebhook(
+    async createWebhookEndpoint(
+      options: WebhookEndpointCreationOptions,
+      mode: Mode,
+    ) {
+      const webhookEndpoint = await api.webhookEndpoints.create(options, mode);
+      this.webhookEndpoints = [...this.webhookEndpoints, webhookEndpoint];
+    },
+    async updateWebhookEndpoint(
       webhookEndpoint: WebhookEndpoint,
       data: Record<string, boolean>,
     ) {
@@ -46,13 +55,16 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
       );
       return payload.secret;
     },
+    async sendTestWebhook(webhookEndpoint: WebhookEndpoint, event: string) {
+      return api.webhookEndpoints.sendTestWebhook(webhookEndpoint.id, event);
+    },
   },
   getters: {
     liveWebhookEndpoints: (state) => state.webhookEndpoints.filter(
-      (webhookEndpoint) => webhookEndpoint.mode === 'live',
+      (webhookEndpoint) => webhookEndpoint.mode === Mode.Live,
     ),
     testWebhookEndpoints: (state) => state.webhookEndpoints.filter(
-      (webhookEndpoint) => webhookEndpoint.mode === 'test',
+      (webhookEndpoint) => webhookEndpoint.mode === Mode.Test,
     ),
     getById: (state) => (id: string) => state.webhookEndpoints.find(
       (webhookEndpoint) => webhookEndpoint.id === id,

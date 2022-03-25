@@ -13,14 +13,14 @@ const props = defineProps<{
   live: boolean,
 }>();
 
-const $t = useTranslation('views.links.filters');
-
 const emit = defineEmits<{
   (e: 'update:search', value: string): void,
   (e: 'select-active-filter', value: string): void,
   (e: 'select-password-filter', value: string): void,
   (e: 'toggle-live'): void,
 }>();
+
+const $t = useTranslation('views.links.filters');
 
 const onInput = ($event: Event) => {
   emit('update:search', ($event.target as HTMLInputElement).value);
@@ -37,20 +37,18 @@ const onInput = ($event: Event) => {
     <GenericDropDown
       class="ml-4 my-auto"
       translation-namespace="views.links.filters.active"
-      :name="$t('active.label')"
+      :text-prefix="$t('active.label')"
       :selected="props.activeFilter"
       :options="props.activeOptions"
-      show-name
       is-color-primary
       @select="(value: string) => emit('select-active-filter', value)"
     />
     <GenericDropDown
       class="ml-4 my-auto"
       translation-namespace="views.links.filters.password"
-      :name="$t('password.label')"
+      :text-prefix="$t('password.label')"
       :selected="props.passwordFilter"
       :options="props.passwordOptions"
-      show-name
       is-color-primary
       @select="(value: string) => emit('select-password-filter', value)"
     />

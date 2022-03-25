@@ -69,7 +69,7 @@ const logIn = async () => {
             v-model="password"
             type="password"
             :right-text="$tLogIn('forgotPassword')"
-            right-h-ref="/reset"
+            right-href="/reset"
             :label="$tForms('labels.password')"
             :placeholder="$tForms('placeholders.password')"
             class="mb-3"

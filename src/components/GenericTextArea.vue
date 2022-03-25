@@ -53,17 +53,18 @@ const onInput = ($event: Event) => {
         {{ props.rightText }}
       </a>
     </span>
-    <input
-      data-test="input"
+    <textarea
+      data-test="textarea"
+      rows="4"
       :class="`
         block w-full px-3 py-2 border rounded-md text-sm shadow-sm focus:outline-none
-        focus:ring-1 h-12 ${inputColorClasses}
+        focus:ring-1 resize-none ${inputColorClasses}
       `"
       :placeholder="props.placeholder"
       :value="props.modelValue"
       v-bind="$attrs"
       @input="onInput"
-    >
+    />
     <p
       v-if="error"
       class="mt-1 text-sm text-red-600"

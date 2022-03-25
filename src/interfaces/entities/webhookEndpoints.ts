@@ -1,8 +1,10 @@
+import { Mode } from '@/interfaces/utilities/enums';
+
 export interface WebhookEndpoint {
   id: string
   description?: string
   enabledEvents: Array<string>
-  mode: 'live' | 'test'
+  mode: Mode
   secret: string
   status: string
   url: string

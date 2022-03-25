@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { Link } from '@/interfaces/entities/links';
+import { Mode } from '@/interfaces/utilities/enums';
 import { Json } from '@/interfaces/utilities/json';
 
 export const useLinksStore = defineStore('links', {
@@ -43,8 +44,8 @@ export const useLinksStore = defineStore('links', {
     },
   },
   getters: {
-    liveLinks: (state) => state.links.filter((link) => link.mode === 'live'),
-    testLinks: (state) => state.links.filter((link) => link.mode === 'test'),
+    liveLinks: (state) => state.links.filter((link) => link.mode === Mode.Live),
+    testLinks: (state) => state.links.filter((link) => link.mode === Mode.Test),
   },
 });
 

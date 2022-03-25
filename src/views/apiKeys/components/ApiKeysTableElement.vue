@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
+import { Mode } from '@/interfaces/utilities/enums';
 import ThreeDots from '@/components/images/ThreeDots.vue';
 import InfoIcon from '@/components/images/InfoIcon.vue';
 import CopyIcon from '@/components/images/CopyIcon.vue';
@@ -33,7 +34,7 @@ const copyKey = () => {
 };
 
 const activationRequired = computed(() => (props.apiKey.id === 'liveSecretKeyToActivate'));
-const isLiveSecretKey = computed(() => (!props.apiKey.isPublic && props.apiKey.mode === 'live'));
+const isLiveSecretKey = computed(() => (!props.apiKey.isPublic && props.apiKey.mode === Mode.Live));
 
 const showConfigKeysModal = ref(false);
 const showConfigKeys = () => {

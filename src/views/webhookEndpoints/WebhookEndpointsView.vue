@@ -2,10 +2,12 @@
 import { computed, ref } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import GenericToggle from '@/components/GenericToggle.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
+import WebhookEndpointFilters from './components/WebhookEndpointFilters.vue';
+import WebhookEndpointCreationButton from './components/WebhookEndpointCreationButton.vue';
+import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
@@ -25,6 +27,11 @@ const tableHeaders = [
   '',
 ];
 
+const modalOpened = ref(false);
+const setModalOpened = (value: boolean) => {
+  modalOpened.value = value;
+};
+
 const webhookEndpoints = computed(
   () => (
     live.value
@@ -35,26 +42,22 @@ const webhookEndpoints = computed(
 </script>
 
 <template>
+  <WebhookEndpointCreationModal
+    v-if="modalOpened"
+    :live="live"
+    @close="() => setModalOpened(false)"
+  />
   <div class="flex justify-center w-full">
-    <div class="grow flex justify-end mt-6 mx-4 max-w-screen-xl">
-      <div class="flex">
-        <p
-          class="pr-4 text-gray-900 text-md font-medium"
-          :class="{ 'opacity-25': live }"
-        >
-          Test Webhook Endpoints
-        </p>
-        <GenericToggle
-          :active="live"
-          @toggle="toggleLive"
-        />
-        <p
-          class="pl-4 text-gray-900 text-md font-medium"
-          :class="{ 'opacity-25': !live }"
-        >
-          Live Webhook Endpoints
-        </p>
-      </div>
+    <div class="grow flex justify-between mt-6 mx-4 max-w-screen-xl">
+      <WebhookEndpointFilters
+        :live="live"
+        @toggle-live="toggleLive"
+      />
+      <WebhookEndpointCreationButton
+        :live="live"
+        :modal-opened="modalOpened"
+        @open-modal="() => setModalOpened(true)"
+      />
     </div>
   </div>
   <div class="flex justify-center w-full">
