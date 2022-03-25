@@ -13,14 +13,14 @@ const props = defineProps<{
   live: boolean,
 }>();
 
-const $t = useTranslation('views.links.filters');
-
 const emit = defineEmits<{
   (e: 'update:search', value: string): void,
   (e: 'select-active-filter', value: string): void,
   (e: 'select-password-filter', value: string): void,
   (e: 'toggle-live'): void,
 }>();
+
+const $t = useTranslation('views.links.filters');
 
 const onInput = ($event: Event) => {
   emit('update:search', ($event.target as HTMLInputElement).value);
