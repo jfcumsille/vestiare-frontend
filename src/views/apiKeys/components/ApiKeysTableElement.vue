@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useTranslation } from '@/locales';
+import { onClickOutside } from '@vueuse/core';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import ThreeDots from '@/components/images/ThreeDots.vue';
 import InfoIcon from '@/components/images/InfoIcon.vue';
@@ -9,7 +10,7 @@ import EyeIcon from '@/components/images/EyeIcon.vue';
 
 const props = defineProps<{ apiKey: APIKey }>();
 const emit = defineEmits<{
-  (e: 'destroy-api-key', key: APIKey): void,
+  (e: 'destroy-api-key'): void,
   (e: 'activate-secret-key'): void,
 }>();
 
@@ -31,15 +32,20 @@ const copyKey = () => {
   navigator.clipboard.writeText(props.apiKey.token);
 };
 
-const isActivateLiveSecretKey = computed(() => (props.apiKey.id === 'liveSecretKeyToActivate'));
+const activationRequired = computed(() => (props.apiKey.id === 'liveSecretKeyToActivate'));
 const isLiveSecretKey = computed(() => (!props.apiKey.isPublic && props.apiKey.mode === 'live'));
+
 const showConfigKeysModal = ref(false);
-const handleConfigKeys = () => {
-  showConfigKeysModal.value = !showConfigKeysModal.value;
+const showConfigKeys = () => {
+  showConfigKeysModal.value = true;
 };
+const configKeysModal = ref(null);
+onClickOutside(configKeysModal, () => {
+  showConfigKeysModal.value = false;
+});
 
 const handleDeleteKey = () => {
-  emit('destroy-api-key', props.apiKey);
+  emit('destroy-api-key');
   showConfigKeysModal.value = false;
 };
 const handleActivateKey = () => {
@@ -48,15 +54,14 @@ const handleActivateKey = () => {
 
 const hoverInfoIcon = ref(false);
 const hoverInfoText = ref(false);
-const keyInfo = computed(() => {
-  if (props.apiKey.isPublic) {
-    return $t('publicKeyInfo');
-  }
-  return $t('secretKeyInfo');
-});
+const keyInfo = computed(() => (props.apiKey.isPublic ? $t('publicKeyInfo') : $t('secretKeyInfo')));
 const handleEndHoverText = () => {
   hoverInfoText.value = false;
   hoverInfoIcon.value = false;
+};
+
+const handleStartHoverIcon = () => {
+  hoverInfoIcon.value = true;
 };
 
 const handleEndHoverIcon = () => {
@@ -75,7 +80,7 @@ const handleEndHoverIcon = () => {
       <div class="flex flex-row items-center">
         {{ name }}
         <div
-          @mouseover="hoverInfoIcon = true"
+          @mouseover="handleStartHoverIcon"
           @mouseleave="handleEndHoverIcon"
         >
           <InfoIcon class="h-10 ml-2" />
@@ -94,8 +99,16 @@ const handleEndHoverIcon = () => {
       </div>
     </td>
     <td class="font-normal m-2">
+      <button
+        v-if="activationRequired"
+        class="bg-primary-main hover:bg-primary-main-hover w-full px-5 py-3 rounded-md text-white"
+        @click="handleActivateKey"
+      >
+        {{ $t('activateSecretKey') }}
+      </button>
       <div
-        v-if="!isActivateLiveSecretKey"
+        v-else
+        data-test="api-key-token"
         class="
           flex flex-row items-center bg-primary-surface
           px-5 py-4 rounded-md w-min-fit"
@@ -107,16 +120,20 @@ const handleEndHoverIcon = () => {
           {{ props.apiKey.token }}
         </div>
         <div
-          v-if="!showKey"
+          v-else
           class="text-md font-bold w-64"
         >
           ••••••••••••••••••••••••••••••••••
         </div>
-        <EyeIcon
+        <button
+          data-test="eye-toggle"
           class="cursor-pointer ml-2 w-6 h-6 hover:opacity-75"
-          :crossed-out="showKey"
           @click="toggleKey"
-        />
+        >
+          <EyeIcon
+            :crossed-out="showKey"
+          />
+        </button>
         <button
           class="ml-2 hover:opacity-75"
           @click="copyKey"
@@ -124,28 +141,19 @@ const handleEndHoverIcon = () => {
           <CopyIcon class="w-5 h-5" />
         </button>
       </div>
-      <button
-        v-if="isActivateLiveSecretKey"
-        class="bg-primary-main hover:bg-primary-main-hover w-full px-5 py-3 rounded-md text-white"
-        @click="handleActivateKey"
-      >
-        {{ $t('activateSecretKey') }}
-      </button>
     </td>
-    <td
-      v-if="!isActivateLiveSecretKey && isLiveSecretKey"
-      class="pl-3"
-      @click="handleConfigKeys"
-    >
-      <button>
-        <ThreeDots />
-      </button>
+    <td v-if="isLiveSecretKey && !activationRequired">
+      <ThreeDots
+        class="cursor-pointer px-2 w-9 h-6"
+        @click="showConfigKeys"
+      />
     </td>
   </tr>
   <div
     v-if="showConfigKeysModal"
+    ref="configKeysModal"
     class="
-      absolute right-0 -mt-6 -mr-16 px-4 py-3
+      absolute right-0 -mt-10 -mr-20 px-4 py-3
       bg-white rounded-md border border-bg-gray-200 drop-shadow-md
     "
   >
