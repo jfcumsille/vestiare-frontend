@@ -1,9 +1,9 @@
 import * as apiKeys from './modules/apiKeys';
-import * as authentication from './modules/authentication';
 import * as links from './modules/links';
-import * as user from './modules/user';
+import * as sessions from './modules/sessions';
+import * as users from './modules/users';
 import * as webhookEndpoints from './modules/webhookEndpoints';
 
 export {
-  apiKeys, authentication, links, user, webhookEndpoints,
+  apiKeys, links, sessions, users, webhookEndpoints,
 };
