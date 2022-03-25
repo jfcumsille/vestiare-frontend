@@ -32,10 +32,7 @@ const createAPIKey = async () => {
 };
 
 const destroyAPIKey = async (key: APIKey) => {
-  const params = {
-    id: key.id,
-  };
-  await apiKeysStore.destroyAPIKey(params);
+  await apiKeysStore.destroyAPIKey(key.id);
 };
 
 const activationRequired = computed(() => (isLiveMode.value && !secretKey.value));

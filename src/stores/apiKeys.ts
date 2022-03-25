@@ -19,9 +19,9 @@ export const useAPIKeysStore = defineStore('apiKeys', {
       await this.loadAPIKeys();
       this.loading = false;
     },
-    async destroyAPIKey(params: Record<string, string> = {}) {
+    async destroyAPIKey(keyId: string) {
       this.loading = true;
-      await api.apiKeys.destroy(params.id);
+      await api.apiKeys.destroy(keyId);
       await this.loadAPIKeys();
       this.loading = false;
     },
