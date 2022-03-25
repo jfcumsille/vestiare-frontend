@@ -24,18 +24,18 @@ export const useUserStore = defineStore('user', {
     },
     async loadUser() {
       if (this.authenticated) {
-        const userData = await api.user.get(this.auth.id);
+        const userData = await api.users.get(this.auth.id);
         this.updateUserData(userData);
       }
     },
     async logIn({ email, password, token }: LogInOptions) {
-      const userData = await api.authentication.logIn({ email, password, token });
+      const userData = await api.sessions.create({ email, password, token });
       this.updateUserData(userData);
     },
     async signUp({
       email, password, token, name, lastName, company, country,
     }: SignUpOptions) {
-      const userData = await api.authentication.signUp({
+      const userData = await api.users.create({
         email, password, token, name, lastName, company, country,
       });
       this.updateUserData(userData);
@@ -46,10 +46,10 @@ export const useUserStore = defineStore('user', {
       this.auth.email = '';
     },
     async sendConfirmationEmail(email: string) {
-      await api.authentication.sendConfirmationEmail(email);
+      await api.users.sendConfirmationEmail(email);
     },
     async sendResetPasswordEmail(email: string) {
-      await api.authentication.sendResetPasswordEmail(email);
+      await api.users.sendResetPasswordEmail(email);
     },
   },
   getters: {
