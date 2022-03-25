@@ -1,21 +1,17 @@
 import client from '@/api/client';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 
-export const list = async (
-  params: Record<string, string> = {},
-): Promise<Array<APIKey>> => {
-  const response = await client.get('/v1/api_keys', { params });
+export const list = async (): Promise<Array<APIKey>> => {
+  const response = await client.get('/v1/api_keys');
   return response.data;
 };
 
-export const create = async (
-  params: Record<string, string> = {},
-): Promise<void> => {
-  await client.post('/v1/api_keys', { params });
+export const create = async (): Promise<void> => {
+  await client.post('/v1/api_keys');
 };
 
 export const destroy = async (
-  params: Record<string, string> = {},
+  keyId: string,
 ): Promise<void> => {
-  await client.delete(`/v1/api_keys/${params.id}`, { params });
+  await client.delete(`/v1/api_keys/${keyId}`);
 };

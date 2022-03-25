@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useTranslation } from '@/locales';
 import { onClickOutside } from '@vueuse/core';
+import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import ThreeDots from '@/components/images/ThreeDots.vue';
 import InfoIcon from '@/components/images/InfoIcon.vue';

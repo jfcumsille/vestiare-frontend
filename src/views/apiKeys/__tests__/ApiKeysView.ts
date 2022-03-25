@@ -8,10 +8,6 @@ import { setupLocales } from '@/locales';
 import ApiKeysTableElement from '@/views/apiKeys/components/ApiKeysTableElement.vue';
 import ApiKeysView from '../ApiKeysView.vue';
 
-const getWrapper = () => {
-  const wrapper = mount(ApiKeysView);
-  return wrapper;
-};
 describe('NavBar', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
@@ -51,7 +47,7 @@ describe('NavBar', () => {
       ];
     });
     it('should show live keys when mode is live', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       expect(modeToggle.exists()).toBe(true);
 
@@ -68,7 +64,7 @@ describe('NavBar', () => {
     });
 
     it('should show test keys when mode is test', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       expect(modeToggle.exists()).toBe(true);
       await modeToggle.trigger('click');
@@ -86,7 +82,7 @@ describe('NavBar', () => {
     });
 
     it('should change opacity for test when mode toggle is pressed', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       const testText = wrapper.find('[data-test="mode-test"]');
       const liveText = wrapper.find('[data-test="mode-live"]');
@@ -104,7 +100,7 @@ describe('NavBar', () => {
     });
 
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
       expect(apiKeyTableElement.exists()).toBe(true);
 
@@ -120,7 +116,7 @@ describe('NavBar', () => {
     });
 
     it('should not show Activate Secret Key', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
       expect(apiKeyTableElement.text()).not.toContain('Activate Secret Key');
     });
@@ -153,7 +149,7 @@ describe('NavBar', () => {
       ];
     });
     it('should show live keys when mode is live', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       expect(modeToggle.exists()).toBe(true);
 
@@ -170,7 +166,7 @@ describe('NavBar', () => {
     });
 
     it('should show test keys when mode is test', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       expect(modeToggle.exists()).toBe(true);
       await modeToggle.trigger('click');
@@ -188,7 +184,7 @@ describe('NavBar', () => {
     });
 
     it('should change opacity for test when mode toggle is pressed', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       const testText = wrapper.find('[data-test="mode-test"]');
       const liveText = wrapper.find('[data-test="mode-live"]');
@@ -206,13 +202,13 @@ describe('NavBar', () => {
     });
 
     it('should show Activate Secret Key', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
       expect(apiKeyTableElement.text()).toContain('Activate Secret Key');
     });
 
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
-      const wrapper = getWrapper();
+      const wrapper = mount(ApiKeysView);
       const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
       expect(apiKeyTableElement.text()).toContain('Activate Secret Key');
 
