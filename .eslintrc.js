@@ -48,6 +48,8 @@ module.exports = {
     'no-spaced-func': 'off',
     'func-call-spacing': 'off',
     '@typescript-eslint/func-call-spacing': ['error'],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
     'vue/require-default-prop': 'off',
   },
 };

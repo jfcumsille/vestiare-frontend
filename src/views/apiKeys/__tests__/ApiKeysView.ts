@@ -1,12 +1,13 @@
+import { mount } from '@vue/test-utils';
+import { setActivePinia, createPinia } from 'pinia';
 import {
   describe, it, expect, beforeEach,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
-import { mount } from '@vue/test-utils';
-import { useAPIKeysStore } from '@/stores/apiKeys';
 import { setupLocales } from '@/locales';
+import { useAPIKeysStore } from '@/stores/apiKeys';
+import { Mode } from '@/interfaces/utilities/enums';
 import ApiKeysTableElement from '@/views/apiKeys/components/ApiKeysTableElement.vue';
-import ApiKeysView from '../ApiKeysView.vue';
+import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
 
 describe('NavBar', () => {
   beforeEach(() => {
@@ -24,25 +25,25 @@ describe('NavBar', () => {
           id: '1',
           token: 'pk_live_XXX',
           isPublic: true,
-          mode: 'live',
+          mode: Mode.Live,
         },
         {
           id: '2',
           token: 'sk_live_XXX',
           isPublic: false,
-          mode: 'live',
+          mode: Mode.Live,
         },
         {
           id: '3',
           token: 'pk_test_XXX',
           isPublic: true,
-          mode: 'test',
+          mode: Mode.Test,
         },
         {
           id: '4',
           token: 'sk_test_XXX',
           isPublic: false,
-          mode: 'test',
+          mode: Mode.Test,
         },
       ];
     });
@@ -132,19 +133,19 @@ describe('NavBar', () => {
           id: '1',
           token: 'pk_live_XXX',
           isPublic: true,
-          mode: 'live',
+          mode: Mode.Live,
         },
         {
           id: '3',
           token: 'pk_test_XXX',
           isPublic: true,
-          mode: 'test',
+          mode: Mode.Test,
         },
         {
           id: '4',
           token: 'sk_test_XXX',
           isPublic: false,
-          mode: 'test',
+          mode: Mode.Test,
         },
       ];
     });

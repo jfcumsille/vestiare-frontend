@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-// import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 
 const props = defineProps<{
   modalOpened: boolean,
@@ -11,8 +10,6 @@ const emit = defineEmits<{
   (e: 'open-modal'): void,
   (e: 'create'): void,
 }>();
-
-// const $webhookEndpointsStore = useWebhookEndpointsStore();
 
 const disabledButton = computed(() => props.modalOpened);
 </script>

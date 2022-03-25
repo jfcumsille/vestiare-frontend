@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { Mode } from '@/interfaces/utilities/enums';
 import { WebhookEndpointCreationOptions } from '@/interfaces/options/webhookEndpoints';
 
 export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
@@ -16,7 +17,7 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
     },
     async createWebhookEndpoint(
       options: WebhookEndpointCreationOptions,
-      mode: 'live' | 'test',
+      mode: Mode,
     ) {
       const webhookEndpoint = await api.webhookEndpoints.create(options, mode);
       this.webhookEndpoints = [...this.webhookEndpoints, webhookEndpoint];
@@ -60,10 +61,10 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
   },
   getters: {
     liveWebhookEndpoints: (state) => state.webhookEndpoints.filter(
-      (webhookEndpoint) => webhookEndpoint.mode === 'live',
+      (webhookEndpoint) => webhookEndpoint.mode === Mode.Live,
     ),
     testWebhookEndpoints: (state) => state.webhookEndpoints.filter(
-      (webhookEndpoint) => webhookEndpoint.mode === 'test',
+      (webhookEndpoint) => webhookEndpoint.mode === Mode.Test,
     ),
     getById: (state) => (id: string) => state.webhookEndpoints.find(
       (webhookEndpoint) => webhookEndpoint.id === id,

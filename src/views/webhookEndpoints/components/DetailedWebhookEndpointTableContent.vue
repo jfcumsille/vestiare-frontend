@@ -4,6 +4,7 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Nullable } from '@/interfaces/common';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { Mode } from '@/interfaces/utilities/enums';
 import GenericBadge from '@/components/GenericBadge.vue';
 
 const $t = useTranslation('views.webhookEndpoints.table');
@@ -49,7 +50,7 @@ const revealWebhookEndpointSecret = async () => {
       <GenericBadge
         :text="props.webhookEndpoint.mode"
         class="capitalize"
-        :color="props.webhookEndpoint.mode === 'live' ? 'green' : 'yellow'"
+        :color="props.webhookEndpoint.mode === Mode.Live ? 'green' : 'yellow'"
       />
     </td>
   </tr>

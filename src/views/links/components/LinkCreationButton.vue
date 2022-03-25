@@ -5,6 +5,7 @@ import { useTranslation } from '@/locales';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
+import { Mode } from '@/interfaces/utilities/enums';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 
@@ -25,7 +26,7 @@ const $t = useTranslation('views.links.creation');
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 
-const apiKey = computed(() => $apiKeysStore.searchKey(true, props.live ? 'live' : 'test'));
+const apiKey = computed(() => $apiKeysStore.searchKey(true, props.live ? Mode.Live : Mode.Test));
 const buttonText = computed(() => {
   const productTransformation = props.product === 'movements' ? 'Banking' : 'Fiscal';
   return `${$t('createAction')} ${$t(`${props.holderType}${productTransformation}Link`)}!`;

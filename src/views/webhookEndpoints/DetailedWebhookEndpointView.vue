@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import { Mode } from '@/interfaces/utilities/enums';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
@@ -20,11 +21,13 @@ const webhookEndpoint = computed(() => (
   $webhookEndpointsStore.getById(route.params.webhookEndpointId as string)
 ));
 
-const showTestButton = computed(() => webhookEndpoint.value?.mode === 'test');
+const showTestButton = computed(() => (
+  webhookEndpoint.value && webhookEndpoint.value.mode === Mode.Test
+));
 const showWebhookModal = computed(() => (
   testWebhookModalOpened.value
     && webhookEndpoint.value
-    && webhookEndpoint.value.mode === 'test'
+    && webhookEndpoint.value.mode === Mode.Test
 ));
 
 const toggleWebhookModal = () => {
@@ -53,7 +56,7 @@ const toggleWebhookModal = () => {
     </GenericTable>
   </div>
   <div
-    v-if="webhookEndpoint && showTestButton"
+    v-if="showTestButton"
     class="flex justify-center w-full"
   >
     <div class="grow mt-6 mx-4 max-w-screen-xl">

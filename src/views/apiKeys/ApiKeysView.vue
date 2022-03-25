@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import { useTranslation } from '@/locales';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { APIKey } from '@/interfaces/entities/apiKeys';
+import { Mode } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericTable from '@/components/GenericTable.vue';
@@ -19,7 +20,7 @@ const headers = [
 ];
 
 const isLiveMode = ref(true);
-const mode = computed(() => (isLiveMode.value ? 'live' : 'test'));
+const mode = computed(() => (isLiveMode.value ? Mode.Live : Mode.Test));
 const publicKey = computed(() => apiKeysStore.searchKey(true, mode.value));
 const secretKey = computed(() => apiKeysStore.searchKey(false, mode.value));
 
@@ -40,7 +41,7 @@ const secretKeyToActivate: APIKey = {
   id: 'liveSecretKeyToActivate',
   token: 'token',
   isPublic: false,
-  mode: 'live',
+  mode: Mode.Live,
 };
 </script>
 
