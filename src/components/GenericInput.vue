@@ -6,12 +6,12 @@ const props = defineProps<{
   label?: string,
   placeholder?: string,
   rightText?: string,
-  rightHRef?: string,
+  rightHref?: string,
 }>();
 
-const hasRightLink = computed(() => props.rightText && props.rightHRef);
-
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+
+const hasRightLink = computed(() => props.rightText && props.rightHref);
 
 const onInput = ($event: Event) => {
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
@@ -28,7 +28,7 @@ const onInput = ($event: Event) => {
       {{ props.label }}
       <a
         v-if="hasRightLink"
-        :href="props.rightHRef"
+        :href="props.rightHref"
         class="font-medium text-primary-main text-sm"
       >
         {{ props.rightText }}

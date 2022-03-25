@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 const props = defineProps<{
   modelValue: string,
   label?: string,
   placeholder?: string,
+  rightText?: string,
+  rightHref?: string,
 }>();
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+
+const hasRightLink = computed(() => props.rightText && props.rightHref);
 
 const onInput = ($event: Event) => {
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
@@ -17,9 +23,16 @@ const onInput = ($event: Event) => {
     <span
       v-if="props.label"
       data-test="label"
-      class="font-medium text-sec-cap-txt-color"
+      class="flex flex-row justify-between mb-1 text-sm font-medium text-sec-cap-txt-color"
     >
       {{ props.label }}
+      <a
+        v-if="hasRightLink"
+        :href="props.rightHref"
+        class="font-medium text-primary-main text-sm"
+      >
+        {{ props.rightText }}
+      </a>
     </span>
     <textarea
       data-test="textarea"
