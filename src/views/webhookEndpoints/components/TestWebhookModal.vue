@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { decamelizeKeys } from 'humps';
-import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -11,6 +12,7 @@ const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
 const emit = defineEmits<{ (e: 'close'): void }>();
 
+const $t = useTranslation('views.webhookEndpoints.testWebhook');
 const webhookEndpointsStore = useWebhookEndpointsStore();
 
 const selectedEvent = ref<string>(props.webhookEndpoint.enabledEvents[0]);
@@ -46,12 +48,11 @@ const close = () => {
 
 <template>
   <GenericModal
-    title="Send Test Webhook"
+    :title="$t('modalTitle')"
     @close="close"
   >
     <div
       v-if="!requestSent"
-      class="flex space-y-6"
     >
       <GenericDropDown
         class="inline-block"
@@ -61,12 +62,12 @@ const close = () => {
       />
       <button
         class="
-            mt-1 ml-2 px-4 rounded-md cursor-pointer
+            mt-1 ml-2 h-12 px-4 rounded-md cursor-pointer
             text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
           "
         @click="sendTestWebhook"
       >
-        Send Test Webhook
+        {{ $t('buttonText') }}
       </button>
     </div>
     <div v-else>

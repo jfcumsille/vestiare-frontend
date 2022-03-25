@@ -67,7 +67,7 @@ const toggleWebhookModal = () => {
           "
         @click="toggleWebhookModal"
       >
-        Send Test Webhook
+        {{ $t('testWebhook.buttonText') }}
       </button>
     </div>
   </div>

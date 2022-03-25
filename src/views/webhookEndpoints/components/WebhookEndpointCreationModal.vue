@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import GenericModal from '@/components/GenericModal.vue';
@@ -23,6 +24,7 @@ const eventNames = [
   'account.refresh_intent.rejected',
 ];
 
+const $t = useTranslation('views.webhookEndpoints.creation');
 const webhookEndpointsStore = useWebhookEndpointsStore();
 
 const url = ref('');
@@ -39,7 +41,7 @@ const isValidUrl = (possibleUrl: string) => {
     urlError.value = '';
     return true;
   }
-  urlError.value = 'Invalid URL';
+  urlError.value = $t('validations.url.invalidUrl');
   return false;
 };
 
@@ -47,7 +49,7 @@ const areValidEvents = () => {
   if (events.value.some((event) => event.checked)) {
     return true;
   }
-  eventsError.value = 'At least one event is required to be selected';
+  eventsError.value = $t('validations.events.requireEvent');
   return false;
 };
 
@@ -75,23 +77,23 @@ watch(events.value, () => { eventsError.value = ''; });
 
 <template>
   <GenericModal
-    title="Create Webhook Endpoint"
+    :title="$t('modalTitle')"
     @close="emit('close')"
   >
     <div class="space-y-3">
       <GenericInput
         v-model="url"
-        label="Webhook URL"
-        placeholder="https://your.backend/webhook"
+        :label="$t('form.url.label')"
+        :placeholder="$t('form.url.placeholder')"
         :error="urlError"
       />
       <GenericTextArea
         v-model="description"
-        label="Description"
-        placeholder="Optional description..."
+        :label="$t('form.description.label')"
+        :placeholder="$t('form.description.placeholder')"
       />
       <p class="text-xl">
-        Events
+        {{ $t('events') }}
       </p>
       <GenericCheckbox
         v-for="event in events"
@@ -119,7 +121,7 @@ watch(events.value, () => { eventsError.value = ''; });
         :class="{ 'opacity-50': loading }"
         @click="createWebhookEndpoint"
       >
-        Create Webhook Endpoint
+        {{ $t('buttonText') }}
       </button>
     </div>
   </GenericModal>

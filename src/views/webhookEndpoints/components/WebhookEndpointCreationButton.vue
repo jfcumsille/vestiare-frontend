@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useTranslation } from '@/locales';
 
 const props = defineProps<{
   modalOpened: boolean,
@@ -10,6 +11,8 @@ const emit = defineEmits<{
   (e: 'open-modal'): void,
   (e: 'create'): void,
 }>();
+
+const $t = useTranslation('views.webhookEndpoints.creation');
 
 const disabledButton = computed(() => props.modalOpened);
 </script>
@@ -27,6 +30,6 @@ const disabledButton = computed(() => props.modalOpened);
     :class="{ 'opacity-50': disabledButton }"
     @click="emit('open-modal')"
   >
-    Create Webhook Endpoint
+    {{ $t('buttonText') }}
   </button>
 </template>
