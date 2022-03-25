@@ -5,8 +5,8 @@ import { useAPIKeysStore } from '@/stores/apiKeys';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
-import LinksTable from '../links/components/LinksTable.vue';
-import LinksTableHeader from '../links/components/LinksTableHeader.vue';
+import GenericTable from '@/components/GenericTable.vue';
+import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import ApiKeysTableElement from './components/ApiKeysTableElement.vue';
 
 const $t = useTranslation('views.apiKeys');
@@ -32,19 +32,19 @@ const createAPIKey = async () => {
 };
 
 const destroyAPIKey = async (key: APIKey) => {
-  const params: Record<string, string> = {
+  const params = {
     id: key.id,
   };
   await apiKeysStore.destroyAPIKey(params);
 };
 
+const activationRequired = computed(() => (isLiveMode.value && !secretKey.value));
 const secretKeyToActivate: APIKey = {
   id: 'liveSecretKeyToActivate',
   token: 'token',
   isPublic: false,
   mode: 'live',
 };
-
 </script>
 
 <template>
@@ -73,16 +73,19 @@ const secretKeyToActivate: APIKey = {
           <div>
             <div class="flex py-2 px-3 text-sm font-medium">
               <p
+                data-test="mode-test"
                 class="pr-4 text-gray-900"
                 :class="{ 'opacity-25 font-normal': isLiveMode }"
               >
                 Test
               </p>
               <GenericToggle
+                data-test="mode-toggle"
                 :active="isLiveMode"
                 @toggle="toggle"
               />
               <p
+                data-test="mode-live"
                 class="pl-4 text-gray-900"
                 :class="{ 'opacity-25 font-normal': !isLiveMode }"
               >
@@ -92,11 +95,11 @@ const secretKeyToActivate: APIKey = {
           </div>
         </div>
         <div class="flex justify-center w-full">
-          <LinksTable
+          <GenericTable
             class="grow max-w-screen-xl"
           >
             <template #header>
-              <LinksTableHeader :headers="headers" />
+              <GenericTableHeader :headers="headers" />
             </template>
             <template #content>
               <ApiKeysTableElement
@@ -108,16 +111,16 @@ const secretKeyToActivate: APIKey = {
                 v-if="secretKey"
                 :key="secretKey.id"
                 :api-key="secretKey"
-                @destroy-api-key="destroyAPIKey"
+                @destroy-api-key="() => destroyAPIKey(secretKey)"
               />
               <ApiKeysTableElement
-                v-if="!secretKey"
+                v-if="activationRequired"
                 :key="secretKeyToActivate.id"
                 :api-key="secretKeyToActivate"
                 @activate-secret-key="createAPIKey"
               />
             </template>
-          </LinksTable>
+          </GenericTable>
         </div>
       </div>
     </div>
