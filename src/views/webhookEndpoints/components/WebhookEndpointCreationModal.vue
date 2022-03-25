@@ -7,19 +7,25 @@ import GenericTextArea from '@/components/GenericTextArea.vue';
 const emit = defineEmits<{ (e: 'close'): void }>();
 
 const url = ref('');
-const urlError = ref('');
 const description = ref('');
 
-const validateUrl = () => {
-  if (url.value === '') {
+const urlError = ref('');
+
+const isValidUrl = (possibleUrl: string) => {
+  if (possibleUrl === '') {
     urlError.value = '';
-  } else {
-    const expression = /^https:\/\/[^ ".]+\.[^ "]+$/;
-    urlError.value = expression.test(url.value) ? '' : 'Invalid URL';
+    return true;
   }
+  const expression = /^https:\/\/[^ ".]+\.[^ "]+$/;
+  if (expression.test(possibleUrl)) {
+    urlError.value = '';
+    return true;
+  }
+  urlError.value = 'Invalid URL';
+  return false;
 };
 
-watch(url, validateUrl);
+watch(url, () => isValidUrl(url.value));
 </script>
 
 <template>
