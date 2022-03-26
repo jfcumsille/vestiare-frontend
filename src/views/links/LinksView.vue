@@ -16,9 +16,9 @@ import LinkCreation from './components/LinkCreation.vue';
 const $t = useTranslation('views.links');
 
 const headers = [
+  $t('table.headers.institution'),
   $t('table.headers.user'),
   $t('table.headers.business'),
-  $t('table.headers.institution'),
   $t('table.headers.lastRefreshed'),
   $t('table.headers.active'),
   '',
