@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/GenericInput.vue';
-import Circle from '@/components/images/CircleBackground.vue';
+import Circle from '@/assets/svg/CircleBackground.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
 const router = useRouter();

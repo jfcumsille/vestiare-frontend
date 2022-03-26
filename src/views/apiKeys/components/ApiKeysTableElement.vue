@@ -4,10 +4,10 @@ import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
-import ThreeDots from '@/components/images/ThreeDots.vue';
-import InfoIcon from '@/components/images/InfoIcon.vue';
-import CopyIcon from '@/components/images/CopyIcon.vue';
-import EyeIcon from '@/components/images/EyeIcon.vue';
+import ThreeDots from '@/assets/svg/ThreeDots.vue';
+import InfoIcon from '@/assets/svg/InfoIcon.vue';
+import CopyIcon from '@/assets/svg/CopyIcon.vue';
+import EyeIcon from '@/assets/svg/EyeIcon.vue';
 
 const props = defineProps<{ apiKey: APIKey }>();
 const emit = defineEmits<{

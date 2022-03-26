@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import GenericInput from '@/components/GenericInput.vue';
-import Circle from '@/components/images/CircleBackground.vue';
+import Circle from '@/assets/svg/CircleBackground.vue';
 
 const userStore = useUserStore();
 const router = useRouter();

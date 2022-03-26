@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import ChevronDown from './images/ChevronDown.vue';
+import ChevronDown from '@/assets/svg/ChevronDown.vue';
 
 const props = withDefaults(defineProps<{
   selected: string,
@@ -51,7 +51,7 @@ onClickOutside(dropDown, () => {
       `"
       @click="toggle"
     >
-      <p>
+      <p class="min-w-fit">
         <span
           v-if="textPrefix"
           data-test="dropDownTextPrefix"
