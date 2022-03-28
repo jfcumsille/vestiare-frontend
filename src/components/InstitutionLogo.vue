@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, DefineComponent } from 'vue';
+import { computed, ComponentPublicInstance } from 'vue';
 import SatIcon from '@/assets/svg/institutions/fiscal/SatIcon.vue';
 import SiiIcon from '@/assets/svg/institutions/fiscal/SiiIcon.vue';
 import AztecaIcon from '@/assets/svg/institutions/banks/AztecaIcon.vue';
@@ -46,13 +46,13 @@ const institutionIcons = {
   mx_banco_santander: SantanderIcon,
   mx_banco_hsbc: HsbcIcon,
   mx_banco_banorte: BanorteIcon,
-} as Record<string, DefineComponent>;
+} as Record<string, ComponentPublicInstance>;
 
-const currentComponent = computed(() => {
+const currentComponent = computed((): ComponentPublicInstance => {
   if (props.institutionId in institutionIcons) {
     return institutionIcons[props.institutionId];
   }
-  return DefaultBankIcon as DefineComponent;
+  return DefaultBankIcon;
 });
 </script>
 
