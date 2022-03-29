@@ -12,10 +12,10 @@ import {
   FINTOC_HOME,
 } from '@/constants/texts';
 
-import FintocLogo from '@/components/images/FintocLogo.vue';
-import MenuIcon from '@/components/images/MenuIcon.vue';
-import ChileIcon from '@/components/images/ChileIcon.vue';
-import MexicoIcon from '@/components/images/MexicoIcon.vue';
+import FintocLogo from '@/assets/svg/FintocLogo.vue';
+import MenuIcon from '@/assets/svg/MenuIcon.vue';
+import ChileIcon from '@/assets/svg/ChileIcon.vue';
+import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
 
 const userStore = useUserStore();
 const route = useRoute();
