@@ -20,20 +20,25 @@ export default <LinksViewLocale>{
       },
     },
   },
-  creation: {
-    createAction: 'Create',
-    individualBankingLink: 'individual banking Link',
-    businessBankingLink: 'business banking Link',
-    individualFiscalLink: 'individual fiscal Link',
-    businessFiscalLink: 'business fiscal Link',
-    modal: {
-      title: 'Link created succesfully!',
-      contentHTML: `
-        This Link Token will <span class="font-bold">only be showed once</span>,
-        so <span class="font-bold">make sure to copy and save it</span>.
-        Your Link Token is:
-      `,
-    },
+  createLinkModal: {
+    create: 'Create',
+    subtitleTest: 'Create a Link with test credentials to get information about bank or fiscal accounts from the sandbox.',
+    learnMoreTest: 'Learn more about test credentials you can use →',
+    subtitleLive: 'Create a Link with real credentials to get information about any bank or fiscal accounts.',
+    learnMoreLive: 'Learn more about Links →',
+    country: 'Country',
+    chooseCountry: 'Choose country…',
+    api: 'API',
+    chooseApi: 'Choose API…',
+    holderType: 'Account type',
+    chooseHolderType: 'Choose account type…',
+  },
+  newLinkModal: {
+    title: 'Link created succesfully!',
+    warning: 'This Link Token will only be showed once, so make sure to copy and save it.',
+    subtitle: 'You can use this Link Token to make requests to the Fintoc API.',
+    learnMore: 'Learn more about the requests you can make →',
+    loading: 'loading Link Token...',
   },
   table: {
     headers: {

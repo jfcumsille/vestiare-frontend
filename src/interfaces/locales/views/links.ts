@@ -18,17 +18,26 @@ export interface LinksViewLocale {
       },
     },
   },
-  creation: {
-    createAction: string,
-    individualBankingLink: string,
-    businessBankingLink: string,
-    individualFiscalLink: string,
-    businessFiscalLink: string,
-    modal: {
-      title: string,
-      contentHTML: string,
-    },
+  createLinkModal: {
+    create: string,
+    subtitleTest: string,
+    learnMoreTest: string,
+    subtitleLive: string,
+    learnMoreLive: string,
+    country: string,
+    chooseCountry: string,
+    api: string,
+    chooseApi: string,
+    holderType: string,
+    chooseHolderType: string,
   },
+  newLinkModal: {
+    title: string,
+    warning: string,
+    subtitle: string,
+    learnMore: string,
+    loading: string,
+  }
   table: {
     headers: {
       user: string,
