@@ -38,20 +38,17 @@ onClickOutside(dropDown, () => {
 </script>
 
 <template>
-  <div
-    ref="dropDown"
-    class="mt-1"
-  >
+  <div ref="dropDown">
     <button
       data-test="dropDownButton"
       :class="`
         focus:ring-2 justify-between font-medium rounded-md text-sm
         px-4 py-2.5 shadow-sm text-center inline-flex items-center
-        w-full border h-12 ${colorClasses}
+        w-full border ${colorClasses}
       `"
       @click="toggle"
     >
-      <p class="min-w-fit">
+      <p class="min-w-max">
         <span
           v-if="textPrefix"
           data-test="dropDownTextPrefix"

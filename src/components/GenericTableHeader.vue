@@ -11,7 +11,7 @@ const props = defineProps<{
         v-for="header in props.headers"
         :key="header"
         scope="col"
-        class="py-3 px-6 text-xs font-medium tracking-wider text-left text-gray-700 uppercase"
+        class="py-3 px-4 text-xs font-medium tracking-wider text-left text-gray-700 uppercase"
       >
         {{ header }}
       </th>

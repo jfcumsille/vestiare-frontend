@@ -37,7 +37,7 @@ export default <LinksViewLocale>{
     title: 'Link created succesfully!',
     warning: 'This Link Token will only be showed once, so make sure to copy and save it.',
     subtitle: 'You can use this Link Token to make requests to the Fintoc API.',
-    learnMore: 'Learn more about the requests you can make →',
+    learnMore: 'Learn more about requests you can make →',
     loading: 'loading Link Token...',
   },
   table: {

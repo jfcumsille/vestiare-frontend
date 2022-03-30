@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useTranslation } from '@/locales';
-import GenericModal from '@/components/GenericModal.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
+import GenericModal from '@/components/GenericModal.vue';
 import { DOCS_LINK_TOKEN } from '@/constants/texts';
+import { Nullable } from '@/interfaces/common';
 import { openLink } from '@/services/window';
 
 const $t = useTranslation('views.links.newLinkModal');
 
 const props = defineProps<{
   loading: boolean,
-  linkToken?: string,
+  linkToken: Nullable<string>,
 }>();
 
 const emit = defineEmits<{(e: 'close'): void}>();
@@ -38,20 +39,20 @@ const copyKey = () => {
           {{ $t('warning') }}
         </div>
       </div>
-      <div class="ml-2 text-left leading-relaxed text-body-txt-color font-light">
+      <div class="ml-2 text-left text-body-txt-color font-light">
         {{ $t('subtitle') }}
-        <button
-          class="text-primary-main font-medium"
+        <span
+          class="text-primary-main font-medium cursor-pointer"
           @click="openLink(DOCS_LINK_TOKEN)"
         >
           {{ $t('learnMore') }}
-        </button>
+        </span>
       </div>
       <div class="flex flex-row justify-center relative">
         <div
           class="
             bg-gray-100 rounded-md px-4 py-2 min-w-sm
-            text-center text-body-txt-color text-xs space-between
+            text-center text-body-txt-color text-xs
           "
         >
           <code v-if="!loading">

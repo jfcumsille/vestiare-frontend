@@ -15,10 +15,10 @@ const close = () => {
     <div
       class="
         flex overflow-y-auto overflow-x-hidden justify-center items-center
-        md:h-full bg-black/30
+        h-full bg-black/30
       "
     >
-      <div class="px-4 w-full max-w-2xl h-full md:h-auto mx-auto">
+      <div class="px-4 w-full max-w-2xl h-full h-auto mx-auto">
         <div class="relative bg-white rounded-lg shadow">
           <div class="flex justify-between items-start p-4 rounded-t border-b">
             <h3 class="text-xl font-semibold text-heading-txt-color">
