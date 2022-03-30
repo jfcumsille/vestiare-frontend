@@ -5,13 +5,14 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
+import * as api from '@/api';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
-import LinksTableElement from './components/LinksTableElement.vue';
-import NewLinkModal from './components/NewLinkModal.vue';
-import LinkFilters from './components/LinkFilters.vue';
-import LinkCreation from './components/LinkCreation.vue';
+import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
+import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
+import LinkFilters from '@/views/links/components/LinkFilters.vue';
+import LinksTableElement from '@/views/links/components/LinksTableElement.vue';
 
 const $t = useTranslation('views.links');
 
@@ -26,22 +27,43 @@ const headers = [
 
 const $linksStore = useLinksStore();
 
-const createdLinkToken = ref<Nullable<string>>(null);
-const showLinkToken = (linkToken: string) => {
-  createdLinkToken.value = linkToken;
-};
-const stopShowingLink = () => {
-  createdLinkToken.value = null;
-};
-
-const widgetOpened = ref(false);
-const setWidgetOpened = (value: boolean) => {
-  widgetOpened.value = value;
-};
-
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
+};
+
+const linkCreationButtonText = computed(() => {
+  const mode = live.value ? 'Live' : 'Test';
+  return `${$t('createLinkModal.create')} ${mode} Link`;
+});
+
+const isCreateLinkOpened = ref(false);
+const setCreateLinkOpened = (value: boolean) => {
+  isCreateLinkOpened.value = value;
+};
+
+const isWidgetOpened = ref(false);
+const setWidgetOpenStatus = (value: boolean) => {
+  isWidgetOpened.value = value;
+  if (value) {
+    setCreateLinkOpened(false);
+  }
+};
+
+const loading = ref(false);
+const createdLink = ref<Nullable<Link>>(null);
+const createdLinkToken = ref<Nullable<string>>(null);
+const setLink = async (link: Link) => {
+  createdLink.value = link;
+  loading.value = true;
+  $linksStore.loadLinks();
+  const regeneratedLink = await api.links.regenerate(link.id);
+  createdLinkToken.value = regeneratedLink.linkToken;
+  loading.value = false;
+};
+const stopShowingLink = () => {
+  createdLink.value = null;
+  createdLinkToken.value = null;
 };
 
 const links = computed(() => (live.value ? $linksStore.liveLinks : $linksStore.testLinks));
@@ -97,8 +119,17 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
 </script>
 
 <template>
+  <CreateLinkModal
+    v-if="isCreateLinkOpened"
+    :live="live"
+    :widget-opened="isWidgetOpened"
+    @set-widget-open-status="setWidgetOpenStatus"
+    @set-link="setLink"
+    @close="() => setCreateLinkOpened(false)"
+  />
   <NewLinkModal
-    v-if="createdLinkToken"
+    v-if="createdLink"
+    :loading="loading"
     :link-token="createdLinkToken"
     @close="stopShowingLink"
   />
@@ -116,12 +147,16 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
         @toggle-live="toggleLive"
       />
 
-      <LinkCreation
-        :live="live"
-        :widget-opened="widgetOpened"
-        @set-widget-opened="setWidgetOpened"
-        @show-link-token="showLinkToken"
-      />
+      <button
+        class="items-center px-6 py-2 text-sm font-medium text-center
+                rounded-md text-white bg-primary-main hover:bg-primary-hover
+                disabled:cursor-default shadow-md
+                disabled:bg-gray-300 min-w-fit"
+        :title="linkCreationButtonText"
+        @click="setCreateLinkOpened(true)"
+      >
+        {{ linkCreationButtonText }}
+      </button>
     </div>
   </div>
   <div class="flex justify-center w-full">
