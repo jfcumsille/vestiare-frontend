@@ -100,27 +100,27 @@ onMounted(async () => {
     <div class="space-y-3 text-body-txt-color">
       <div
         v-if="props.live"
-        class="text-left leading-relaxed text-body-txt-color font-light"
+        class="text-left text-body-txt-color font-light"
       >
         {{ $t('subtitleLive') }}
-        <button
-          class="text-primary-main font-medium text-left"
+        <span
+          class="text-primary-main font-medium cursor-pointer"
           @click="openLink(DOCS_LINKS)"
         >
           {{ $t('learnMoreLive') }}
-        </button>
+        </span>
       </div>
       <div
         v-else
-        class="text-left leading-relaxed text-body-txt-color font-light"
+        class="text-left text-body-txt-color font-light"
       >
         {{ $t('subtitleTest') }}
-        <button
-          class="text-primary-main font-medium text-left"
+        <span
+          class="text-primary-main font-medium cursor-pointer"
           @click="openLink(DOCS_SANDBOX)"
         >
           {{ $t('learnMoreTest') }}
-        </button>
+        </span>
       </div>
       <div>
         <div class="font-medium text-body-txt-color text-sm mb-1">
