@@ -12,3 +12,7 @@ export const widthType = computed(() => {
   }
   return 'lg';
 });
+
+export const openLink = (link: string) => {
+  window.open(link);
+};
