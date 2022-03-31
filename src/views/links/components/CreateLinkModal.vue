@@ -49,12 +49,6 @@ const handleChangeAPI = () => {
 
 const selectedHolderType = ref(HolderType.Individual);
 const holderTypes = [HolderType.Individual, HolderType.Business];
-const holderTypeText = (holderType: string) => {
-  if (holderType === HolderType.Individual) {
-    return 'Individual';
-  }
-  return 'Business';
-};
 
 const apiKey = computed(() => $apiKeysStore.searchKey(true, props.live ? Mode.Live : Mode.Test));
 
@@ -129,7 +123,7 @@ onMounted(async () => {
         <select
           v-model="selectedCountry"
           class="
-            focus:ring-2 justify-between font-medium rounded-md text-sm
+            focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-txt-color bg-white hover:bg-gray-100
             focus:ring-bg-gray-300 border-slate-300 shadow-sm
@@ -157,7 +151,7 @@ onMounted(async () => {
         <select
           v-model="selectedAPI"
           class="
-            focus:ring-2 justify-between font-medium rounded-md text-sm
+            focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-txt-color bg-white hover:bg-gray-100
             focus:ring-bg-gray-300 border-slate-300 shadow-sm
@@ -203,7 +197,7 @@ onMounted(async () => {
             :key="holderType"
             :value="holderType"
           >
-            {{ holderTypeText(holderType) }}
+            {{ holderType.toString() }}
           </option>
         </select>
       </div>

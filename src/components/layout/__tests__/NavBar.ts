@@ -32,14 +32,14 @@ describe('NavBar', () => {
     });
     it('shows internal nav bar links', () => {
       const wrapper = getWrapper();
-      const navBarInternalLinks = wrapper.find('[data-test="navBarInternalLinks"]');
+      const navBarInternalLinks = wrapper.find('[data-test="nav-bar-internal-links"]');
       expect(navBarInternalLinks.exists()).toBe(true);
-      const navBarPublicLinks = wrapper.find('[data-test="navBarPublicLinks"]');
+      const navBarPublicLinks = wrapper.find('[data-test="nav-bar-public-links"]');
       expect(navBarPublicLinks.exists()).toBe(false);
     });
     it('redirects to \'/\' when clicking the fintoc logo', () => {
       const wrapper = getWrapper();
-      const fintocLogo = wrapper.find('[data-test="fintocLogo"]');
+      const fintocLogo = wrapper.find('[data-test="fintoc-logo"]');
       expect(fintocLogo.exists()).toBe(true);
       expect(fintocLogo.attributes('href')).toEqual('/');
     });
@@ -55,14 +55,14 @@ describe('NavBar', () => {
     });
     it('shows public nav bar links', () => {
       const wrapper = getWrapper();
-      const navBarPublicLinks = wrapper.find('[data-test="navBarPublicLinks"]');
+      const navBarPublicLinks = wrapper.find('[data-test="nav-bar-public-links"]');
       expect(navBarPublicLinks.exists()).toBe(true);
-      const navBarInternalLinks = wrapper.find('[data-test="navBarInternalLinks"]');
+      const navBarInternalLinks = wrapper.find('[data-test="nav-bar-internal-links"]');
       expect(navBarInternalLinks.exists()).toBe(false);
     });
     it('fintoc logo redirects to fintoc.com', () => {
       const wrapper = getWrapper();
-      const fintocLogo = wrapper.find('[data-test="fintocLogo"]');
+      const fintocLogo = wrapper.find('[data-test="fintoc-logo"]');
       expect(fintocLogo.exists()).toBe(true);
       expect(fintocLogo.attributes('href')).toEqual('https://fintoc.com');
     });
