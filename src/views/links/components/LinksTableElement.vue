@@ -27,16 +27,25 @@ const toggleActive = async () => {
 const remove = () => {
   $linksStore.removeLink(props.link);
 };
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toDateString();
+};
+const formatTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString();
+};
 </script>
 
 <template>
   <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 flex flex-row items-center">
+    <td class="p-4 flex flex-row items-center">
       <InstitutionLogo
         :institution-id="props.link.institution.id"
         class="flex-shrink-0 h-10 w-10 rounded-full"
       />
-      <div class="ml-3 text-sm text-gray-500 whitespace-nowrap">
+      <div class="ml-3 text-sm text-body-txt-color whitespace-nowrap">
         <p class="font-medium">
           {{ props.link.institution.name }}
         </p>
@@ -45,12 +54,12 @@ const remove = () => {
         </p>
       </div>
     </td>
-    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+    <td class="p-4 text-sm font-medium whitespace-nowrap">
       <div v-if="props.link.holderType === 'individual'">
-        <p class="text-gray-900">
+        <p class="text-heading-txt-color">
           {{ props.link.holderName }}
         </p>
-        <p class="font-normal text-gray-600">
+        <p class="font-normal text-body-txt-color">
           {{ rutFormat(props.link.holderId) }}
         </p>
       </div>
@@ -58,12 +67,12 @@ const remove = () => {
         -
       </p>
     </td>
-    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+    <td class="p-4 text-sm font-medium whitespace-nowrap">
       <div v-if="props.link.holderType === 'business'">
-        <p class="text-gray-900">
+        <p class="text-heading-txt-color">
           {{ props.link.holderName }}
         </p>
-        <p class="font-normal text-gray-600">
+        <p class="font-normal text-body-txt-color">
           {{ rutFormat(props.link.holderId) }}
         </p>
       </div>
@@ -71,17 +80,27 @@ const remove = () => {
         -
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      {{ props.link.lastTimeRefreshed || '-' }}
+    <td class="p-4 text-sm text-body-txt-color whitespace-nowrap flex-col">
+      <div v-if="props.link.lastTimeRefreshed">
+        <div>
+          {{ formatDate(props.link.lastTimeRefreshed) }}
+        </div>
+        <div class="text-xs">
+          {{ formatTime(props.link.lastTimeRefreshed) }}
+        </div>
+      </div>
+      <div v-else>
+        -
+      </div>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+    <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
       <GenericToggle
         :active="props.link.active"
         :loading="updating"
         @toggle="toggleActive"
       />
     </td>
-    <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+    <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
         class="text-red-600 cursor-pointer hover:underline"
         @click="remove"

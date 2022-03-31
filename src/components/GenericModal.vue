@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GenericCross from '@/components/GenericCross.vue';
+import CrossIcon from '@/assets/svg/CrossIcon.vue';
 
 const props = defineProps<{ title: string }>();
 
@@ -15,13 +15,16 @@ const close = () => {
     <div
       class="
         flex overflow-y-auto overflow-x-hidden justify-center items-center
-        md:h-full bg-black/30
+        h-full bg-black/30
       "
     >
-      <div class="px-4 w-full max-w-2xl h-full md:h-auto mx-auto">
+      <div class="px-4 w-full max-w-2xl h-full h-auto mx-auto">
         <div class="relative bg-white rounded-lg shadow">
-          <div class="flex justify-between items-start p-5 rounded-t border-b">
-            <h3 class="text-xl font-semibold text-gray-900 lg:text-2xl">
+          <div class="flex justify-between items-start p-4 rounded-t border-b">
+            <h3
+              data-test="modal-title"
+              class="text-xl font-semibold text-heading-txt-color"
+            >
               {{ props.title }}
             </h3>
             <button
@@ -32,13 +35,13 @@ const close = () => {
               "
               @click="close"
             >
-              <GenericCross
+              <CrossIcon
                 class="w-5 h-5"
                 viewBox="0 0 20 20"
               />
             </button>
           </div>
-          <div class="p-6">
+          <div class="p-5">
             <slot />
           </div>
         </div>

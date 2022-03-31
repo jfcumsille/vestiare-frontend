@@ -38,23 +38,20 @@ onClickOutside(dropDown, () => {
 </script>
 
 <template>
-  <div
-    ref="dropDown"
-    class="mt-1"
-  >
+  <div ref="dropDown">
     <button
-      data-test="dropDownButton"
+      data-test="drop-down-button"
       :class="`
         focus:ring-2 justify-between font-medium rounded-md text-sm
         px-4 py-2.5 shadow-sm text-center inline-flex items-center
-        w-full border h-12 ${colorClasses}
+        w-full border ${colorClasses}
       `"
       @click="toggle"
     >
-      <p class="min-w-fit">
+      <p class="min-w-max">
         <span
           v-if="textPrefix"
-          data-test="dropDownTextPrefix"
+          data-test="drop-down-text-prefix"
         >{{ textPrefix }} -</span>
         {{ selected }}
       </p>
@@ -62,7 +59,7 @@ onClickOutside(dropDown, () => {
     </button>
 
     <div
-      data-test="dropDownList"
+      data-test="drop-down-list"
       class="
         absolute z-10 text-base list-none bg-white rounded cursor-pointer
         divide-y divide-gray-100 shadow-lg

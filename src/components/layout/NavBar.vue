@@ -85,7 +85,7 @@ const logOut = () => {
       "
     >
       <a
-        data-test="fintocLogo"
+        data-test="fintoc-logo"
         :href="isLoggedIn ? '/' : FINTOC_HOME"
       >
         <FintocLogo
@@ -95,7 +95,7 @@ const logOut = () => {
       <div
         v-if="!isLoggedIn && isLargeWidth"
         class="block w-auto text-heading-txt-color font-medium mx-auto"
-        data-test="navBarPublicLinks"
+        data-test="nav-bar-public-links"
       >
         <a
           v-for="link in navBarPublicLinks"
@@ -139,7 +139,7 @@ const logOut = () => {
       <div
         v-if="isLoggedIn"
         class="block w-auto"
-        data-test="navBarInternalLinks"
+        data-test="nav-bar-internal-links"
       >
         <ul class="flex flex-row space-x-8 text-sm font-medium">
           <li

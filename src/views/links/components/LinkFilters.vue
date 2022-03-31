@@ -29,30 +29,7 @@ const onInput = ($event: Event) => {
 
 <template>
   <div class="flex my-auto">
-    <SearchBar
-      :placeholder="$t('searchBarPlaceholder')"
-      :model-value="props.search"
-      @input="onInput"
-    />
-    <GenericDropDown
-      class="ml-4 my-auto"
-      translation-namespace="views.links.filters.active"
-      :text-prefix="$t('active.label')"
-      :selected="props.activeFilter"
-      :options="props.activeOptions"
-      is-color-primary
-      @select="(value: string) => emit('select-active-filter', value)"
-    />
-    <GenericDropDown
-      class="ml-4 my-auto"
-      translation-namespace="views.links.filters.password"
-      :text-prefix="$t('password.label')"
-      :selected="props.passwordFilter"
-      :options="props.passwordOptions"
-      is-color-primary
-      @select="(value: string) => emit('select-password-filter', value)"
-    />
-    <div class="flex my-auto ml-6">
+    <div class="flex my-auto mr-4 ">
       <p
         class="pr-4 text-gray-900 text-md font-medium"
         :class="{ 'opacity-25': props.live }"
@@ -70,5 +47,24 @@ const onInput = ($event: Event) => {
         Live
       </p>
     </div>
+    <SearchBar
+      :placeholder="$t('searchBarPlaceholder')"
+      :model-value="props.search"
+      @input="onInput"
+    />
+    <GenericDropDown
+      class="ml-4"
+      :text-prefix="$t('active.label')"
+      :selected="props.activeFilter"
+      :options="props.activeOptions"
+      @select="(value: string) => emit('select-active-filter', value)"
+    />
+    <GenericDropDown
+      class="ml-4 my-auto"
+      :text-prefix="$t('password.label')"
+      :selected="props.passwordFilter"
+      :options="props.passwordOptions"
+      @select="(value: string) => emit('select-password-filter', value)"
+    />
   </div>
 </template>

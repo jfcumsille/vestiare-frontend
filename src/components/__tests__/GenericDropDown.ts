@@ -28,7 +28,7 @@ describe('GenericDropDown', () => {
       },
     });
 
-    const list = wrapper.find('[data-test="dropDownList"]');
+    const list = wrapper.find('[data-test="drop-down-list"]');
     optionsText.forEach((option) => expect(list.text()).toContain(option));
   });
 
@@ -42,7 +42,7 @@ describe('GenericDropDown', () => {
       },
     });
 
-    const textPrefix = wrapper.find('[data-test="dropDownTextPrefix"]');
+    const textPrefix = wrapper.find('[data-test="drop-down-text-prefix"]');
     expect(textPrefix).toBeDefined();
   });
 
@@ -55,7 +55,7 @@ describe('GenericDropDown', () => {
       },
     });
 
-    const textPrefix = wrapper.find('[data-test="dropDownTextPrefix"]');
+    const textPrefix = wrapper.find('[data-test="drop-down-text-prefix"]');
     expect(textPrefix.exists()).toBe(false);
   });
 
@@ -69,7 +69,7 @@ describe('GenericDropDown', () => {
       },
     });
 
-    const button = wrapper.find('[data-test="dropDownButton"]');
+    const button = wrapper.find('[data-test="drop-down-button"]');
     expect(button.classes().find((cls) => cls.includes('text-body-txt-color'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-white'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-gray-100'))).not.toBeUndefined();
@@ -87,7 +87,7 @@ describe('GenericDropDown', () => {
       },
     });
 
-    const button = wrapper.find('[data-test="dropDownButton"]');
+    const button = wrapper.find('[data-test="drop-down-button"]');
     expect(button.classes().find((cls) => cls.includes('text-white'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-primary-main'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-primary-main-hover'))).not.toBeUndefined();

@@ -9,7 +9,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex my-auto">
     <p
       class="pr-4 text-gray-900 text-md font-medium"
       :class="{ 'opacity-25': live }"
