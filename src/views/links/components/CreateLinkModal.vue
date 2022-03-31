@@ -5,7 +5,7 @@ import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import {
-  Mode, CountryCode, Product, HolderType,
+  Mode, CountryCode, Product, HolderType, APIModule,
 } from '@/interfaces/utilities/enums';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
@@ -34,14 +34,14 @@ const countryText = (countryCode: CountryCode) => {
   return 'Chile';
 };
 
-const selectedAPI = ref('Banking');
-const apis = ['Banking', 'Fiscal'];
+const selectedAPIModule = ref(APIModule.Banking);
+const APIModules = [APIModule.Banking, APIModule.Fiscal];
 const selectedProduct = ref(Product.Movements);
 const handleChangeAPI = () => {
-  if (selectedAPI.value === 'Banking') {
+  if (selectedAPIModule.value === APIModule.Banking) {
     selectedProduct.value = Product.Movements;
   }
-  if (selectedAPI.value === 'Fiscal') {
+  if (selectedAPIModule.value === APIModule.Fiscal) {
     selectedProduct.value = Product.Invoices;
   }
 };
@@ -152,7 +152,7 @@ onMounted(async () => {
           {{ $t('api') }}
         </div>
         <select
-          v-model="selectedAPI"
+          v-model="selectedAPIModule"
           class="
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
@@ -168,7 +168,7 @@ onMounted(async () => {
             {{ $t('chooseApi') }}
           </option>
           <option
-            v-for="(apiModule, index) in apis"
+            v-for="(apiModule, index) in APIModules"
             :key="index"
             :value="apiModule"
           >
@@ -186,7 +186,7 @@ onMounted(async () => {
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-txt-color bg-white hover:bg-gray-100
-            focus:ring-bg-gray-300 border-slate-300 shadow-sm
+            focus:ring-bg-gray-300 border-slate-300 shadow-sm capitalize
           "
         >
           <option
@@ -200,7 +200,7 @@ onMounted(async () => {
             :key="holderType"
             :value="holderType"
           >
-            {{ holderType.toString() }}
+            {{ holderType }}
           </option>
         </select>
       </div>
