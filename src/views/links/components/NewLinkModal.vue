@@ -5,7 +5,6 @@ import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import { DOCS_LINK_TOKEN } from '@/constants/texts';
 import { Nullable } from '@/interfaces/common';
-import { openLink } from '@/services/window';
 
 const $t = useTranslation('views.links.newLinkModal');
 
@@ -41,12 +40,14 @@ const copyKey = () => {
       </div>
       <div class="ml-2 text-left text-body-txt-color font-light">
         {{ $t('subtitle') }}
-        <span
+        <a
           class="text-primary-main font-medium cursor-pointer"
-          @click="openLink(DOCS_LINK_TOKEN)"
+          :href="DOCS_LINK_TOKEN"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {{ $t('learnMore') }}
-        </span>
+        </a>
       </div>
       <div class="flex flex-row justify-center relative">
         <div

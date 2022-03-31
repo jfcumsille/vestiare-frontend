@@ -10,7 +10,6 @@ import {
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
 import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/texts';
-import { openLink } from '@/services/window';
 
 const props = defineProps<{ live: boolean, widgetOpened: boolean }>();
 const emit = defineEmits<{
@@ -97,24 +96,28 @@ onMounted(async () => {
         class="text-left text-body-txt-color font-light"
       >
         {{ $t('subtitleLive') }}
-        <span
+        <a
           class="text-primary-main font-medium cursor-pointer"
-          @click="openLink(DOCS_LINKS)"
+          :href="DOCS_LINKS"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {{ $t('learnMoreLive') }}
-        </span>
+        </a>
       </div>
       <div
         v-else
         class="text-left text-body-txt-color font-light"
       >
         {{ $t('subtitleTest') }}
-        <span
+        <a
           class="text-primary-main font-medium cursor-pointer"
-          @click="openLink(DOCS_SANDBOX)"
+          :href="DOCS_SANDBOX"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {{ $t('learnMoreTest') }}
-        </span>
+        </a>
       </div>
       <div>
         <div class="font-medium text-body-txt-color text-sm mb-1">
