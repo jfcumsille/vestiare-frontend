@@ -42,51 +42,51 @@ const webhookEndpoints = computed(
 </script>
 
 <template>
-  <WebhookEndpointCreationModal
-    v-if="modalOpened"
-    :live="live"
-    @close="() => setModalOpened(false)"
-  />
-  <div class="flex justify-center w-full">
-    <div class="grow flex justify-between mt-6 mx-4 max-w-screen-xl">
-      <WebhookEndpointFilters
-        :live="live"
-        @toggle-live="toggleLive"
-      />
-      <WebhookEndpointCreationButton
-        :live="live"
-        :modal-opened="modalOpened"
-        @open-modal="() => setModalOpened(true)"
-      />
-    </div>
-  </div>
-  <div class="flex justify-center w-full">
-    <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
-      <template #header>
-        <GenericTableHeader :headers="tableHeaders" />
-      </template>
-
-      <template #content>
-        <WebhookEndpointsTableElement
-          v-for="webhookEndpoint in webhookEndpoints"
-          :key="webhookEndpoint.id"
-          :webhook-endpoint="webhookEndpoint"
+  <div class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
+    <WebhookEndpointCreationModal
+      v-if="modalOpened"
+      :live="live"
+      @close="() => setModalOpened(false)"
+    />
+    <div class="flex flex-col w-full">
+      <div class="flex justify-between">
+        <WebhookEndpointFilters
+          :live="live"
+          @toggle-live="toggleLive"
         />
-      </template>
-    </GenericTable>
-  </div>
-  <div
-    v-if="$webhookEndpointsStore.loading"
-    class="flex justify-center w-full pt-4"
-  >
-    <LoadingSpinner />
-  </div>
-  <div
-    v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
-    class="flex justify-center w-full pt-4"
-  >
-    <p class="text-gray-900 text-3xl font-bold">
-      {{ $t('table.noWebhookEndpointsFound') }}
-    </p>
+        <WebhookEndpointCreationButton
+          :live="live"
+          :modal-opened="modalOpened"
+          @open-modal="() => setModalOpened(true)"
+        />
+      </div>
+      <GenericTable class="mt-6">
+        <template #header>
+          <GenericTableHeader :headers="tableHeaders" />
+        </template>
+
+        <template #content>
+          <WebhookEndpointsTableElement
+            v-for="webhookEndpoint in webhookEndpoints"
+            :key="webhookEndpoint.id"
+            :webhook-endpoint="webhookEndpoint"
+          />
+        </template>
+      </GenericTable>
+    </div>
+    <div
+      v-if="$webhookEndpointsStore.loading"
+      class="flex justify-center w-full pt-4"
+    >
+      <LoadingSpinner />
+    </div>
+    <div
+      v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
+      class="flex justify-center w-full pt-4"
+    >
+      <p class="text-gray-900 text-3xl font-bold">
+        {{ $t('table.noWebhookEndpointsFound') }}
+      </p>
+    </div>
   </div>
 </template>

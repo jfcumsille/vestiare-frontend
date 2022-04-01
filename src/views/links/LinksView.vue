@@ -119,7 +119,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
 </script>
 
 <template>
-  <div class="flex flex-col px-4 py-6 items-center">
+  <div class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
     <CreateLinkModal
       v-if="isCreateLinkOpened"
       :live="live"
@@ -134,7 +134,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
       :link-token="createdLinkToken"
       @close="stopShowingLink"
     />
-    <div class="flex flex-col w-full grow max-w-screen-xl">
+    <div class="flex flex-col w-full">
       <div class="flex justify-between">
         <LinkFilters
           v-model:search="search"

@@ -43,6 +43,7 @@ const secretKeyToActivate: APIKey = {
   token: 'token',
   isPublic: false,
   mode: Mode.Live,
+  createdAt: '',
 };
 </script>
 

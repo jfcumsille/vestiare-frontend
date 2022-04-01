@@ -145,7 +145,7 @@ const handleEndHoverIcon = () => {
       </div>
     </td>
     <td class="p-5 text-sm text-body-txt-color whitespace-nowrap flex-col">
-      <div v-if="props.apiKey">
+      <div v-if="props.apiKey && !activationRequired">
         <div>
           {{ formatDate(props.apiKey.createdAt) }}
         </div>
