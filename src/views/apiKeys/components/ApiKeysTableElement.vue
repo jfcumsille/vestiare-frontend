@@ -4,6 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
+import { formatDate, formatTime } from '@/services/utils';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import InfoIcon from '@/assets/svg/InfoIcon.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
@@ -143,9 +144,23 @@ const handleEndHoverIcon = () => {
         </button>
       </div>
     </td>
-    <td v-if="isLiveSecretKey && !activationRequired">
+    <td class="p-5 text-sm text-body-txt-color whitespace-nowrap flex-col">
+      <div v-if="props.apiKey">
+        <div>
+          {{ formatDate(props.apiKey.createdAt) }}
+        </div>
+        <div class="text-xs">
+          {{ formatTime(props.apiKey.createdAt) }}
+        </div>
+      </div>
+      <div v-else>
+        -
+      </div>
+    </td>
+    <td class="justify-center w-10">
       <ThreeDots
-        class="cursor-pointer px-2 w-9 h-6"
+        class="cursor-pointer h-6 w-full pl-1 pr-3"
+        :class="{'hidden': !(isLiveSecretKey && !activationRequired)}"
         @click="showConfigKeys"
       />
     </td>
