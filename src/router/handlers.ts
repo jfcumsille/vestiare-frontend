@@ -8,8 +8,12 @@ export const handleAuth0RedirectCallback = async (to: RouteLocationNormalized) =
   const $userStore = useUserStore();
   if (to.query.code) {
     if (to.path === '/login') {
-      const tokenData = await exchangeCodeForToken(to.query.code as string, 'login');
-      await $userStore.logIn({ token: tokenData.idToken });
+      try {
+        const tokenData = await exchangeCodeForToken(to.query.code as string, 'login');
+        await $userStore.logIn({ token: tokenData.idToken });
+      } catch {
+        return { path: '/signup' };
+      }
     } else {
       const tokenData = await exchangeCodeForToken(to.query.code as string, 'signup');
       await $userStore.signUp({ token: tokenData.idToken });
