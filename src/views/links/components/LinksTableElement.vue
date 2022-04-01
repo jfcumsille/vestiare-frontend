@@ -4,7 +4,7 @@ import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
-import { formatDate, formatTime } from '@/services/utils';
+import { formatDate, formatTime } from '@/utils/date';
 import GenericToggle from '@/components/GenericToggle.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
 

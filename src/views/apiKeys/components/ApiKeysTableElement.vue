@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
-import { formatDate, formatTime } from '@/services/utils';
+import { formatDate, formatTime } from '@/utils/date';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import InfoIcon from '@/assets/svg/InfoIcon.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
@@ -36,6 +36,7 @@ const copyKey = () => {
 
 const activationRequired = computed(() => (props.apiKey.id === 'liveSecretKeyToActivate'));
 const isLiveSecretKey = computed(() => (!props.apiKey.isPublic && props.apiKey.mode === Mode.Live));
+const hideConfigKey = computed(() => (!isLiveSecretKey.value && activationRequired));
 
 const showConfigKeysModal = ref(false);
 const showConfigKeys = () => {
@@ -160,7 +161,7 @@ const handleEndHoverIcon = () => {
     <td class="justify-center w-10">
       <ThreeDots
         class="cursor-pointer h-6 w-full pl-1 pr-3"
-        :class="{'hidden': !(isLiveSecretKey && !activationRequired)}"
+        :class="{'hidden': hideConfigKey}"
         @click="showConfigKeys"
       />
     </td>
