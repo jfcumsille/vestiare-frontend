@@ -4,6 +4,7 @@ import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
+import { formatDate, formatTime } from '@/utils/date';
 import GenericToggle from '@/components/GenericToggle.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
 
@@ -26,15 +27,6 @@ const toggleActive = async () => {
 
 const remove = () => {
   $linksStore.removeLink(props.link);
-};
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toDateString();
-};
-const formatTime = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleTimeString();
 };
 </script>
 

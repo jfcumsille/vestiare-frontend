@@ -5,4 +5,5 @@ export interface APIKey {
   token: string
   isPublic: boolean
   mode: Mode
+  createdAt: string
 }

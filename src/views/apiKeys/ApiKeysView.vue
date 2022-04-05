@@ -16,6 +16,7 @@ const apiKeysStore = useAPIKeysStore();
 const headers = [
   $t('table.headers.name'),
   $t('table.headers.token'),
+  $t('table.headers.created'),
   '',
 ];
 
@@ -42,11 +43,12 @@ const secretKeyToActivate: APIKey = {
   token: 'token',
   isPublic: false,
   mode: Mode.Live,
+  createdAt: '',
 };
 </script>
 
 <template>
-  <div class="flex justify-center items-center">
+  <div class="flex items-center">
     <div class="h-full w-full flex justify-center min-w-fit">
       <div
         v-if="apiKeysStore.loading"

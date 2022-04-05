@@ -134,18 +134,21 @@ describe('NavBar', () => {
           token: 'pk_live_XXX',
           isPublic: true,
           mode: Mode.Live,
+          createdAt: '2022-03-25T15:33:06.611Z',
         },
         {
           id: '3',
           token: 'pk_test_XXX',
           isPublic: true,
           mode: Mode.Test,
+          createdAt: '2022-03-25T15:33:06.611Z',
         },
         {
           id: '4',
           token: 'sk_test_XXX',
           isPublic: false,
           mode: Mode.Test,
+          createdAt: '2022-03-25T15:33:06.611Z',
         },
       ];
     });

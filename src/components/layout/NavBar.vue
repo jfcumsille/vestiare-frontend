@@ -138,7 +138,7 @@ const logOut = () => {
       </div>
       <div
         v-if="isLoggedIn"
-        class="block w-auto"
+        class="block w-auto ml-4"
         data-test="nav-bar-internal-links"
       >
         <ul class="flex flex-row space-x-8 text-sm font-medium">
