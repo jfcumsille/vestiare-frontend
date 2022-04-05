@@ -119,7 +119,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
   if (search.value.trim() === '') {
     return rawLinks;
   }
-  return rawLinks.filter((link) => linkMatchesSearchId(link, search.value.trim()));
+  return rawLinks.filter((link) => link.holderId && linkMatchesSearchId(link, search.value.trim()));
 };
 
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
