@@ -1,5 +1,7 @@
+import { CountryCode } from '@/interfaces/utilities/enums';
+
 export interface Institution {
   id: string
-  country: string
+  country: CountryCode
   name: string
 }
