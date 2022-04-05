@@ -5,6 +5,7 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
+import { CountryCode } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
@@ -99,11 +100,17 @@ const filterByPassword = (rawLinks: Array<Link>) => {
 };
 
 const search = ref('');
+const formattedHolderIdOf = (link: Link) => {
+  if (link.institution.country === CountryCode.CL) {
+    return rutFormat(link.holderId);
+  }
+  return link.holderId;
+};
 const linkMatchesSearchId = (link: Link, searchValue: string) => {
   if (link.holderId.includes(searchValue)) {
     return true;
   }
-  if (rutFormat(link.holderId).includes(searchValue)) {
+  if (formattedHolderIdOf(link).includes(searchValue)) {
     return true;
   }
   return false;

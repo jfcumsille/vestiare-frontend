@@ -33,6 +33,13 @@ const formattedUsername = computed(() => {
   return props.link.username;
 });
 
+const formattedHolderId = computed(() => {
+  if (props.link.institution.country === CountryCode.CL) {
+    return rutFormat(props.link.holderId);
+  }
+  return props.link.holderId;
+});
+
 const remove = () => {
   $linksStore.removeLink(props.link);
 };
@@ -71,7 +78,7 @@ const remove = () => {
           {{ props.link.holderName }}
         </p>
         <p class="font-normal text-body-txt-color">
-          {{ rutFormat(props.link.holderId) }}
+          {{ formattedHolderId }}
         </p>
       </div>
       <p v-else>
