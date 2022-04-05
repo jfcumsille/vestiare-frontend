@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
-import { HolderType } from '@/interfaces/utilities/enums';
+import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
 import GenericToggle from '@/components/GenericToggle.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -25,6 +25,13 @@ const toggleActive = async () => {
   );
   updating.value = false;
 };
+
+const formattedUsername = computed(() => {
+  if (props.link.institution.country === CountryCode.CL) {
+    return rutFormat(props.link.username);
+  }
+  return props.link.username;
+});
 
 const remove = () => {
   $linksStore.removeLink(props.link);
@@ -55,7 +62,7 @@ const remove = () => {
         {{ props.link.holderName }}
       </p>
       <p class="font-normal text-body-txt-color">
-        {{ rutFormat(props.link.username) }}
+        {{ formattedUsername }}
       </p>
     </td>
     <td class="p-4 text-sm font-medium whitespace-nowrap">
