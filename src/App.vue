@@ -25,7 +25,7 @@ const loadUserData = () => {
     Intercom.boot(
       $userStore.auth.id,
       $userStore.auth.email,
-      $userStore.user?.name || 'Dashboard User',
+      $userStore.user ? `${$userStore.user.name} ${$userStore.user.lastName}` : 'Dashboard User',
     );
   }
 };
