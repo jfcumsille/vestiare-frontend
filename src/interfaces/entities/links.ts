@@ -12,11 +12,11 @@ export interface Link {
   institution: Institution
   mode: Mode
   preventRefresh: boolean
-  email: string
+  username: string
   lastTimeRefreshed: Nullable<string>
+  accountsCount: number
 }
 
 export interface CompleteLink extends Link {
-  accountsCount: number
   linkToken: string
 }

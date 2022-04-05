@@ -4,6 +4,7 @@ import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
+import { HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
 import GenericToggle from '@/components/GenericToggle.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -47,20 +48,18 @@ const remove = () => {
       </div>
     </td>
     <td class="p-4 text-sm font-medium whitespace-nowrap">
-      <div v-if="props.link.holderType === 'individual'">
-        <p class="text-heading-txt-color">
-          {{ props.link.holderName }}
-        </p>
-        <p class="font-normal text-body-txt-color">
-          {{ rutFormat(props.link.holderId) }}
-        </p>
-      </div>
-      <p v-else>
-        -
+      <p
+        v-if="props.link.holderType === HolderType.Individual"
+        class="text-heading-txt-color"
+      >
+        {{ props.link.holderName }}
+      </p>
+      <p class="font-normal text-body-txt-color">
+        {{ rutFormat(props.link.username) }}
       </p>
     </td>
     <td class="p-4 text-sm font-medium whitespace-nowrap">
-      <div v-if="props.link.holderType === 'business'">
+      <div v-if="props.link.holderType === HolderType.Business">
         <p class="text-heading-txt-color">
           {{ props.link.holderName }}
         </p>
