@@ -6,7 +6,6 @@ import { useLocaleStore } from '@/stores/locale';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import * as Intercom from '@/services/intercom';
 import NavBar from '@/components/layout/NavBar.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 
@@ -22,11 +21,6 @@ const loadUserData = () => {
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();
-    Intercom.boot(
-      $userStore.auth.id,
-      $userStore.auth.email,
-      $userStore.user ? `${$userStore.user.name} ${$userStore.user.lastName}` : 'Dashboard User',
-    );
   }
 };
 
