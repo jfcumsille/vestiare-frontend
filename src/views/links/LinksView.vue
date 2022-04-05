@@ -100,17 +100,26 @@ const filterByPassword = (rawLinks: Array<Link>) => {
 };
 
 const search = ref('');
-const formattedHolderIdOf = (link: Link) => {
-  if (link.institution.country === CountryCode.CL) {
-    return rutFormat(link.holderId);
+const formattedId = (id: string, country: CountryCode) => {
+  if (!id) {
+    return null;
   }
-  return link.holderId;
+  if (country === CountryCode.CL) {
+    return rutFormat(id);
+  }
+  return id;
 };
 const linkMatchesSearchId = (link: Link, searchValue: string) => {
-  if (link.holderId.includes(searchValue)) {
+  if (link.holderId?.includes(searchValue)) {
     return true;
   }
-  if (formattedHolderIdOf(link).includes(searchValue)) {
+  if (link.username?.includes(searchValue)) {
+    return true;
+  }
+  if (formattedId(link.holderId, link.institution.country)?.includes(searchValue)) {
+    return true;
+  }
+  if (formattedId(link.username, link.institution.country)?.includes(searchValue)) {
     return true;
   }
   return false;
@@ -119,7 +128,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
   if (search.value.trim() === '') {
     return rawLinks;
   }
-  return rawLinks.filter((link) => link.holderId && linkMatchesSearchId(link, search.value.trim()));
+  return rawLinks.filter((link) => linkMatchesSearchId(link, search.value.trim()));
 };
 
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
