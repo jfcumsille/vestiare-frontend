@@ -37,7 +37,13 @@ export interface LinksViewLocale {
     subtitle: string,
     learnMore: string,
     loading: string,
-  }
+  },
+  deleteLinkModal: {
+    title: string,
+    confirmation: string,
+    warning: string,
+    text: string,
+  },
   table: {
     headers: {
       user: string,

@@ -40,6 +40,14 @@ export default <LinksViewLocale>{
     learnMore: 'Learn more about requests you can make →',
     loading: 'loading Link Token...',
   },
+  deleteLinkModal: {
+    title: 'Delete Link',
+    confirmation: 'Delete Link',
+    warning: 'If you delete a Link, it cannot be undone.',
+    text: `
+      Are you sure you want to delete this link? The user will have to reconnect their account to create it again.
+    `,
+  },
   table: {
     headers: {
       user: 'User',

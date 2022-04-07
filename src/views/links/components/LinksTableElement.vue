@@ -8,13 +8,15 @@ import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
 import GenericToggle from '@/components/GenericToggle.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
+import DeleteLinkModal from './DeleteLinkModal.vue';
 
 const props = defineProps<{ link: Link }>();
 
-const $t = useTranslation('views.links.table.buttons');
+const $t = useTranslation('views.links.table');
 
 const $linksStore = useLinksStore();
 
+const deleteModalOpened = ref(false);
 const updating = ref(false);
 
 const toggleActive = async () => {
@@ -40,12 +42,22 @@ const formattedHolderId = computed(() => {
   return props.link.holderId;
 });
 
-const remove = () => {
-  $linksStore.removeLink(props.link);
+const setDeleteModalOpened = (value: boolean) => {
+  deleteModalOpened.value = value;
+};
+
+const remove = async () => {
+  await $linksStore.removeLink(props.link);
+  setDeleteModalOpened(false);
 };
 </script>
 
 <template>
+  <DeleteLinkModal
+    v-if="deleteModalOpened"
+    @close="() => setDeleteModalOpened(false)"
+    @remove="remove"
+  />
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="p-4 flex flex-row items-center">
       <InstitutionLogo
@@ -108,8 +120,8 @@ const remove = () => {
     <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
         class="text-red-600 cursor-pointer hover:underline"
-        @click="remove"
-      >{{ $t('remove') }}</a>
+        @click="() => setDeleteModalOpened(true)"
+      >{{ $t('buttons.remove') }}</a>
     </td>
   </tr>
 </template>
