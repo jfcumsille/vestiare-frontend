@@ -54,10 +54,15 @@ export default <LinksViewLocale>{
       business: 'Business',
       institution: 'Institution',
       lastRefreshed: 'Last Refreshed',
+      password: 'Password',
       active: 'Active',
     },
     buttons: {
       remove: 'Remove',
+    },
+    badges: {
+      validPassword: 'valid',
+      invalidPassword: 'invalid',
     },
     noLinksFound: 'No Links found!',
   },

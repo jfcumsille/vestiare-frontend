@@ -55,10 +55,15 @@ export default <LinksViewLocale>{
       business: 'Empresa',
       institution: 'Institución',
       lastRefreshed: 'Última Actualización',
+      password: 'Contraseña',
       active: 'Activo',
     },
     buttons: {
       remove: 'Borrar',
+    },
+    badges: {
+      validPassword: 'válida',
+      invalidPassword: 'inválida',
     },
     noLinksFound: 'No se encontraron Links!',
   },

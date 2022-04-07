@@ -7,6 +7,7 @@ import { Link } from '@/interfaces/entities/links';
 import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
 import GenericToggle from '@/components/GenericToggle.vue';
+import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
 import DeleteLinkModal from './DeleteLinkModal.vue';
 
@@ -41,6 +42,11 @@ const formattedHolderId = computed(() => {
   }
   return props.link.holderId;
 });
+
+const passwordBadgeText = computed(() => (
+  props.link.preventRefresh ? $t('badges.invalidPassword') : $t('badges.validPassword')
+));
+const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : 'green'));
 
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
@@ -111,6 +117,12 @@ const remove = async () => {
       </div>
     </td>
     <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
+      <GenericBadge
+        :text="passwordBadgeText"
+        :color="passwordBadgeColor"
+      />
+    </td>
+    <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
       <GenericToggle
         :active="props.link.active"
         :loading="updating"
@@ -120,8 +132,12 @@ const remove = async () => {
     <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
         class="text-red-600 cursor-pointer hover:underline"
+        <<<<<<<
+        HEAD="======"
         @click="() => setDeleteModalOpened(true)"
-      >{{ $t('buttons.remove') }}</a>
+        @click="remove"
+      >>>>>>> feat: show password status on the table
+        >{{ $t('buttons.remove') }}</a>
     </td>
   </tr>
 </template>

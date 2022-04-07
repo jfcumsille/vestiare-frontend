@@ -22,6 +22,7 @@ const headers = [
   $t('table.headers.user'),
   $t('table.headers.business'),
   $t('table.headers.lastRefreshed'),
+  $t('table.headers.password'),
   $t('table.headers.active'),
   '',
 ];
