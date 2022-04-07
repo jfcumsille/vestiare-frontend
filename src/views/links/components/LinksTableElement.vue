@@ -10,7 +10,7 @@ import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
 import DeleteLinkModal from './DeleteLinkModal.vue';
-import ForcedLinkRefreshModal from './ForcedLinkRefreshModal.vue';
+import ResumeLinkRefreshing from './ResumeLinkRefreshing.vue';
 
 const props = defineProps<{ link: Link }>();
 
@@ -54,8 +54,12 @@ const openRefreshModal = () => {
   }
 };
 
-const refresh = () => {
-  console.log(props.link.id);
+const refresh = async () => {
+  await $linksStore.updateLink(
+    props.link,
+    { preventRefresh: false },
+  );
+  setRefreshModalOpened(false);
 };
 
 const toggleActive = async () => {
@@ -79,7 +83,7 @@ const remove = async () => {
     @close="() => setDeleteModalOpened(false)"
     @remove="remove"
   />
-  <ForcedLinkRefreshModal
+  <ResumeLinkRefreshing
     v-if="refreshModalOpened"
     @close="() => setRefreshModalOpened(false)"
     @refresh="refresh"

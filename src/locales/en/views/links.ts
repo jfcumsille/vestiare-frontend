@@ -66,4 +66,16 @@ export default <LinksViewLocale>{
     },
     noLinksFound: 'No Links found!',
   },
+  refreshWarningModal: {
+    title: 'Resume Link Refreshing',
+    text: `
+      Last time we used this link to update its data,
+      the finantial entity failed, informing us that the credentials
+      were invalid. Due to this we stopped refreshing the movements
+      of this link to avoid blocking your user's account. If
+      you believe your user's credentials haven't changed, we can
+      resume refreshing the link.
+    `,
+    confirmation: 'Resume Refreshing',
+  },
 };

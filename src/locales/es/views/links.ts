@@ -67,4 +67,16 @@ export default <LinksViewLocale>{
     },
     noLinksFound: 'No se encontraron Links!',
   },
+  refreshWarningModal: {
+    title: 'Seguir Actualizando Link',
+    text: `
+      La última vez que usamos este link para actualizar sus datos,
+      la entidad financiera falló, informándonos que las credenciales
+      entregadas eran inválidas. Por esta razón dejamos de actualizar
+      los movimientos de este link, para evitar bloquear la cuenta
+      de tu usuario. Si crees que las credenciales no han cambiado,
+      podemos seguir actualizando el link.
+    `,
+    confirmation: 'Seguir Actualizando',
+  },
 };

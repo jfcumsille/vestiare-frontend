@@ -62,4 +62,9 @@ export interface LinksViewLocale {
     },
     noLinksFound: string,
   },
+  refreshWarningModal: {
+    title: string,
+    text: string,
+    confirmation: string,
+  }
 }
