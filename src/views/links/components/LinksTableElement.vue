@@ -10,6 +10,7 @@ import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
 import DeleteLinkModal from './DeleteLinkModal.vue';
+import ForcedLinkRefreshModal from './ForcedLinkRefreshModal.vue';
 
 const props = defineProps<{ link: Link }>();
 
@@ -18,16 +19,8 @@ const $t = useTranslation('views.links.table');
 const $linksStore = useLinksStore();
 
 const deleteModalOpened = ref(false);
+const refreshModalOpened = ref(false);
 const updating = ref(false);
-
-const toggleActive = async () => {
-  updating.value = true;
-  await $linksStore.updateLink(
-    props.link,
-    { active: !props.link.active },
-  );
-  updating.value = false;
-};
 
 const formattedUsername = computed(() => {
   if (props.link.institution.country === CountryCode.CL) {
@@ -51,6 +44,28 @@ const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : '
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
 };
+const setRefreshModalOpened = (value: boolean) => {
+  refreshModalOpened.value = value;
+};
+
+const openRefreshModal = () => {
+  if (props.link.preventRefresh) {
+    setRefreshModalOpened(true);
+  }
+};
+
+const refresh = () => {
+  console.log(props.link.id);
+};
+
+const toggleActive = async () => {
+  updating.value = true;
+  await $linksStore.updateLink(
+    props.link,
+    { active: !props.link.active },
+  );
+  updating.value = false;
+};
 
 const remove = async () => {
   await $linksStore.removeLink(props.link);
@@ -63,6 +78,11 @@ const remove = async () => {
     v-if="deleteModalOpened"
     @close="() => setDeleteModalOpened(false)"
     @remove="remove"
+  />
+  <ForcedLinkRefreshModal
+    v-if="refreshModalOpened"
+    @close="() => setRefreshModalOpened(false)"
+    @refresh="refresh"
   />
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="p-4 flex flex-row items-center">
@@ -118,8 +138,10 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
       <GenericBadge
+        :class="{'cursor-pointer': props.link.preventRefresh}"
         :text="passwordBadgeText"
         :color="passwordBadgeColor"
+        @click="openRefreshModal"
       />
     </td>
     <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
@@ -132,12 +154,8 @@ const remove = async () => {
     <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
         class="text-red-600 cursor-pointer hover:underline"
-        <<<<<<<
-        HEAD="======"
         @click="() => setDeleteModalOpened(true)"
-        @click="remove"
-      >>>>>>> feat: show password status on the table
-        >{{ $t('buttons.remove') }}</a>
+      >{{ $t('buttons.remove') }}</a>
     </td>
   </tr>
 </template>

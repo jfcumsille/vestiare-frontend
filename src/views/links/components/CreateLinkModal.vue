@@ -129,7 +129,7 @@ onMounted(async () => {
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-txt-color bg-white hover:bg-gray-100
-            focus:ring-bg-gray-300 border-slate-300 shadow-sm
+            focus:ring-bg-gray-300 border-slate-300
           "
         >
           <option
@@ -157,7 +157,7 @@ onMounted(async () => {
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-txt-color bg-white hover:bg-gray-100
-            focus:ring-bg-gray-300 border-slate-300 shadow-sm
+            focus:ring-bg-gray-300 border-slate-300
           "
           @change="handleChangeAPI"
         >
@@ -186,7 +186,7 @@ onMounted(async () => {
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-txt-color bg-white hover:bg-gray-100
-            focus:ring-bg-gray-300 border-slate-300 shadow-sm capitalize
+            focus:ring-bg-gray-300 border-slate-300 capitalize
           "
         >
           <option
