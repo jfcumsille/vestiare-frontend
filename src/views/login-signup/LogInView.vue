@@ -66,9 +66,13 @@ const logIn = async () => {
         </div>
         <Auth0Panel />
         <div class="my-7 h-px bg-gray-300" />
-        <div class="flex flex-col justify-center">
+        <form
+          class="flex flex-col justify-center"
+          @submit.prevent="logIn"
+        >
           <GenericInput
             v-model="email"
+            type="email"
             :label="$tForms('labels.email')"
             :placeholder="$tForms('placeholders.email')"
             class="mb-3"
@@ -105,7 +109,7 @@ const logIn = async () => {
                 disabled:bg-gray-300
               "
               :disabled="loading"
-              @click="logIn"
+              type="submit"
             >
               {{ $tLogIn('logIn') }}
             </button>
@@ -119,7 +123,7 @@ const logIn = async () => {
               {{ $tLogIn('signUp') }}
             </a>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
