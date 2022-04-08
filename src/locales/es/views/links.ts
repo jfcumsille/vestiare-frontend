@@ -40,6 +40,15 @@ export default <LinksViewLocale>{
     learnMore: 'Aprende más sobre requests que puedes realizar →',
     loading: 'cargando Link Token...',
   },
+  deleteLinkModal: {
+    title: 'Eliminar link',
+    confirmation: 'Eliminar Link',
+    warning: 'Esta acción no se puede deshacer.',
+    text: `
+      ¿Estás seguro que quieres borrar este Link? El usuario tendrá que ingresar sus credenciales
+      de la institución financiera para conectar su cuenta nuevamente.
+    `,
+  },
   table: {
     headers: {
       user: 'Usuario',

@@ -1,0 +1,53 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useTranslation } from '@/locales';
+import GenericModal from '@/components/GenericModal.vue';
+import WarningIcon from '@/assets/svg/WarningIcon.vue';
+
+const emit = defineEmits<{
+  (e: 'close'): void,
+  (e: 'remove'): void,
+}>();
+const $t = useTranslation('views.links.deleteLinkModal');
+
+const loading = ref(false);
+
+const remove = () => {
+  loading.value = true;
+  emit('remove');
+};
+
+</script>
+<template>
+  <GenericModal
+    :title="$t('title')"
+    @close="emit('close')"
+  >
+    <div class="flex flex-row bg-danger-surface p-2 rounded-md mb-2">
+      <WarningIcon
+        class="mt-1 ml-1"
+        :fill="'#E00000'"
+      />
+      <div class="ml-2 text-body-txt-color font-light">
+        {{ $t('warning') }}
+      </div>
+    </div>
+    <p class="text-body-txt-color font-light">
+      {{ $t('text') }}
+    </p>
+    <div class="w-full">
+      <button
+        :disabled="loading"
+        class="
+          items-center px-4 py-2 text-sm font-medium text-center
+          rounded-md text-white bg-danger-main hover:bg-danger-main-hover
+          shadow-md mt-4 ml-auto block
+          disabled:bg-gray-300 disabled:cursor-default
+        "
+        @click="remove"
+      >
+        {{ $t('confirmation') }}
+      </button>
+    </div>
+  </GenericModal>
+</template>

@@ -19,6 +19,11 @@ module.exports = {
         'bg-gray-100': '#F5F5F8',
         'bg-gray-200': '#EEEEF2',
         'bg-gray-300': '#E2E1E9',
+        'danger-main': '#E00000',
+        'danger-main-hover': '#A20000',
+        'danger-surface': '#FFECEC',
+        'danger-border': '#FFD7D7',
+        'danger-pressed': '#630000',
       },
       maxWidth: {
         '10px': '10px',
