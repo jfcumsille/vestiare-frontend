@@ -60,7 +60,12 @@ const validate = () => {
 
 watch([() => props.modelValue, () => props.validations, validating], validate);
 
-defineExpose({ valid });
+const publicValid = computed(() => {
+  startValidating();
+  return valid.value;
+});
+
+defineExpose({ valid: publicValid });
 </script>
 
 <template>

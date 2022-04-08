@@ -33,19 +33,16 @@ const name = ref('');
 const events = ref(eventNames.map((eventName) => ({ eventName, checked: false })));
 const loading = ref(false);
 
-const urlError = ref('');
 const eventsError = ref('');
 const nameError = ref('');
 
-const isValidUrl = (possibleUrl: string) => {
-  const expression = /^https:\/\/[^ ".]+\.[^ "]+$/;
-  if (expression.test(possibleUrl)) {
-    urlError.value = '';
-    return true;
-  }
-  urlError.value = $t('validations.url.invalidUrl');
-  return false;
-};
+const urlInput = ref<InstanceType<typeof GenericInput> | null>(null);
+const urlValidations = [
+  (value: string) => !!value.trim() || 'No empty email',
+  (value: string) => (
+    /^https:\/\/[^ ".]+\.[^ "]+$/.test(value) || $t('validations.url.invalidUrl') as string
+  ),
+];
 
 const areValidEvents = () => {
   if (events.value.some((event) => event.checked)) {
@@ -65,7 +62,7 @@ const isValidName = () => {
 };
 
 const createWebhookEndpoint = async () => {
-  const urlIsValid = isValidUrl(url.value);
+  const urlIsValid = urlInput.value?.valid;
   const eventsAreValid = areValidEvents();
   const nameIsValid = isValidName();
   if (urlIsValid && eventsAreValid && nameIsValid) {
@@ -86,9 +83,8 @@ const createWebhookEndpoint = async () => {
   }
 };
 
-watch(url, () => isValidUrl(url.value));
-watch(name, () => { nameError.value = ''; });
-watch(events.value, () => { eventsError.value = ''; });
+watch(() => name.value, () => { nameError.value = ''; });
+watch(() => events.value, () => { eventsError.value = ''; });
 </script>
 
 <template>
@@ -98,10 +94,11 @@ watch(events.value, () => { eventsError.value = ''; });
   >
     <div class="space-y-3">
       <GenericInput
+        ref="urlInput"
         v-model="url"
         :label="$t('form.url.label')"
         :placeholder="$t('form.url.placeholder')"
-        :error="urlError"
+        :validations="urlValidations"
       />
       <GenericInput
         v-model="name"
