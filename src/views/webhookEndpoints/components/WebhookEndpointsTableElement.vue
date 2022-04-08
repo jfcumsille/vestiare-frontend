@@ -69,7 +69,7 @@ const openDetailedView = () => {
     </td>
     <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
       <a
-        class="text-red-600 cursor-pointer hover:underline"
+        class="text-danger-main cursor-pointer hover:underline"
         @click="remove"
       >{{ $t('remove') }}</a>
     </td>

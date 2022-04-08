@@ -7,8 +7,10 @@ import { Link } from '@/interfaces/entities/links';
 import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
 import GenericToggle from '@/components/GenericToggle.vue';
+import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
 import DeleteLinkModal from './DeleteLinkModal.vue';
+import ResumeLinkRefreshingModal from './ResumeLinkRefreshingModal.vue';
 
 const props = defineProps<{ link: Link }>();
 
@@ -17,16 +19,8 @@ const $t = useTranslation('views.links.table');
 const $linksStore = useLinksStore();
 
 const deleteModalOpened = ref(false);
+const refreshModalOpened = ref(false);
 const updating = ref(false);
-
-const toggleActive = async () => {
-  updating.value = true;
-  await $linksStore.updateLink(
-    props.link,
-    { active: !props.link.active },
-  );
-  updating.value = false;
-};
 
 const formattedUsername = computed(() => {
   if (props.link.institution.country === CountryCode.CL) {
@@ -42,8 +36,39 @@ const formattedHolderId = computed(() => {
   return props.link.holderId;
 });
 
+const passwordBadgeText = computed(() => (
+  props.link.preventRefresh ? $t('badges.invalidPassword') : $t('badges.validPassword')
+));
+const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : 'green'));
+
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
+};
+const setRefreshModalOpened = (value: boolean) => {
+  refreshModalOpened.value = value;
+};
+
+const openRefreshModal = () => {
+  if (props.link.preventRefresh) {
+    setRefreshModalOpened(true);
+  }
+};
+
+const refresh = async () => {
+  await $linksStore.updateLink(
+    props.link,
+    { preventRefresh: false },
+  );
+  setRefreshModalOpened(false);
+};
+
+const toggleActive = async () => {
+  updating.value = true;
+  await $linksStore.updateLink(
+    props.link,
+    { active: !props.link.active },
+  );
+  updating.value = false;
 };
 
 const remove = async () => {
@@ -57,6 +82,11 @@ const remove = async () => {
     v-if="deleteModalOpened"
     @close="() => setDeleteModalOpened(false)"
     @remove="remove"
+  />
+  <ResumeLinkRefreshingModal
+    v-if="refreshModalOpened"
+    @close="() => setRefreshModalOpened(false)"
+    @refresh="refresh"
   />
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="p-4 flex flex-row items-center">
@@ -111,6 +141,14 @@ const remove = async () => {
       </div>
     </td>
     <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
+      <GenericBadge
+        :class="{'cursor-pointer': props.link.preventRefresh}"
+        :text="passwordBadgeText"
+        :color="passwordBadgeColor"
+        @click="openRefreshModal"
+      />
+    </td>
+    <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
       <GenericToggle
         :active="props.link.active"
         :loading="updating"
@@ -119,7 +157,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
-        class="text-red-600 cursor-pointer hover:underline"
+        class="text-danger-main cursor-pointer hover:underline"
         @click="() => setDeleteModalOpened(true)"
       >{{ $t('buttons.remove') }}</a>
     </td>

@@ -90,7 +90,7 @@ const logIn = async () => {
             </button>
             <span
               v-if="error"
-              class="ml-4 font-black text-xl text-red-600"
+              class="ml-4 font-black text-xl text-danger-main"
             >
               !
             </span>

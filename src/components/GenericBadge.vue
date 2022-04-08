@@ -36,7 +36,7 @@ const colorClasses = computed(() => {
 </script>
 
 <template>
-  <span :class="`text-l font-semibold mr-2 px-2.5 py-0.5 rounded ${colorClasses}`">
+  <span :class="`select-none text-l font-semibold mr-2 px-2.5 py-0.5 rounded ${colorClasses}`">
     {{ props.text }}
   </span>
 </template>

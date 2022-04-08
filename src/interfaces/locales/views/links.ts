@@ -50,11 +50,22 @@ export interface LinksViewLocale {
       business: string,
       institution: string,
       lastRefreshed: string,
+      password: string,
       active: string,
     },
     buttons: {
       remove: string,
     },
+    badges: {
+      validPassword: string,
+      invalidPassword: string,
+    },
     noLinksFound: string,
   },
+  refreshWarningModal: {
+    title: string,
+    warning: string,
+    text: string,
+    confirmation: string,
+  }
 }

@@ -66,7 +66,7 @@ const onInput = ($event: Event) => {
     >
     <p
       v-if="error"
-      class="mt-1 text-sm text-red-600"
+      class="mt-1 text-sm text-danger-main"
     >
       {{ error }}
     </p>

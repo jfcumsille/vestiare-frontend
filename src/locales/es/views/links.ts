@@ -55,11 +55,29 @@ export default <LinksViewLocale>{
       business: 'Empresa',
       institution: 'Institución',
       lastRefreshed: 'Última Actualización',
+      password: 'Contraseña',
       active: 'Activo',
     },
     buttons: {
       remove: 'Borrar',
     },
+    badges: {
+      validPassword: 'válida',
+      invalidPassword: 'inválida',
+    },
     noLinksFound: 'No se encontraron Links!',
+  },
+  refreshWarningModal: {
+    title: 'Seguir Actualizando Link',
+    warning: 'Si las credenciales son inválidas, actualizar el Link podría bloquear la cuenta de tu usuario',
+    text: `
+      La última vez que usamos este Link para actualizar sus datos,
+      la entidad financiera falló, informándonos que las credenciales
+      entregadas eran inválidas. Por esta razón dejamos de actualizar
+      los movimientos de este Link, para evitar bloquear la cuenta
+      de tu usuario. Si crees que las credenciales no han cambiado,
+      podemos seguir actualizando el Link.
+    `,
+    confirmation: 'Seguir Actualizando',
   },
 };
