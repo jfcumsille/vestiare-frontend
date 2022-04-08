@@ -18,7 +18,7 @@ const close = () => {
         h-full bg-black/30
       "
     >
-      <div class="px-4 w-full max-w-2xl h-full h-auto mx-auto">
+      <div class="px-4 w-full max-w-2xl h-auto mx-auto">
         <div class="relative bg-white rounded-lg shadow">
           <div class="flex justify-between items-start p-4 rounded-t border-b">
             <h3

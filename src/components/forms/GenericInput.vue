@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import {
+  computed, ref, watch, getCurrentInstance,
+} from 'vue';
 
 type Validation = (value: string) => true | string;
 
@@ -15,6 +17,13 @@ const props = withDefaults(defineProps<{
 });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+
+const register = () => {
+  const instance = getCurrentInstance();
+  instance?.parent?.exposed?.register(instance);
+};
+
+register();
 
 const validating = ref(false);
 const errorText = ref('');

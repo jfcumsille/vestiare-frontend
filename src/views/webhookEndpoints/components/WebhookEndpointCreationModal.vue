@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, Ref } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import GenericModal from '@/components/GenericModal.vue';
+import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericTextArea from '@/components/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
@@ -36,7 +37,7 @@ const loading = ref(false);
 const eventsError = ref('');
 const nameError = ref('');
 
-const urlInput = ref<InstanceType<typeof GenericInput> | null>(null);
+const urlInput = ref<{ valid: Ref<boolean> } | null>(null);
 const urlValidations = [
   (value: string) => !!value.trim() || 'No empty email',
   (value: string) => (
