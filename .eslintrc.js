@@ -32,6 +32,7 @@ module.exports = {
     'import/core-modules': ['vitest'],
   },
   rules: {
+    'prefer-destructuring': ['error', { VariableDeclarator: { array: true } }],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
     'import/prefer-default-export': 'off',
     'import/extensions': [

@@ -1,21 +1,28 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 
-const props = defineProps<{
+type Validation = (value: string) => true | string;
+
+const props = withDefaults(defineProps<{
   modelValue: string,
   label?: string,
   placeholder?: string,
-  error?: string,
+  validations?: Array<Validation>,
   rightText?: string,
   rightHref?: string,
-}>();
+}>(), {
+  validations: () => [] as Array<Validation>,
+});
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
-const labelColorClasses = computed(() => (props.error ? 'text-red-700' : 'text-sec-cap-txt-color'));
+const valid = ref(true);
+const errorText = ref('');
+
+const labelColorClasses = computed(() => (valid.value ? 'text-sec-cap-txt-color' : 'text-red-700'));
 
 const inputColorClasses = computed(() => {
-  if (props.error) {
+  if (!valid.value) {
     return `
       text-red-900 bg-red-50 border-red-500 placeholder-red-700
       focus:ring-red-500 focus:border-red-500
@@ -32,6 +39,20 @@ const hasRightLink = computed(() => props.rightText && props.rightHref);
 const onInput = ($event: Event) => {
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
+
+watch([props.modelValue, props.validations], () => {
+  const validated = props.validations.map((validation) => validation(props.modelValue));
+  const errors = validated.filter((possible) => possible !== true) as Array<string>;
+  if (!errors.length) {
+    valid.value = true;
+    errorText.value = '';
+  } else {
+    valid.value = false;
+    errorText.value = errors[0];
+  }
+});
+
+defineExpose({ valid });
 </script>
 
 <template>
@@ -66,10 +87,10 @@ const onInput = ($event: Event) => {
       @input="onInput"
     >
     <p
-      v-if="error"
+      v-if="!valid"
       class="mt-1 text-sm text-danger-main"
     >
-      {{ error }}
+      {{ errorText }}
     </p>
   </label>
 </template>

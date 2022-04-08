@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { TERMS_AND_CONDITIONS, PRIVACY_POLICY, CONTACT } from '@/constants/texts';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
-import GenericInput from '@/components/GenericInput.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import BulletPoint from '@/assets/svg/BulletPoint.vue';

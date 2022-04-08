@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import GenericInput from '@/components/GenericInput.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
 
 describe('GenericInput', () => {
   it('renders props.label when passed', () => {

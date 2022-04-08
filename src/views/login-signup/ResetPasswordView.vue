@@ -3,7 +3,7 @@ import { ref, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
-import GenericInput from '@/components/GenericInput.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
 const userStore = useUserStore();

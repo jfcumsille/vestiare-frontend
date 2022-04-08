@@ -4,7 +4,7 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import GenericModal from '@/components/GenericModal.vue';
-import GenericInput from '@/components/GenericInput.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericTextArea from '@/components/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
 
