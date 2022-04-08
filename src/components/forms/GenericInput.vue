@@ -16,8 +16,9 @@ const props = withDefaults(defineProps<{
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
-const valid = ref(true);
+const validating = ref(false);
 const errorText = ref('');
+const valid = computed(() => !errorText.value.trim());
 
 const labelColorClasses = computed(() => (valid.value ? 'text-sec-cap-txt-color' : 'text-red-700'));
 
@@ -40,17 +41,24 @@ const onInput = ($event: Event) => {
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 
-watch([props.modelValue, props.validations], () => {
+const startValidating = () => {
+  validating.value = true;
+};
+
+const validate = () => {
+  if (!validating.value) {
+    return;
+  }
   const validated = props.validations.map((validation) => validation(props.modelValue));
   const errors = validated.filter((possible) => possible !== true) as Array<string>;
   if (!errors.length) {
-    valid.value = true;
     errorText.value = '';
   } else {
-    valid.value = false;
     errorText.value = errors[0];
   }
-});
+};
+
+watch([() => props.modelValue, () => props.validations, validating], validate);
 
 defineExpose({ valid });
 </script>
@@ -85,6 +93,7 @@ defineExpose({ valid });
       :value="props.modelValue"
       v-bind="$attrs"
       @input="onInput"
+      @blur="startValidating"
     >
     <p
       v-if="!valid"
