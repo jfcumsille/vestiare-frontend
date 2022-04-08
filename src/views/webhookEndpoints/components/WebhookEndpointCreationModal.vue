@@ -103,7 +103,7 @@ watch(events.value, () => { eventsError.value = ''; });
       />
       <p
         v-if="eventsError"
-        class="mt-1 text-sm font-bold text-red-600"
+        class="mt-1 text-sm font-bold text-danger-main"
       >
         {{ eventsError }}
       </p>

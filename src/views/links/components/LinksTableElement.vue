@@ -10,7 +10,7 @@ import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
 import DeleteLinkModal from './DeleteLinkModal.vue';
-import ResumeLinkRefreshing from './ResumeLinkRefreshing.vue';
+import ResumeLinkRefreshingModal from './ResumeLinkRefreshingModal.vue';
 
 const props = defineProps<{ link: Link }>();
 
@@ -83,7 +83,7 @@ const remove = async () => {
     @close="() => setDeleteModalOpened(false)"
     @remove="remove"
   />
-  <ResumeLinkRefreshing
+  <ResumeLinkRefreshingModal
     v-if="refreshModalOpened"
     @close="() => setRefreshModalOpened(false)"
     @refresh="refresh"
@@ -157,7 +157,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
-        class="text-red-600 cursor-pointer hover:underline"
+        class="text-danger-main cursor-pointer hover:underline"
         @click="() => setDeleteModalOpened(true)"
       >{{ $t('buttons.remove') }}</a>
     </td>

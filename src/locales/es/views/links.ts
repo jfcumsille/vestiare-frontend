@@ -69,13 +69,14 @@ export default <LinksViewLocale>{
   },
   refreshWarningModal: {
     title: 'Seguir Actualizando Link',
+    warning: 'Si las credenciales son inválidas, actualizar el Link podría bloquear la cuenta de tu usuario',
     text: `
-      La última vez que usamos este link para actualizar sus datos,
+      La última vez que usamos este Link para actualizar sus datos,
       la entidad financiera falló, informándonos que las credenciales
       entregadas eran inválidas. Por esta razón dejamos de actualizar
-      los movimientos de este link, para evitar bloquear la cuenta
+      los movimientos de este Link, para evitar bloquear la cuenta
       de tu usuario. Si crees que las credenciales no han cambiado,
-      podemos seguir actualizando el link.
+      podemos seguir actualizando el Link.
     `,
     confirmation: 'Seguir Actualizando',
   },

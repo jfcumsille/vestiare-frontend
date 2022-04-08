@@ -68,13 +68,14 @@ export default <LinksViewLocale>{
   },
   refreshWarningModal: {
     title: 'Resume Link Refreshing',
+    warning: 'If the credentials are invalid, refreshing the Link might block your user\'s account',
     text: `
-      Last time we used this link to update its data,
+      Last time we used this Link to update its data,
       the finantial entity failed, informing us that the credentials
       were invalid. Due to this we stopped refreshing the movements
-      of this link to avoid blocking your user's account. If
+      of this Link to avoid blocking your user's account. If
       you believe your user's credentials haven't changed, we can
-      resume refreshing the link.
+      resume refreshing the Link.
     `,
     confirmation: 'Resume Refreshing',
   },

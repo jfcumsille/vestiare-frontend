@@ -64,6 +64,7 @@ export interface LinksViewLocale {
   },
   refreshWarningModal: {
     title: string,
+    warning: string,
     text: string,
     confirmation: string,
   }
