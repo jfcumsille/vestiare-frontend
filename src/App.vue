@@ -9,6 +9,8 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import NavBar from '@/components/layout/NavBar.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 
+import '@/assets/javascripts/intercom';
+
 const $routerStore = useRouterStore();
 const $localeStore = useLocaleStore();
 const $userStore = useUserStore();
