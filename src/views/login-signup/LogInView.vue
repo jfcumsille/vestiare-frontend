@@ -6,6 +6,8 @@ import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
+import WarningIcon from '@/assets/svg/WarningIcon.vue';
+import { AxiosError } from 'axios';
 import Auth0Panel from './components/Auth0Panel.vue';
 
 const router = useRouter();
@@ -16,18 +18,24 @@ const $tLogIn = useTranslation('views.logIn');
 
 const email = ref('');
 const password = ref('');
-const error = ref(false);
+const error = ref('');
 const loading = ref(false);
 
-watch([email, password], () => { error.value = false; });
+watch([email, password], () => { error.value = ''; });
 
 const logIn = async () => {
   loading.value = true;
   try {
     await userStore.logIn({ email: email.value, password: password.value });
     toStoredRedirectionOrHome(router);
-  } catch {
-    error.value = true;
+  } catch (err) {
+    const loginError = err as AxiosError;
+    const codeError = loginError?.response?.data?.error?.code;
+    if (codeError === 'fintoc_invalid_credentials') {
+      error.value = $tLogIn('invalidCredentials');
+    } else if (codeError === 'unconfirmed_email') {
+      error.value = $tLogIn('unconfirmedEmail');
+    }
   } finally {
     loading.value = false;
   }
@@ -74,6 +82,19 @@ const logIn = async () => {
             :placeholder="$tForms('placeholders.password')"
             class="mb-3"
           />
+          <div
+            v-if="error"
+            class="flex flex-row rounded-md text-sm"
+          >
+            <WarningIcon
+              class="mt-1 ml-1"
+              :fill="'#E00000'"
+              :size="12"
+            />
+            <div class="ml-2 text-danger-main font-light">
+              {{ error }}
+            </div>
+          </div>
 
           <div>
             <button
@@ -88,12 +109,6 @@ const logIn = async () => {
             >
               {{ $tLogIn('logIn') }}
             </button>
-            <span
-              v-if="error"
-              class="ml-4 font-black text-xl text-danger-main"
-            >
-              !
-            </span>
           </div>
           <div class="mt-6 text-center text-body-txt-color text-sm font-normal ">
             {{ $tLogIn('dontHaveAccount') }}

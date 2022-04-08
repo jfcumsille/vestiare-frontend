@@ -6,4 +6,6 @@ export default <LogInViewLocale>{
   dontHaveAccount: 'No tienes una cuenta?',
   signUp: 'Regístrate',
   forgotPassword: 'Olvidaste tu contraseña?',
+  invalidCredentials: 'Credenciales inválidas',
+  unconfirmedEmail: 'Cuenta inactiva. Para ingresar revisa el link que enviamos a tu correo ✉️',
 };
