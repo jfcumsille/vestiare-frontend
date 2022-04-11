@@ -9,7 +9,7 @@ import { Mode } from '@/interfaces/utilities/enums';
 import ApiKeysTableElement from '@/views/apiKeys/components/ApiKeysTableElement.vue';
 import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
 
-describe('NavBar', () => {
+describe('ApiKeysView', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     setupLocales();
@@ -26,24 +26,28 @@ describe('NavBar', () => {
           token: 'pk_live_XXX',
           isPublic: true,
           mode: Mode.Live,
+          createdAt: '2022-03-25T15:33:06.611Z',
         },
         {
           id: '2',
           token: 'sk_live_XXX',
           isPublic: false,
           mode: Mode.Live,
+          createdAt: '2022-03-25T15:33:06.611Z',
         },
         {
           id: '3',
           token: 'pk_test_XXX',
           isPublic: true,
           mode: Mode.Test,
+          createdAt: '2022-03-25T15:33:06.611Z',
         },
         {
           id: '4',
           token: 'sk_test_XXX',
           isPublic: false,
           mode: Mode.Test,
+          createdAt: '2022-03-25T15:33:06.611Z',
         },
       ];
     });
@@ -207,14 +211,13 @@ describe('NavBar', () => {
 
     it('should show Activate Secret Key', async () => {
       const wrapper = mount(ApiKeysView);
-      const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
-      expect(apiKeyTableElement.text()).toContain('Activate Secret Key');
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      expect(apiKeyTableElements[1].text()).toContain('Activate Secret Key');
     });
 
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
       const wrapper = mount(ApiKeysView);
       const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
-      expect(apiKeyTableElement.text()).toContain('Activate Secret Key');
 
       const liveKeyToken = apiKeyTableElement.find('[data-test="api-key-token"]');
       expect(liveKeyToken.exists()).toBe(true);
