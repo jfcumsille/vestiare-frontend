@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { artificialWait } from '@/utils/tests';
 import GenericInput from '@/components/forms/GenericInput.vue';
 
 describe('GenericInput', () => {
@@ -71,5 +72,41 @@ describe('GenericInput', () => {
     input.setValue('Fourth Content');
 
     expect(wrapper.emitted('update:modelValue')).toHaveLength(3);
+  });
+
+  it('starts rendering with no error', () => {
+    const wrapper = mount(GenericInput, {
+      props: {
+        modelValue: '',
+        validate: [
+          (text: string) => !!text.trim() || 'EMPTY',
+          (text: string) => text.includes('@') || '@ MISSING',
+        ],
+      },
+    });
+    const input = wrapper.find('[data-test="input"]');
+
+    expect(input.classes().filter((cls) => cls.includes('red')).length).toBe(0);
+  });
+
+  it('starts validating when on blur', async () => {
+    const wrapper = mount(GenericInput, {
+      props: {
+        modelValue: '',
+        validate: [
+          (text: string) => !!text.trim() || 'EMPTY',
+          (text: string) => text.includes('@') || '@ MISSING',
+        ],
+      },
+    });
+    const input = wrapper.find('[data-test="input"]');
+    input.trigger('blur');
+
+    // The validation takes 1 millisecond, so the validity
+    // may be wrong for that milisecond
+    await artificialWait();
+
+    expect(input.classes().some((cls) => cls.includes('red'))).toBe(true);
+    expect(wrapper.vm.valid).toBe(false);
   });
 });

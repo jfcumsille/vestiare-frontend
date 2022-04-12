@@ -1,7 +1,7 @@
+import { SetupContext } from 'vue';
 import {
   afterEach, describe, it, expect, vi,
 } from 'vitest';
-import { SetupContext } from 'vue';
 import { mount, VueWrapper } from '@vue/test-utils';
 import { useRegistration } from '@/composables/registration';
 
