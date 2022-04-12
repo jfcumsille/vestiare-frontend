@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
+import analyticsEvents from '@/constants/analyticsEvents';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericTable from '@/components/GenericTable.vue';
@@ -31,10 +32,11 @@ const toggle = () => {
 
 const createAPIKey = async () => {
   await apiKeysStore.createAPIKey();
+  window.analytics.track(analyticsEvents.ADD_SECRET_API_KEY_CLICKED);
 };
-
 const destroyAPIKey = async (key: APIKey) => {
   await apiKeysStore.destroyAPIKey(key.id);
+  window.analytics.track(analyticsEvents.DELETE_SECRET_API_KEY_CLICKED);
 };
 
 const activationRequired = computed(() => (isLiveMode.value && !secretKey.value));
@@ -45,6 +47,10 @@ const secretKeyToActivate: APIKey = {
   mode: Mode.Live,
   createdAt: '',
 };
+
+onMounted(async () => {
+  window.analytics.page(analyticsEvents.API_KEYS_SCREEN_VIEWED);
+});
 </script>
 
 <template>

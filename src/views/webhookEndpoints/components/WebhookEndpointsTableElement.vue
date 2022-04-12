@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import analyticsEvents from '@/constants/analyticsEvents';
 import GenericToggle from '@/components/GenericToggle.vue';
 
 const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
@@ -23,10 +24,15 @@ const toggleActive = async () => {
     { disabled: (props.webhookEndpoint.status === 'enabled') },
   );
   updating.value = false;
+  window.analytics.track(analyticsEvents.WEBHOOK_ENDPOINT_ACTIVE_TOGGLE_CLICKED, {
+    id: props.webhookEndpoint.id,
+    status: props.webhookEndpoint.status,
+  });
 };
 
 const remove = () => {
   $webhookEndpointsStore.removeWebhookEndpoint(props.webhookEndpoint);
+  window.analytics.track(analyticsEvents.DELETE_WEBHOOK_ENDPOINT_CLICKED);
 };
 
 const openDetailedView = () => {

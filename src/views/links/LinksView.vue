@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
-import { CountryCode } from '@/interfaces/utilities/enums';
+import { CountryCode, Product } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
+import analyticsEvents from '@/constants/analyticsEvents';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -29,9 +30,32 @@ const headers = [
 
 const $linksStore = useLinksStore();
 
+const trackCreateLinkModal = (opened: boolean) => {
+  if (opened) {
+    window.analytics.track(analyticsEvents.CREATE_LINK_MODAL_VIEWED);
+  } else {
+    window.analytics.track(analyticsEvents.CREATE_LINK_MODAL_CLOSED);
+  }
+};
+const trackLinkCreated = (link: Link, product: Product) => {
+  window.analytics.track(analyticsEvents.LINK_CREATED_SUCCESSFULLY, {
+    mode: link.mode,
+    link_id: link.id,
+    institution_id: link.institution.id,
+    holder_type: link.holder_type,
+    holder_id: link.holder_id,
+    username: link.username,
+    created_at: link.created_at,
+    product: product.value,
+  });
+};
+
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
+  window.analytics.track(analyticsEvents.LINKS_MODE_TOGGLE_CLICKED, {
+    live: live.value,
+  });
 };
 
 const linkCreationButtonText = computed(() => {
@@ -42,6 +66,7 @@ const linkCreationButtonText = computed(() => {
 const isCreateLinkOpened = ref(false);
 const setCreateLinkOpened = (value: boolean) => {
   isCreateLinkOpened.value = value;
+  trackCreateLinkModal(value);
 };
 
 const isWidgetOpened = ref(false);
@@ -55,13 +80,14 @@ const setWidgetOpenStatus = (value: boolean) => {
 const loading = ref(false);
 const createdLink = ref<Nullable<Link>>(null);
 const createdLinkToken = ref<Nullable<string>>(null);
-const setLink = async (link: Link) => {
+const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
   loading.value = true;
   $linksStore.loadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
   createdLinkToken.value = regeneratedLink.linkToken;
   loading.value = false;
+  trackLinkCreated(link, product);
 };
 const stopShowingLink = () => {
   createdLink.value = null;
@@ -133,6 +159,10 @@ const filterBySearch = (rawLinks: Array<Link>) => {
 };
 
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
+
+onMounted(async () => {
+  window.analytics.page(analyticsEvents.LINKS_SCREEN_VIEWED);
+});
 </script>
 
 <template>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import analyticsEvents from '@/constants/analyticsEvents';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -17,6 +18,9 @@ const $webhookEndpointsStore = useWebhookEndpointsStore();
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
+  window.analytics.track(analyticsEvents.WEBHOOK_ENDPOINTS_TOGGLE_CLICKED, {
+    live: live.value,
+  });
 };
 
 const tableHeaders = [
@@ -27,9 +31,18 @@ const tableHeaders = [
   '',
 ];
 
+const trackCreateWebhookModal = (opened: boolean) => {
+  if (opened) {
+    window.analytics.track(analyticsEvents.CREATE_WEBHOOK_ENDPOINT_MODAL_VIEWED);
+  } else {
+    window.analytics.track(analyticsEvents.CREATE_WEBHOOK_ENDPOINT_MODAL_CLOSED);
+  }
+};
+
 const modalOpened = ref(false);
 const setModalOpened = (value: boolean) => {
   modalOpened.value = value;
+  trackCreateWebhookModal(value);
 };
 
 const webhookEndpoints = computed(
@@ -39,6 +52,10 @@ const webhookEndpoints = computed(
       : $webhookEndpointsStore.testWebhookEndpoints
   ),
 );
+
+onMounted(async () => {
+  window.analytics.page(analyticsEvents.WEBHOOK_ENDPOINTS_SCREEN_VIEWED);
+});
 </script>
 
 <template>

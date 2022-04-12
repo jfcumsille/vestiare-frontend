@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import {
+  ref, watch, computed, onMounted,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import { TERMS_AND_CONDITIONS, PRIVACY_POLICY, CONTACT } from '@/constants/texts';
+import urls from '@/constants/urls';
+import analyticsEvents from '@/constants/analyticsEvents';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
@@ -56,6 +59,7 @@ const signUp = async () => {
     completed.value = false;
   } finally {
     loading.value = false;
+    window.analytics.track(analyticsEvents.SIGN_UP_CLICKED);
   }
 };
 
@@ -65,12 +69,18 @@ const resendVerificationEmail = async () => {
     isEmailResent.value = true;
   } catch {
     error.value = true;
+  } finally {
+    window.analytics.track(analyticsEvents.RESEND_EMAIL_CLICKED);
   }
 };
 
 const logIn = () => {
   toStoredRedirectionOrHome(router);
 };
+
+onMounted(async () => {
+  window.analytics.page(analyticsEvents.SIGN_UP_SCREEN_VIEWED);
+});
 </script>
 
 <template>
@@ -167,14 +177,14 @@ const logIn = () => {
                     {{ $tSignUp('accept') }}
                     <a
                       class="text-primary-main"
-                      :href="TERMS_AND_CONDITIONS"
+                      :href="url.signUp.TERMS_AND_CONDITIONS"
                     >
                       {{ $tSignUp('terms') }}
                     </a>
                     {{ $tSignUp('and') }}
                     <a
                       class="text-primary-main"
-                      :href="PRIVACY_POLICY"
+                      :href="url.signUp.PRIVACY_POLICY"
                     >
                       {{ $tSignUp('privacyPolicy') }}
                     </a>
@@ -261,7 +271,7 @@ const logIn = () => {
           </div>
           <a
             class="mt-4 text-primary-main font-medium z-10"
-            :href="CONTACT"
+            :href="urls.navBar.CONTACT"
           >
             {{ $tSignUp('contactSales') }}
           </a>

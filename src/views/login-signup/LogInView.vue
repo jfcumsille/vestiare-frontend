@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
+import analyticsEvents from '@/constants/analyticsEvents';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
@@ -39,6 +40,7 @@ const logIn = async () => {
     }
   } finally {
     loading.value = false;
+    window.analytics.track(analyticsEvents.LOG_IN_CLICKED);
   }
 };
 
@@ -46,6 +48,10 @@ const resendVerificationEmail = async () => {
   await userStore.sendConfirmationEmail(email.value);
   isEmailResent.value = true;
 };
+
+onMounted(async () => {
+  window.analytics.page(analyticsEvents.LOG_IN_SCREEN_VIEWED);
+});
 </script>
 
 <template>

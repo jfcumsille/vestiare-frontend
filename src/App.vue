@@ -9,7 +9,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import NavBar from '@/components/layout/NavBar.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 
-import '@/assets/javascripts/intercom';
+import '@/assets/javascripts/segment';
 
 const $routerStore = useRouterStore();
 const $localeStore = useLocaleStore();
@@ -23,6 +23,11 @@ const loadUserData = () => {
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();
+    window.analytics.identify($userStore.user.id, {
+      email: $userStore.user.email,
+      name: $userStore.user.name,
+      defaultOrganizationId: $userStore.user.defaultOrganizationId,
+    });
   }
 };
 

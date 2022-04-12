@@ -6,6 +6,7 @@ import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
 import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
+import analyticsEvents from '@/constants/analyticsEvents';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -41,8 +42,16 @@ const passwordBadgeText = computed(() => (
 ));
 const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : 'green'));
 
+const trackDeleteLinkModal = (opened: boolean) => {
+  if (opened) {
+    window.analytics.track(analyticsEvents.DELETE_LINK_MODAL_VIEWED);
+  } else {
+    window.analytics.track(analyticsEvents.DELETE_LINK_MODAL_CLOSED);
+  }
+};
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
+  trackDeleteLinkModal(value);
 };
 const setRefreshModalOpened = (value: boolean) => {
   refreshModalOpened.value = value;
@@ -69,11 +78,16 @@ const toggleActive = async () => {
     { active: !props.link.active },
   );
   updating.value = false;
+  window.analytics.track(analyticsEvents.LINK_ACTIVE_TOGGLE_CLICKED, {
+    link_id: props.link.id,
+    active: props.link.active,
+  });
 };
 
 const remove = async () => {
   await $linksStore.removeLink(props.link);
   setDeleteModalOpened(false);
+  window.analytics.track(analyticsEvents.DELETE_LINK_CONFIRMATION_CLICKED);
 };
 </script>
 
