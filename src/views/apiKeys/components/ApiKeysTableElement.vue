@@ -39,8 +39,8 @@ const isLiveSecretKey = computed(() => (!props.apiKey.isPublic && props.apiKey.m
 const hideConfigKey = computed(() => (!isLiveSecretKey.value && activationRequired));
 
 const showConfigKeysModal = ref(false);
-const showConfigKeys = () => {
-  showConfigKeysModal.value = true;
+const toggleShowConfigKeys = () => {
+  showConfigKeysModal.value = !showConfigKeysModal.value;
 };
 const configKeysModal = ref(null);
 onClickOutside(configKeysModal, () => {
@@ -159,26 +159,27 @@ const handleEndHoverIcon = () => {
       </div>
     </td>
     <td class="justify-center w-10">
-      <ThreeDots
-        class="cursor-pointer h-6 w-full pl-1 pr-3"
-        :class="{'hidden': hideConfigKey}"
-        @click="showConfigKeys"
-      />
+      <div ref="configKeysModal">
+        <ThreeDots
+          class="cursor-pointer h-6 w-full pl-1 pr-3"
+          :class="{'hidden': hideConfigKey}"
+          @click="toggleShowConfigKeys"
+        />
+        <div
+          v-if="showConfigKeysModal"
+          class="
+            absolute right-0 -mr-20 px-4 py-3
+            bg-white rounded-md border border-bg-gray-200 drop-shadow-md
+          "
+        >
+          <button
+            class="text-primary-main hover:text-primary-main-hover"
+            @click="handleDeleteKey"
+          >
+            {{ $t('delete') }} {{ name }}
+          </button>
+        </div>
+      </div>
     </td>
   </tr>
-  <div
-    v-if="showConfigKeysModal"
-    ref="configKeysModal"
-    class="
-      absolute right-0 -mt-10 -mr-20 px-4 py-3
-      bg-white rounded-md border border-bg-gray-200 drop-shadow-md
-    "
-  >
-    <button
-      class="text-primary-main hover:text-primary-main-hover"
-      @click="handleDeleteKey"
-    >
-      {{ $t('delete') }} {{ name }}
-    </button>
-  </div>
 </template>
