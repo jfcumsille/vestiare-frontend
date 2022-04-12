@@ -40,13 +40,13 @@ const trackCreateLinkModal = (opened: boolean) => {
 const trackLinkCreated = (link: Link, product: Product) => {
   window.analytics.track(analyticsEvents.LINK_CREATED_SUCCESSFULLY, {
     mode: link.mode,
-    link_id: link.id,
-    institution_id: link.institution.id,
-    holder_type: link.holder_type,
-    holder_id: link.holder_id,
+    linkId: link.id,
+    institutionId: link.institution.id,
+    holderType: link.holderType,
+    holderId: link.holderId,
     username: link.username,
-    created_at: link.created_at,
-    product: product.value,
+    createdAt: link.createdAt,
+    product,
   });
 };
 

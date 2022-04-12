@@ -58,7 +58,7 @@ const disabledButton = computed(() => props.widgetOpened || (fintoc.value === nu
 
 const onSuccess = async (link: Link) => {
   emit('set-widget-open-status', false);
-  emit('set-link', link, selectedProduct);
+  emit('set-link', link, selectedProduct.value);
 };
 
 const onExit = () => {

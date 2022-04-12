@@ -11,7 +11,6 @@ import {
   EMAIL_SENT,
   SIGN_UP_VIEWED,
 } from '@/constants/analyticsEvents';
-import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';

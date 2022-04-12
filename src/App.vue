@@ -23,11 +23,13 @@ const loadUserData = () => {
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();
-    window.analytics.identify($userStore.user.id, {
-      email: $userStore.user.email,
-      name: $userStore.user.name,
-      defaultOrganizationId: $userStore.user.defaultOrganizationId,
-    });
+    if ($userStore.user) {
+      window.analytics.identify($userStore.user.id, {
+        email: $userStore.user.email,
+        name: $userStore.user.name,
+        defaultOrganizationId: $userStore.user.defaultOrganizationId,
+      });
+    }
   }
 };
 
