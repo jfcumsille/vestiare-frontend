@@ -1,6 +1,6 @@
 import { getCurrentInstance } from 'vue';
 
-interface RegistrationHookOptions {
+export interface RegistrationHookOptions {
   skipRegistration?: boolean
 }
 
