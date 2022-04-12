@@ -2,24 +2,21 @@
 import {
   ref, computed, ComponentInternalInstance,
 } from 'vue';
-import GenericInput from '@/components/forms/GenericInput.vue';
 
-const inputs = ref<Array<ComponentInternalInstance>>([]);
+const validatable = ref<Array<ComponentInternalInstance>>([]);
 
-const register = (input: ComponentInternalInstance) => {
-  if (input.vnode.type === GenericInput) {
-    inputs.value = [...inputs.value, input];
-  }
+const register = (component: ComponentInternalInstance) => {
+  validatable.value = [...validatable.value, component];
 };
 
 const valid = computed(() => {
-  const inputsValidity: Array<boolean> = inputs.value.map(
+  const validatableValidity: Array<boolean> = validatable.value.map(
     (value: ComponentInternalInstance) => {
       const exposed = value.exposed as { valid: boolean } | null;
       return exposed?.valid || false;
     },
   );
-  return inputsValidity.reduce((previous, current) => previous && current, true);
+  return validatableValidity.reduce((previous, current) => previous && current, true);
 });
 
 defineExpose({ register, valid });

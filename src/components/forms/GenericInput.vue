@@ -46,7 +46,6 @@ const inputColorClasses = computed(() => {
 const hasRightLink = computed(() => props.rightText && props.rightHref);
 
 const onInput = ($event: Event) => {
-  /* eslint-disable-next-line vue/require-explicit-emits */
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 

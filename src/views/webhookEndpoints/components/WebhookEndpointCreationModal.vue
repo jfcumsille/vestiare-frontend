@@ -3,10 +3,11 @@ import { ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
-import { GenericInputPublicAPI } from '@/interfaces/components/forms/GenericInput';
+import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
+import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
-import GenericTextArea from '@/components/GenericTextArea.vue';
+import GenericTextArea from '@/components/forms/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
 
 const props = defineProps<{ live: boolean }>();
@@ -37,7 +38,7 @@ const loading = ref(false);
 const eventsError = ref('');
 const nameError = ref('');
 
-const urlInput = ref<GenericInputPublicAPI | null>(null);
+const form = ref<GenericFormPublicAPI | null>(null);
 const urlValidations = [
   (value: string) => !!value.trim() || 'No empty URL',
   (value: string) => (
@@ -63,7 +64,7 @@ const isValidName = () => {
 };
 
 const createWebhookEndpoint = async () => {
-  const urlIsValid = urlInput.value?.valid;
+  const urlIsValid = form.value?.valid;
   const eventsAreValid = areValidEvents();
   const nameIsValid = isValidName();
   if (urlIsValid && eventsAreValid && nameIsValid) {
