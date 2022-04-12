@@ -87,8 +87,8 @@ const submit = () => {
 
 <template>
   <GenericForm ref="form">
-    <GenericInput :validations="emailValidations" />
-    <GenericInput :validations="urlValidations" />
+    <GenericInput :validate="emailValidations" />
+    <GenericInput :validate="urlValidations" />
   </GenericForm>
 </template>
 ```

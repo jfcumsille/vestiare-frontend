@@ -99,7 +99,7 @@ watch(() => events.value, () => { eventsError.value = ''; });
         v-model="url"
         :label="$t('form.url.label')"
         :placeholder="$t('form.url.placeholder')"
-        :validations="urlValidations"
+        :validate="urlValidations"
       />
       <GenericInput
         v-model="name"

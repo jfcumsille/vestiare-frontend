@@ -1,45 +1,37 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRegistration } from '@/composables/registration';
 import {
-  computed, ref, watch, getCurrentInstance,
-} from 'vue';
-
-type Validation = (value: string) => true | string;
+  ValidatePropType,
+  ModelValuePropType,
+  makeValidatedModelPropsDefaults,
+  useValidatedModel,
+} from '@/composables/validatedModel';
 
 const props = withDefaults(defineProps<{
-  modelValue: string,
   label?: string,
   placeholder?: string,
-  validations?: Array<Validation>,
   rightText?: string,
   rightHref?: string,
-}>(), {
-  validations: () => [] as Array<Validation>,
-});
+  // Validated Model
+  modelValue: ModelValuePropType<string>,
+  validate?: ValidatePropType<string>,
+}>(), { ...makeValidatedModelPropsDefaults<string>() });
 
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+const emit = defineEmits<{
+   (e: 'update:modelValue', value: string): void
+}>();
 
-const register = () => {
-  const instance = getCurrentInstance();
-  let parent = instance?.parent;
-  while (parent) {
-    if (parent?.exposed?.register) {
-      parent.exposed.register(instance);
-      return;
-    }
-    parent = parent.parent;
-  }
-};
+useRegistration();
 
-register();
+const {
+  startValidating, valid, internalValid, error,
+} = useValidatedModel(props);
 
-const validating = ref(false);
-const errorText = ref('');
-const valid = computed(() => !errorText.value.trim());
-
-const labelColorClasses = computed(() => (valid.value ? 'text-sec-cap-txt-color' : 'text-red-700'));
+const labelColorClasses = computed(() => (internalValid.value ? 'text-sec-cap-txt-color' : 'text-red-700'));
 
 const inputColorClasses = computed(() => {
-  if (!valid.value) {
+  if (!internalValid.value) {
     return `
       text-red-900 bg-red-50 border-red-500 placeholder-red-700
       focus:ring-red-500 focus:border-red-500
@@ -54,37 +46,11 @@ const inputColorClasses = computed(() => {
 const hasRightLink = computed(() => props.rightText && props.rightHref);
 
 const onInput = ($event: Event) => {
+  /* eslint-disable-next-line vue/require-explicit-emits */
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 
-const startValidating = () => {
-  validating.value = true;
-};
-
-const validate = () => {
-  if (!validating.value) {
-    return;
-  }
-  const validated = props.validations.map((validation) => validation(props.modelValue));
-  const errors = validated.filter((possible) => possible !== true) as Array<string>;
-  if (!errors.length) {
-    errorText.value = '';
-  } else {
-    errorText.value = errors[0];
-  }
-};
-
-watch([() => props.modelValue, () => props.validations, validating], validate);
-
-const publicValid = computed(() => {
-  if (!validating.value) {
-    startValidating();
-    validate();
-  }
-  return valid.value;
-});
-
-defineExpose({ valid: publicValid });
+defineExpose({ valid });
 </script>
 
 <template>
@@ -120,10 +86,10 @@ defineExpose({ valid: publicValid });
       @blur="startValidating"
     >
     <p
-      v-if="!valid"
+      v-if="!internalValid"
       class="mt-1 text-sm text-danger-main"
     >
-      {{ errorText }}
+      {{ error }}
     </p>
   </label>
 </template>
