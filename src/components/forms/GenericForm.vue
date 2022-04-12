@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, ComponentInternalInstance } from 'vue';
+import {
+  ref, computed, ComponentInternalInstance,
+} from 'vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 
 const inputs = ref<Array<ComponentInternalInstance>>([]);
@@ -12,7 +14,7 @@ const register = (input: ComponentInternalInstance) => {
 
 const valid = computed(() => {
   const inputsValidity: Array<boolean> = inputs.value.map(
-    (value) => {
+    (value: ComponentInternalInstance) => {
       const exposed = value.exposed as { valid: boolean } | null;
       return exposed?.valid || false;
     },
@@ -24,5 +26,7 @@ defineExpose({ register, valid });
 </script>
 
 <template>
-  <slot />
+  <form>
+    <slot />
+  </form>
 </template>

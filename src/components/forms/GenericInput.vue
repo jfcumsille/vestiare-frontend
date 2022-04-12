@@ -20,7 +20,14 @@ const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
 const register = () => {
   const instance = getCurrentInstance();
-  instance?.parent?.exposed?.register(instance);
+  let parent = instance?.parent;
+  while (parent) {
+    if (parent?.exposed?.register) {
+      parent.exposed.register(instance);
+      return;
+    }
+    parent = parent.parent;
+  }
 };
 
 register();
@@ -70,7 +77,10 @@ const validate = () => {
 watch([() => props.modelValue, () => props.validations, validating], validate);
 
 const publicValid = computed(() => {
-  startValidating();
+  if (!validating.value) {
+    startValidating();
+    validate();
+  }
   return valid.value;
 });
 
