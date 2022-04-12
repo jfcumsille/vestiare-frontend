@@ -5,8 +5,13 @@ import {
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import urls from '@/constants/urls';
-import analyticsEvents from '@/constants/analyticsEvents';
+import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls';
+import {
+  USER_SIGNED_UP,
+  EMAIL_SENT,
+  SIGN_UP_VIEWED,
+} from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
@@ -59,7 +64,7 @@ const signUp = async () => {
     completed.value = false;
   } finally {
     loading.value = false;
-    window.analytics.track(analyticsEvents.SIGN_UP_CLICKED);
+    window.analytics.track(USER_SIGNED_UP);
   }
 };
 
@@ -70,7 +75,7 @@ const resendVerificationEmail = async () => {
   } catch {
     error.value = true;
   } finally {
-    window.analytics.track(analyticsEvents.RESEND_EMAIL_CLICKED);
+    window.analytics.track(EMAIL_SENT);
   }
 };
 
@@ -79,7 +84,7 @@ const logIn = () => {
 };
 
 onMounted(async () => {
-  window.analytics.page(analyticsEvents.SIGN_UP_SCREEN_VIEWED);
+  window.analytics.page(SIGN_UP_VIEWED);
 });
 </script>
 
@@ -177,14 +182,14 @@ onMounted(async () => {
                     {{ $tSignUp('accept') }}
                     <a
                       class="text-primary-main"
-                      :href="url.signUp.TERMS_AND_CONDITIONS"
+                      :href="TERMS_AND_CONDITIONS"
                     >
                       {{ $tSignUp('terms') }}
                     </a>
                     {{ $tSignUp('and') }}
                     <a
                       class="text-primary-main"
-                      :href="url.signUp.PRIVACY_POLICY"
+                      :href="PRIVACY_POLICY"
                     >
                       {{ $tSignUp('privacyPolicy') }}
                     </a>
@@ -271,7 +276,7 @@ onMounted(async () => {
           </div>
           <a
             class="mt-4 text-primary-main font-medium z-10"
-            :href="urls.navBar.CONTACT"
+            :href="CONTACT"
           >
             {{ $tSignUp('contactSales') }}
           </a>

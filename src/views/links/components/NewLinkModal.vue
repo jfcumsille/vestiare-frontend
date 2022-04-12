@@ -3,7 +3,7 @@ import { useTranslation } from '@/locales';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import GenericModal from '@/components/GenericModal.vue';
-import { DOCS_LINK_TOKEN } from '@/constants/texts';
+import { DOCS_LINK_TOKEN } from '@/constants/urls';
 import { Nullable } from '@/interfaces/common';
 
 const $t = useTranslation('views.links.newLinkModal');
