@@ -4,4 +4,7 @@ export interface LogInViewLocale {
   dontHaveAccount: string,
   signUp: string,
   forgotPassword: string,
+  invalidCredentials: string,
+  unconfirmedEmail: string,
+  resendVerificationEmail: string,
 }

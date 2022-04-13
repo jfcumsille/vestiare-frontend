@@ -20,8 +20,9 @@ const email = ref('');
 const password = ref('');
 const error = ref('');
 const loading = ref(false);
+const isEmailResent = ref(false);
 
-watch([email, password], () => { error.value = ''; });
+watch([email, password], () => { error.value = ''; isEmailResent.value = false; });
 
 const logIn = async () => {
   loading.value = true;
@@ -40,11 +41,16 @@ const logIn = async () => {
     loading.value = false;
   }
 };
+
+const resendVerificationEmail = async () => {
+  await userStore.sendConfirmationEmail(email.value);
+  isEmailResent.value = true;
+};
 </script>
 
 <template>
   <div class="md:p-20 py-20 px-10 h-full w-full flex justify-center overflow-x-hidden">
-    <div class="relative w-full max-w-md min-w-max">
+    <div class="relative w-full max-w-md min-w-min">
       <Circle
         class="w-72 absolute top-0 right-0 -mr-28 -mt-10 z-0"
         fill="#F2F4FF"
@@ -88,32 +94,38 @@ const logIn = async () => {
           />
           <div
             v-if="error"
-            class="flex flex-row rounded-md text-sm"
+            class="flex flex-row rounded-md text-sm mb-1"
           >
             <WarningIcon
-              class="mt-1 ml-1"
+              class="mt-1 ml-1 min-w-fit"
               :fill="'#E00000'"
-              :size="12"
+              :size="14"
             />
             <div class="ml-2 text-danger-main font-light">
               {{ error }}
+              <button
+                v-if="error === $tLogIn('unconfirmedEmail')"
+                class="text-primary-main font-normal disabled:text-disable-txt-color"
+                :disabled="isEmailResent"
+                @click.prevent="resendVerificationEmail"
+              >
+                {{ $tLogIn('resendVerificationEmail') }}
+              </button>
             </div>
           </div>
 
-          <div>
-            <button
-              class="
+          <button
+            class="
                 mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
                 rounded text-white bg-primary-main hover:bg-primary-main-hover
                 disabled:cursor-default h-12
                 disabled:bg-gray-300
               "
-              :disabled="loading"
-              type="submit"
-            >
-              {{ $tLogIn('logIn') }}
-            </button>
-          </div>
+            :disabled="loading"
+            type="submit"
+          >
+            {{ $tLogIn('logIn') }}
+          </button>
           <div class="mt-6 text-center text-body-txt-color text-sm font-normal ">
             {{ $tLogIn('dontHaveAccount') }}
             <a

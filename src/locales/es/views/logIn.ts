@@ -7,5 +7,6 @@ export default <LogInViewLocale>{
   signUp: 'Regístrate',
   forgotPassword: 'Olvidaste tu contraseña?',
   invalidCredentials: 'Credenciales inválidas',
-  unconfirmedEmail: 'Cuenta inactiva. Para ingresar revisa el link que enviamos a tu correo ✉️',
+  unconfirmedEmail: 'Tu correo electrónico aún no ha sido verificado. Por favor confirma tu cuenta para poder iniciar sesión.',
+  resendVerificationEmail: 'Re-enviar correo de verificación',
 };

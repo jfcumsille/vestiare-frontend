@@ -7,5 +7,6 @@ export default <LogInViewLocale>{
   signUp: 'Sign up',
   forgotPassword: 'Forgot your password?',
   invalidCredentials: 'Incorrect email or password',
-  unconfirmedEmail: 'We have sent you an email confirmation. You need to confirm your account before you can login',
+  unconfirmedEmail: 'Your email hasn\'t been verified yet. Please confirm your account to log in.',
+  resendVerificationEmail: 'Resend verification email',
 };
