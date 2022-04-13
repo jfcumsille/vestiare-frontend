@@ -5,9 +5,15 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
-import { CountryCode, Product } from '@/interfaces/utilities/enums';
+import { CountryCode, Product, Mode } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
-import analyticsEvents from '@/constants/analyticsEvents';
+import {
+  CREATE_LINK_MODAL_VIEWED,
+  CREATE_LINK_MODAL_CLOSED,
+  LINK_CREATED,
+  LINKS_ENVIRONMENT_CHANGED,
+  LINKS_VIEWED,
+} from '@/constants/analyticsEvents';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -32,13 +38,13 @@ const $linksStore = useLinksStore();
 
 const trackCreateLinkModal = (opened: boolean) => {
   if (opened) {
-    window.analytics.track(analyticsEvents.CREATE_LINK_MODAL_VIEWED);
+    window.analytics.track(CREATE_LINK_MODAL_VIEWED);
   } else {
-    window.analytics.track(analyticsEvents.CREATE_LINK_MODAL_CLOSED);
+    window.analytics.track(CREATE_LINK_MODAL_CLOSED);
   }
 };
 const trackLinkCreated = (link: Link, product: Product) => {
-  window.analytics.track(analyticsEvents.LINK_CREATED_SUCCESSFULLY, {
+  window.analytics.track(LINK_CREATED, {
     mode: link.mode,
     linkId: link.id,
     institutionId: link.institution.id,
@@ -47,14 +53,15 @@ const trackLinkCreated = (link: Link, product: Product) => {
     username: link.username,
     createdAt: link.createdAt,
     product,
+    createdThrough: 'Dashboard',
   });
 };
 
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
-  window.analytics.track(analyticsEvents.LINKS_MODE_TOGGLE_CLICKED, {
-    live: live.value,
+  window.analytics.track(LINKS_ENVIRONMENT_CHANGED, {
+    mode: live.value ? Mode.Live : Mode.Test,
   });
 };
 
@@ -161,7 +168,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
 
 onMounted(async () => {
-  window.analytics.page(analyticsEvents.LINKS_SCREEN_VIEWED);
+  window.analytics.page(LINKS_VIEWED);
 });
 </script>
 

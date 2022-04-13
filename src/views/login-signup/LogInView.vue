@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
-import analyticsEvents from '@/constants/analyticsEvents';
+import { USER_LOGGED_IN, LOG_IN_SCREEN_VIEWED } from '@/constants/analyticsEvents';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
@@ -40,7 +40,7 @@ const logIn = async () => {
     }
   } finally {
     loading.value = false;
-    window.analytics.track(analyticsEvents.LOG_IN_CLICKED);
+    window.analytics.track(USER_LOGGED_IN);
   }
 };
 
@@ -50,7 +50,7 @@ const resendVerificationEmail = async () => {
 };
 
 onMounted(async () => {
-  window.analytics.page(analyticsEvents.LOG_IN_SCREEN_VIEWED);
+  window.analytics.page(LOG_IN_SCREEN_VIEWED);
 });
 </script>
 

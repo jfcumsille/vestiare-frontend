@@ -7,7 +7,7 @@ import { Link } from '@/interfaces/entities/links';
 import {
   Mode, CountryCode, Product, HolderType, APIModule,
 } from '@/interfaces/utilities/enums';
-import analyticsEvents from '@/constants/analyticsEvents';
+import { CREATE_LINK_CLICKED } from '@/constants/analyticsEvents';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
 import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/urls';
@@ -78,7 +78,7 @@ const openWidget = () => {
     });
     widget.open();
     emit('set-widget-open-status', true);
-    window.analytics.track(analyticsEvents.CREATE_LINK_CLICKED);
+    window.analytics.track(CREATE_LINK_CLICKED);
   }
 };
 

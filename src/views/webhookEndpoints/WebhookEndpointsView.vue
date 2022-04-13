@@ -2,7 +2,13 @@
 import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import analyticsEvents from '@/constants/analyticsEvents';
+import {
+  WEBHOOK_ENDPOINTS_ENVIRONMENT_CHANGED,
+  CREATE_WEBHOOK_ENDPOINT_MODAL_VIEWED,
+  CREATE_WEBHOOK_ENDPOINT_MODAL_CLOSED,
+  WEBHOOK_ENDPOINTS_SCREEN_VIEWED,
+} from '@/constants/analyticsEvents';
+import { Mode } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -18,8 +24,8 @@ const $webhookEndpointsStore = useWebhookEndpointsStore();
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
-  window.analytics.track(analyticsEvents.WEBHOOK_ENDPOINTS_TOGGLE_CLICKED, {
-    live: live.value,
+  window.analytics.track(WEBHOOK_ENDPOINTS_ENVIRONMENT_CHANGED, {
+    mode: live.value ? Mode.Live : Mode.Test,
   });
 };
 
@@ -33,9 +39,9 @@ const tableHeaders = [
 
 const trackCreateWebhookModal = (opened: boolean) => {
   if (opened) {
-    window.analytics.track(analyticsEvents.CREATE_WEBHOOK_ENDPOINT_MODAL_VIEWED);
+    window.analytics.track(CREATE_WEBHOOK_ENDPOINT_MODAL_VIEWED);
   } else {
-    window.analytics.track(analyticsEvents.CREATE_WEBHOOK_ENDPOINT_MODAL_CLOSED);
+    window.analytics.track(CREATE_WEBHOOK_ENDPOINT_MODAL_CLOSED);
   }
 };
 
@@ -54,7 +60,7 @@ const webhookEndpoints = computed(
 );
 
 onMounted(async () => {
-  window.analytics.page(analyticsEvents.WEBHOOK_ENDPOINTS_SCREEN_VIEWED);
+  window.analytics.page(WEBHOOK_ENDPOINTS_SCREEN_VIEWED);
 });
 </script>
 

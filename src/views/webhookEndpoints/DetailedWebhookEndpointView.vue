@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
-import analyticsEvents from '@/constants/analyticsEvents';
+import { DETAILED_WEBHOOK_ENDPOINTS_SCREEN_VIEWED } from '@/constants/analyticsEvents';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
@@ -36,7 +36,7 @@ const toggleWebhookModal = () => {
 };
 
 onMounted(async () => {
-  window.analytics.page(analyticsEvents.DETAILED_WEBHOOK_ENDPOINTS_SCREEN_VIEWED);
+  window.analytics.page(DETAILED_WEBHOOK_ENDPOINTS_SCREEN_VIEWED);
 });
 </script>
 

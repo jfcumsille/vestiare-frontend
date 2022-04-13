@@ -8,7 +8,6 @@ import {
   DOCS, NEWS, CONTACT, BLOG, FINTOC_HOME,
 } from '@/constants/urls';
 import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
-import { track } from '@/services/analytics';
 import FintocLogo from '@/assets/svg/FintocLogo.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
@@ -70,6 +69,7 @@ const selectionClasses = (path: string) => {
 const logOut = () => {
   userStore.logOut();
   window.location.href = '/';
+  window.analytics.track(USER_LOGGED_OUT);
 };
 </script>
 

@@ -5,7 +5,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { Nullable } from '@/interfaces/common';
-import analyticsEvents from '@/constants/analyticsEvents';
+import { CREATE_WEBHOOK_ENDPOINT_CLICKED } from '@/constants/analyticsEvents';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -77,7 +77,10 @@ const createWebhookEndpoint = async () => {
     );
     loading.value = false;
     emit('close');
-    window.analytics.track(analyticsEvents.CREATE_WEBHOOK_ENDPOINT_CLICKED);
+    window.analytics.track(CREATE_WEBHOOK_ENDPOINT_CLICKED, {
+      enabledEvents: events.value.filter((event) => event.checked).map((event) => event.name),
+      createdThrough: 'Dashboard',
+    });
   }
 };
 
