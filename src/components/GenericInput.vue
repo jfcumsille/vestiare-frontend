@@ -49,6 +49,7 @@ const onInput = ($event: Event) => {
         v-if="hasRightLink"
         :href="props.rightHref"
         class="font-medium text-primary-main text-sm"
+        tabIndex="-1"
       >
         {{ props.rightText }}
       </a>
