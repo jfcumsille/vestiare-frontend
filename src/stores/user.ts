@@ -1,8 +1,9 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { User } from '@/interfaces/entities/user';
+import { manualSignup } from '@/services/auth0';
 import { useAuthenticationTokenStorage, useIdStorage, useEmailStorage } from '@/services/storage';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
+import { User } from '@/interfaces/entities/user';
 import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
 import { OptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
 import { isValidEmail } from '@/utils/email';
@@ -36,10 +37,13 @@ export const useUserStore = defineStore('user', {
     async signUp({
       email, password, token, name, lastName, company, country,
     }: SignUpOptions) {
-      const userData = await api.users.create({
-        email, password, token, name, lastName, company, country,
+      manualSignup({
+        email, password, name, lastName, company, country,
       });
-      this.updateUserData(userData);
+      // const userData = await api.users.create({
+      //   email, password, token, name, lastName, company, country,
+      // });
+      // this.updateUserData(userData);
     },
     logOut() {
       this.auth.authenticationToken = '';
