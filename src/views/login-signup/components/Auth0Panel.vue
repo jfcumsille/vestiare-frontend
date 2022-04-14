@@ -27,7 +27,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       :text="`${buttonLabel} Google`"
       icon-name="auth_google"
       :icon-position="HorizontalPositionType.Left"
-      @click="authenticateWithRedirect('google-oauth2', mode)"
+      @click="() => authenticateWithRedirect('google-oauth2', mode)"
     />
     <GenericButton
       class="mt-5"
@@ -37,7 +37,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       :size="SizeType.Medium"
       icon-name="auth_github"
       :icon-position="HorizontalPositionType.Left"
-      @click="authenticateWithRedirect('github', mode)"
+      @click="() => authenticateWithRedirect('github', mode)"
     />
   </div>
 </template>

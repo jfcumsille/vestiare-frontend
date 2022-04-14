@@ -1,23 +1,20 @@
-import { RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { exchangeCodeForToken } from '@/services/auth0';
+import { getAuth0Client } from '@/services/auth0';
 import { generateRedirectionContent } from '@/services/redirections';
 
 // eslint-disable-next-line consistent-return
-export const handleAuth0RedirectCallback = async (to: RouteLocationNormalized) => {
-  const $userStore = useUserStore();
-  if (to.query.code) {
-    if (to.path === '/login') {
-      try {
-        const tokenData = await exchangeCodeForToken(to.query.code as string, 'login');
-        await $userStore.logIn({ token: tokenData.idToken });
-      } catch {
-        return { path: '/signup' };
-      }
-    } else {
-      const tokenData = await exchangeCodeForToken(to.query.code as string, 'signup');
-      await $userStore.signUp({ token: tokenData.idToken });
-    }
+export const handleAuth0RedirectCallback = async () => {
+  const userStore = useUserStore();
+  const auth0 = await getAuth0Client();
+
+  try {
+    await auth0.handleRedirectCallback();
+
+    const tokenClaims = await auth0.getIdTokenClaims();
+
+    // eslint-disable-next-line no-underscore-dangle
+    await userStore.logIn({ token: tokenClaims?.__raw });
+
     return generateRedirectionContent();
-  }
+  } catch { /* eslint-disable-line no-empty */ }
 };
