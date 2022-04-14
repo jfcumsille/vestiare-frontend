@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<{
   rightHref?: string,
   // Validated Model
   modelValue: ModelValuePropType<string>,
-  validate?: ValidatePropType<string>,
+  validations?: ValidatePropType<string>,
 }>(), { ...makeValidatedModelPropsDefaults<string>() });
 
 const emit = defineEmits<{

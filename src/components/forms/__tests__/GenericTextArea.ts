@@ -78,7 +78,7 @@ describe('GenericTextArea', () => {
     const wrapper = mount(GenericTextArea, {
       props: {
         modelValue: '',
-        validate: [
+        validations: [
           (text: string) => !!text.trim() || 'EMPTY',
           (text: string) => text.includes('@') || '@ MISSING',
         ],
@@ -93,7 +93,7 @@ describe('GenericTextArea', () => {
     const wrapper = mount(GenericTextArea, {
       props: {
         modelValue: '',
-        validate: [
+        validations: [
           (text: string) => !!text.trim() || 'EMPTY',
           (text: string) => text.includes('@') || '@ MISSING',
         ],

@@ -43,6 +43,7 @@ export default <WebhookEndpointsViewLocale>{
     },
     validations: {
       url: {
+        emptyUrl: 'La URL no puede estar vacía',
         invalidUrl: 'URL inválida',
       },
       events: {

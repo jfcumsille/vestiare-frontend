@@ -4,6 +4,7 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
+import { Nullable } from '@/interfaces/common';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -38,11 +39,12 @@ const loading = ref(false);
 const eventsError = ref('');
 const nameError = ref('');
 
-const form = ref<GenericFormPublicAPI | null>(null);
+const form = ref<Nullable<GenericFormPublicAPI>>(null);
+const URL_VALIDATION_REGEX = /^https:\/\/[^ ".]+\.[^ "]+$/;
 const urlValidations = [
-  (value: string) => !!value.trim() || 'No empty URL',
+  (value: string) => !!value.trim() || $t('validations.url.emptyUrl') as string,
   (value: string) => (
-    /^https:\/\/[^ ".]+\.[^ "]+$/.test(value) || $t('validations.url.invalidUrl') as string
+    URL_VALIDATION_REGEX.test(value) || $t('validations.url.invalidUrl') as string
   ),
 ];
 

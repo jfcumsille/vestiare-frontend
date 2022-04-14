@@ -6,12 +6,12 @@ export type ValidatePropType<T> = Array<Validation<T>>
 export type ModelValuePropType<T> = T
 
 export type ValidatedModelProps<ModelType> = {
-  validate: ValidatePropType<ModelType>,
+  validations: ValidatePropType<ModelType>,
   modelValue: ModelValuePropType<ModelType>,
 };
 
 export const makeValidatedModelPropsDefaults = <ModelType>() => ({
-  validate: () => [] as Array<Validation<ModelType>>,
+  validations: () => [] as Array<Validation<ModelType>>,
 });
 
 export const useValidatedModel = <T>(props: ValidatedModelProps<T>) => {
@@ -23,11 +23,11 @@ export const useValidatedModel = <T>(props: ValidatedModelProps<T>) => {
     validating.value = true;
   };
 
-  const validate = () => {
+  const validateModel = () => {
     if (!validating.value) {
       return;
     }
-    const validated = props.validate.map((validation) => validation(props.modelValue));
+    const validated = props.validations.map((validation) => validation(props.modelValue));
     const errors = validated.filter((possible) => possible !== true) as Array<string>;
     if (!errors.length) {
       error.value = '';
@@ -36,12 +36,12 @@ export const useValidatedModel = <T>(props: ValidatedModelProps<T>) => {
     }
   };
 
-  watch([() => props.modelValue, () => props.validate, validating], validate);
+  watch([() => props.modelValue, () => props.validations, validating], validateModel);
 
   const externalValid = computed(() => {
     if (!validating.value) {
       startValidating();
-      validate();
+      validateModel();
     }
     return internalValid.value;
   });

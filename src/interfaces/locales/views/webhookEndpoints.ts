@@ -36,6 +36,7 @@ export interface WebhookEndpointsViewLocale {
     },
     validations: {
       url: {
+        emptyUrl: string,
         invalidUrl: string,
       },
       events: {

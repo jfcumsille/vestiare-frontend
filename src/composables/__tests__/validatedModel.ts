@@ -11,7 +11,7 @@ const validations: Array<Validation<string>> = [
 ];
 
 const propsFactory = () => <ValidatedModelProps<string>>({
-  validate: validations,
+  validations,
   modelValue: '',
 });
 

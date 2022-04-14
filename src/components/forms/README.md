@@ -21,6 +21,7 @@ Let's see an example:
 <script setup lang="ts">
 import { ref } from 'vue';
 import { GenericInputPublicAPI } from '@/interfaces/components/forms/GenericInput';
+import { Nullable } from '@/interfaces/common';
 import GenericInput from '@/components/forms/GenericInput.vue';
 
 const validations = [
@@ -28,7 +29,7 @@ const validations = [
   (email) => email.includes('@') || 'Invalid email',
 ];
 
-const emailInput = ref<GenericInputPublicAPI | null>(null);
+const emailInput = ref<Nullable<GenericInputPublicAPI>>(null);
 
 const submit = () => {
   if (emailInput.value?.valid) {
@@ -40,12 +41,12 @@ const submit = () => {
 <template>
   <GenericInput
     ref="emailInput"
-    :validate="validations"
+    :validations="validations"
   />
 </template>
 ```
 
-Notice how we declared the `ref` type as `GenericInputPublicAPI | null`. A type `GenericInputPublicAPI` exists that encapsulates everything that a `ref` for a `GenericInput` should contain so that you don't have to extrapolate its type from meta-stuff.
+Notice how we declared the `ref` type as `Nullable<GenericInputPublicAPI>`. A type `GenericInputPublicAPI` exists that encapsulates everything that a `ref` for a `GenericInput` should contain so that you don't have to extrapolate its type from meta-stuff.
 
 When calling `emailInput.value?.valid`, you will receive a boolean representing whether the validations set for the input passed or not. Please note that the validations are **watched**, which means that they will run when **something changes** (either the validations themselves or the input value), and not when calling `validate`. This means that you can safely reuse the `.valid` attribute multiple times in the same method without re-running the validations all over again.
 
@@ -63,13 +64,14 @@ Let's see an example:
 <script setup lang="ts">
 import { ref } from 'vue';
 import { GenericTextAreaPublicAPI } from '@/interfaces/components/forms/GenericTextArea';
+import { Nullable } from '@/interfaces/common';
 import GenericTextArea from '@/components/forms/GenericTextArea.vue';
 
 const validations = [
   (text) => !!text.trim() || 'No empty text',
 ];
 
-const text = ref<GenericTextAreaPublicAPI | null>(null);
+const text = ref<Nullable<GenericTextAreaPublicAPI>>(null);
 
 const submit = () => {
   if (text.value?.valid) {
@@ -81,12 +83,12 @@ const submit = () => {
 <template>
   <GenericTextArea
     ref="text"
-    :validate="validations"
+    :validations="validations"
   />
 </template>
 ```
 
-Notice how we declared the `ref` type as `GenericTextAreaPublicAPI | null`. A type `GenericTextAreaPublicAPI` exists that encapsulates everything that a `ref` for a `GenericTextArea` should contain so that you don't have to extrapolate its type from meta-stuff.
+Notice how we declared the `ref` type as `Nullable<GenericTextAreaPublicAPI>`. A type `GenericTextAreaPublicAPI` exists that encapsulates everything that a `ref` for a `GenericTextArea` should contain so that you don't have to extrapolate its type from meta-stuff.
 
 When calling `text.value?.valid`, you will receive a boolean representing whether the validations set for the textarea passed or not. Please note that the validations are **watched**, which means that they will run when **something changes** (either the validations themselves or the textarea value), and not when calling `validate`. This means that you can safely reuse the `.valid` attribute multiple times in the same method without re-running the validations all over again.
 
@@ -104,6 +106,7 @@ Let's see an example:
 <script setup lang="ts">
 import { ref } from 'vue';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
+import { Nullable } from '@/interfaces/common';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericTextArea from '@/components/forms/GenericTextArea.vue';
@@ -122,7 +125,7 @@ const descriptionValidations = [
   (text) => !!text.trim() || 'No empty description',
 ]
 
-const form = ref<GenericFormPublicAPI | null>(null);
+const form = ref<Nullable<GenericFormPublicAPI>>(null);
 
 const submit = () => {
   if (form.value?.valid) {
@@ -133,13 +136,13 @@ const submit = () => {
 
 <template>
   <GenericForm ref="form">
-    <GenericInput :validate="emailValidations" />
-    <GenericInput :validate="urlValidations" />
-    <GenericTextArea :validate="descriptionValidations" />
+    <GenericInput :validations="emailValidations" />
+    <GenericInput :validations="urlValidations" />
+    <GenericTextArea :validations="descriptionValidations" />
   </GenericForm>
 </template>
 ```
 
-Notice how we declared the `ref` type as `GenericFormPublicAPI | null`. A type `GenericFormPublicAPI` exists that encapsulates everything that a `ref` for a `GenericForm` should contain so that you don't have to extrapolate its type from meta-stuff.
+Notice how we declared the `ref` type as `Nullable<GenericFormPublicAPI>`. A type `GenericFormPublicAPI` exists that encapsulates everything that a `ref` for a `GenericForm` should contain so that you don't have to extrapolate its type from meta-stuff.
 
 When calling `form.value?.valid`, you will receive a boolean representing whether the validations set for **every validatable input inside the form** passed or not.

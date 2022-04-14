@@ -2,21 +2,22 @@
 import {
   ref, computed, ComponentInternalInstance,
 } from 'vue';
+import { Nullable } from '@/interfaces/common';
 
-const validatable = ref<Array<ComponentInternalInstance>>([]);
+const validatableComponents = ref<Array<ComponentInternalInstance>>([]);
 
 const register = (component: ComponentInternalInstance) => {
-  validatable.value = [...validatable.value, component];
+  validatableComponents.value = [...validatableComponents.value, component];
 };
 
 const valid = computed(() => {
-  const validatableValidity: Array<boolean> = validatable.value.map(
+  const areValidatableComponentsValid: Array<boolean> = validatableComponents.value.map(
     (value: ComponentInternalInstance) => {
-      const exposed = value.exposed as { valid: boolean } | null;
+      const exposed = value.exposed as Nullable<{ valid: boolean }>;
       return exposed?.valid || false;
     },
   );
-  return validatableValidity.reduce((previous, current) => previous && current, true);
+  return areValidatableComponentsValid.reduce((previous, current) => previous && current, true);
 });
 
 defineExpose({ register, valid });

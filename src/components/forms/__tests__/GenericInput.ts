@@ -78,7 +78,7 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: {
         modelValue: '',
-        validate: [
+        validations: [
           (text: string) => !!text.trim() || 'EMPTY',
           (text: string) => text.includes('@') || '@ MISSING',
         ],
@@ -93,7 +93,7 @@ describe('GenericInput', () => {
     const wrapper = mount(GenericInput, {
       props: {
         modelValue: '',
-        validate: [
+        validations: [
           (text: string) => !!text.trim() || 'EMPTY',
           (text: string) => text.includes('@') || '@ MISSING',
         ],
