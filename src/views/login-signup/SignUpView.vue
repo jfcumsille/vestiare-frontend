@@ -11,6 +11,7 @@ import {
   EMAIL_SENT,
   SIGN_UP_VIEWED,
 } from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
@@ -63,7 +64,7 @@ const signUp = async () => {
     completed.value = false;
   } finally {
     loading.value = false;
-    window.analytics.track(USER_SIGNED_UP);
+    track(USER_SIGNED_UP);
   }
 };
 
@@ -74,7 +75,9 @@ const resendVerificationEmail = async () => {
   } catch {
     error.value = true;
   } finally {
-    window.analytics.track(EMAIL_SENT);
+    track(EMAIL_SENT, {
+      type: 'resend_verification_email',
+    });
   }
 };
 
@@ -83,7 +86,7 @@ const logIn = () => {
 };
 
 onMounted(async () => {
-  window.analytics.page(SIGN_UP_VIEWED);
+  page(SIGN_UP_VIEWED);
 });
 </script>
 

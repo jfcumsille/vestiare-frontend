@@ -4,11 +4,8 @@ import { useTranslation } from '@/locales';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
-import {
-  SECRET_KEY_CREATED,
-  SECRET_KEY_DELETED,
-  API_KEYS_VIEWED,
-} from '@/constants/analyticsEvents';
+import { API_KEY_CREATED, API_KEY_DELETED, API_KEYS_VIEWED } from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericTable from '@/components/GenericTable.vue';
@@ -36,14 +33,17 @@ const toggle = () => {
 
 const createAPIKey = async () => {
   await apiKeysStore.createAPIKey();
-  window.analytics.track(SECRET_KEY_CREATED);
+  track(API_KEY_CREATED, {
+    mode: Mode.Live,
+    is_public: false,
+  });
 };
 const destroyAPIKey = async (key: APIKey) => {
   await apiKeysStore.destroyAPIKey(key.id);
-  window.analytics.track(SECRET_KEY_DELETED, {
+  track(API_KEY_DELETED, {
     id: key.id,
     mode: key.mode,
-    isPublic: key.isPublic,
+    is_public: key.isPublic,
   });
 };
 
@@ -57,7 +57,7 @@ const secretKeyToActivate: APIKey = {
 };
 
 onMounted(async () => {
-  window.analytics.page(API_KEYS_VIEWED);
+  page(API_KEYS_VIEWED);
 });
 </script>
 

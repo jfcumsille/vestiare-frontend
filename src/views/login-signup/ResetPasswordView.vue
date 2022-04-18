@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
+import {
+  EMAIL_SENT,
+  RESET_PASSWORD_VIEWED,
+} from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
@@ -28,6 +33,9 @@ const resetPassword = async () => {
   } finally {
     loading.value = false;
     completed.value = true;
+    track(EMAIL_SENT, {
+      type: 'reset_password',
+    });
   }
 };
 
@@ -37,12 +45,20 @@ const resendResetPasswordEmail = async () => {
     isEmailResent.value = true;
   } catch {
     error.value = true;
+  } finally {
+    track(EMAIL_SENT, {
+      type: 'resend_reset_password',
+    });
   }
 };
 
 const logIn = () => {
   router.push({ path: '/login' });
 };
+
+onMounted(async () => {
+  page(RESET_PASSWORD_VIEWED);
+});
 </script>
 
 <template>

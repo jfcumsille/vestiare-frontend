@@ -7,12 +7,13 @@ import { Link } from '@/interfaces/entities/links';
 import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
 import {
-  DELETE_LINK_MODAL_VIEWED,
-  DELETE_LINK_MODAL_CLOSED,
-  LINK_ACTIVE_TOGGLE_CLICKED,
-  DELETE_LINK_CONFIRMATION_CLICKED,
+  MODAL_VIEWED,
+  MODAL_CLOSED,
+  LINK_ACTIVE_CHANGED,
+  LINK_DELETED,
   REFRESH_LINK_CLICKED,
 } from '@/constants/analyticsEvents';
+import { track } from '@/services/analytics';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -50,9 +51,15 @@ const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : '
 
 const trackDeleteLinkModal = (opened: boolean) => {
   if (opened) {
-    window.analytics.track(DELETE_LINK_MODAL_VIEWED);
+    track(MODAL_VIEWED, {
+      location: 'links',
+      action: 'delete',
+    });
   } else {
-    window.analytics.track(DELETE_LINK_MODAL_CLOSED);
+    track(MODAL_CLOSED, {
+      location: 'links',
+      action: 'delete',
+    });
   }
 };
 const setDeleteModalOpened = (value: boolean) => {
@@ -75,8 +82,8 @@ const refresh = async () => {
     { preventRefresh: false },
   );
   setRefreshModalOpened(false);
-  window.analytics.track(REFRESH_LINK_CLICKED, {
-    linkId: props.link.id,
+  track(REFRESH_LINK_CLICKED, {
+    id: props.link.id,
   });
 };
 
@@ -87,8 +94,8 @@ const toggleActive = async () => {
     { active: !props.link.active },
   );
   updating.value = false;
-  window.analytics.track(LINK_ACTIVE_TOGGLE_CLICKED, {
-    linkId: props.link.id,
+  track(LINK_ACTIVE_CHANGED, {
+    id: props.link.id,
     active: props.link.active,
   });
 };
@@ -96,8 +103,9 @@ const toggleActive = async () => {
 const remove = async () => {
   await $linksStore.removeLink(props.link);
   setDeleteModalOpened(false);
-  window.analytics.track(DELETE_LINK_CONFIRMATION_CLICKED, {
-    linkId: props.link.id,
+  track(LINK_DELETED, {
+    id: props.link.id,
+    origin: 'dashboard',
   });
 };
 </script>

@@ -8,12 +8,13 @@ import { Link } from '@/interfaces/entities/links';
 import { CountryCode, Product, Mode } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import {
-  CREATE_LINK_MODAL_VIEWED,
-  CREATE_LINK_MODAL_CLOSED,
+  MODAL_VIEWED,
+  MODAL_CLOSED,
   LINK_CREATED,
-  LINKS_ENVIRONMENT_CHANGED,
+  ENVIRONMENT_CHANGED,
   LINKS_VIEWED,
 } from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -38,30 +39,37 @@ const $linksStore = useLinksStore();
 
 const trackCreateLinkModal = (opened: boolean) => {
   if (opened) {
-    window.analytics.track(CREATE_LINK_MODAL_VIEWED);
+    track(MODAL_VIEWED, {
+      location: 'links',
+      action: 'create',
+    });
   } else {
-    window.analytics.track(CREATE_LINK_MODAL_CLOSED);
+    track(MODAL_CLOSED, {
+      location: 'links',
+      action: 'create',
+    });
   }
 };
 const trackLinkCreated = (link: Link, product: Product) => {
-  window.analytics.track(LINK_CREATED, {
+  track(LINK_CREATED, {
     mode: link.mode,
-    linkId: link.id,
-    institutionId: link.institution.id,
-    holderType: link.holderType,
-    holderId: link.holderId,
+    link_id: link.id,
+    institution_id: link.institution.id,
+    holder_type: link.holderType,
+    holder_id: link.holderId,
     username: link.username,
-    createdAt: link.createdAt,
+    created_at: link.createdAt,
     product,
-    createdThrough: 'Dashboard',
+    origin: 'dashboard',
   });
 };
 
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
-  window.analytics.track(LINKS_ENVIRONMENT_CHANGED, {
+  track(ENVIRONMENT_CHANGED, {
     mode: live.value ? Mode.Live : Mode.Test,
+    location: 'links',
   });
 };
 
@@ -168,7 +176,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
 
 onMounted(async () => {
-  window.analytics.page(LINKS_VIEWED);
+  page(LINKS_VIEWED);
 });
 </script>
 
