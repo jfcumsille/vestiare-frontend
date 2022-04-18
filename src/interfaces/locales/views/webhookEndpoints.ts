@@ -1,6 +1,8 @@
 export interface WebhookEndpointsViewLocale {
   title: string,
   learnMore: string,
+  subtitle: string,
+  whatisAWebhookEndpoint: string,
   table: {
     headers: {
       url: string,

@@ -5,7 +5,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_WEBHOOKS } from '@/constants/urls';
 import { page, trackModal } from '@/services/analytics';
-import { ButtonType } from '@/interfaces/utilities/enums';
+import { ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -51,29 +51,43 @@ onMounted(() => {
     />
     <div class="flex flex-col w-full">
       <div class="flex justify-between">
-        <div>
-          <div class="font-medium text-2xl text-heading-color self-start">
-            {{ $t('title') }}
-          </div>
-          <div class="flex flex-row justify-between items-center py-2 self-start">
-            <a
-              class="text-primary-main text-sm"
-              :href="DOCS_WEBHOOKS"
-              target="_blank"
-            >
-              {{ $t('learnMore') }}
-            </a>
-          </div>
+        <div class="font-medium text-2xl text-heading-color self-start">
+          {{ $t('title') }}
         </div>
         <GenericButton
           data-test="webhook-create-button"
           :type="ButtonType.Primary"
           :text="$t('creation.buttonText')"
           :disabled="modalOpened"
+          icon-name="add"
+          :icon-position="HorizontalPositionType.Right"
           @click="() => setModalOpened(true)"
         />
       </div>
-      <GenericTable>
+      <div class="flex justify-between items-end">
+        <div
+          class="text-body-color font-light max-w-2xl pr-2"
+        >
+          {{ $t('subtitle') }}
+        </div>
+        <div>
+          <a
+            class="text-primary-main hover:text-primary-hover"
+            :href="DOCS_WEBHOOKS"
+            target="_blank"
+          >
+            {{ $t('whatisAWebhookEndpoint') }}
+          </a>
+        </div>
+        <a
+          class="text-primary-main hover:text-primary-hover"
+          :href="DOCS_WEBHOOKS"
+          target="_blank"
+        >
+          {{ $t('learnMore') }}
+        </a>
+      </div>
+      <GenericTable class="mt-6">
         <template #header>
           <GenericTableHeader :headers="tableHeaders" />
         </template>

@@ -3,6 +3,11 @@ import { WebhookEndpointsViewLocale } from '@/interfaces/locales/views/webhookEn
 export default <WebhookEndpointsViewLocale>{
   title: 'Webhook Endpoints',
   learnMore: 'Aprende más sobre los Webhooks de Fintoc →',
+  subtitle: `
+    Un webhook es el mecanismo que nos permite notificar a tu servidor sobre una acción específica ocurrida en Fintoc y
+    generar una reacción en tu aplicación para que esta se encuentre sincronizada con el estado actual de Fintoc.
+  `,
+  whatisAWebhookEndpoint: '¿Qué es un Webhook Endpoint?',
   table: {
     headers: {
       url: 'URL',
@@ -28,7 +33,7 @@ export default <WebhookEndpointsViewLocale>{
   creation: {
     modalTitle: 'Crear Webhook Endpoint',
     events: 'Eventos',
-    buttonText: 'Crear Webhook Endpoint',
+    buttonText: 'Agregar',
     form: {
       url: {
         label: 'URL del Webhook Endpoint',
