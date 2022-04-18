@@ -29,11 +29,13 @@ const webhookEndpointsStore = useWebhookEndpointsStore();
 
 const url = ref('');
 const description = ref('');
-const events = ref(eventNames.map((name) => ({ name, checked: false })));
+const name = ref('');
+const events = ref(eventNames.map((eventName) => ({ eventName, checked: false })));
 const loading = ref(false);
 
 const urlError = ref('');
 const eventsError = ref('');
+const nameError = ref('');
 
 const isValidUrl = (possibleUrl: string) => {
   const expression = /^https:\/\/[^ ".]+\.[^ "]+$/;
@@ -53,16 +55,29 @@ const areValidEvents = () => {
   return false;
 };
 
+const isValidName = () => {
+  if (name.value) {
+    nameError.value = '';
+    return true;
+  }
+  nameError.value = $t('validations.name.required');
+  return false;
+};
+
 const createWebhookEndpoint = async () => {
   const urlIsValid = isValidUrl(url.value);
   const eventsAreValid = areValidEvents();
-  if (urlIsValid && eventsAreValid) {
+  const nameIsValid = isValidName();
+  if (urlIsValid && eventsAreValid && nameIsValid) {
     loading.value = true;
     await webhookEndpointsStore.createWebhookEndpoint(
       {
         url: url.value,
+        name: name.value,
         description: description.value.trim() === '' ? undefined : description.value,
-        enabledEvents: events.value.filter((event) => event.checked).map((event) => event.name),
+        enabledEvents: events.value.filter(
+          (event) => event.checked,
+        ).map((event) => event.eventName),
       },
       props.live ? Mode.Live : Mode.Test,
     );
@@ -72,6 +87,7 @@ const createWebhookEndpoint = async () => {
 };
 
 watch(url, () => isValidUrl(url.value));
+watch(name, () => { nameError.value = ''; });
 watch(events.value, () => { eventsError.value = ''; });
 </script>
 
@@ -87,6 +103,12 @@ watch(events.value, () => { eventsError.value = ''; });
         :placeholder="$t('form.url.placeholder')"
         :error="urlError"
       />
+      <GenericInput
+        v-model="name"
+        :label="$t('form.name.label')"
+        :placeholder="$t('form.name.placeholder')"
+        :error="nameError"
+      />
       <GenericTextArea
         v-model="description"
         :label="$t('form.description.label')"
@@ -97,9 +119,9 @@ watch(events.value, () => { eventsError.value = ''; });
       </p>
       <GenericCheckbox
         v-for="event in events"
-        :key="event.name"
+        :key="event.eventName"
         v-model="event.checked"
-        :text="event.name"
+        :text="event.eventName"
       />
       <p
         v-if="eventsError"
