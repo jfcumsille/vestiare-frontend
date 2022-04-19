@@ -10,10 +10,10 @@ export const handleAuth0RedirectCallback = async () => {
   try {
     await auth0.handleRedirectCallback();
 
-    const tokenClaims = await auth0.getIdTokenClaims();
+    const token = await auth0.getTokenSilently();
 
     // eslint-disable-next-line no-underscore-dangle
-    await userStore.logIn({ token: tokenClaims?.__raw });
+    await userStore.logIn({ token });
 
     return generateRedirectionContent();
   } catch { /* eslint-disable-line no-empty */ }

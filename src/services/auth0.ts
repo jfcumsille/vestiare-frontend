@@ -1,6 +1,8 @@
 import webAuth0 from 'auth0-js';
 import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
-import { AUTH0_DOMAIN, AUTH0_CLIENT_ID, USERNAME_PASSWORD_CONNECTION } from '@/constants/api';
+import {
+  AUTH0_DOMAIN, AUTH0_CLIENT_ID, USERNAME_PASSWORD_CONNECTION, BASE_API_HOST,
+} from '@/constants/api';
 import { SignUpOptions } from '@/interfaces/options/account';
 import { Nullable } from '@/interfaces/common';
 
@@ -16,6 +18,7 @@ export const getAuth0Client = async () => {
     internalAuth0 = await createAuth0Client({
       domain: AUTH0_DOMAIN,
       client_id: AUTH0_CLIENT_ID,
+      audience: BASE_API_HOST,
       useRefreshTokens: true,
     });
   }
