@@ -3,6 +3,7 @@ import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
 import {
   AUTH0_DOMAIN, AUTH0_CLIENT_ID, USERNAME_PASSWORD_CONNECTION, BASE_API_HOST,
 } from '@/constants/api';
+import { Auth0User } from '@/interfaces/entities/user';
 import { SignUpOptions } from '@/interfaces/options/account';
 import { Nullable } from '@/interfaces/common';
 
@@ -49,7 +50,7 @@ export const logout = async () => {
 
 export const manualSignup = ({
   email, password, name, lastName, company, country,
-}: SignUpOptions) => {
+}: SignUpOptions) => new Promise<Auth0User>((resolve, reject) => {
   webAuth.signup({
     connection: USERNAME_PASSWORD_CONNECTION,
     email: email || '',
@@ -61,5 +62,11 @@ export const manualSignup = ({
       company,
       country,
     },
-  }, () => null);
-};
+  }, (error, user: Auth0User) => {
+    if (!error) {
+      resolve(user);
+    } else {
+      reject();
+    }
+  });
+});

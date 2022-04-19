@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { watch } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useLocaleStore } from '@/stores/locale';
 import { useAPIKeysStore } from '@/stores/apiKeys';
@@ -38,12 +38,9 @@ const loadUserData = () => {
 };
 
 watch(() => $userStore.authenticated, () => {
-  loadUserData();
-});
-
-onMounted(async () => {
-  await $userStore.loadUser();
-  loadUserData();
+  if ($userStore.authenticated) {
+    loadUserData();
+  }
 });
 </script>
 

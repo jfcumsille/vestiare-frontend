@@ -9,6 +9,7 @@ import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhoo
 
 import { enableLoader, disableLoader } from './loader';
 import {
+  loadUser,
   loginRequired,
   skipLogInIfAlreadyLoggedIn,
   skipSignUpIfAlreadyLoggedIn,
@@ -57,6 +58,7 @@ const router = createRouter({
 
 enableLoader(router);
 
+router.beforeEach(loadUser);
 router.beforeEach(loginRequired);
 
 disableLoader(router);

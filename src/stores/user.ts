@@ -1,54 +1,48 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
-import { manualSignup } from '@/services/auth0';
-import { useAuthenticationTokenStorage, useIdStorage, useEmailStorage } from '@/services/storage';
+import { getAuth0Client, manualSignup } from '@/services/auth0';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
 import { User } from '@/interfaces/entities/user';
 import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
+<<<<<<< HEAD
 import { OptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
 import { isValidEmail } from '@/utils/email';
+=======
+>>>>>>> feat: handle most of the login/signup flow
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    auth: {
-      authenticationToken: useAuthenticationTokenStorage(),
-      id: useIdStorage(),
-      email: useEmailStorage(),
-    },
     user: <Nullable<User>>null,
   }),
   actions: {
     updateUserData(userData: User) {
-      this.auth.authenticationToken = userData.authenticationToken;
-      this.auth.id = userData.id;
-      this.auth.email = userData.email;
       this.user = userData;
     },
     async loadUser() {
-      if (this.authenticated) {
-        const userData = await api.users.get(this.auth.id);
-        this.updateUserData(userData);
-      }
+      const userData = await api.users.get('1');
+      this.user = userData;
     },
     async logIn({ email, password, token }: LogInOptions) {
       const userData = await api.sessions.create({ email, password, token });
-      this.updateUserData(userData);
+      this.user = userData;
     },
     async signUp({
-      email, password, token, name, lastName, company, country,
+      email, password, name, lastName, company, country,
     }: SignUpOptions) {
-      manualSignup({
+      const user = await manualSignup({
         email, password, name, lastName, company, country,
       });
-      // const userData = await api.users.create({
-      //   email, password, token, name, lastName, company, country,
-      // });
-      // this.updateUserData(userData);
+      await api.users.create({
+        id: user.Id,
+        email: user.email,
+        name: user.givenName,
+        lastName: user.familyName,
+      });
     },
-    logOut() {
-      this.auth.authenticationToken = '';
-      this.auth.id = '';
-      this.auth.email = '';
+    async logOut() {
+      const auth0 = await getAuth0Client();
+      await auth0.logout();
+      this.user = null;
     },
     async sendConfirmationEmail(email: string) {
       await api.users.sendConfirmationEmail(email);
@@ -58,6 +52,7 @@ export const useUserStore = defineStore('user', {
     },
   },
   getters: {
+    authenticated: (state) => !!state.user,
     organizationParams: (state) => {
       if (state.user?.defaultOrganizationId) {
         return {
@@ -65,21 +60,6 @@ export const useUserStore = defineStore('user', {
         };
       }
       return {};
-    },
-    authenticationHeaders: (state): OptionalAuthenticationHeaders => {
-      if (state.auth.authenticationToken && state.auth.id && state.auth.email) {
-        return {
-          Authorization: state.auth.authenticationToken,
-          'X-User-Email': state.auth.email,
-        };
-      }
-      return {};
-    },
-    authenticated: (state) => {
-      if (state.auth.authenticationToken && state.auth.id && state.auth.email) {
-        return true;
-      }
-      return false;
     },
     organizationName(state) {
       const name = state.user?.organizations[0].name;

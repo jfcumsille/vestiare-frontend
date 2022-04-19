@@ -2,6 +2,15 @@ import { RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { storeRedirection } from '@/services/redirections';
 
+export const loadUser = async () => {
+  const $userStore = useUserStore();
+  if (!$userStore.authenticated) {
+    try {
+      await $userStore.loadUser();
+    } catch { } // eslint-disable-line no-empty
+  }
+};
+
 // eslint-disable-next-line consistent-return
 export const loginRequired = (to: RouteLocationNormalized) => {
   const $userStore = useUserStore();

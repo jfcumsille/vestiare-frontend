@@ -5,9 +5,9 @@ export interface LogInOptions {
 }
 
 export interface SignUpOptions {
+  id?: string
   email?: string
   password?: string
-  token?: string
   name?: string
   lastName?: string
   company?: string
