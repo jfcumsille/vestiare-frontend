@@ -91,6 +91,18 @@ const revealWebhookEndpointSecret = async () => {
   <tr class="bg-white border-b hover:bg-gray-100">
     <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
       <p class="text-gray-900">
+        {{ $t('headers.name') }}
+      </p>
+    </td>
+    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+      <p class="font-normal text-gray-600">
+        {{ props.webhookEndpoint.name }}
+      </p>
+    </td>
+  </tr>
+  <tr class="bg-white border-b hover:bg-gray-100">
+    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
+      <p class="text-gray-900">
         {{ $t('headers.description') }}
       </p>
     </td>

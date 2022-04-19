@@ -7,6 +7,7 @@ export default <WebhookEndpointsViewLocale>{
       mode: 'Mode',
       webhookEndpointSecret: 'Webhook Endpoint Secret',
       types: 'Event types',
+      name: 'Name',
       description: 'Description',
       subscribedEventsAmount: '# Subscribed Events',
       active: 'Active',
@@ -35,6 +36,10 @@ export default <WebhookEndpointsViewLocale>{
         label: 'Description',
         placeholder: 'Optional description...',
       },
+      name: {
+        label: 'Name',
+        placeholder: 'Name',
+      },
     },
     validations: {
       url: {
@@ -42,6 +47,9 @@ export default <WebhookEndpointsViewLocale>{
       },
       events: {
         requireEvent: 'At least one event is required to be selected',
+      },
+      name: {
+        required: 'Required',
       },
     },
   },

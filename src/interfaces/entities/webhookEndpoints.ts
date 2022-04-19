@@ -8,4 +8,5 @@ export interface WebhookEndpoint {
   secret: string
   status: string
   url: string
+  name: string
 }
