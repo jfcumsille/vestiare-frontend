@@ -3,9 +3,12 @@ import { ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
+import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
+import { Nullable } from '@/interfaces/common';
+import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericModal from '@/components/GenericModal.vue';
-import GenericInput from '@/components/GenericInput.vue';
-import GenericTextArea from '@/components/GenericTextArea.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
+import GenericTextArea from '@/components/forms/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
 
 const props = defineProps<{ live: boolean }>();
@@ -33,19 +36,19 @@ const name = ref('');
 const events = ref(eventNames.map((eventName) => ({ eventName, checked: false })));
 const loading = ref(false);
 
-const urlError = ref('');
 const eventsError = ref('');
-const nameError = ref('');
 
-const isValidUrl = (possibleUrl: string) => {
-  const expression = /^https:\/\/[^ ".]+\.[^ "]+$/;
-  if (expression.test(possibleUrl)) {
-    urlError.value = '';
-    return true;
-  }
-  urlError.value = $t('validations.url.invalidUrl');
-  return false;
-};
+const formRef = ref<Nullable<GenericFormPublicAPI>>(null);
+
+const URL_VALIDATION_REGEX = /^https:\/\/[^ ".]+\.[^ "]+$/;
+const urlValidations = [
+  (value: string) => !!value.trim() || $t('validations.url.emptyUrl') as string,
+  (value: string) => (
+    URL_VALIDATION_REGEX.test(value) || $t('validations.url.invalidUrl') as string
+  ),
+];
+
+const nameValidations = [(value: string) => !!value.trim() || $t('validations.name.required') as string];
 
 const areValidEvents = () => {
   if (events.value.some((event) => event.checked)) {
@@ -55,20 +58,10 @@ const areValidEvents = () => {
   return false;
 };
 
-const isValidName = () => {
-  if (name.value) {
-    nameError.value = '';
-    return true;
-  }
-  nameError.value = $t('validations.name.required');
-  return false;
-};
-
 const createWebhookEndpoint = async () => {
-  const urlIsValid = isValidUrl(url.value);
+  const formIsValid = formRef.value?.valid;
   const eventsAreValid = areValidEvents();
-  const nameIsValid = isValidName();
-  if (urlIsValid && eventsAreValid && nameIsValid) {
+  if (formIsValid && eventsAreValid) {
     loading.value = true;
     await webhookEndpointsStore.createWebhookEndpoint(
       {
@@ -86,9 +79,7 @@ const createWebhookEndpoint = async () => {
   }
 };
 
-watch(url, () => isValidUrl(url.value));
-watch(name, () => { nameError.value = ''; });
-watch(events.value, () => { eventsError.value = ''; });
+watch(() => events.value, () => { eventsError.value = ''; });
 </script>
 
 <template>
@@ -96,18 +87,21 @@ watch(events.value, () => { eventsError.value = ''; });
     :title="$t('modalTitle')"
     @close="emit('close')"
   >
-    <div class="space-y-3">
+    <GenericForm
+      ref="formRef"
+      class="space-y-3"
+    >
       <GenericInput
         v-model="url"
         :label="$t('form.url.label')"
         :placeholder="$t('form.url.placeholder')"
-        :error="urlError"
+        :validations="urlValidations"
       />
       <GenericInput
         v-model="name"
         :label="$t('form.name.label')"
         :placeholder="$t('form.name.placeholder')"
-        :error="nameError"
+        :validations="nameValidations"
       />
       <GenericTextArea
         v-model="description"
@@ -129,7 +123,7 @@ watch(events.value, () => { eventsError.value = ''; });
       >
         {{ eventsError }}
       </p>
-    </div>
+    </GenericForm>
     <div class="w-full flex justify-end">
       <button
         :disabled="loading"

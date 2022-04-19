@@ -1,21 +1,36 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRegistration } from '@/composables/registration';
+import {
+  ValidatePropType,
+  ModelValuePropType,
+  makeValidatedModelPropsDefaults,
+  useValidatedModel,
+} from '@/composables/validatedModel';
 
-const props = defineProps<{
-  modelValue: string,
+const props = withDefaults(defineProps<{
   label?: string,
   placeholder?: string,
   error?: string,
   rightText?: string,
   rightHref?: string,
-}>();
+  // Validated Model
+  modelValue: ModelValuePropType<string>,
+  validations?: ValidatePropType<string>,
+}>(), { ...makeValidatedModelPropsDefaults<string>() });
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
-const labelColorClasses = computed(() => (props.error ? 'text-red-700' : 'text-sec-cap-txt-color'));
+useRegistration();
+
+const {
+  startValidating, valid, internalValid, error,
+} = useValidatedModel(props);
+
+const labelColorClasses = computed(() => (internalValid.value ? 'text-sec-cap-txt-color' : 'text-red-700'));
 
 const inputColorClasses = computed(() => {
-  if (props.error) {
+  if (!internalValid.value) {
     return `
       text-red-900 bg-red-50 border-red-500 placeholder-red-700
       focus:ring-red-500 focus:border-red-500
@@ -32,6 +47,8 @@ const hasRightLink = computed(() => props.rightText && props.rightHref);
 const onInput = ($event: Event) => {
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
+
+defineExpose({ valid });
 </script>
 
 <template>
@@ -49,24 +66,25 @@ const onInput = ($event: Event) => {
         v-if="hasRightLink"
         :href="props.rightHref"
         class="font-medium text-primary-main text-sm"
-        tabIndex="-1"
       >
         {{ props.rightText }}
       </a>
     </span>
-    <input
-      data-test="input"
+    <textarea
+      data-test="textarea"
+      rows="4"
       :class="`
         block w-full px-3 py-2 border rounded-md text-sm shadow-sm focus:outline-none
-        focus:ring-1 h-12 ${inputColorClasses}
+        focus:ring-1 resize-none ${inputColorClasses}
       `"
       :placeholder="props.placeholder"
       :value="props.modelValue"
       v-bind="$attrs"
       @input="onInput"
-    >
+      @blur="startValidating"
+    />
     <p
-      v-if="error"
+      v-if="!internalValid"
       class="mt-1 text-sm text-danger-main"
     >
       {{ error }}

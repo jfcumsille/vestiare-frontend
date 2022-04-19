@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
-import GenericInput from '@/components/GenericInput.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import { AxiosError } from 'axios';

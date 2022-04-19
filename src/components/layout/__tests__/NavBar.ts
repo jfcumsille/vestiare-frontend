@@ -16,6 +16,7 @@ const getWrapper = () => {
   });
   return wrapper;
 };
+
 describe('NavBar', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
