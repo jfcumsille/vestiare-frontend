@@ -9,7 +9,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'open-modal'): void,
-  (e: 'create'): void,
 }>();
 
 const $t = useTranslation('views.webhookEndpoints.creation');

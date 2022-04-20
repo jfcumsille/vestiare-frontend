@@ -5,13 +5,12 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
-import { CountryCode, Product, Mode } from '@/interfaces/utilities/enums';
+import { CountryCode, Product } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import {
   MODAL_VIEWED,
   MODAL_CLOSED,
   LINK_CREATED,
-  ENVIRONMENT_CHANGED,
   LINKS_VIEWED,
 } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
@@ -67,10 +66,6 @@ const trackLinkCreated = (link: Link, product: Product) => {
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
-  track(ENVIRONMENT_CHANGED, {
-    mode: live.value ? Mode.Live : Mode.Test,
-    location: 'links',
-  });
 };
 
 const linkCreationButtonText = computed(() => {
@@ -181,7 +176,9 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
+  <div
+    data-test="links-view"
+    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
     <CreateLinkModal
       v-if="isCreateLinkOpened"
       :live="live"
@@ -211,6 +208,7 @@ onMounted(async () => {
         />
 
         <button
+          data-test="create-link-button"
           class="items-center px-6 py-2 text-sm font-medium text-center
                     rounded-md text-white bg-primary-main hover:bg-primary-hover
                     disabled:cursor-default shadow-md

@@ -3,13 +3,11 @@ import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import {
-  ENVIRONMENT_CHANGED,
   MODAL_VIEWED,
   MODAL_CLOSED,
   WEBHOOK_ENDPOINTS_VIEWED,
 } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
-import { Mode } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -25,10 +23,6 @@ const $webhookEndpointsStore = useWebhookEndpointsStore();
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
-  track(ENVIRONMENT_CHANGED, {
-    mode: live.value ? Mode.Live : Mode.Test,
-    location: 'webhook_endpoints',
-  });
 };
 
 const tableHeaders = [
@@ -75,7 +69,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
+  <div
+    data-test="webhook-endpoints-view"
+    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full"
+  >
     <WebhookEndpointCreationModal
       v-if="modalOpened"
       :live="live"
@@ -88,6 +85,7 @@ onMounted(async () => {
           @toggle-live="toggleLive"
         />
         <WebhookEndpointCreationButton
+          data-test="webhook-create-button"
           :live="live"
           :modal-opened="modalOpened"
           @open-modal="() => setModalOpened(true)"

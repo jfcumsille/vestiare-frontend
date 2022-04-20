@@ -59,12 +59,12 @@ const signUp = async () => {
       company: company.value,
     });
     completed.value = true;
+    track(USER_SIGNED_UP);
   } catch {
     error.value = true;
     completed.value = false;
   } finally {
     loading.value = false;
-    track(USER_SIGNED_UP);
   }
 };
 
@@ -72,12 +72,9 @@ const resendVerificationEmail = async () => {
   try {
     await $store.sendConfirmationEmail(email.value);
     isEmailResent.value = true;
+    track(EMAIL_SENT, { type: 'resend_verification_email' });
   } catch {
     error.value = true;
-  } finally {
-    track(EMAIL_SENT, {
-      type: 'resend_verification_email',
-    });
   }
 };
 
@@ -91,7 +88,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-full w-full flex justify-center overflow-x-hidden">
+  <div
+    data-test="sign-up-view"
+    class="h-full w-full flex justify-center overflow-x-hidden"
+  >
     <div
       v-if="!completed"
       class="relative flex flex-col lg:flex-row items-start justify-center px-20 pb-20 pt-12"
@@ -202,6 +202,7 @@ onMounted(async () => {
 
             <div>
               <button
+                data-test="sign-up-button"
                 class="
                   flex mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
                   rounded text-white bg-primary-main hover:bg-primary-hover
@@ -323,6 +324,7 @@ onMounted(async () => {
           <div class="text-center font-light mt-4 text-body-color">
             {{ $tSignUp('didntReceive') }}
             <button
+              data-test="resend-verify-email-button"
               class="text-primary-main font-normal disabled:text-disabled-color"
               :disabled="isEmailResent"
               @click="resendVerificationEmail"

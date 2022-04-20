@@ -31,6 +31,7 @@ const logIn = async () => {
   try {
     await userStore.logIn({ email: email.value, password: password.value });
     toStoredRedirectionOrHome(router);
+    track(USER_LOGGED_IN);
   } catch (err) {
     const loginError = err as AxiosError;
     const codeError = loginError?.response?.data?.error?.code;
@@ -41,7 +42,6 @@ const logIn = async () => {
     }
   } finally {
     loading.value = false;
-    track(USER_LOGGED_IN);
   }
 };
 
@@ -56,7 +56,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="md:p-20 py-20 px-10 h-full w-full flex justify-center overflow-x-hidden">
+  <div
+    data-test="login-view"
+    class="md:p-20 py-20 px-10 h-full w-full flex justify-center overflow-x-hidden"
+  >
     <div class="relative w-full max-w-md min-w-min">
       <Circle
         class="w-72 absolute top-0 right-0 -mr-28 -mt-10 z-0"
@@ -122,6 +125,7 @@ onMounted(async () => {
           </div>
 
           <button
+            data-test="login-button"
             class="
                 mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
                 rounded text-white bg-primary-main hover:bg-primary-hover

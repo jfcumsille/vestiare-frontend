@@ -62,7 +62,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex items-center">
+  <div
+    data-test="api-keys-view"
+    class="flex items-center"
+  >
     <div class="h-full w-full flex justify-center min-w-fit">
       <div
         v-if="apiKeysStore.loading"

@@ -132,6 +132,7 @@ watch(() => events.value, () => { eventsError.value = ''; });
     </GenericForm>
     <div class="w-full flex justify-end">
       <button
+        data-test="create-webhook-button"
         :disabled="loading"
         type="button"
         class="

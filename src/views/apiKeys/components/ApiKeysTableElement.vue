@@ -104,6 +104,7 @@ const handleEndHoverIcon = () => {
     <td class="font-normal m-2">
       <button
         v-if="activationRequired"
+        data-test="activate-key-button"
         class="bg-primary-main hover:bg-primary-hover w-full px-5 py-3 rounded-md text-white"
         @click="handleActivateKey"
       >
@@ -161,6 +162,7 @@ const handleEndHoverIcon = () => {
     <td class="justify-center w-10">
       <div ref="configKeysModal">
         <ThreeDots
+          data-test="more-options-button"
           class="cursor-pointer h-6 w-full pl-1 pr-3"
           :class="{'hidden': hideConfigKey}"
           @click="toggleShowConfigKeys"
@@ -173,6 +175,7 @@ const handleEndHoverIcon = () => {
           "
         >
           <button
+            data-test="delete-key-button"
             class="text-primary-main hover:text-primary-hover"
             @click="handleDeleteKey"
           >

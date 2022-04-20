@@ -14,6 +14,7 @@ export const API_KEY_DELETED = 'API Key Deleted';
 
 export const LINK_CREATED = 'Link Created';
 export const LINK_DELETED = 'Link Deleted';
+export const LINK_REFRESHED = 'Link Refreshed';
 export const LINK_ACTIVE_CHANGED = 'Link Active Changed';
 export const REFRESH_LINK_CLICKED = 'Refresh Link Clicked';
 

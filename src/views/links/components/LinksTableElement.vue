@@ -11,7 +11,7 @@ import {
   MODAL_CLOSED,
   LINK_ACTIVE_CHANGED,
   LINK_DELETED,
-  REFRESH_LINK_CLICKED,
+  LINK_REFRESHED,
 } from '@/constants/analyticsEvents';
 import { track } from '@/services/analytics';
 import GenericToggle from '@/components/GenericToggle.vue';
@@ -49,25 +49,27 @@ const passwordBadgeText = computed(() => (
 ));
 const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : 'green'));
 
-const trackDeleteLinkModal = (opened: boolean) => {
+const trackLinkModal = (opened: boolean, action: string) => {
   if (opened) {
     track(MODAL_VIEWED, {
       location: 'links',
-      action: 'delete',
+      action,
     });
   } else {
     track(MODAL_CLOSED, {
       location: 'links',
-      action: 'delete',
+      action,
     });
   }
 };
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
-  trackDeleteLinkModal(value);
+  trackLinkModal(value, 'delete');
 };
+
 const setRefreshModalOpened = (value: boolean) => {
   refreshModalOpened.value = value;
+  trackLinkModal(value, 'refresh');
 };
 
 const openRefreshModal = () => {
@@ -82,8 +84,9 @@ const refresh = async () => {
     { preventRefresh: false },
   );
   setRefreshModalOpened(false);
-  track(REFRESH_LINK_CLICKED, {
+  track(LINK_REFRESHED, {
     id: props.link.id,
+    origin: 'dashboard',
   });
 };
 
@@ -113,6 +116,7 @@ const remove = async () => {
 <template>
   <DeleteLinkModal
     v-if="deleteModalOpened"
+    data-test="remove-link"
     @close="() => setDeleteModalOpened(false)"
     @remove="remove"
   />
@@ -175,6 +179,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm text-body-color whitespace-nowrap">
       <GenericBadge
+        data-test="credentials-validity-badge"
         :class="{'cursor-pointer': props.link.preventRefresh}"
         :text="passwordBadgeText"
         :color="passwordBadgeColor"
@@ -183,6 +188,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm text-body-color whitespace-nowrap">
       <GenericToggle
+        data-test="link-active-toggle"
         :active="props.link.active"
         :loading="updating"
         @toggle="toggleActive"
@@ -190,6 +196,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
+        data-test="remove-link-button"
         class="text-danger-main cursor-pointer hover:underline"
         @click="() => setDeleteModalOpened(true)"
       >{{ $t('buttons.remove') }}</a>
