@@ -20,7 +20,7 @@ const onInput = ($event: Event) => {
   <div class="relative">
     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
       <svg
-        class="w-5 h-5 text-gray-500"
+        class="w-5 h-5 text-body-color"
         fill="currentColor"
         viewBox="0 0 20 20"
         xmlns="http://www.w3.org/2000/svg"
@@ -36,9 +36,9 @@ const onInput = ($event: Event) => {
     <input
       type="text"
       class="
-          bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+          bg-light-gray border border-border-color text-heading-color text-sm rounded-lg
           focus:outline-none focus:ring-1 block w-80 pl-10 p-2.5
-          focus:ring-blue-500 focus:border-blue-500
+          focus:ring-primary-focus focus:border-primary-border
         "
       :placeholder="props.placeholder"
       :value="props.modelValue"

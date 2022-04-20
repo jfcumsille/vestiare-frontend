@@ -5,7 +5,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <thead class="bg-gray-100">
+  <thead class="bg-light-gray">
     <tr>
       <th
         v-for="header in props.headers"
@@ -13,7 +13,7 @@ const props = defineProps<{
         scope="col"
         class="
           py-3 px-4 text-xs font-medium tracking-wider
-          text-left text-gray-700 uppercase min-w-max whitespace-nowrap
+          text-left text-body-color uppercase min-w-max whitespace-nowrap
         "
       >
         {{ header }}

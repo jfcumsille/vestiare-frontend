@@ -20,7 +20,7 @@ const colorClasses = computed(() => {
   if (props.active) {
     return 'bg-primary-main';
   }
-  return 'bg-gray-200';
+  return 'bg-light-gray';
 });
 const translatedClass = computed(() => (props.active ? 'translate-x-full' : ''));
 const loadingClasses = computed(() => (props.loading ? 'opacity-75 cursor-default' : ''));

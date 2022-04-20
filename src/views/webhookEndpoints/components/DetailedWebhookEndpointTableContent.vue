@@ -28,25 +28,25 @@ const revealWebhookEndpointSecret = async () => {
 </script>
 
 <template>
-  <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
-      <p class="text-gray-900">
+  <tr class="bg-white border-b hover:bg-light-gray">
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <p class="text-heading-color">
         {{ $t('headers.url') }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      <p class="font-normal text-gray-600">
+    <td class="py-4 px-6 text-sm whitespace-nowrap">
+      <p class="font-normal text-body-color">
         {{ props.webhookEndpoint.url }}
       </p>
     </td>
   </tr>
-  <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
-      <p class="text-gray-900">
+  <tr class="bg-white border-b hover:bg-light-gray">
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <p class="text-heading-color">
         {{ $t('headers.mode') }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+    <td class="py-4 px-6 text-sm whitespace-nowrap">
       <GenericBadge
         :text="props.webhookEndpoint.mode"
         class="capitalize"
@@ -54,13 +54,13 @@ const revealWebhookEndpointSecret = async () => {
       />
     </td>
   </tr>
-  <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
-      <p class="text-gray-900">
+  <tr class="bg-white border-b hover:bg-light-gray">
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <p class="text-heading-color">
         {{ $t('headers.active') }}?
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+    <td class="py-4 px-6 text-sm whitespace-nowrap">
       <GenericBadge
         :text="props.webhookEndpoint.status === 'enabled' ? 'active' : 'inactive'"
         class="capitalize"
@@ -68,61 +68,64 @@ const revealWebhookEndpointSecret = async () => {
       />
     </td>
   </tr>
-  <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
-      <p class="text-gray-900">
+  <tr class="bg-white border-b hover:bg-light-gray">
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <p class="text-heading-color">
         {{ $t('headers.webhookEndpointSecret') }}
       </p>
     </td>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
-      <p v-if="secret">
+      <p
+        v-if="secret"
+        class="text-body-color"
+      >
         {{ secret }}
       </p>
       <a
         v-else
         class="
           px-4 py-2 rounded-md cursor-pointer
-          text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
+          text-primary-main bg-primary-main/20 hover:bg-primary-hover/10
         "
         @click="revealWebhookEndpointSecret"
       >{{ $t('buttons.revealWebhookEndpointSecret') }}</a>
     </td>
   </tr>
-  <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
-      <p class="text-gray-900">
+  <tr class="bg-white border-b hover:bg-light-gray">
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <p class="text-heading-color">
         {{ $t('headers.name') }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      <p class="font-normal text-gray-600">
+    <td class="py-4 px-6 text-sm whitespace-nowrap">
+      <p class="font-normal text-body-color">
         {{ props.webhookEndpoint.name }}
       </p>
     </td>
   </tr>
-  <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
-      <p class="text-gray-900">
+  <tr class="bg-white border-b hover:bg-light-gray">
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <p class="text-heading-color">
         {{ $t('headers.description') }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
-      <p class="font-normal text-gray-600">
+    <td class="py-4 px-6 text-sm whitespace-nowrap">
+      <p class="font-normal text-body-color">
         {{ props.webhookEndpoint.description }}
       </p>
     </td>
   </tr>
-  <tr class="bg-white border-b hover:bg-gray-100">
-    <td class="py-4 px-6 text-sm font-medium text-gray-500 whitespace-nowrap">
-      <p class="text-gray-900">
+  <tr class="bg-white border-b hover:bg-light-gray">
+    <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
+      <p class="text-heading-color">
         {{ $t('headers.types') }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+    <td class="py-4 px-6 text-sm whitespace-nowrap">
       <p
         v-for="event in props.webhookEndpoint.enabledEvents"
         :key="event"
-        class="font-normal text-gray-600"
+        class="font-normal text-body-color"
       >
         {{ event }}
       </p>

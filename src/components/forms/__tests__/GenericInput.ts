@@ -86,7 +86,7 @@ describe('GenericInput', () => {
     });
     const input = wrapper.find('[data-test="input"]');
 
-    expect(input.classes().filter((cls) => cls.includes('red')).length).toBe(0);
+    expect(input.classes().filter((cls) => cls.includes('danger')).length).toBe(0);
   });
 
   it('starts validating when on blur', async () => {
@@ -106,7 +106,7 @@ describe('GenericInput', () => {
     // may be wrong for that milisecond
     await artificialWait();
 
-    expect(input.classes().some((cls) => cls.includes('red'))).toBe(true);
+    expect(input.classes().some((cls) => cls.includes('danger'))).toBe(true);
     expect(wrapper.vm.valid).toBe(false);
   });
 });

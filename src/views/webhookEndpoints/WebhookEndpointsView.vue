@@ -84,7 +84,7 @@ const webhookEndpoints = computed(
       v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
       class="flex justify-center w-full pt-4"
     >
-      <p class="text-gray-900 text-3xl font-bold">
+      <p class="text-heading-color text-3xl font-bold">
         {{ $t('table.noWebhookEndpointsFound') }}
       </p>
     </div>

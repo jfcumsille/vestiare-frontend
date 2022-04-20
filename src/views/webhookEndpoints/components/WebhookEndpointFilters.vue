@@ -11,7 +11,7 @@ const emit = defineEmits<{
 <template>
   <div class="flex my-auto">
     <p
-      class="pr-4 text-gray-900 text-md font-medium"
+      class="pr-4 text-heading-color text-md font-medium"
       :class="{ 'opacity-25': live }"
     >
       Test
@@ -21,7 +21,7 @@ const emit = defineEmits<{
       @toggle="() => emit('toggle-live')"
     />
     <p
-      class="pl-4 text-gray-900 text-md font-medium"
+      class="pl-4 text-heading-color text-md font-medium"
       :class="{ 'opacity-25': !live }"
     >
       Live

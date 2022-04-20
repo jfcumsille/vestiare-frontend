@@ -169,7 +169,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
           class="items-center px-6 py-2 text-sm font-medium text-center
                     rounded-md text-white bg-primary-main hover:bg-primary-hover
                     disabled:cursor-default shadow-md
-                    disabled:bg-gray-300 min-w-fit ml-4"
+                    disabled:bg-light-gray disabled:text-disabled-color min-w-fit ml-4"
           :title="linkCreationButtonText"
           @click="setCreateLinkOpened(true)"
         >
@@ -200,7 +200,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
       v-if="!filteredLinks.length && !$linksStore.loading"
       class="flex justify-center w-full pt-4"
     >
-      <p class="text-gray-900 text-3xl font-bold">
+      <p class="text-heading-color text-3xl font-bold">
         {{ $t('table.noLinksFound') }}
       </p>
     </div>

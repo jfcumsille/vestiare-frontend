@@ -90,14 +90,14 @@ onMounted(async () => {
     :title="title"
     @close="emit('close')"
   >
-    <div class="space-y-3 text-body-txt-color">
+    <div class="space-y-3 text-body-color">
       <div
         v-if="props.live"
-        class="text-left text-body-txt-color font-light"
+        class="text-left text-body-color font-light"
       >
         {{ $t('subtitleLive') }}
         <a
-          class="text-primary-main font-medium cursor-pointer"
+          class="text-primary-main font-medium cursor-pointer hover:text-primary-hover"
           :href="DOCS_LINKS"
           target="_blank"
           rel="noopener noreferrer"
@@ -107,11 +107,11 @@ onMounted(async () => {
       </div>
       <div
         v-else
-        class="text-left text-body-txt-color font-light"
+        class="text-left text-body-color font-light"
       >
         {{ $t('subtitleTest') }}
         <a
-          class="text-primary-main font-medium cursor-pointer"
+          class="text-primary-main font-medium cursor-pointer hover:text-primary-hover"
           :href="DOCS_SANDBOX"
           target="_blank"
           rel="noopener noreferrer"
@@ -120,7 +120,7 @@ onMounted(async () => {
         </a>
       </div>
       <div>
-        <div class="font-medium text-body-txt-color text-sm mb-1">
+        <div class="font-medium text-body-color text-sm mb-1">
           {{ $t('country') }}
         </div>
         <select
@@ -128,8 +128,8 @@ onMounted(async () => {
           class="
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
-            w-full border text-body-txt-color bg-white hover:bg-gray-100
-            focus:ring-bg-gray-300 border-slate-300
+            w-full border text-body-color bg-white hover:bg-light-gray
+            focus:ring-primary-focus border-border-color
           "
         >
           <option
@@ -148,7 +148,7 @@ onMounted(async () => {
         </select>
       </div>
       <div>
-        <div class="font-medium text-body-txt-color text-sm mb-1">
+        <div class="font-medium text-body-color text-sm mb-1">
           {{ $t('api') }}
         </div>
         <select
@@ -156,8 +156,8 @@ onMounted(async () => {
           class="
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
-            w-full border text-body-txt-color bg-white hover:bg-gray-100
-            focus:ring-bg-gray-300 border-slate-300
+            w-full border text-body-color bg-white hover:bg-light-gray
+            focus:ring-primary-focus border-border-color
           "
           @change="handleChangeAPI"
         >
@@ -177,7 +177,7 @@ onMounted(async () => {
         </select>
       </div>
       <div>
-        <div class="font-medium text-body-txt-color text-sm mb-1">
+        <div class="font-medium text-body-color text-sm mb-1">
           {{ $t('holderType') }}
         </div>
         <select
@@ -185,8 +185,8 @@ onMounted(async () => {
           class="
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
-            w-full border text-body-txt-color bg-white hover:bg-gray-100
-            focus:ring-bg-gray-300 border-slate-300 capitalize
+            w-full border text-body-color bg-white hover:bg-light-gray
+            focus:ring-primary-focus border-border-color
           "
         >
           <option
@@ -213,7 +213,7 @@ onMounted(async () => {
           mt-5 items-center px-6 py-2 text-sm font-medium text-center
           rounded-md text-white bg-primary-main hover:bg-primary-hover
           disabled:cursor-default shadow-md
-          disabled:bg-gray-300
+          disabled:bg-disabled-color
         "
         :class="{ 'opacity-50': disabledButton }"
         @click="openWidget"

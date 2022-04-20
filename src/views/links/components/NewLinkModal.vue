@@ -34,14 +34,14 @@ const copyKey = () => {
     <div class="space-y-5">
       <div class="flex flex-row bg-warning-surface p-2 rounded-md">
         <WarningIcon class="mt-1 ml-1" />
-        <div class="ml-2 text-body-txt-color font-light">
+        <div class="ml-2 text-body-color font-light">
           {{ $t('warning') }}
         </div>
       </div>
-      <div class="ml-2 text-left text-body-txt-color font-light">
+      <div class="ml-2 text-left text-body-color font-light">
         {{ $t('subtitle') }}
         <a
-          class="text-primary-main font-medium cursor-pointer"
+          class="text-primary-main font-medium cursor-pointer hover:text-primary-hover"
           :href="DOCS_LINK_TOKEN"
           target="_blank"
           rel="noopener noreferrer"
@@ -52,8 +52,8 @@ const copyKey = () => {
       <div class="flex flex-row justify-center relative">
         <div
           class="
-            bg-gray-100 rounded-md px-4 py-2 min-w-sm
-            text-center text-body-txt-color text-xs
+            bg-light-gray rounded-md px-4 py-2 min-w-sm
+            text-center text-body-color text-xs
           "
         >
           <code v-if="!loading">

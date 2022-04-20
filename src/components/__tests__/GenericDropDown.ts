@@ -70,11 +70,10 @@ describe('GenericDropDown', () => {
     });
 
     const button = wrapper.find('[data-test="drop-down-button"]');
-    expect(button.classes().find((cls) => cls.includes('text-body-txt-color'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('text-body-color'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-white'))).not.toBeUndefined();
-    expect(button.classes().find((cls) => cls.includes('bg-gray-100'))).not.toBeUndefined();
-    expect(button.classes().find((cls) => cls.includes('bg-gray-300'))).not.toBeUndefined();
-    expect(button.classes().find((cls) => cls.includes('border-slate-300'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('bg-light-gray'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('border-border-color'))).not.toBeUndefined();
   });
 
   it('renders primary colors for button when isPrimaryColor is true', () => {
@@ -90,8 +89,8 @@ describe('GenericDropDown', () => {
     const button = wrapper.find('[data-test="drop-down-button"]');
     expect(button.classes().find((cls) => cls.includes('text-white'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('bg-primary-main'))).not.toBeUndefined();
-    expect(button.classes().find((cls) => cls.includes('bg-primary-main-hover'))).not.toBeUndefined();
-    expect(button.classes().find((cls) => cls.includes('ring-primary-border'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('bg-primary-hover'))).not.toBeUndefined();
+    expect(button.classes().find((cls) => cls.includes('ring-primary-focus'))).not.toBeUndefined();
     expect(button.classes().find((cls) => cls.includes('border-primary-border'))).not.toBeUndefined();
   });
 });

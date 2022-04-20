@@ -16,8 +16,8 @@ const emit = defineEmits<{(e: 'select', selected: string): void }>();
 
 const colorClasses = computed(() => (
   props.isColorPrimary
-    ? 'text-white bg-primary-main hover:bg-primary-main-hover focus:ring-primary-border border-primary-border'
-    : 'text-body-txt-color bg-white hover:bg-gray-100 focus:ring-bg-gray-300 border-slate-300'
+    ? 'text-white bg-primary-main hover:bg-primary-hover focus:ring-primary-focus border-primary-border'
+    : 'text-body-color bg-white hover:bg-light-gray focus:ring-light-gray border-border-color'
 ));
 
 const opened = ref(false);
@@ -62,7 +62,7 @@ onClickOutside(dropDown, () => {
       data-test="drop-down-list"
       class="
         absolute z-10 text-base list-none bg-white rounded cursor-pointer
-        divide-y divide-gray-100 shadow-lg
+        divide-y divide-divider-color shadow-lg
       "
       :class="{ hidden: !opened }"
     >
@@ -72,7 +72,7 @@ onClickOutside(dropDown, () => {
           :key="option"
         >
           <span
-            class="block py-2 px-4 text-sm text-gray-700 font-normal hover:bg-gray-100"
+            class="block py-2 px-4 text-sm text-body-color font-normal hover:bg-light-gray"
             @click="() => select(option)"
           >
             {{ option }}

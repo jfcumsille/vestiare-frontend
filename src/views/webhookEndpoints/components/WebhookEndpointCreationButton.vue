@@ -22,10 +22,10 @@ const disabledButton = computed(() => props.modalOpened);
     :disabled="disabledButton"
     type="button"
     class="
-      py-2.5 px-5 text-sm font-medium text-gray-900 bg-white
-      rounded-lg border border-gray-200 hover:bg-gray-100
-      hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700
-      focus:text-blue-700 inline-flex items-center min-w-max ml-6
+      py-2.5 px-5 text-sm font-medium text-heading-color bg-white
+      rounded-lg border border-gray-200 hover:bg-light-gray
+      hover:text-primary-main focus:z-10 focus:ring-2 focus:ring-primary-focus
+      focus:text-primary-main inline-flex items-center min-w-max ml-6
     "
     :class="{ 'opacity-50': disabledButton }"
     @click="emit('open-modal')"
