@@ -23,7 +23,6 @@ export default <WebhookEndpointsViewLocale>{
       remove: 'Remove',
       revealWebhookEndpointSecret: 'Reveal',
     },
-    noWebhookEndpointsFound: 'No Webhook Endpoints found!',
   },
   details: 'Details',
   testWebhook: {
@@ -60,5 +59,11 @@ export default <WebhookEndpointsViewLocale>{
         required: 'Required',
       },
     },
+  },
+  emptyView: {
+    noWebhookEndpointsFound: 'You have no Webhooks connected. Here is an example of what you could have:',
+    externalFront: 'External Front',
+    customerChanges: 'Customer resets bank password',
+    yourBackend: 'Your backend',
   },
 };

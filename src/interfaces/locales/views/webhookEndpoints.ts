@@ -17,7 +17,6 @@ export interface WebhookEndpointsViewLocale {
       remove: string,
       revealWebhookEndpointSecret: string,
     },
-    noWebhookEndpointsFound: string,
   },
   details: string,
   testWebhook: {
@@ -48,4 +47,10 @@ export interface WebhookEndpointsViewLocale {
       },
     },
   },
+  emptyView: {
+    noWebhookEndpointsFound: string,
+    externalFront: string,
+    customerChanges: string,
+    yourBackend: string,
+  }
 }

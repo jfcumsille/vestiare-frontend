@@ -5,13 +5,14 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_WEBHOOKS } from '@/constants/urls';
 import { page, trackModal } from '@/services/analytics';
-import { ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
+import NoWebhookEndpointsContent from './components/noWebhookEndpointsContent.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
 
@@ -49,7 +50,7 @@ onMounted(() => {
       v-if="modalOpened"
       @close="() => setModalOpened(false)"
     />
-    <div class="flex flex-col w-full">
+    <div class="w-full">
       <div class="flex justify-between">
         <div class="font-medium text-2xl text-heading-color self-start">
           {{ $t('title') }}
@@ -60,25 +61,25 @@ onMounted(() => {
           :text="$t('creation.buttonText')"
           :disabled="modalOpened"
           icon-name="add"
-          :icon-position="HorizontalPositionType.Right"
+          class="px-6"
           @click="() => setModalOpened(true)"
         />
       </div>
-      <div class="flex justify-between items-end">
+      <div class="flex justify-between mt-2">
         <div
-          class="text-body-color font-light max-w-2xl pr-2"
+          v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
+          class="text-body-color font-light max-w-3xl"
         >
           {{ $t('subtitle') }}
         </div>
-        <div>
-          <a
-            class="text-primary-main hover:text-primary-hover"
-            :href="DOCS_WEBHOOKS"
-            target="_blank"
-          >
-            {{ $t('whatisAWebhookEndpoint') }}
-          </a>
-        </div>
+        <a
+          v-else
+          class="text-primary-main hover:text-primary-hover"
+          :href="DOCS_WEBHOOKS"
+          target="_blank"
+        >
+          {{ $t('whatisAWebhookEndpoint') }}
+        </a>
         <a
           class="text-primary-main hover:text-primary-hover"
           :href="DOCS_WEBHOOKS"
@@ -87,7 +88,11 @@ onMounted(() => {
           {{ $t('learnMore') }}
         </a>
       </div>
-      <GenericTable class="mt-6">
+
+      <GenericTable
+        v-if="webhookEndpoints.length"
+        class="mt-6"
+      >
         <template #header>
           <GenericTableHeader :headers="tableHeaders" />
         </template>
@@ -107,13 +112,8 @@ onMounted(() => {
     >
       <LoadingSpinner />
     </div>
-    <div
+    <NoWebhookEndpointsContent
       v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
-      class="flex justify-center w-full pt-4"
-    >
-      <p class="text-heading-color text-3xl font-bold">
-        {{ $t('table.noWebhookEndpointsFound') }}
-      </p>
-    </div>
+    />
   </div>
 </template>
