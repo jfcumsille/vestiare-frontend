@@ -185,6 +185,8 @@ onMounted(async () => {
                     <a
                       class="text-primary-main"
                       :href="TERMS_AND_CONDITIONS"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {{ $tSignUp('terms') }}
                     </a>
@@ -192,6 +194,8 @@ onMounted(async () => {
                     <a
                       class="text-primary-main"
                       :href="PRIVACY_POLICY"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {{ $tSignUp('privacyPolicy') }}
                     </a>
@@ -280,6 +284,8 @@ onMounted(async () => {
           <a
             class="mt-4 text-primary-main font-medium z-10"
             :href="CONTACT"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {{ $tSignUp('contactSales') }}
           </a>
