@@ -44,7 +44,7 @@ describe('WebhookEndpointsView', () => {
       const wrapper = getWrapper();
       const webhookEndpointsView = wrapper.find('[data-test="webhook-endpoints-view"]');
       expect(webhookEndpointsView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED);
+      expectToTrackPageWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'main' });
     });
   });
 

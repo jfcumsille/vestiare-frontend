@@ -16,7 +16,6 @@ export const LINK_CREATED = 'Link Created';
 export const LINK_DELETED = 'Link Deleted';
 export const LINK_REFRESHED = 'Link Refreshed';
 export const LINK_ACTIVE_CHANGED = 'Link Active Changed';
-export const REFRESH_LINK_CLICKED = 'Refresh Link Clicked';
 
 export const WEBHOOK_ENDPOINT_CREATED = 'Webhook Endpoint Created';
 export const WEBHOOK_ENDPOINT_DELETED = 'Webhook Endpoint Deleted';

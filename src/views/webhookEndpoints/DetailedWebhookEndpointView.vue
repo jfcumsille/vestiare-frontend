@@ -44,39 +44,41 @@ onMounted(async () => {
 </script>
 
 <template>
-  <TestWebhookModal
-    v-if="showWebhookModal"
-    :webhook-endpoint="webhookEndpoint!"
-    @close="toggleWebhookModal"
-  />
-  <div class="flex justify-center w-full">
-    <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
-      <template #header>
-        <GenericTableHeader :headers="[$t('details'), '']" />
-      </template>
+  <div data-test="detailed-webhook-endpoints-view">
+    <TestWebhookModal
+      v-if="showWebhookModal"
+      :webhook-endpoint="webhookEndpoint!"
+      @close="toggleWebhookModal"
+    />
+    <div class="flex justify-center w-full">
+      <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
+        <template #header>
+          <GenericTableHeader :headers="[$t('details'), '']" />
+        </template>
 
-      <template #content>
-        <DetailedWebhookEndpointTableContent
-          v-if="webhookEndpoint !== undefined"
-          :webhook-endpoint="webhookEndpoint"
-        />
-      </template>
-    </GenericTable>
-  </div>
-  <div
-    v-if="showTestButton"
-    class="flex justify-center w-full"
-  >
-    <div class="grow mt-6 mx-4 max-w-screen-xl">
-      <button
-        class="
-            h-12 mt-1 ml-2 px-4 rounded-md cursor-pointer
-            text-primary-main bg-primary-main/20 hover:bg-primary-hover/10
-          "
-        @click="toggleWebhookModal"
-      >
-        {{ $t('testWebhook.buttonText') }}
-      </button>
+        <template #content>
+          <DetailedWebhookEndpointTableContent
+            v-if="webhookEndpoint !== undefined"
+            :webhook-endpoint="webhookEndpoint"
+          />
+        </template>
+      </GenericTable>
+    </div>
+    <div
+      v-if="showTestButton"
+      class="flex justify-center w-full"
+    >
+      <div class="grow mt-6 mx-4 max-w-screen-xl">
+        <button
+          class="
+              h-12 mt-1 ml-2 px-4 rounded-md cursor-pointer
+              text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
+            "
+          @click="toggleWebhookModal"
+        >
+          {{ $t('testWebhook.buttonText') }}
+        </button>
+      </div>
     </div>
   </div>
 </template>

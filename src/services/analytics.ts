@@ -12,10 +12,10 @@ export const identify = (user: User) => {
   });
 };
 
-export const page = (name: string) => {
-  window.analytics.page(name);
+export const page = (name: string, properties?: Record<string, unknown>) => {
+  window.analytics.page(name, properties);
 };
 
-export const track = (name: string, properties: Record<string, string>) => {
+export const track = (name: string, properties?: Record<string, unknown>) => {
   window.analytics.track(name, properties);
 };

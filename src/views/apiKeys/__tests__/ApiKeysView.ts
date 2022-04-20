@@ -171,7 +171,7 @@ describe('ApiKeysView', () => {
 
       await wrapper.vm.$forceUpdate();
 
-      expectToTrackWithAnalytics(analyticsTrackMock, API_KEY_DELETED, { id: 'secret_live_key_2', mode: 'live', is_public: false });
+      expectToTrackWithAnalytics(analyticsTrackMock, API_KEY_DELETED, { id: 'secret_live_key_2', mode: 'live', is_public: 'false' });
     });
   });
 
@@ -278,7 +278,7 @@ describe('ApiKeysView', () => {
       expect(activateKeyButton.exists()).toBe(true);
       await activateKeyButton.trigger('click');
       await wrapper.vm.$forceUpdate();
-      expectToTrackWithAnalytics(analyticsTrackMock, API_KEY_CREATED, { mode: 'live', is_public: false });
+      expectToTrackWithAnalytics(analyticsTrackMock, API_KEY_CREATED, { mode: 'live', is_public: 'false' });
     });
   });
 });

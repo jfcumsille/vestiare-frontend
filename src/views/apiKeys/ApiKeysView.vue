@@ -35,7 +35,7 @@ const createAPIKey = async () => {
   await apiKeysStore.createAPIKey();
   track(API_KEY_CREATED, {
     mode: Mode.Live,
-    is_public: false,
+    is_public: 'false',
   });
 };
 const destroyAPIKey = async (key: APIKey) => {
@@ -43,7 +43,7 @@ const destroyAPIKey = async (key: APIKey) => {
   track(API_KEY_DELETED, {
     id: key.id,
     mode: key.mode,
-    is_public: key.isPublic,
+    is_public: key.isPublic.toString(),
   });
 };
 

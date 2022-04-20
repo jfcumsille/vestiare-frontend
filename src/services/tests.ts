@@ -5,8 +5,9 @@ type MockFunction = () => void;
 export const expectToTrackPageWithAnalytics = (
   mockFunction: MockFunction,
   name: string,
+  properties?: Record<string, unknown>,
 ) => {
-  expect(mockFunction).toHaveBeenLastCalledWith(name);
+  expect(mockFunction).toHaveBeenLastCalledWith(name, properties);
 };
 
 export const expectToTrackWithAnalytics = (
