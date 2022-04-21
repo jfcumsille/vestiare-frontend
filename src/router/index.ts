@@ -20,20 +20,24 @@ import { handleAuth0RedirectCallback } from './handlers';
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: () => ({ path: '/links' }) },
   {
+    path: '/login/oauth',
+    component: LogInView,
+    beforeEnter: handleAuth0RedirectCallback,
+  },
+  {
+    path: '/signup/oauth',
+    component: SignUpView,
+    beforeEnter: handleAuth0RedirectCallback,
+  },
+  {
     path: '/login',
     component: LogInView,
-    beforeEnter: [
-      skipLogInIfAlreadyLoggedIn,
-      handleAuth0RedirectCallback,
-    ],
+    beforeEnter: skipLogInIfAlreadyLoggedIn,
   },
   {
     path: '/signup',
     component: SignUpView,
-    beforeEnter: [
-      skipSignUpIfAlreadyLoggedIn,
-      handleAuth0RedirectCallback,
-    ],
+    beforeEnter: skipSignUpIfAlreadyLoggedIn,
   },
   {
     path: '/reset',

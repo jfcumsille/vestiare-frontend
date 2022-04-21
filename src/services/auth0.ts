@@ -36,7 +36,7 @@ export const authenticateWithRedirect = async (
 
   return auth0.loginWithRedirect({
     connection,
-    redirect_uri: `${window.location.origin}/${mode}`,
+    redirect_uri: `${window.location.origin}/${mode}/oauth`,
   });
 };
 

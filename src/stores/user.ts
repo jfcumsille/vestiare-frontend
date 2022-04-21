@@ -32,16 +32,25 @@ export const useUserStore = defineStore('user', {
       const user = await manualSignup({
         email, password, name, lastName, company, country,
       });
-      await api.users.create({
+      await this.createUser({
         id: user.Id,
         email: user.email,
         name: user.givenName,
         lastName: user.familyName,
       });
     },
+    async createUser({
+      id, email, name, lastName,
+    }: SignUpOptions) {
+      await api.users.create({
+        id, email, name, lastName,
+      });
+    },
     async logOut() {
       const auth0 = await getAuth0Client();
-      await auth0.logout();
+      await auth0.logout({
+        returnTo: window.location.origin,
+      });
       this.user = null;
     },
     async sendConfirmationEmail(email: string) {
