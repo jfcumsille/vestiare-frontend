@@ -2,7 +2,7 @@ import client from '@/api/client';
 import { User } from '@/interfaces/entities/user';
 import { SignUpOptions } from '@/interfaces/options/account';
 
-export const BASE_PATH = '/internal/v1/users';
+export const BASE_PATH = '/internal/v1/user';
 
 export const get = async (): Promise<User> => {
   const response = await client.get(BASE_PATH);
