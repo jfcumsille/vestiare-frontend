@@ -3,17 +3,18 @@ import {
 } from 'vitest';
 import { setActivePinia, createPinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { USER_SIGNED_UP, EMAIL_SENT, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
-import { expectToTrackWithAnalytics, expectToTrackPageWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
+import GenericInput from '@/components/GenericInput.vue';
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
 
-const getWrapper = () => {
+const getWrapper = ():VueWrapper<InstanceType<typeof SignUpView>> => {
   const wrapper = mount(SignUpView, {
     global: {
       plugins: [
@@ -39,25 +40,34 @@ describe('SignUpView', () => {
       const wrapper = getWrapper();
       const signUpView = wrapper.find('[data-test="sign-up-view"]');
       expect(signUpView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, SIGN_UP_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, SIGN_UP_VIEWED);
     });
   });
+
+  const handleCheckbox = (wrapper: VueWrapper) => {
+    const checkBox = wrapper.find('[data-test="terms-checkbox"]');
+    expect(checkBox.exists()).toBe(true);
+    checkBox.setValue(true);
+  };
+
+  const fillInputsForm = (wrapper: VueWrapper) => {
+    const inputs = wrapper.findAllComponents(GenericInput);
+    inputs.forEach((input) => {
+      input.setValue('something');
+    });
+  };
 
   describe('when user signs up', () => {
     it('tracks \'User Signed Up\' with analytics', async () => {
       const wrapper = getWrapper();
-
-      // enable the sign up button by adding values to inputs
-      wrapper.vm.email = 'xxx';
-      wrapper.vm.password = 'xxx';
-      wrapper.vm.name = 'xxx';
-      wrapper.vm.lastName = 'xxx';
-      wrapper.vm.isChecked = true;
+      fillInputsForm(wrapper);
+      handleCheckbox(wrapper);
       await wrapper.vm.$forceUpdate();
 
       const signUpButton = wrapper.find('[data-test="sign-up-button"]');
       expect(signUpButton.exists()).toBe(true);
       await signUpButton.trigger('click');
+      await wrapper.vm.$forceUpdate();
       expectToTrackWithAnalytics(analyticsTrackMock, USER_SIGNED_UP);
     });
   });
@@ -65,13 +75,8 @@ describe('SignUpView', () => {
   describe('when user clicks resend verification email', async () => {
     it('tracks \'Email Sent\' with analytics', async () => {
       const wrapper = getWrapper();
-
-      // enable the sign up button by adding values to inputs
-      wrapper.vm.email = 'xxx';
-      wrapper.vm.password = 'xxx';
-      wrapper.vm.name = 'xxx';
-      wrapper.vm.lastName = 'xxx';
-      wrapper.vm.isChecked = true;
+      fillInputsForm(wrapper);
+      handleCheckbox(wrapper);
       await wrapper.vm.$forceUpdate();
 
       const signUpButton = wrapper.find('[data-test="sign-up-button"]');

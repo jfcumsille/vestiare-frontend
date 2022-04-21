@@ -7,7 +7,7 @@ import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
-import { expectToTrackWithAnalytics, expectToTrackPageWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import ResetPasswordView from '@/views/login-signup/ResetPasswordView.vue';
 
 const analyticsPageMock = vi.fn();
@@ -39,7 +39,7 @@ describe('LogInView', () => {
       const wrapper = getWrapper();
       const resetPasswordView = wrapper.find('[data-test="reset-password-view"]');
       expect(resetPasswordView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, RESET_PASSWORD_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, RESET_PASSWORD_VIEWED);
     });
   });
 

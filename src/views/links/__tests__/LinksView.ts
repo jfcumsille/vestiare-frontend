@@ -13,7 +13,7 @@ import {
   LINK_CREATED,
   LINKS_VIEWED,
 } from '@/constants/analyticsEvents';
-import { expectToTrackPageWithAnalytics, expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import LinksView from '@/views/links/LinksView.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import { CountryCode, Mode } from '@/interfaces/utilities/enums';
@@ -47,7 +47,7 @@ describe('LinksView', () => {
       const wrapper = getWrapper();
       const linksView = wrapper.find('[data-test="links-view"]');
       expect(linksView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, LINKS_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, LINKS_VIEWED);
     });
   });
 
@@ -103,7 +103,7 @@ describe('LinksView', () => {
         accountsCount: 1,
       };
 
-      wrapper.vm.trackLinkCreated(link, 'MOVEMENTS');
+      wrapper.vm.setLink(link, 'MOVEMENTS');
 
       const properties = {
         mode: 'test',

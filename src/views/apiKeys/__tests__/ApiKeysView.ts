@@ -8,14 +8,14 @@ import router from '@/router/index';
 import { setupLocales } from '@/locales';
 import { Mode } from '@/interfaces/utilities/enums';
 import { API_KEY_CREATED, API_KEY_DELETED, API_KEYS_VIEWED } from '@/constants/analyticsEvents';
-import { expectToTrackWithAnalytics, expectToTrackPageWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import ApiKeysTableElement from '@/views/apiKeys/components/ApiKeysTableElement.vue';
 import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
 
-const getWrapper = () => {
+const getWrapper = ():VueWrapper<InstanceType<typeof ApiKeysView>> => {
   const wrapper = mount(ApiKeysView, {
     global: {
       plugins: [
@@ -41,7 +41,7 @@ describe('ApiKeysView', () => {
       const wrapper = getWrapper();
       const apiKeysView = wrapper.find('[data-test="api-keys-view"]');
       expect(apiKeysView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, API_KEYS_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, API_KEYS_VIEWED);
     });
   });
 

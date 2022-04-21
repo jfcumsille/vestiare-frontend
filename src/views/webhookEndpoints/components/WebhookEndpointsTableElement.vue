@@ -5,7 +5,7 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import { WEBHOOK_ENDPOINT_DELETED } from '@/constants/analyticsEvents';
-import { track } from '@/services/analytics';
+import { trackId } from '@/services/analytics';
 import GenericToggle from '@/components/GenericToggle.vue';
 
 const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
@@ -29,10 +29,7 @@ const toggleActive = async () => {
 
 const remove = () => {
   $webhookEndpointsStore.removeWebhookEndpoint(props.webhookEndpoint);
-  track(WEBHOOK_ENDPOINT_DELETED, {
-    id: props.webhookEndpoint.id,
-    origin: 'dashboard',
-  });
+  trackId(WEBHOOK_ENDPOINT_DELETED, props.webhookEndpoint.id);
 };
 
 const openDetailedView = () => {

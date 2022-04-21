@@ -48,7 +48,7 @@ const logIn = () => {
   router.push({ path: '/login' });
 };
 
-onMounted(async () => {
+onMounted(() => {
   page(RESET_PASSWORD_VIEWED);
 });
 </script>

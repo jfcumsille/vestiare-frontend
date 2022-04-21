@@ -6,11 +6,7 @@ import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls';
-import {
-  USER_SIGNED_UP,
-  EMAIL_SENT,
-  SIGN_UP_VIEWED,
-} from '@/constants/analyticsEvents';
+import { USER_SIGNED_UP, EMAIL_SENT, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -82,7 +78,7 @@ const logIn = () => {
   toStoredRedirectionOrHome(router);
 };
 
-onMounted(async () => {
+onMounted(() => {
   page(SIGN_UP_VIEWED);
 });
 </script>
@@ -171,6 +167,7 @@ onMounted(async () => {
                 <label class="inline-flex items-center">
                   <input
                     v-model="isChecked"
+                    data-test="terms-checkbox"
                     type="checkbox"
                     class="w-4 h-4 accent-primary-main hover:accent-primary-main"
                   >

@@ -6,12 +6,8 @@ import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
-import {
-  MODAL_VIEWED,
-  MODAL_CLOSED,
-  WEBHOOK_ENDPOINTS_VIEWED,
-} from '@/constants/analyticsEvents';
-import { expectToTrackPageWithAnalytics, expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { MODAL_VIEWED, MODAL_CLOSED, WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
 import WebhookEndpointCreationModal from '@/views/webhookEndpoints/components/WebhookEndpointCreationModal.vue';
 
@@ -44,7 +40,7 @@ describe('WebhookEndpointsView', () => {
       const wrapper = getWrapper();
       const webhookEndpointsView = wrapper.find('[data-test="webhook-endpoints-view"]');
       expect(webhookEndpointsView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'main' });
+      expectToTrackWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'main' });
     });
   });
 

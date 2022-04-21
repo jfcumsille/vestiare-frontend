@@ -2,12 +2,8 @@
 import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import {
-  MODAL_VIEWED,
-  MODAL_CLOSED,
-  WEBHOOK_ENDPOINTS_VIEWED,
-} from '@/constants/analyticsEvents';
-import { page, track } from '@/services/analytics';
+import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { page, trackModal } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -33,24 +29,10 @@ const tableHeaders = [
   '',
 ];
 
-const trackCreateWebhookModal = (opened: boolean) => {
-  if (opened) {
-    track(MODAL_VIEWED, {
-      location: 'webhook_endpoints',
-      action: 'create',
-    });
-  } else {
-    track(MODAL_CLOSED, {
-      location: 'webhook_endpoints',
-      action: 'create',
-    });
-  }
-};
-
 const modalOpened = ref(false);
 const setModalOpened = (value: boolean) => {
   modalOpened.value = value;
-  trackCreateWebhookModal(value);
+  trackModal(value, 'webhook_endpoints', 'create');
 };
 
 const webhookEndpoints = computed(
@@ -61,10 +43,8 @@ const webhookEndpoints = computed(
   ),
 );
 
-onMounted(async () => {
-  page(WEBHOOK_ENDPOINTS_VIEWED, {
-    type: 'main',
-  });
+onMounted(() => {
+  page(WEBHOOK_ENDPOINTS_VIEWED, { type: 'main' });
 });
 </script>
 

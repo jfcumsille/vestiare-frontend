@@ -50,7 +50,7 @@ const resendVerificationEmail = async () => {
   isEmailResent.value = true;
 };
 
-onMounted(async () => {
+onMounted(() => {
   page(LOG_IN_VIEWED);
 });
 </script>

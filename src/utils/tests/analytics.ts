@@ -2,25 +2,21 @@ import { expect, vi } from 'vitest';
 
 type MockFunction = () => void;
 
-export const expectToTrackPageWithAnalytics = (
-  mockFunction: MockFunction,
-  name: string,
-  properties?: Record<string, unknown>,
-) => {
-  expect(mockFunction).toHaveBeenLastCalledWith(name, properties);
-};
-
 export const expectToTrackWithAnalytics = (
   mockFunction: MockFunction,
   name: string,
   properties?: Record<string, unknown>,
 ) => {
-  expect(mockFunction).toHaveBeenLastCalledWith(name, properties);
+  if (properties) {
+    expect(mockFunction).toHaveBeenLastCalledWith(name, properties);
+  } else {
+    expect(mockFunction).toHaveBeenLastCalledWith(name);
+  }
 };
 
-const analyticsIdentifyMock = () => ('identify');
-const analyticsAliasMock = () => ('alias');
 export const mockPageAndTrackAnalytics = (page?: MockFunction, track?: MockFunction) => {
+  const analyticsIdentifyMock = () => ('identify');
+  const analyticsAliasMock = () => ('alias');
   const dummyPage = !page ? vi.fn() : page;
   const dummyTrack = !track ? vi.fn() : track;
   window.analytics = {

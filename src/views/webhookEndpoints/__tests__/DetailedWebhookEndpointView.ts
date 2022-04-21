@@ -7,7 +7,7 @@ import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
-import { expectToTrackPageWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import DetailedWebhookEndpointsView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
 
 const analyticsPageMock = vi.fn();
@@ -38,7 +38,7 @@ describe('DetailedWebhookEndpointsView', () => {
       const wrapper = getWrapper();
       const detailedWebhookEndpointsView = wrapper.find('[data-test="detailed-webhook-endpoints-view"]');
       expect(detailedWebhookEndpointsView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'detail' });
+      expectToTrackWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'detail' });
     });
   });
 });

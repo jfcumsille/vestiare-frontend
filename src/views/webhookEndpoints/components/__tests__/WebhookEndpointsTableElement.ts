@@ -9,7 +9,7 @@ import router from '@/router/index';
 import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import { WEBHOOK_ENDPOINT_DELETED } from '@/constants/analyticsEvents';
-import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import WebhookEndpointsTableElement from '@/views/webhookEndpoints/components/WebhookEndpointsTableElement.vue';
 
 const analyticsPageMock = vi.fn();

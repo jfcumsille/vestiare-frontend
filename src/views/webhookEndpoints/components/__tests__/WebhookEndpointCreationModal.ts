@@ -7,7 +7,7 @@ import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { WEBHOOK_ENDPOINT_CREATED } from '@/constants/analyticsEvents';
-import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import WebhookEndpointCreationModal from '@/views/webhookEndpoints/components/WebhookEndpointCreationModal.vue';
 
 const analyticsPageMock = vi.fn();

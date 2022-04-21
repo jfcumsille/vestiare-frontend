@@ -36,10 +36,8 @@ const toggleWebhookModal = () => {
   testWebhookModalOpened.value = !testWebhookModalOpened.value;
 };
 
-onMounted(async () => {
-  page(WEBHOOK_ENDPOINTS_VIEWED, {
-    type: 'detail',
-  });
+onMounted(() => {
+  page(WEBHOOK_ENDPOINTS_VIEWED, { type: 'detail' });
 });
 </script>
 

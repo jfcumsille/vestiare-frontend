@@ -5,11 +5,8 @@ import { setActivePinia, createPinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
-import {
-  USER_LOGGED_IN,
-  LOG_IN_VIEWED,
-} from '@/constants/analyticsEvents';
-import { expectToTrackWithAnalytics, expectToTrackPageWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { USER_LOGGED_IN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import router from '@/router/index';
 
@@ -42,7 +39,7 @@ describe('LogInView', () => {
       const wrapper = getWrapper();
       const loginView = wrapper.find('[data-test="login-view"]');
       expect(loginView.exists()).toBe(true);
-      expectToTrackPageWithAnalytics(analyticsPageMock, LOG_IN_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, LOG_IN_VIEWED);
     });
   });
 

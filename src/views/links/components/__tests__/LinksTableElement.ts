@@ -15,7 +15,7 @@ import {
   LINK_DELETED,
   LINK_REFRESHED,
 } from '@/constants/analyticsEvents';
-import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/services/tests';
+import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import LinksTableElement from '@/views/links/components/LinksTableElement.vue';
 import DeleteLinkModal from '@/views/links/components/DeleteLinkModal.vue';
 import ResumeLinkRefreshingModal from '@/views/links/components/ResumeLinkRefreshingModal.vue';

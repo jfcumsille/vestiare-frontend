@@ -6,14 +6,8 @@ import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
 import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
-import {
-  MODAL_VIEWED,
-  MODAL_CLOSED,
-  LINK_ACTIVE_CHANGED,
-  LINK_DELETED,
-  LINK_REFRESHED,
-} from '@/constants/analyticsEvents';
-import { track } from '@/services/analytics';
+import { LINK_DELETED, LINK_REFRESHED } from '@/constants/analyticsEvents';
+import { trackLinkStatus, trackModal, trackId } from '@/services/analytics';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -49,27 +43,14 @@ const passwordBadgeText = computed(() => (
 ));
 const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : 'green'));
 
-const trackLinkModal = (opened: boolean, action: string) => {
-  if (opened) {
-    track(MODAL_VIEWED, {
-      location: 'links',
-      action,
-    });
-  } else {
-    track(MODAL_CLOSED, {
-      location: 'links',
-      action,
-    });
-  }
-};
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
-  trackLinkModal(value, 'delete');
+  trackModal(value, 'links', 'delete');
 };
 
 const setRefreshModalOpened = (value: boolean) => {
   refreshModalOpened.value = value;
-  trackLinkModal(value, 'refresh');
+  trackModal(value, 'links', 'refresh');
 };
 
 const openRefreshModal = () => {
@@ -84,10 +65,7 @@ const refresh = async () => {
     { preventRefresh: false },
   );
   setRefreshModalOpened(false);
-  track(LINK_REFRESHED, {
-    id: props.link.id,
-    origin: 'dashboard',
-  });
+  trackId(LINK_REFRESHED, props.link.id);
 };
 
 const toggleActive = async () => {
@@ -97,19 +75,13 @@ const toggleActive = async () => {
     { active: !props.link.active },
   );
   updating.value = false;
-  track(LINK_ACTIVE_CHANGED, {
-    id: props.link.id,
-    active: props.link.active,
-  });
+  trackLinkStatus(props.link);
 };
 
 const remove = async () => {
   await $linksStore.removeLink(props.link);
   setDeleteModalOpened(false);
-  track(LINK_DELETED, {
-    id: props.link.id,
-    origin: 'dashboard',
-  });
+  trackId(LINK_DELETED, props.link.id);
 };
 </script>
 

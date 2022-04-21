@@ -7,13 +7,8 @@ import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import { CountryCode, Product } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
-import {
-  MODAL_VIEWED,
-  MODAL_CLOSED,
-  LINK_CREATED,
-  LINKS_VIEWED,
-} from '@/constants/analyticsEvents';
-import { page, track } from '@/services/analytics';
+import { LINKS_VIEWED } from '@/constants/analyticsEvents';
+import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -36,33 +31,6 @@ const headers = [
 
 const $linksStore = useLinksStore();
 
-const trackCreateLinkModal = (opened: boolean) => {
-  if (opened) {
-    track(MODAL_VIEWED, {
-      location: 'links',
-      action: 'create',
-    });
-  } else {
-    track(MODAL_CLOSED, {
-      location: 'links',
-      action: 'create',
-    });
-  }
-};
-const trackLinkCreated = (link: Link, product: Product) => {
-  track(LINK_CREATED, {
-    mode: link.mode,
-    link_id: link.id,
-    institution_id: link.institution.id,
-    holder_type: link.holderType,
-    holder_id: link.holderId,
-    username: link.username,
-    created_at: link.createdAt,
-    product,
-    origin: 'dashboard',
-  });
-};
-
 const live = ref(true);
 const toggleLive = () => {
   live.value = !live.value;
@@ -76,7 +44,7 @@ const linkCreationButtonText = computed(() => {
 const isCreateLinkOpened = ref(false);
 const setCreateLinkOpened = (value: boolean) => {
   isCreateLinkOpened.value = value;
-  trackCreateLinkModal(value);
+  trackModal(value, 'links', 'create');
 };
 
 const isWidgetOpened = ref(false);
@@ -93,11 +61,11 @@ const createdLinkToken = ref<Nullable<string>>(null);
 const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
   loading.value = true;
+  trackLinkCreated(link, product);
   $linksStore.loadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
   createdLinkToken.value = regeneratedLink.linkToken;
   loading.value = false;
-  trackLinkCreated(link, product);
 };
 const stopShowingLink = () => {
   createdLink.value = null;
@@ -170,7 +138,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
 
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
 
-onMounted(async () => {
+onMounted(() => {
   page(LINKS_VIEWED);
 });
 </script>
