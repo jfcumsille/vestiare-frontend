@@ -1,14 +1,10 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { getAuth0Client, manualSignup } from '@/services/auth0';
 import * as api from '@/api';
+import { isValidEmail } from '@/utils/email';
 import { Nullable } from '@/interfaces/common';
 import { User } from '@/interfaces/entities/user';
 import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
-<<<<<<< HEAD
-import { OptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
-import { isValidEmail } from '@/utils/email';
-=======
->>>>>>> feat: handle most of the login/signup flow
 
 export const useUserStore = defineStore('user', {
   state: () => ({
