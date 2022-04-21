@@ -76,7 +76,7 @@ const handleEndHoverIcon = () => {
 
 <template>
   <tr
-    class="px-5 border-b text-body-txt-color font-light
+    class="px-5 border-b text-body-color font-light
     whitespace-nowrap"
   >
     <td class="px-5 py-7 text-md h-full">
@@ -104,7 +104,7 @@ const handleEndHoverIcon = () => {
     <td class="font-normal m-2">
       <button
         v-if="activationRequired"
-        class="bg-primary-main hover:bg-primary-main-hover w-full px-5 py-3 rounded-md text-white"
+        class="bg-primary-main hover:bg-primary-hover w-full px-5 py-3 rounded-md text-white"
         @click="handleActivateKey"
       >
         {{ $t('activateSecretKey') }}
@@ -145,7 +145,7 @@ const handleEndHoverIcon = () => {
         </button>
       </div>
     </td>
-    <td class="p-5 text-sm text-body-txt-color whitespace-nowrap flex-col">
+    <td class="p-5 text-sm text-body-color whitespace-nowrap flex-col">
       <div v-if="props.apiKey && !activationRequired">
         <div>
           {{ formatDate(props.apiKey.createdAt) }}
@@ -169,11 +169,11 @@ const handleEndHoverIcon = () => {
           v-if="showConfigKeysModal"
           class="
             absolute right-0 -mr-20 px-4 py-3
-            bg-white rounded-md border border-bg-gray-200 drop-shadow-md
+            bg-white rounded-md border border-light-gray drop-shadow-md
           "
         >
           <button
-            class="text-primary-main hover:text-primary-main-hover"
+            class="text-primary-main hover:text-primary-hover"
             @click="handleDeleteKey"
           >
             {{ $t('delete') }} {{ name }}

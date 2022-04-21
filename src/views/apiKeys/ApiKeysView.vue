@@ -60,7 +60,7 @@ const secretKeyToActivate: APIKey = {
         v-if="!apiKeysStore.loading"
         class="bg-white relative p-10 z-10 min-w-max"
       >
-        <div class="font-medium text-2xl text-heading-txt-color">
+        <div class="font-medium text-2xl text-heading-color">
           {{ $t('title') }}
         </div>
         <div class="flex flex-row justify-between items-center">
@@ -74,7 +74,7 @@ const secretKeyToActivate: APIKey = {
             <div class="flex py-2 px-3 text-sm font-medium">
               <p
                 data-test="mode-test"
-                class="pr-4 text-gray-900"
+                class="pr-4 text-body-color"
                 :class="{ 'opacity-25 font-normal': isLiveMode }"
               >
                 Test
@@ -86,7 +86,7 @@ const secretKeyToActivate: APIKey = {
               />
               <p
                 data-test="mode-live"
-                class="pl-4 text-gray-900"
+                class="pl-4 text-body-color"
                 :class="{ 'opacity-25 font-normal': !isLiveMode }"
               >
                 Live

@@ -27,18 +27,18 @@ const {
   startValidating, valid, internalValid, error,
 } = useValidatedModel(props);
 
-const labelColorClasses = computed(() => (internalValid.value ? 'text-sec-cap-txt-color' : 'text-red-700'));
+const labelColorClasses = computed(() => (internalValid.value ? 'text-secondary-color' : 'text-danger-main'));
 
 const inputColorClasses = computed(() => {
   if (!internalValid.value) {
     return `
-      text-red-900 bg-red-50 border-red-500 placeholder-red-700
-      focus:ring-red-500 focus:border-red-500
+      text-danger-main border-danger-border placeholder-placeholder-color
+      focus:ring-danger-focus focus:border-danger-focus
     `;
   }
   return `
-    text-body-txt-color bg-white border-slate-300 placeholder-slate-400
-    focus:ring-primary-main focus:border-primary-main
+    text-body-color bg-white border-main-border placeholder-placeholder-color
+    focus:ring-primary-main focus:border-primary-focus
   `;
 });
 

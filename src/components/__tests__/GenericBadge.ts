@@ -21,19 +21,19 @@ describe('GenericBadge', () => {
     expect(wrapper.classes().some((cls) => cls.includes('bg-'))).toBe(false);
   });
 
-  const testColorRendering = (color: string) => {
-    it(`renders a ${color} badge when color is ${color}`, () => {
+  const testColorRendering = (color: string, result: string) => {
+    it(`renders a ${result} badge when color is ${color}`, () => {
       const wrapper = mount(GenericBadge, {
         props: { text: 'Something', color },
       });
 
-      expect(wrapper.classes().filter((cls) => cls.includes(color)).length).toBe(2);
+      expect(wrapper.classes().filter((cls) => cls.includes(result)).length).toBe(2);
     });
   };
 
   const colors = [
-    'blue', 'gray', 'red', 'green', 'yellow', 'indigo', 'purple', 'pink',
+    ['red', 'danger'], ['green', 'success'], ['yellow', 'yellow'],
   ];
 
-  colors.forEach((color) => testColorRendering(color));
+  colors.forEach(([color, result]) => testColorRendering(color, result));
 });

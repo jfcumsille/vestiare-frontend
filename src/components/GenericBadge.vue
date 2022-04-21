@@ -3,33 +3,18 @@ import { computed } from 'vue';
 
 const props = defineProps<{
   text: string
-  color: 'blue' | 'gray' | 'red' | 'green' | 'yellow' | 'indigo' | 'purple' | 'pink'
+  color: 'red' | 'green' | 'yellow'
 }>();
 
 const colorClasses = computed(() => {
-  if (props.color === 'blue') {
-    return 'bg-blue-100 text-blue-800';
-  }
-  if (props.color === 'gray') {
-    return 'bg-gray-100 text-gray-800';
-  }
   if (props.color === 'red') {
-    return 'bg-red-100 text-red-800';
+    return 'bg-danger-surface text-danger-main';
   }
   if (props.color === 'green') {
-    return 'bg-green-100 text-green-800';
+    return 'bg-success-surface text-success-main';
   }
   if (props.color === 'yellow') {
     return 'bg-yellow-100 text-yellow-800';
-  }
-  if (props.color === 'indigo') {
-    return 'bg-indigo-100 text-indigo-800';
-  }
-  if (props.color === 'purple') {
-    return 'bg-purple-100 text-purple-800';
-  }
-  if (props.color === 'pink') {
-    return 'bg-pink-100 text-pink-800';
   }
   return '';
 });

@@ -88,13 +88,13 @@ const remove = async () => {
     @close="() => setRefreshModalOpened(false)"
     @refresh="refresh"
   />
-  <tr class="bg-white border-b hover:bg-gray-100">
+  <tr class="bg-white border-b hover:bg-light-gray">
     <td class="p-4 flex flex-row items-center">
       <InstitutionLogo
         :institution-id="props.link.institution.id"
         class="flex-shrink-0 h-10 w-10 rounded-full"
       />
-      <div class="ml-3 text-sm text-body-txt-color whitespace-nowrap">
+      <div class="ml-3 text-sm text-body-color whitespace-nowrap">
         <p class="font-medium">
           {{ props.link.institution.name }}
         </p>
@@ -106,20 +106,20 @@ const remove = async () => {
     <td class="p-4 text-sm font-medium whitespace-nowrap">
       <p
         v-if="props.link.holderType === HolderType.Individual"
-        class="text-heading-txt-color"
+        class="text-heading-color"
       >
         {{ props.link.holderName }}
       </p>
-      <p class="font-normal text-body-txt-color">
+      <p class="font-normal text-body-color">
         {{ formattedUsername }}
       </p>
     </td>
     <td class="p-4 text-sm font-medium whitespace-nowrap">
       <div v-if="props.link.holderType === HolderType.Business">
-        <p class="text-heading-txt-color">
+        <p class="text-heading-color">
           {{ props.link.holderName }}
         </p>
-        <p class="font-normal text-body-txt-color">
+        <p class="font-normal text-body-color">
           {{ formattedHolderId }}
         </p>
       </div>
@@ -127,7 +127,7 @@ const remove = async () => {
         -
       </p>
     </td>
-    <td class="p-4 text-sm text-body-txt-color whitespace-nowrap flex-col">
+    <td class="p-4 text-sm text-body-color whitespace-nowrap flex-col">
       <div v-if="props.link.lastTimeRefreshed">
         <div>
           {{ formatDate(props.link.lastTimeRefreshed) }}
@@ -140,7 +140,7 @@ const remove = async () => {
         -
       </div>
     </td>
-    <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
+    <td class="p-4 text-sm text-body-color whitespace-nowrap">
       <GenericBadge
         :class="{'cursor-pointer': props.link.preventRefresh}"
         :text="passwordBadgeText"
@@ -148,7 +148,7 @@ const remove = async () => {
         @click="openRefreshModal"
       />
     </td>
-    <td class="p-4 text-sm text-body-txt-color whitespace-nowrap">
+    <td class="p-4 text-sm text-body-color whitespace-nowrap">
       <GenericToggle
         :active="props.link.active"
         :loading="updating"

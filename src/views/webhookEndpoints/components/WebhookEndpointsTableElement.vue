@@ -35,32 +35,32 @@ const openDetailedView = () => {
 </script>
 
 <template>
-  <tr class="bg-white border-b hover:bg-gray-100">
+  <tr class="bg-white border-b hover:bg-light-gray">
     <td
       class="py-4 px-6 text-sm font-medium whitespace-nowrap cursor-pointer"
       @click="openDetailedView"
     >
-      <p class="text-gray-900">
+      <p class="text-heading-color">
         {{ props.webhookEndpoint.url }}
       </p>
     </td>
     <td
-      class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap cursor-pointer"
+      class="py-4 px-6 text-sm text-body-color whitespace-nowrap cursor-pointer"
       @click="openDetailedView"
     >
-      <p class="font-normal text-gray-600">
+      <p class="font-normal text-body-color">
         {{ props.webhookEndpoint.description }}
       </p>
     </td>
     <td
-      class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap cursor-pointer"
+      class="py-4 px-6 text-sm text-body-color whitespace-nowrap cursor-pointer"
       @click="openDetailedView"
     >
       <p class="font-medium">
         {{ props.webhookEndpoint.enabledEvents.length }}
       </p>
     </td>
-    <td class="py-4 px-6 text-sm text-gray-500 whitespace-nowrap">
+    <td class="py-4 px-6 text-sm text-body-color whitespace-nowrap">
       <GenericToggle
         :active="props.webhookEndpoint.status ==='enabled'"
         :loading="updating"

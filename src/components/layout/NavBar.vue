@@ -67,7 +67,7 @@ const selectionClasses = (path: string) => {
   if (route.path === path) {
     return 'text-primary-main';
   }
-  return 'text-gray-700 hover:text-primary-main';
+  return 'text-body-color hover:text-primary-main';
 };
 
 const logOut = () => {
@@ -94,7 +94,7 @@ const logOut = () => {
       </a>
       <div
         v-if="!isLoggedIn && isLargeWidth"
-        class="block w-auto text-heading-txt-color font-medium mx-auto"
+        class="block w-auto text-heading-color font-medium mx-auto"
         data-test="nav-bar-public-links"
       >
         <a
@@ -110,7 +110,7 @@ const logOut = () => {
         v-if="!isLoggedIn && isLargeWidth"
       >
         <a
-          class="ml-8 text-primary-main hover:text-primary-main-hover font-medium"
+          class="ml-8 text-primary-main hover:text-primary-hover font-medium"
           href="/login"
         >
           {{ $t('logIn') }}
@@ -118,7 +118,7 @@ const logOut = () => {
         <a
           class="
             ml-8 px-6 py-2 text-sm font-medium text-center rounded shadow-sm
-            text-white bg-primary-main hover:bg-primary-main-hover justify-center h-12"
+            text-white bg-primary-main hover:bg-primary-hover justify-center h-12"
           href="/signup"
         >
           {{ $t('getAPIKeys') }}
@@ -169,7 +169,7 @@ const logOut = () => {
       <div
         class="
           pt-1 pb-2 bg-primary-surface flex flex-col
-          text-heading-txt-color font-medium rounded-lg transition-all ease-out duration-500
+          text-heading-color font-medium rounded-lg transition-all ease-out duration-500
         "
       >
         <a
@@ -184,7 +184,7 @@ const logOut = () => {
           {{ link.text }}
         </a>
         <a
-          class="mx-2 px-3 py-2 text-primary-main hover:text-primary-main-hover font-medium"
+          class="mx-2 px-3 py-2 text-primary-main hover:text-primary-hover font-medium"
           href="/login"
         >
           {{ $t('logIn') }}
@@ -192,7 +192,7 @@ const logOut = () => {
         <a
           class="
               mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
-              text-white bg-primary-main hover:bg-primary-main-hover justify-center"
+              text-white bg-primary-main hover:bg-primary-hover justify-center"
           href="/signup"
         >
           {{ $t('getAPIKeys') }}

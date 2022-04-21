@@ -63,7 +63,7 @@ const toggleWebhookModal = () => {
       <button
         class="
             h-12 mt-1 ml-2 px-4 rounded-md cursor-pointer
-            text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
+            text-primary-main bg-primary-main/20 hover:bg-primary-hover/10
           "
         @click="toggleWebhookModal"
       >

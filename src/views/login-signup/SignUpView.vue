@@ -92,15 +92,15 @@ const logIn = () => {
         />
         <div
           class="bg-white relative p-10 rounded-md border
-          border-bg-gray-200 drop-shadow-md z-10"
+          border-light-gray drop-shadow-md z-10"
         >
-          <div class="mb-5 font-medium text-2xl text-heading-txt-color">
+          <div class="mb-5 font-medium text-2xl text-heading-color">
             {{ $tSignUp('title') }}
           </div>
 
           <Auth0Panel is-signup />
 
-          <div class="my-7 h-px bg-gray-300" />
+          <div class="my-7 h-px bg-divider-color" />
 
           <div class="grow flex flex-col justify-center">
             <div class="flex flex-col lg:flex-row lg:mb-4">
@@ -126,7 +126,7 @@ const logIn = () => {
               />
 
               <div class="block w-full mb-4 lg:mb-0">
-                <div class="block mb-1 text-sm font-medium text-sec-cap-txt-color">
+                <div class="block mb-1 text-sm font-medium text-secondary-color">
                   {{ $tSignUp('country') }}
                 </div>
                 <GenericDropDown
@@ -151,7 +151,7 @@ const logIn = () => {
 
             <div class="block">
               <div class="mt-4">
-                <label class="inline-flex items-center hover:bg-clear">
+                <label class="inline-flex items-center">
                   <input
                     v-model="isChecked"
                     type="checkbox"
@@ -160,7 +160,7 @@ const logIn = () => {
                   <label
                     class="
                       ml-2 form-check-label inline-block
-                      text-body-txt-color text-sm font-normal
+                      text-body-color text-sm font-normal
                     "
                     for="flexCheckDefault"
                   >
@@ -187,8 +187,8 @@ const logIn = () => {
               <button
                 class="
                   flex mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
-                  rounded text-white bg-primary-main hover:bg-primary-main-hover
-                  disabled:cursor-default disabled:bg-gray-300
+                  rounded text-white bg-primary-main hover:bg-primary-hover
+                  disabled:cursor-default disabled:bg-disabled-color
                   justify-center h-12
                 "
                 :disabled="!isSignUpEnabled"
@@ -210,7 +210,7 @@ const logIn = () => {
             </div>
 
             <div
-              class="mt-6 text-center text-body-txt-color text-sm font-normal"
+              class="mt-6 text-center text-body-color text-sm font-normal"
             >
               {{ $tSignUp('alreadyHaveAccount') }}
               <a
@@ -236,25 +236,25 @@ const logIn = () => {
           opacity="0.5"
         />
         <div class="flex flex-col min-w-fit max-w-md">
-          <div class="text-lg text-heading-txt-color z-10">
+          <div class="text-lg text-heading-color z-10">
             {{ $tSignUp('infoTitle') }}
           </div>
           <div class="z-10">
             <div class="mt-4 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
-              <div class="ml-3 text-base text-body-txt-color font-light">
+              <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint1') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
-              <div class="ml-3 text-base text-body-txt-color font-light">
+              <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint2') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
-              <div class="ml-3 text-base text-body-txt-color font-light">
+              <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint3') }}
               </div>
             </div>
@@ -290,12 +290,12 @@ const logIn = () => {
         />
         <div
           class="flex flex-col bg-white px-20 py-16 relative
-          rounded-md border border-bg-gray-200 drop-shadow-md z-10 max-w-xl"
+          rounded-md border border-light-gray drop-shadow-md z-10 max-w-xl"
         >
-          <div class="font-medium text-2xl text-heading-txt-color">
+          <div class="font-medium text-2xl text-heading-color">
             {{ $tSignUp('verifyEmail') }}
           </div>
-          <div class="mt-4 text-body-txt-color font-light">
+          <div class="mt-4 text-body-color font-light">
             {{ name }},
             {{ $tSignUp('thankYou') }}
             <span class="font-normal">
@@ -303,10 +303,10 @@ const logIn = () => {
             </span>
             {{ $tSignUp('verifyAccount') }}
           </div>
-          <div class="text-center font-light mt-4 text-body-txt-color">
+          <div class="text-center font-light mt-4 text-body-color">
             {{ $tSignUp('didntReceive') }}
             <button
-              class="text-primary-main font-normal disabled:text-disable-txt-color"
+              class="text-primary-main font-normal disabled:text-disabled-color"
               :disabled="isEmailResent"
               @click="resendVerificationEmail"
             >

@@ -63,7 +63,7 @@ const close = () => {
       <button
         class="
             mt-1 ml-2 h-12 px-4 rounded-md cursor-pointer
-            text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
+            text-primary-main bg-primary-main/20 hover:bg-primary-focus/10
           "
         @click="sendTestWebhook"
       >

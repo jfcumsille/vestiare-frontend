@@ -31,7 +31,7 @@ const onInput = ($event: Event) => {
   <div class="flex my-auto">
     <div class="flex my-auto mr-6">
       <p
-        class="pr-4 text-gray-900 text-md font-medium"
+        class="pr-4 text-body-color text-md font-medium"
         :class="{ 'opacity-25': props.live }"
       >
         Test
@@ -41,7 +41,7 @@ const onInput = ($event: Event) => {
         @toggle="() => emit('toggle-live')"
       />
       <p
-        class="pl-4 text-gray-900 text-md font-medium"
+        class="pl-4 text-body-color text-md font-medium"
         :class="{ 'opacity-25': !props.live }"
       >
         Live

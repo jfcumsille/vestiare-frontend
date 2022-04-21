@@ -66,12 +66,12 @@ const resendVerificationEmail = async () => {
         fill="#F2F4FF"
         opacity="0.75"
       />
-      <div class="bg-white relative p-10 rounded-md border border-bg-gray-200 drop-shadow-md z-10">
-        <div class="mb-5 font-medium text-2xl text-heading-txt-color">
+      <div class="bg-white relative p-10 rounded-md border border-light-gray drop-shadow-md z-10">
+        <div class="mb-5 font-medium text-2xl text-heading-color">
           {{ $tLogIn('title') }}
         </div>
         <Auth0Panel />
-        <div class="my-7 h-px bg-gray-300" />
+        <div class="my-7 h-px bg-divider-color" />
         <form
           class="flex flex-col justify-center"
           @submit.prevent="logIn"
@@ -97,15 +97,15 @@ const resendVerificationEmail = async () => {
             class="flex flex-row rounded-md text-sm mb-1"
           >
             <WarningIcon
-              class="mt-1 ml-1 min-w-fit"
-              :fill="'#E00000'"
+              class="mt-1 ml-1 min-w-fit text-danger-main"
+              fill="currentColor"
               :size="14"
             />
             <div class="ml-2 text-danger-main font-light">
               {{ error }}
               <button
                 v-if="error === $tLogIn('unconfirmedEmail')"
-                class="text-primary-main font-normal disabled:text-disable-txt-color"
+                class="text-primary-main font-normal disabled:text-disabled-color"
                 :disabled="isEmailResent"
                 @click.prevent="resendVerificationEmail"
               >
@@ -117,7 +117,7 @@ const resendVerificationEmail = async () => {
           <button
             class="
                 mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
-                rounded text-white bg-primary-main hover:bg-primary-main-hover
+                rounded text-white bg-primary-main hover:bg-primary-hover
                 disabled:cursor-default h-12
                 disabled:bg-gray-300
               "
@@ -126,11 +126,11 @@ const resendVerificationEmail = async () => {
           >
             {{ $tLogIn('logIn') }}
           </button>
-          <div class="mt-6 text-center text-body-txt-color text-sm font-normal ">
+          <div class="mt-6 text-center text-body-color text-sm font-normal">
             {{ $tLogIn('dontHaveAccount') }}
             <a
               href="/signup"
-              class="text-primary-main font-medium"
+              class="text-primary-main font-medium hover:text-primary-hover"
             >
               {{ $tLogIn('signUp') }}
             </a>

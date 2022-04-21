@@ -65,26 +65,28 @@ const logIn = () => {
       />
       <div
         class="flex flex-col bg-white px-20 py-16 relative max-w-xl
-        rounded-md border border-bg-gray-200 drop-shadow-md z-10"
+        rounded-md border border-light-gray drop-shadow-md z-10"
       >
-        <div class="font-medium text-2xl text-heading-txt-color">
+        <div class="font-medium text-2xl text-heading-color">
           {{ $tResetPassword('title') }}
         </div>
         <div
           v-if="!completed"
-          class="mt-4 mb-6 text-body-txt-color font-light"
+          class="mt-4 mb-6 text-body-color font-light"
         >
           {{ $tResetPassword('subtitle') }}
         </div>
         <div
           v-if="completed"
-          class="text-left font-light mt-4 mb-6 text-body-txt-color"
+          class="text-left font-light mt-4 mb-6 text-body-color"
         >
           {{ $tResetPassword('checkYourEmail') }}
           <span class="font-medium">{{ email }}</span>
           {{ $tResetPassword('subtitleCompleted') }}
           <button
-            class="text-primary-main font-normal disabled:text-disable-txt-color"
+            class="
+              text-primary-main font-normal disabled:text-disabled-color
+              hover:text-primary-hover"
             :disabled="isEmailResent"
             @click="resendResetPasswordEmail"
           >
@@ -99,7 +101,9 @@ const logIn = () => {
         />
         <button
           v-if="!completed"
-          class="mt-4 bg-primary-main text-center text-white font-semibold py-3 rounded"
+          class="
+            mt-4 bg-primary-main text-center text-white
+            font-semibold py-3 rounded hover:bg-primary-hover"
           :disabled="loading"
           @click="resetPassword"
         >
@@ -107,7 +111,9 @@ const logIn = () => {
         </button>
         <button
           v-if="completed"
-          class="mt-4 bg-primary-main text-center text-white font-semibold py-3 rounded"
+          class="
+            mt-4 bg-primary-main text-center text-white
+            font-semibold py-3 rounded hover:bg-primary-hover"
           :disabled="loading"
           @click="logIn"
         >
@@ -116,7 +122,7 @@ const logIn = () => {
         <a
           v-if="!completed"
           href="/login"
-          class="mt-6 text-primary-main text-center font-medium text-sm"
+          class="mt-6 text-primary-main text-center font-medium text-sm hover:text-primary-hover"
         >
           {{ $tResetPassword('backToLogin') }}
         </a>
