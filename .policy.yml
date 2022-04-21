@@ -23,7 +23,7 @@ approval_rules:
     requires:
       count: 1
       users: ["paulamardones", "daleal", "parayab"]
-  - name: a fintoc front maintainer has approved
+  - name: a dashboard maintainer has approved
     if:
       has_not_labels:
         - "tank"
@@ -33,4 +33,4 @@ approval_rules:
         mode: random-users
     requires:
       count: 1
-      users: ["nateare"]
+      users: ["nateare", "daleal"]
