@@ -18,10 +18,6 @@ export const create = async ({
   return response.data;
 };
 
-export const sendConfirmationEmail = async (email: string) => {
-  await client.post(`${BASE_PATH}/confirmation`, { email });
-};
-
 export const sendResetPasswordEmail = async (email: string) => {
   await client.post(`${BASE_PATH}/password`, { email });
 };
