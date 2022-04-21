@@ -8,6 +8,8 @@ import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { identify } from '@/services/analytics';
 import NavBar from '@/components/layout/NavBar.vue';
+import Hotjar from '@/assets/javascripts/hotjar';
+import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 
 import '@/assets/javascripts/segment';
@@ -19,8 +21,16 @@ const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
 
+const startHotjarSessionIfNeeded = () => {
+  const organizationId = $userStore.user?.defaultOrganizationId;
+  if (organizationId && HOTJAR_ORGANIZATION_IDS.split(',').includes(organizationId)) {
+    Hotjar.start();
+  }
+};
+
 const loadUserData = () => {
   if ($userStore.authenticated) {
+    startHotjarSessionIfNeeded();
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();

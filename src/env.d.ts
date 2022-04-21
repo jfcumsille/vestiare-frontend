@@ -12,6 +12,7 @@ interface ImportMetaEnv {
   readonly VITE_AUTH0_DOMAIN?: string
   readonly VITE_AUTH0_CLIENT_ID?: string
   readonly VITE_SEGMENT_WRITE_KEY?: string
+  readonly VITE_HOTJAR_ORGANIZATION_IDS?: string
 }
 
 interface ImportMeta {
