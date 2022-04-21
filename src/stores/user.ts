@@ -19,7 +19,7 @@ export const useUserStore = defineStore('user', {
       this.user = userData;
     },
     async loadUser() {
-      const userData = await api.users.get('1');
+      const userData = await api.user.get();
       this.user = userData;
     },
     async logIn({ email, password, token }: LogInOptions) {
@@ -42,7 +42,7 @@ export const useUserStore = defineStore('user', {
     async createUser({
       id, email, name, lastName,
     }: SignUpOptions) {
-      await api.users.create({
+      await api.user.create({
         id, email, name, lastName,
       });
     },
@@ -54,10 +54,10 @@ export const useUserStore = defineStore('user', {
       this.user = null;
     },
     async sendConfirmationEmail(email: string) {
-      await api.users.sendConfirmationEmail(email);
+      await api.user.sendConfirmationEmail(email);
     },
     async sendResetPasswordEmail(email: string) {
-      await api.users.sendResetPasswordEmail(email);
+      await api.user.sendResetPasswordEmail(email);
     },
   },
   getters: {
