@@ -6,10 +6,11 @@ import { useLocaleStore } from '@/stores/locale';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import { identify } from '@/services/analytics';
 import NavBar from '@/components/layout/NavBar.vue';
 import LoadingSpinner from './components/LoadingSpinner.vue';
 
-import '@/assets/javascripts/intercom';
+import '@/assets/javascripts/segment';
 
 const $routerStore = useRouterStore();
 const $localeStore = useLocaleStore();
@@ -23,6 +24,9 @@ const loadUserData = () => {
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();
+    if ($userStore.user) {
+      identify($userStore.user);
+    }
   }
 };
 

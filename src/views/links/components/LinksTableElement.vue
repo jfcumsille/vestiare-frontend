@@ -6,6 +6,8 @@ import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
 import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
+import { LINK_DELETED, LINK_REFRESHED } from '@/constants/analyticsEvents';
+import { trackLinkStatus, trackModal, trackId } from '@/services/analytics';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -43,9 +45,12 @@ const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : '
 
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
+  trackModal(value, 'links', 'delete');
 };
+
 const setRefreshModalOpened = (value: boolean) => {
   refreshModalOpened.value = value;
+  trackModal(value, 'links', 'refresh');
 };
 
 const openRefreshModal = () => {
@@ -60,6 +65,7 @@ const refresh = async () => {
     { preventRefresh: false },
   );
   setRefreshModalOpened(false);
+  trackId(LINK_REFRESHED, props.link.id);
 };
 
 const toggleActive = async () => {
@@ -69,17 +75,20 @@ const toggleActive = async () => {
     { active: !props.link.active },
   );
   updating.value = false;
+  trackLinkStatus(props.link);
 };
 
 const remove = async () => {
   await $linksStore.removeLink(props.link);
   setDeleteModalOpened(false);
+  trackId(LINK_DELETED, props.link.id);
 };
 </script>
 
 <template>
   <DeleteLinkModal
     v-if="deleteModalOpened"
+    data-test="remove-link"
     @close="() => setDeleteModalOpened(false)"
     @remove="remove"
   />
@@ -142,6 +151,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm text-body-color whitespace-nowrap">
       <GenericBadge
+        data-test="credentials-validity-badge"
         :class="{'cursor-pointer': props.link.preventRefresh}"
         :text="passwordBadgeText"
         :color="passwordBadgeColor"
@@ -150,6 +160,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm text-body-color whitespace-nowrap">
       <GenericToggle
+        data-test="link-active-toggle"
         :active="props.link.active"
         :loading="updating"
         @toggle="toggleActive"
@@ -157,6 +168,7 @@ const remove = async () => {
     </td>
     <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
       <a
+        data-test="remove-link-button"
         class="text-danger-main cursor-pointer hover:underline"
         @click="() => setDeleteModalOpened(true)"
       >{{ $t('buttons.remove') }}</a>

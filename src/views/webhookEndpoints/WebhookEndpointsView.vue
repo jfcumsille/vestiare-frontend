@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { page, trackModal } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -30,6 +32,7 @@ const tableHeaders = [
 const modalOpened = ref(false);
 const setModalOpened = (value: boolean) => {
   modalOpened.value = value;
+  trackModal(value, 'webhook_endpoints', 'create');
 };
 
 const webhookEndpoints = computed(
@@ -39,10 +42,17 @@ const webhookEndpoints = computed(
       : $webhookEndpointsStore.testWebhookEndpoints
   ),
 );
+
+onMounted(() => {
+  page(WEBHOOK_ENDPOINTS_VIEWED, { type: 'main' });
+});
 </script>
 
 <template>
-  <div class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
+  <div
+    data-test="webhook-endpoints-view"
+    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full"
+  >
     <WebhookEndpointCreationModal
       v-if="modalOpened"
       :live="live"
@@ -55,6 +65,7 @@ const webhookEndpoints = computed(
           @toggle-live="toggleLive"
         />
         <WebhookEndpointCreationButton
+          data-test="webhook-create-button"
           :live="live"
           :modal-opened="modalOpened"
           @open-modal="() => setModalOpened(true)"

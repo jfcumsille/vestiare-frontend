@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
-import { CountryCode } from '@/interfaces/utilities/enums';
+import { CountryCode, Product } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
+import { LINKS_VIEWED } from '@/constants/analyticsEvents';
+import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
@@ -42,6 +44,7 @@ const linkCreationButtonText = computed(() => {
 const isCreateLinkOpened = ref(false);
 const setCreateLinkOpened = (value: boolean) => {
   isCreateLinkOpened.value = value;
+  trackModal(value, 'links', 'create');
 };
 
 const isWidgetOpened = ref(false);
@@ -55,9 +58,10 @@ const setWidgetOpenStatus = (value: boolean) => {
 const loading = ref(false);
 const createdLink = ref<Nullable<Link>>(null);
 const createdLinkToken = ref<Nullable<string>>(null);
-const setLink = async (link: Link) => {
+const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
   loading.value = true;
+  trackLinkCreated(link, product);
   $linksStore.loadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
   createdLinkToken.value = regeneratedLink.linkToken;
@@ -133,10 +137,16 @@ const filterBySearch = (rawLinks: Array<Link>) => {
 };
 
 const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
+
+onMounted(() => {
+  page(LINKS_VIEWED);
+});
 </script>
 
 <template>
-  <div class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
+  <div
+    data-test="links-view"
+    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
     <CreateLinkModal
       v-if="isCreateLinkOpened"
       :live="live"
@@ -166,6 +176,7 @@ const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByAct
         />
 
         <button
+          data-test="create-link-button"
           class="items-center px-6 py-2 text-sm font-medium text-center
                     rounded-md text-white bg-primary-main hover:bg-primary-hover
                     disabled:cursor-default shadow-md

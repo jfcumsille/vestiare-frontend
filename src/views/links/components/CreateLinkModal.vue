@@ -9,13 +9,13 @@ import {
 } from '@/interfaces/utilities/enums';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
-import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/texts';
+import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/urls';
 
 const props = defineProps<{ live: boolean, widgetOpened: boolean }>();
 const emit = defineEmits<{
   (e: 'close'): void,
   (e: 'set-widget-open-status', value: boolean): void,
-  (e: 'set-link', link: Link): void,
+  (e: 'set-link', link: Link, product: Product): void,
 }>();
 const $apiKeysStore = useAPIKeysStore();
 const $t = useTranslation('views.links.createLinkModal');
@@ -57,7 +57,7 @@ const disabledButton = computed(() => props.widgetOpened || (fintoc.value === nu
 
 const onSuccess = async (link: Link) => {
   emit('set-widget-open-status', false);
-  emit('set-link', link);
+  emit('set-link', link, selectedProduct.value);
 };
 
 const onExit = () => {

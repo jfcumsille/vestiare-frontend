@@ -5,6 +5,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { Nullable } from '@/interfaces/common';
+import { trackWebhookCreated } from '@/services/analytics';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -76,6 +77,9 @@ const createWebhookEndpoint = async () => {
     );
     loading.value = false;
     emit('close');
+    trackWebhookCreated(events.value.filter(
+      (event) => event.checked,
+    ).map((event) => event.eventName));
   }
 };
 
@@ -126,6 +130,7 @@ watch(() => events.value, () => { eventsError.value = ''; });
     </GenericForm>
     <div class="w-full flex justify-end">
       <button
+        data-test="create-webhook-button"
         :disabled="loading"
         type="button"
         class="

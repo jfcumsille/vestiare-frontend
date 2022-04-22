@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
+import { EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
@@ -23,6 +25,7 @@ const resetPassword = async () => {
   loading.value = true;
   try {
     await userStore.sendResetPasswordEmail(email.value);
+    track(EMAIL_SENT, { type: 'reset_password' });
   } catch {
     error.value = true;
   } finally {
@@ -35,6 +38,7 @@ const resendResetPasswordEmail = async () => {
   try {
     await userStore.sendResetPasswordEmail(email.value);
     isEmailResent.value = true;
+    track(EMAIL_SENT, { type: 'resend_reset_password' });
   } catch {
     error.value = true;
   }
@@ -43,10 +47,17 @@ const resendResetPasswordEmail = async () => {
 const logIn = () => {
   router.push({ path: '/login' });
 };
+
+onMounted(() => {
+  page(RESET_PASSWORD_VIEWED);
+});
 </script>
 
 <template>
-  <div class="md:p-20 py-20 px-10 relative justify-center flex">
+  <div
+    data-test="reset-password-view"
+    class="md:p-20 py-20 px-10 relative justify-center flex"
+  >
     <div class="relative">
       <Circle
         class="w-72 absolute top-0 left-0 -ml-28 -mt-8 z-0"
@@ -84,6 +95,7 @@ const logIn = () => {
           <span class="font-medium">{{ email }}</span>
           {{ $tResetPassword('subtitleCompleted') }}
           <button
+            data-test="resend-reset-pass-button"
             class="
               text-primary-main font-normal disabled:text-disabled-color
               hover:text-primary-hover"
@@ -101,6 +113,7 @@ const logIn = () => {
         />
         <button
           v-if="!completed"
+          data-test="reset-pass-button"
           class="
             mt-4 bg-primary-main text-center text-white
             font-semibold py-3 rounded hover:bg-primary-hover"

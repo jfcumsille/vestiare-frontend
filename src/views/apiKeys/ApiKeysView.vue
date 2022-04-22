@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
+import { API_KEYS_VIEWED } from '@/constants/analyticsEvents';
+import { page, trackAPIKeyCreated, trackAPIKeyDeleted } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericTable from '@/components/GenericTable.vue';
@@ -31,10 +33,11 @@ const toggle = () => {
 
 const createAPIKey = async () => {
   await apiKeysStore.createAPIKey();
+  trackAPIKeyCreated();
 };
-
 const destroyAPIKey = async (key: APIKey) => {
   await apiKeysStore.destroyAPIKey(key.id);
+  trackAPIKeyDeleted(key);
 };
 
 const activationRequired = computed(() => (isLiveMode.value && !secretKey.value));
@@ -45,10 +48,17 @@ const secretKeyToActivate: APIKey = {
   mode: Mode.Live,
   createdAt: '',
 };
+
+onMounted(() => {
+  page(API_KEYS_VIEWED);
+});
 </script>
 
 <template>
-  <div class="flex items-center">
+  <div
+    data-test="api-keys-view"
+    class="flex items-center"
+  >
     <div class="h-full w-full flex justify-center min-w-fit">
       <div
         v-if="apiKeysStore.loading"

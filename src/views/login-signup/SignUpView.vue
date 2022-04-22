@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import {
+  ref, watch, computed, onMounted,
+} from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import { TERMS_AND_CONDITIONS, PRIVACY_POLICY, CONTACT } from '@/constants/texts';
+import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls';
+import { USER_SIGNED_UP, EMAIL_SENT, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Spinner from '@/components/LoadingSpinner.vue';
@@ -51,6 +55,7 @@ const signUp = async () => {
       company: company.value,
     });
     completed.value = true;
+    track(USER_SIGNED_UP);
   } catch {
     error.value = true;
     completed.value = false;
@@ -63,6 +68,7 @@ const resendVerificationEmail = async () => {
   try {
     await $store.sendConfirmationEmail(email.value);
     isEmailResent.value = true;
+    track(EMAIL_SENT, { type: 'resend_verification_email' });
   } catch {
     error.value = true;
   }
@@ -71,10 +77,17 @@ const resendVerificationEmail = async () => {
 const logIn = () => {
   toStoredRedirectionOrHome(router);
 };
+
+onMounted(() => {
+  page(SIGN_UP_VIEWED);
+});
 </script>
 
 <template>
-  <div class="h-full w-full flex justify-center overflow-x-hidden">
+  <div
+    data-test="sign-up-view"
+    class="h-full w-full flex justify-center overflow-x-hidden"
+  >
     <div
       v-if="!completed"
       class="relative flex flex-col lg:flex-row items-start justify-center px-20 pb-20 pt-12"
@@ -154,6 +167,7 @@ const logIn = () => {
                 <label class="inline-flex items-center">
                   <input
                     v-model="isChecked"
+                    data-test="terms-checkbox"
                     type="checkbox"
                     class="w-4 h-4 accent-primary-main hover:accent-primary-main"
                   >
@@ -168,6 +182,8 @@ const logIn = () => {
                     <a
                       class="text-primary-main"
                       :href="TERMS_AND_CONDITIONS"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {{ $tSignUp('terms') }}
                     </a>
@@ -175,6 +191,8 @@ const logIn = () => {
                     <a
                       class="text-primary-main"
                       :href="PRIVACY_POLICY"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       {{ $tSignUp('privacyPolicy') }}
                     </a>
@@ -185,6 +203,7 @@ const logIn = () => {
 
             <div>
               <button
+                data-test="sign-up-button"
                 class="
                   flex mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
                   rounded text-white bg-primary-main hover:bg-primary-hover
@@ -262,6 +281,8 @@ const logIn = () => {
           <a
             class="mt-4 text-primary-main font-medium z-10"
             :href="CONTACT"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {{ $tSignUp('contactSales') }}
           </a>
@@ -306,6 +327,7 @@ const logIn = () => {
           <div class="text-center font-light mt-4 text-body-color">
             {{ $tSignUp('didntReceive') }}
             <button
+              data-test="resend-verify-email-button"
               class="text-primary-main font-normal disabled:text-disabled-color"
               :disabled="isEmailResent"
               @click="resendVerificationEmail"

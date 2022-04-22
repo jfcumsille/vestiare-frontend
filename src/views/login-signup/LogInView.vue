@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
+import { USER_LOGGED_IN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
+import { page, track } from '@/services/analytics';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
@@ -29,6 +31,7 @@ const logIn = async () => {
   try {
     await userStore.logIn({ email: email.value, password: password.value });
     toStoredRedirectionOrHome(router);
+    track(USER_LOGGED_IN);
   } catch (err) {
     const loginError = err as AxiosError;
     const codeError = loginError?.response?.data?.error?.code;
@@ -46,10 +49,17 @@ const resendVerificationEmail = async () => {
   await userStore.sendConfirmationEmail(email.value);
   isEmailResent.value = true;
 };
+
+onMounted(() => {
+  page(LOG_IN_VIEWED);
+});
 </script>
 
 <template>
-  <div class="md:p-20 py-20 px-10 h-full w-full flex justify-center overflow-x-hidden">
+  <div
+    data-test="login-view"
+    class="md:p-20 py-20 px-10 h-full w-full flex justify-center overflow-x-hidden"
+  >
     <div class="relative w-full max-w-md min-w-min">
       <Circle
         class="w-72 absolute top-0 right-0 -mr-28 -mt-10 z-0"
@@ -115,6 +125,7 @@ const resendVerificationEmail = async () => {
           </div>
 
           <button
+            data-test="login-button"
             class="
                 mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
                 rounded text-white bg-primary-main hover:bg-primary-hover
