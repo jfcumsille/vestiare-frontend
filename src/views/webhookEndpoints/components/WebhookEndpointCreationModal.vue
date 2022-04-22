@@ -77,7 +77,9 @@ const createWebhookEndpoint = async () => {
     );
     loading.value = false;
     emit('close');
-    trackWebhookCreated(events.value.filter((event) => event.checked).map((event) => event.name));
+    trackWebhookCreated(events.value.filter(
+      (event) => event.checked,
+    ).map((event) => event.eventName));
   }
 };
 

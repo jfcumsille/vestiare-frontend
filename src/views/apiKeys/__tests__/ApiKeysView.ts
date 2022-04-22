@@ -29,6 +29,17 @@ const getWrapper = () => {
   return wrapper;
 };
 
+const checkIfApiKeyTableElementContainsText = async (
+  apiKeyTableElement: VueWrapper<InstanceType<typeof ApiKeysTableElement>>,
+  text: string,
+) => {
+  const apiKeyEyeToggle = apiKeyTableElement.find('[data-test="eye-toggle"]');
+  expect(apiKeyEyeToggle.exists()).toBe(true);
+  await apiKeyEyeToggle.trigger('click');
+  const testKeyToken = apiKeyTableElement.find('[data-test="api-key-token"]');
+  expect(testKeyToken.text()).toContain(text);
+};
+
 describe('ApiKeysView', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
@@ -82,19 +93,10 @@ describe('ApiKeysView', () => {
       ];
     });
     it('should show live keys when mode is live', async () => {
-      const checkIfTextContainsLive = async (apiKeyTableElement: VueWrapper<any>) => {
-        const apiKeyEyeToggle = apiKeyTableElement.find('[data-test="eye-toggle"]');
-        expect(apiKeyEyeToggle.exists()).toBe(true);
-        await apiKeyEyeToggle.trigger('click');
-        const liveKeyToken = apiKeyTableElement.find('[data-test="api-key-token"]');
-        expect(liveKeyToken.text()).toContain('_live_');
-      };
-
-      await wrapper.vm.$forceUpdate();
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
-        checkIfTextContainsLive(apiKeyTableElement);
+        checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_live_');
       });
     });
 
@@ -102,20 +104,11 @@ describe('ApiKeysView', () => {
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       expect(modeToggle.exists()).toBe(true);
       await modeToggle.trigger('click');
-
-      const checkIfTextContainsLive = async (apiKeyTableElement: VueWrapper<any>) => {
-        const apiKeyEyeToggle = apiKeyTableElement.find('[data-test="eye-toggle"]');
-        expect(apiKeyEyeToggle.exists()).toBe(true);
-        await apiKeyEyeToggle.trigger('click');
-        const testKeyToken = apiKeyTableElement.find('[data-test="api-key-token"]');
-        expect(testKeyToken.text()).toContain('_test_');
-      };
-
       await wrapper.vm.$forceUpdate();
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
-        checkIfTextContainsLive(apiKeyTableElement);
+        checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_test_');
       });
     });
 
@@ -222,20 +215,11 @@ describe('ApiKeysView', () => {
       const modeToggle = wrapper.find('[data-test="mode-toggle"]');
       expect(modeToggle.exists()).toBe(true);
       await modeToggle.trigger('click');
-
-      const checkIfTextContainsLive = async (apiKeyTableElement: VueWrapper<any>) => {
-        const apiKeyEyeToggle = apiKeyTableElement.find('[data-test="eye-toggle"]');
-        expect(apiKeyEyeToggle.exists()).toBe(true);
-        await apiKeyEyeToggle.trigger('click');
-        const testKeyToken = apiKeyTableElement.find('[data-test="api-key-token"]');
-        expect(testKeyToken.text()).toContain('_test_');
-      };
-
       await wrapper.vm.$forceUpdate();
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
-        checkIfTextContainsLive(apiKeyTableElement);
+        checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_test_');
       });
     });
 

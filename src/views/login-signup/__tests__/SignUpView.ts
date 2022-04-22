@@ -9,7 +9,7 @@ import router from '@/router/index';
 import { USER_SIGNED_UP, EMAIL_SENT, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
-import GenericInput from '@/components/GenericInput.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();

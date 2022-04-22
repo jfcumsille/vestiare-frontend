@@ -46,9 +46,10 @@ describe('LogInView', () => {
   describe('when user logs in', () => {
     it('tracks \'User Logged In\' with analytics', async () => {
       const wrapper = getWrapper();
-      const loginButton = wrapper.find('[data-test="login-button"]');
-      expect(loginButton.exists()).toBe(true);
-      await loginButton.trigger('click');
+      wrapper.vm.email = 'email@gmail.com';
+      wrapper.vm.password = 'password';
+      await wrapper.vm.$forceUpdate();
+      await wrapper.vm.logIn();
       expectToTrackWithAnalytics(analyticsTrackMock, USER_LOGGED_IN);
     });
   });
