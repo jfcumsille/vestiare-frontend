@@ -15,7 +15,7 @@ import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
 
-const getWrapper = ():VueWrapper<InstanceType<typeof ApiKeysView>> => {
+const getWrapper = () => {
   const wrapper = mount(ApiKeysView, {
     global: {
       plugins: [

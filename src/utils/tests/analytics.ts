@@ -5,13 +5,9 @@ type MockFunction = () => void;
 export const expectToTrackWithAnalytics = (
   mockFunction: MockFunction,
   name: string,
-  properties?: Record<string, unknown>,
+  properties: Record<string, unknown> = {},
 ) => {
-  if (properties) {
-    expect(mockFunction).toHaveBeenLastCalledWith(name, properties);
-  } else {
-    expect(mockFunction).toHaveBeenLastCalledWith(name);
-  }
+  expect(mockFunction).toHaveBeenLastCalledWith(name, properties);
 };
 
 export const mockPageAndTrackAnalytics = (page?: MockFunction, track?: MockFunction) => {

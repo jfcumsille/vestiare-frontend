@@ -14,7 +14,7 @@ import GenericInput from '@/components/GenericInput.vue';
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
 
-const getWrapper = ():VueWrapper<InstanceType<typeof SignUpView>> => {
+const getWrapper = () => {
   const wrapper = mount(SignUpView, {
     global: {
       plugins: [

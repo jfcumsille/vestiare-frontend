@@ -19,8 +19,7 @@ export const convertRecordKeysToSnakeCase = (
   const snakeCaseKeyRecord: Record<string, unknown> = {};
   Object.keys(record).forEach((key) => {
     const snakeCaseKey = humps.decamelize(key);
-    const value = record[key];
-    snakeCaseKeyRecord[snakeCaseKey] = value;
+    snakeCaseKeyRecord[snakeCaseKey] = record[key];
   });
   return snakeCaseKeyRecord;
 };
@@ -33,24 +32,12 @@ export const identify = (user: User) => {
   });
 };
 
-export const page = (name: string, properties?: Record<string, unknown>) => {
-  let snakeCaseProperties: Record<string, unknown> = {};
-  if (properties) {
-    snakeCaseProperties = convertRecordKeysToSnakeCase(properties);
-    window.analytics.page(name, snakeCaseProperties);
-  } else {
-    window.analytics.page(name);
-  }
+export const page = (name: string, properties: Record<string, unknown> = {}) => {
+  window.analytics.page(name, convertRecordKeysToSnakeCase(properties));
 };
 
-export const track = (name: string, properties?: Record<string, unknown>) => {
-  let snakeCaseProperties: Record<string, unknown> = {};
-  if (properties) {
-    snakeCaseProperties = convertRecordKeysToSnakeCase(properties);
-    window.analytics.track(name, snakeCaseProperties);
-  } else {
-    window.analytics.track(name);
-  }
+export const track = (name: string, properties: Record<string, unknown> = {}) => {
+  window.analytics.track(name, convertRecordKeysToSnakeCase(properties));
 };
 
 export const trackModal = (opened: boolean, location: string, action: string) => {
