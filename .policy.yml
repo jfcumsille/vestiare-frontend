@@ -3,7 +3,7 @@ policy:
   approval:
     - someone from fintoc has approved
     - the dashboard team has approved
-    - a fintoc front maintainer has approved
+    - a dashboard maintainer has approved
 
 
 approval_rules:
