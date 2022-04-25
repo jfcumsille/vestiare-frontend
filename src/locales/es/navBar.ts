@@ -7,4 +7,6 @@ export default <NavBarLocale>{
   blog: 'Blog',
   logIn: 'Iniciar sesión',
   getAPIKeys: 'Obtener API Keys',
+  organizationName: 'Mi Organización',
+  myProfile: 'Mi perfil',
 };

@@ -12,6 +12,8 @@ import FintocLogo from '@/assets/svg/FintocLogo.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
+import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
+import PersonIcon from '@/assets/svg/PersonIcon.vue';
 import {
   DOCS,
   NEWS,
@@ -23,6 +25,7 @@ import {
 const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
+
 const $t = useTranslation('navBar');
 
 const isLoggedIn = computed(() => (userStore.authenticated));
@@ -33,18 +36,10 @@ const pressMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const navBarInternalLinks = [
+const navBarLoggedInLinks = [
   {
-    text: 'API Keys',
-    path: '/api-keys',
-  },
-  {
-    text: 'Links',
-    path: '/links',
-  },
-  {
-    text: 'Webhook Endpoints',
-    path: '/webhook-endpoints',
+    text: $t('docs'),
+    href: DOCS,
   },
 ];
 
@@ -151,25 +146,48 @@ const signUp = () => {
         class="block w-auto ml-4"
         data-test="nav-bar-internal-links"
       >
-        <ul class="flex flex-row space-x-8 text-sm font-medium">
-          <li
-            v-for="link in navBarInternalLinks"
-            :key="link.path"
+        <div
+          class="
+            flex flex-row space-x-8 text-sm font-medium
+          "
+        >
+          <a
+            v-for="link in navBarLoggedInLinks"
+            :key="link.text"
+            class="cursor-pointer text-primary-main hover:text-primary-hover"
+            :href="link.href"
+            target="_blank"
           >
+            {{ link.text }}
+          </a>
+          <button
+            class="cursor-pointer text-primary-main hover:text-primary-hover flex"
+          >
+            <SettingsIcon class="mr-2 mt-1" />
             <router-link
-              :to="link.path"
-              :class="`block p-0 ${selectionClasses(link.path)}`"
+              to="/"
             >
-              {{ link.text }}
+              {{ userStore.organizationName || $t('organizationName') }}
             </router-link>
-          </li>
-          <li
-            class="cursor-pointer"
+          </button>
+          <button
+            class="cursor-pointer text-primary-main hover:text-primary-hover flex"
+          >
+            <PersonIcon class="mr-2 mt-1" />
+            <router-link
+              to="/"
+              class="capitalize"
+            >
+              {{ userStore.user?.name || $t('myProfile') }}
+            </router-link>
+          </button>
+          <button
+            class="cursor-pointer text-primary-main hover:text-primary-hover"
             @click="logOut"
           >
             Log Out
-          </li>
-        </ul>
+          </button>
+        </div>
       </div>
     </div>
     <div
