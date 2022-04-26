@@ -1,7 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { APIKey } from '@/interfaces/entities/apiKeys';
-import { Mode } from '@/interfaces/utilities/enums';
+import { useConfigStore } from './config';
 
 export const useAPIKeysStore = defineStore('apiKeys', {
   state: () => ({
@@ -28,9 +28,13 @@ export const useAPIKeysStore = defineStore('apiKeys', {
     },
   },
   getters: {
-    searchKey: (state) => (isPublic: boolean, mode: Mode) => state.apiKeys.filter(
-      (key) => key.isPublic === isPublic && key.mode === mode,
-    )[0],
+    searchKey: (state) => (isPublic: boolean) => {
+      const configStore = useConfigStore();
+      const mode = configStore.mode;
+      return state.apiKeys.filter(
+        (key) => key.isPublic === isPublic && key.mode === mode,
+      )[0];
+    },
   },
 });
 
