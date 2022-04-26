@@ -5,7 +5,9 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
-import { CountryCode, Product, ButtonType } from '@/interfaces/utilities/enums';
+import {
+  CountryCode, Product, ButtonType, Mode,
+} from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import { LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
@@ -17,6 +19,7 @@ import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinkFilters from '@/views/links/components/LinkFilters.vue';
 import LinksTableElement from '@/views/links/components/LinksTableElement.vue';
+import { useConfigStore } from '@/stores/config';
 
 const $t = useTranslation('views.links');
 
@@ -30,12 +33,10 @@ const headers = [
   '',
 ];
 
-const $linksStore = useLinksStore();
+const linksStore = useLinksStore();
+const configStore = useConfigStore();
 
-const live = ref(true);
-const toggleLive = () => {
-  live.value = !live.value;
-};
+const live = computed(() => configStore.mode === Mode.Live);
 
 const linkCreationButtonText = computed(() => {
   const mode = live.value ? 'Live' : 'Test';
@@ -63,7 +64,7 @@ const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
   loading.value = true;
   trackLinkCreated(link, product);
-  $linksStore.loadLinks();
+  linksStore.loadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
   createdLinkToken.value = regeneratedLink.linkToken;
   loading.value = false;
@@ -73,7 +74,7 @@ const stopShowingLink = () => {
   createdLinkToken.value = null;
 };
 
-const links = computed(() => (live.value ? $linksStore.liveLinks : $linksStore.testLinks));
+const links = computed(() => linksStore.links);
 
 const activeFilter = ref('all');
 const activeOptions = ['all', 'valid', 'invalid'];
@@ -151,7 +152,6 @@ onMounted(() => {
   >
     <CreateLinkModal
       v-if="isCreateLinkOpened"
-      :live="live"
       :widget-opened="isWidgetOpened"
       @set-widget-open-status="setWidgetOpenStatus"
       @set-link="setLink"
@@ -171,10 +171,8 @@ onMounted(() => {
           :active-options="activeOptions"
           :password-filter="passwordFilter"
           :password-options="passwordOptions"
-          :live="live"
           @select-active-filter="selectActiveFilter"
           @select-password-filter="selectPasswordFilter"
-          @toggle-live="toggleLive"
         />
         <GenericButton
           data-test="create-link-button"
@@ -199,13 +197,13 @@ onMounted(() => {
       </GenericTable>
     </div>
     <div
-      v-if="$linksStore.loading"
+      v-if="linksStore.loading"
       class="flex justify-center w-full pt-4"
     >
       <LoadingSpinner />
     </div>
     <div
-      v-if="!filteredLinks.length && !$linksStore.loading"
+      v-if="!filteredLinks.length && !linksStore.loading"
       class="flex justify-center w-full pt-4"
     >
       <p class="text-heading-color text-3xl font-bold">

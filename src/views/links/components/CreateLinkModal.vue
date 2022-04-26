@@ -11,18 +11,23 @@ import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/urls';
+import { useConfigStore } from '@/stores/config';
 
-const props = defineProps<{ live: boolean, widgetOpened: boolean }>();
+const props = defineProps<{ widgetOpened: boolean }>();
 const emit = defineEmits<{
   (e: 'close'): void,
   (e: 'set-widget-open-status', value: boolean): void,
   (e: 'set-link', link: Link, product: Product): void,
 }>();
-const $apiKeysStore = useAPIKeysStore();
+
+const apiKeysStore = useAPIKeysStore();
+const configStore = useConfigStore();
+
 const $t = useTranslation('views.links.createLinkModal');
 
+const live = computed(() => configStore.mode === Mode.Live);
 const title = computed(() => {
-  const mode = props.live ? 'Live' : 'Test';
+  const mode = live.value ? 'Live' : 'Test';
   return `${$t('create')} ${mode} Link`;
 });
 
@@ -50,7 +55,7 @@ const handleChangeAPI = () => {
 const selectedHolderType = ref(HolderType.Individual);
 const holderTypes = [HolderType.Individual, HolderType.Business];
 
-const apiKey = computed(() => $apiKeysStore.searchKey(true, props.live ? Mode.Live : Mode.Test));
+const apiKey = computed(() => apiKeysStore.searchKey(true));
 
 const fintoc = ref<Nullable<Fintoc>>(null);
 
@@ -93,7 +98,7 @@ onMounted(async () => {
   >
     <div class="space-y-3 text-body-color">
       <div
-        v-if="props.live"
+        v-if="live"
         class="text-left text-body-color font-light"
       >
         {{ $t('subtitleLive') }}
