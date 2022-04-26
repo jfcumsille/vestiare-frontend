@@ -3,9 +3,10 @@ import { computed, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { Mode } from '@/interfaces/utilities/enums';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { page } from '@/services/analytics';
+import { Mode, ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import GenericButton from '@/components/GenericButton.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
@@ -62,21 +63,18 @@ onMounted(() => {
         </template>
       </GenericTable>
     </div>
-    <div
-      v-if="showTestButton"
-      class="flex justify-center w-full"
-    >
-      <div class="grow mt-6 mx-4 max-w-screen-xl">
-        <button
-          class="
-              h-12 mt-1 ml-2 px-4 rounded-md cursor-pointer
-              text-blue-600 bg-blue-700/20 hover:bg-blue-700/10
-            "
-          @click="toggleWebhookModal"
-        >
-          {{ $t('testWebhook.buttonText') }}
-        </button>
-      </div>
+  </div>
+  <div
+    v-if="showTestButton"
+    class="flex justify-center w-full"
+  >
+    <div class="grow mt-6 mx-4 max-w-screen-xl">
+      <GenericButton
+        :type="ButtonType.Secondary"
+        :text="$t('testWebhook.buttonText')"
+        :size="SizeType.Regular"
+        @click="toggleWebhookModal"
+      />
     </div>
   </div>
 </template>

@@ -4,11 +4,12 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { page, trackModal } from '@/services/analytics';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
+import GenericButton from '@/components/GenericButton.vue';
 import WebhookEndpointFilters from './components/WebhookEndpointFilters.vue';
-import WebhookEndpointCreationButton from './components/WebhookEndpointCreationButton.vue';
 import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
 
@@ -64,11 +65,12 @@ onMounted(() => {
           :live="live"
           @toggle-live="toggleLive"
         />
-        <WebhookEndpointCreationButton
+        <GenericButton
           data-test="webhook-create-button"
-          :live="live"
-          :modal-opened="modalOpened"
-          @open-modal="() => setModalOpened(true)"
+          :type="ButtonType.Primary"
+          :text="$t('creation.buttonText')"
+          :disabled="modalOpened"
+          @click="setModalOpened(true)"
         />
       </div>
       <GenericTable class="mt-6">

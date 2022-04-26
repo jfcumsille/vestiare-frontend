@@ -3,12 +3,11 @@ import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
-import { Mode } from '@/interfaces/utilities/enums';
+import { Mode, ButtonType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
+import GenericButton from '@/components/GenericButton.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import InfoIcon from '@/assets/svg/InfoIcon.vue';
-import CopyIcon from '@/assets/svg/CopyIcon.vue';
-import EyeIcon from '@/assets/svg/EyeIcon.vue';
 
 const props = defineProps<{ apiKey: APIKey }>();
 const emit = defineEmits<{
@@ -102,48 +101,46 @@ const handleEndHoverIcon = () => {
       </div>
     </td>
     <td class="font-normal m-2">
-      <button
+      <GenericButton
         v-if="activationRequired"
         data-test="activate-key-button"
-        class="bg-primary-main hover:bg-primary-hover w-full px-5 py-3 rounded-md text-white"
+        class="w-full"
+        :type="ButtonType.Primary"
+        :text="$t('activateSecretKey')"
         @click="handleActivateKey"
-      >
-        {{ $t('activateSecretKey') }}
-      </button>
+      />
       <div
         v-else
         data-test="api-key-token"
         class="
-          flex flex-row items-center bg-primary-surface
-          px-5 py-4 rounded-md w-min-fit"
+          flex flex-row items-center
+          rounded-md w-min-fit"
       >
         <div
           v-if="showKey"
-          class="text-md truncate w-64"
+          class="px-4 py-2 text-md rounded-md truncate w-72 bg-primary-surface"
         >
           {{ props.apiKey.token }}
         </div>
         <div
           v-else
-          class="text-md font-bold w-64"
+          class="px-4 py-2 text-md rounded-md font-bold w-72 bg-primary-surface"
         >
-          ••••••••••••••••••••••••••••••••••
+          •••••••••••••••••••••••••••••••••••
         </div>
-        <button
+        <GenericButton
           data-test="eye-toggle"
-          class="cursor-pointer ml-2 w-6 h-6 hover:opacity-75"
+          class="ml-2"
+          :image-name="showKey ? 'eye' : 'eye_closed'"
+          :type="ButtonType.Secondary"
           @click="toggleKey"
-        >
-          <EyeIcon
-            :crossed-out="showKey"
-          />
-        </button>
-        <button
-          class="ml-2 hover:opacity-75"
+        />
+        <GenericButton
+          class="ml-2"
+          image-name="copy"
+          :type="ButtonType.Secondary"
           @click="copyKey"
-        >
-          <CopyIcon class="w-5 h-5" />
-        </button>
+        />
       </div>
     </td>
     <td class="p-5 text-sm text-body-color whitespace-nowrap flex-col">

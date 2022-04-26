@@ -1,7 +1,7 @@
 <template>
   <svg
     role="status"
-    class="mr-2 w-8 h-8 text-light-gray animate-spin fill-primary-main"
+    class="mr-2 w-6 h-6 text-light-gray animate-spin fill-primary-main"
     viewBox="0 0 100 101"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

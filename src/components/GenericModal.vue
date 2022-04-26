@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import CrossIcon from '@/assets/svg/CrossIcon.vue';
+import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import GenericButton from '@/components/GenericButton.vue';
 
 const props = defineProps<{ title: string }>();
 
@@ -27,19 +28,12 @@ const close = () => {
             >
               {{ props.title }}
             </h3>
-            <button
-              class="
-                text-body-color bg-transparent hover:bg-light-gray
-                hover:text-heading-color rounded-lg text-sm p-1.5 ml-auto
-                inline-flex items-center
-              "
+            <GenericButton
+              :type="ButtonType.Secondary"
+              :size="SizeType.Small"
+              image-name="cross"
               @click="close"
-            >
-              <CrossIcon
-                class="w-5 h-5"
-                viewBox="0 0 20 20"
-              />
-            </button>
+            />
           </div>
           <div class="p-5">
             <slot />

@@ -5,10 +5,11 @@ import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import {
-  Mode, CountryCode, Product, HolderType, APIModule,
+  Mode, CountryCode, Product, HolderType, APIModule, ButtonType,
 } from '@/interfaces/utilities/enums';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
+import GenericButton from '@/components/GenericButton.vue';
 import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/urls';
 
 const props = defineProps<{ live: boolean, widgetOpened: boolean }>();
@@ -206,20 +207,13 @@ onMounted(async () => {
       </div>
     </div>
     <div class="w-full flex justify-end">
-      <button
+      <GenericButton
+        class="mt-5"
+        :type="ButtonType.Primary"
+        :text="title"
         :disabled="disabledButton"
-        type="button"
-        class="
-          mt-5 items-center px-6 py-2 text-sm font-medium text-center
-          rounded-md text-white bg-primary-main hover:bg-primary-hover
-          disabled:cursor-default shadow-md
-          disabled:bg-disabled-color
-        "
-        :class="{ 'opacity-50': disabledButton }"
         @click="openWidget"
-      >
-        {{ title }}
-      </button>
+      />
     </div>
   </GenericModal>
 </template>

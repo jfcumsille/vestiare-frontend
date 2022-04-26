@@ -5,13 +5,14 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
-import { CountryCode, Product } from '@/interfaces/utilities/enums';
+import { CountryCode, Product, ButtonType } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import { LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
+import GenericButton from '@/components/GenericButton.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinkFilters from '@/views/links/components/LinkFilters.vue';
@@ -174,18 +175,13 @@ onMounted(() => {
           @select-password-filter="selectPasswordFilter"
           @toggle-live="toggleLive"
         />
-
-        <button
+        <GenericButton
           data-test="create-link-button"
-          class="items-center px-6 py-2 text-sm font-medium text-center
-                    rounded-md text-white bg-primary-main hover:bg-primary-hover
-                    disabled:cursor-default shadow-md
-                    disabled:bg-light-gray disabled:text-disabled-color min-w-fit ml-4"
-          :title="linkCreationButtonText"
+          class="ml-4"
+          :type="ButtonType.Primary"
+          :text="linkCreationButtonText"
           @click="setCreateLinkOpened(true)"
-        >
-          {{ linkCreationButtonText }}
-        </button>
+        />
       </div>
       <GenericTable class="mt-6">
         <template #header>

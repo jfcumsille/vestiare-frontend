@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
+import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import GenericButton from '@/components/GenericButton.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
@@ -94,16 +96,14 @@ onMounted(() => {
           {{ $tResetPassword('checkYourEmail') }}
           <span class="font-medium">{{ email }}</span>
           {{ $tResetPassword('subtitleCompleted') }}
-          <button
+          <GenericButton
             data-test="resend-reset-pass-button"
-            class="
-              text-primary-main font-normal disabled:text-disabled-color
-              hover:text-primary-hover"
+            :type="ButtonType.Text"
+            :size="SizeType.Inline"
+            :text="$tResetPassword('resendEmail')"
             :disabled="isEmailResent"
             @click="resendResetPasswordEmail"
-          >
-            {{ $tResetPassword('resendEmail') }}
-          </button>
+          />
         </div>
         <GenericInput
           v-if="!completed"
@@ -111,27 +111,23 @@ onMounted(() => {
           :label="$tForms('labels.email')"
           :placeholder="$tForms('placeholders.email')"
         />
-        <button
+        <GenericButton
           v-if="!completed"
           data-test="reset-pass-button"
-          class="
-            mt-4 bg-primary-main text-center text-white
-            font-semibold py-3 rounded hover:bg-primary-hover"
+          class="mt-4"
+          :type="ButtonType.Primary"
+          :text="$tResetPassword('continue')"
           :disabled="loading"
           @click="resetPassword"
-        >
-          {{ $tResetPassword('continue') }}
-        </button>
-        <button
+        />
+        <GenericButton
           v-if="completed"
-          class="
-            mt-4 bg-primary-main text-center text-white
-            font-semibold py-3 rounded hover:bg-primary-hover"
+          class="mt-4"
+          :type="ButtonType.Primary"
+          :text="$tResetPassword('logIn')"
           :disabled="loading"
           @click="logIn"
-        >
-          {{ $tResetPassword('logIn') }}
-        </button>
+        />
         <a
           v-if="!completed"
           href="/login"
