@@ -6,6 +6,7 @@ import { useConfigStore } from '@/stores/config';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
 import { API_KEYS_VIEWED } from '@/constants/analyticsEvents';
+import { DOCS_API_KEYS } from '@/constants/urls';
 import { page, trackAPIKeyCreated, trackAPIKeyDeleted } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
@@ -71,7 +72,8 @@ onMounted(() => {
         <div class="flex flex-row justify-between items-center py-2">
           <a
             class="text-primary-main text-sm"
-            href="https://docs.fintoc.com/docs/api-keys"
+            :href="DOCS_API_KEYS"
+            target="_blank"
           >
             {{ $t('learnMore') }}
           </a>

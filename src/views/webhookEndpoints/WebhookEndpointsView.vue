@@ -3,6 +3,7 @@ import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { DOCS_WEBHOOKS } from '@/constants/urls';
 import { page, trackModal } from '@/services/analytics';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -42,14 +43,28 @@ onMounted(() => {
 <template>
   <div
     data-test="webhook-endpoints-view"
-    class="flex flex-col p-6 items-center max-w-screen-xl w-full"
+    class="flex flex-col p-10 items-center max-w-screen-xl w-full"
   >
     <WebhookEndpointCreationModal
       v-if="modalOpened"
       @close="() => setModalOpened(false)"
     />
     <div class="flex flex-col w-full">
-      <div class="flex justify-end">
+      <div class="flex justify-between">
+        <div>
+          <div class="font-medium text-2xl text-heading-color self-start">
+            {{ $t('title') }}
+          </div>
+          <div class="flex flex-row justify-between items-center py-2 self-start">
+            <a
+              class="text-primary-main text-sm"
+              :href="DOCS_WEBHOOKS"
+              target="_blank"
+            >
+              {{ $t('learnMore') }}
+            </a>
+          </div>
+        </div>
         <GenericButton
           data-test="webhook-create-button"
           :type="ButtonType.Primary"
@@ -58,7 +73,7 @@ onMounted(() => {
           @click="() => setModalOpened(true)"
         />
       </div>
-      <GenericTable class="mt-6">
+      <GenericTable>
         <template #header>
           <GenericTableHeader :headers="tableHeaders" />
         </template>

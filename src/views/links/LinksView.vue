@@ -10,6 +10,7 @@ import {
 } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import { LINKS_VIEWED } from '@/constants/analyticsEvents';
+import { DOCS_LINKS } from '@/constants/urls';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
@@ -148,7 +149,7 @@ onMounted(() => {
 <template>
   <div
     data-test="links-view"
-    class="flex flex-col p-6 items-center max-w-screen-xl w-full"
+    class="flex flex-col p-10 items-center max-w-screen-xl w-full"
   >
     <CreateLinkModal
       v-if="isCreateLinkOpened"
@@ -164,6 +165,20 @@ onMounted(() => {
       @close="stopShowingLink"
     />
     <div class="flex flex-col w-full">
+      <div>
+        <div class="font-medium text-2xl text-heading-color self-start">
+          {{ $t('title') }}
+        </div>
+        <div class="flex flex-row justify-between items-center py-2 self-start">
+          <a
+            class="text-primary-main text-sm"
+            :href="DOCS_LINKS"
+            target="_blank"
+          >
+            {{ $t('learnMore') }}
+          </a>
+        </div>
+      </div>
       <div class="flex justify-between">
         <LinkFilters
           v-model:search="search"

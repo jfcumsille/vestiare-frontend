@@ -1,6 +1,8 @@
 import { LinksViewLocale } from '@/interfaces/locales/views/links';
 
 export default <LinksViewLocale>{
+  title: 'Links',
+  learnMore: 'Aprende más sobre los Links de Fintoc →',
   filters: {
     searchBarPlaceholder: 'Buscar por ID de usuario',
     active: {
