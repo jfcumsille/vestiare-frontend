@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import ChevronDown from '@/assets/svg/ChevronDown.vue';
+import { ButtonType, SizeType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import GenericButton from '@/components/GenericButton.vue';
 
 const props = withDefaults(defineProps<{
   selected: string,
   options: Array<string>,
   textPrefix?: string,
-  isColorPrimary?: boolean,
+  size?: SizeType,
+  isWidthFull?: boolean,
+  justify?: string
 }>(), {
-  isColorPrimary: false,
+  isWidthFull: false,
+  size: SizeType.Regular,
+  justify: 'center',
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
-
-const colorClasses = computed(() => (
-  props.isColorPrimary
-    ? 'text-white bg-primary-main hover:bg-primary-hover focus:ring-primary-focus border-primary-border'
-    : 'text-body-color bg-white hover:bg-light-gray focus:ring-light-gray border-border-color'
-));
 
 const opened = ref(false);
 const dropDown = ref(null);
@@ -35,36 +34,35 @@ const select = (option: string) => {
 onClickOutside(dropDown, () => {
   opened.value = false;
 });
+
+const title = computed(() => {
+  if (props.textPrefix) {
+    return `${props.textPrefix} - ${props.selected}`;
+  }
+  return props.selected;
+});
 </script>
 
 <template>
   <div ref="dropDown">
-    <button
+    <GenericButton
       data-test="drop-down-button"
-      :class="`
-        focus:ring-2 justify-between font-medium rounded-md text-sm
-        px-4 py-2.5 shadow-sm text-center inline-flex items-center
-        w-full border ${colorClasses}
-      `"
+      :class="{ 'w-full': isWidthFull }"
+      justify="justify-between"
+      :type="ButtonType.Outline"
+      :text="title"
+      :size="size"
+      image-name="chevron_down"
+      :image-position="HorizontalPositionType.Right"
       @click="toggle"
-    >
-      <p class="min-w-max">
-        <span
-          v-if="textPrefix"
-          data-test="drop-down-text-prefix"
-        >{{ textPrefix }} -</span>
-        {{ selected }}
-      </p>
-      <ChevronDown />
-    </button>
-
+    />
     <div
       data-test="drop-down-list"
       class="
         absolute z-10 text-base list-none bg-white rounded cursor-pointer
         divide-y divide-divider-color shadow-lg
       "
-      :class="{ hidden: !opened }"
+      :class="{ 'hidden': !opened }"
     >
       <ul class="py-1">
         <li
