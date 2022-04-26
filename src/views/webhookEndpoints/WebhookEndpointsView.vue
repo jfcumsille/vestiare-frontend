@@ -52,7 +52,7 @@ onMounted(() => {
 <template>
   <div
     data-test="webhook-endpoints-view"
-    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full"
+    class="flex flex-col p-6 items-center max-w-screen-xl w-full"
   >
     <WebhookEndpointCreationModal
       v-if="modalOpened"

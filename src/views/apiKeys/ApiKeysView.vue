@@ -59,7 +59,7 @@ onMounted(() => {
     data-test="api-keys-view"
     class="flex items-center"
   >
-    <div class="h-full w-full flex justify-center min-w-fit">
+    <div class="h-full w-full flex min-w-fit">
       <div
         v-if="apiKeysStore.loading"
         class="flex justify-center h-full w-full pt-4 mt-28"

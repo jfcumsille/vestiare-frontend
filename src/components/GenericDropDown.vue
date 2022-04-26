@@ -61,6 +61,7 @@ const title = computed(() => {
       :icon-position="HorizontalPositionType.Right"
       @click="toggle"
     />
+
     <div
       data-test="drop-down-list"
       class="

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useRouterStore } from '@/stores/router';
 import { useLocaleStore } from '@/stores/locale';
@@ -8,6 +9,7 @@ import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { identify } from '@/services/analytics';
 import NavBar from '@/components/layout/NavBar/NavBar.vue';
+import SideBar from '@/components/layout/SideBar/SideBar.vue';
 import Hotjar from '@/assets/javascripts/hotjar';
 import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
 import LoadingSpinner from './components/LoadingSpinner.vue';
@@ -20,6 +22,7 @@ const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
 const $linksStore = useLinksStore();
 const $webhookEndpointsStore = useWebhookEndpointsStore();
+const route = useRoute();
 
 const startHotjarSessionIfNeeded = () => {
   const organizationId = $userStore.user?.defaultOrganizationId;
@@ -40,6 +43,8 @@ const loadUserData = () => {
   }
 };
 
+const shouldDisplaySidebar = computed(() => ['/links', '/api-keys', '/webhook-endpoints'].includes(route.path));
+
 watch(() => $userStore.authenticated, () => {
   loadUserData();
 });
@@ -52,14 +57,19 @@ onMounted(async () => {
 
 <template>
   <NavBar />
-  <div
-    v-if="$routerStore.loading"
-    class="flex justify-center w-full h-96"
-  >
-    <LoadingSpinner class="mt-auto w-20 h-20" />
+  <div class="flex">
+    <SideBar v-if="shouldDisplaySidebar" />
+    <div class="w-full">
+      <div
+        v-if="$routerStore.loading"
+        class="flex justify-center w-full h-96"
+      >
+        <LoadingSpinner class="mt-auto w-20 h-20" />
+      </div>
+      <router-view
+        v-else
+        :key="$localeStore.language"
+      />
+    </div>
   </div>
-  <router-view
-    v-else
-    :key="$localeStore.language"
-  />
 </template>
