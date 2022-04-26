@@ -9,4 +9,5 @@ export default <NavBarLocale>{
   getAPIKeys: 'Obtener API Keys',
   organizationName: 'Mi Organización',
   myProfile: 'Mi perfil',
+  logOut: 'Cerrar Sesión',
 };

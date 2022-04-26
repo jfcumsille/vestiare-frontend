@@ -6,7 +6,7 @@ import { mount } from '@vue/test-utils';
 import { useUserStore } from '@/stores/user';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
-import NavBar from '@/components/layout/NavBar.vue';
+import NavBar from '@/components/layout/NavBar/NavBar.vue';
 
 const getWrapper = () => {
   const wrapper = mount(NavBar, {

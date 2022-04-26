@@ -1,30 +1,23 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { useRoute, useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
-import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
-import { track } from '@/services/analytics';
-import GenericButton from '@/components/GenericButton.vue';
+import {
+  DOCS, NEWS, CONTACT, BLOG, FINTOC_HOME,
+} from '@/constants/urls';
 import FintocLogo from '@/assets/svg/FintocLogo.vue';
 import FintocIso from '@/assets/svg/FintocIso.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
 import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
-import PersonIcon from '@/assets/svg/PersonIcon.vue';
-import {
-  DOCS,
-  NEWS,
-  CONTACT,
-  BLOG,
-  FINTOC_HOME,
-} from '@/constants/urls';
+import GenericButton from '@/components/GenericButton.vue';
+import UserOptionsButton from './UserOptionsButton.vue';
 
 const userStore = useUserStore();
-const route = useRoute();
 const router = useRouter();
 
 const $t = useTranslation('navBar');
@@ -63,20 +56,8 @@ const navBarPublicLinks = [
   },
 ];
 
-const selectionClasses = (path: string) => {
-  if (route.path === path) {
-    return 'text-primary-main';
-  }
-  return 'text-body-color hover:text-primary-main';
-};
-
 const logIn = () => {
   router.push({ path: '/login' });
-};
-const logOut = () => {
-  userStore.logOut();
-  logIn();
-  track(USER_LOGGED_OUT);
 };
 const signUp = () => {
   router.push({ path: '/signup' });
@@ -182,24 +163,7 @@ const signUp = () => {
               {{ userStore.organizationName || $t('organizationName') }}
             </router-link>
           </button>
-          <button
-            data-test="nav-bar-profile-settings-link"
-            class="cursor-pointer text-primary-main hover:text-primary-hover flex"
-          >
-            <PersonIcon class="mr-2 mt-1" />
-            <router-link
-              to="/"
-              class="capitalize"
-            >
-              {{ userStore.user?.name || $t('myProfile') }}
-            </router-link>
-          </button>
-          <button
-            class="cursor-pointer text-primary-main hover:text-primary-hover"
-            @click="logOut"
-          >
-            Log Out
-          </button>
+          <UserOptionsButton />
         </div>
       </div>
     </div>

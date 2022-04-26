@@ -7,7 +7,7 @@ import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { identify } from '@/services/analytics';
-import NavBar from '@/components/layout/NavBar.vue';
+import NavBar from '@/components/layout/NavBar/NavBar.vue';
 import Hotjar from '@/assets/javascripts/hotjar';
 import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
 import LoadingSpinner from './components/LoadingSpinner.vue';
