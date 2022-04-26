@@ -50,6 +50,7 @@ module.exports = {
       },
       minWidth: {
         '10px': '10px',
+        '16px': '16px',
         xs: '20rem',
         sm: '24rem',
         md: '28rem',
@@ -62,6 +63,20 @@ module.exports = {
         3: '3',
         4: '4',
         5: '5',
+      },
+      borderWidth: {
+        1: '1px',
+        1.5: '1.5px',
+      },
+      height: {
+        4.5: '18px',
+        7.5: '30px',
+        12.5: '50px',
+      },
+      width: {
+        4.5: '18px',
+        7.5: '30px',
+        12.5: '50px',
       },
     },
   },
