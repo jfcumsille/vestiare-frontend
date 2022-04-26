@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ComponentPublicInstance } from 'vue';
 import { ButtonType, SizeType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import Spinner from '@/components/LoadingSpinner.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
 import ChevronDown from '@/assets/svg/ChevronDown.vue';
 import CrossIcon from '@/assets/svg/CrossIcon.vue';
@@ -99,26 +100,35 @@ const buttonImages = {
   three_dots: ThreeDots,
   eye: EyeIcon,
   eye_closed: EyeClosedIcon,
+  loading: Spinner,
 } as Record<string, ComponentPublicInstance>;
 
 const imageComponent = computed((): Nullable<ComponentPublicInstance> => {
+  if (props.loading) {
+    return buttonImages.loading;
+  }
   if (props.imageName && (props.imageName in buttonImages)) {
     return buttonImages[props.imageName];
   }
   return null;
 });
 
+const showOnlyImage = computed(() => {
+  const isLoading = props.loading && props.imagePosition === null;
+  return (!props.text && imageComponent) || isLoading;
+});
+
 const showLeftImage = computed(() => {
   const isImagePositionLeftText = props.imagePosition === HorizontalPositionType.Left;
-  return props.text && imageComponent && isImagePositionLeftText;
+  const isLoading = props.loading && !showOnlyImage.value;
+  return (props.text && imageComponent && isImagePositionLeftText) || isLoading;
 });
 
 const showRightImage = computed(() => {
   const isImagePositionRightText = props.imagePosition === HorizontalPositionType.Right;
-  return props.text && imageComponent && isImagePositionRightText;
+  const isLoading = props.loading && isImagePositionRightText;
+  return (props.text && imageComponent && isImagePositionRightText) || isLoading;
 });
-
-const showOnlyImage = computed(() => !props.text && imageComponent);
 
 const imageSizeClasses = computed(() => {
   if (props.size === SizeType.Small) {
