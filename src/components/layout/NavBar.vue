@@ -9,6 +9,7 @@ import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
 import { track } from '@/services/analytics';
 import GenericButton from '@/components/GenericButton.vue';
 import FintocLogo from '@/assets/svg/FintocLogo.vue';
+import FintocIso from '@/assets/svg/FintocIso.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
@@ -92,11 +93,21 @@ const signUp = () => {
     >
       <a
         data-test="fintoc-logo"
-        :href="isLoggedIn ? '/' : FINTOC_HOME"
+        :href="isLoggedIn ? undefined : FINTOC_HOME"
       >
         <FintocLogo
+          v-if="!userStore.organizationName"
           class="h-6 w-min"
         />
+        <div class="flex">
+          <FintocIso
+            v-if="userStore.organizationName"
+            class="h-6 w-min"
+          />
+          <p class="ml-3 -mt-1 text-heading-color font-bold text-2xl">
+            {{ userStore.organizationName }}
+          </p>
+        </div>
       </a>
       <div
         v-if="!isLoggedIn && isLargeWidth"
@@ -161,6 +172,7 @@ const signUp = () => {
             {{ link.text }}
           </a>
           <button
+            data-test="nav-bar-organization-settings-link"
             class="cursor-pointer text-primary-main hover:text-primary-hover flex"
           >
             <SettingsIcon class="mr-2 mt-1" />
@@ -171,6 +183,7 @@ const signUp = () => {
             </router-link>
           </button>
           <button
+            data-test="nav-bar-profile-settings-link"
             class="cursor-pointer text-primary-main hover:text-primary-hover flex"
           >
             <PersonIcon class="mr-2 mt-1" />
