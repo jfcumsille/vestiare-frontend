@@ -16,6 +16,7 @@ import GoogleLogo from '@/assets/svg/auth/GoogleLogo.vue';
 import GithubLogo from '@/assets/svg/auth/GithubLogo.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
+import LogOutIcon from '@/assets/svg/LogOutIcon.vue';
 import { Nullable } from '@/interfaces/common';
 
 const props = withDefaults(defineProps<{
@@ -106,6 +107,7 @@ const buttonIcons = {
   eye: EyeIcon,
   eye_closed: EyeClosedIcon,
   loading: Spinner,
+  logout: LogOutIcon,
 } as Record<string, ComponentPublicInstance>;
 
 const iconComponent = computed((): Nullable<ComponentPublicInstance> => {
