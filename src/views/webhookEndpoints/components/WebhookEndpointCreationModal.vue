@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { Mode, ButtonType } from '@/interfaces/utilities/enums';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { Nullable } from '@/interfaces/common';
 import { trackWebhookCreated } from '@/services/analytics';
@@ -12,8 +12,6 @@ import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericTextArea from '@/components/forms/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
 import GenericButton from '@/components/GenericButton.vue';
-
-const props = defineProps<{ live: boolean }>();
 
 const emit = defineEmits<{ (e: 'close'): void }>();
 
@@ -74,7 +72,6 @@ const createWebhookEndpoint = async () => {
           (event) => event.checked,
         ).map((event) => event.eventName),
       },
-      props.live ? Mode.Live : Mode.Test,
     );
     loading.value = false;
     emit('close');

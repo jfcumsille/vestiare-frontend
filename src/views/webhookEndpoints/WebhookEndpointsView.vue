@@ -9,18 +9,12 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
-import WebhookEndpointFilters from './components/WebhookEndpointFilters.vue';
 import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
 
 const $webhookEndpointsStore = useWebhookEndpointsStore();
-
-const live = ref(true);
-const toggleLive = () => {
-  live.value = !live.value;
-};
 
 const tableHeaders = [
   $t('table.headers.url'),
@@ -37,11 +31,7 @@ const setModalOpened = (value: boolean) => {
 };
 
 const webhookEndpoints = computed(
-  () => (
-    live.value
-      ? $webhookEndpointsStore.liveWebhookEndpoints
-      : $webhookEndpointsStore.testWebhookEndpoints
-  ),
+  () => ($webhookEndpointsStore.webhookEndpoints),
 );
 
 onMounted(() => {
@@ -56,15 +46,10 @@ onMounted(() => {
   >
     <WebhookEndpointCreationModal
       v-if="modalOpened"
-      :live="live"
       @close="() => setModalOpened(false)"
     />
     <div class="flex flex-col w-full">
-      <div class="flex justify-between">
-        <WebhookEndpointFilters
-          :live="live"
-          @toggle-live="toggleLive"
-        />
+      <div class="flex justify-end">
         <GenericButton
           data-test="webhook-create-button"
           :type="ButtonType.Primary"
