@@ -30,7 +30,7 @@ describe('SideBar', () => {
       const modeDropdown = wrapper.find('[data-test="mode-dropdown"]');
       expect(modeDropdown.exists()).toBe(true);
       const dropdownValue = modeDropdown.find('[data-test="drop-down-value"]');
-      expect(dropdownValue.text()).toBe(mode);
+      expect(dropdownValue.text().toLowerCase()).toBe(mode);
     });
   };
 
