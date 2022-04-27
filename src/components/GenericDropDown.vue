@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { ButtonType, SizeType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import {
+  ButtonType,
+  SizeType,
+  HorizontalPositionType,
+  JustifyType,
+} from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 
 const props = withDefaults(defineProps<{
@@ -14,7 +19,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   isWidthFull: false,
   size: SizeType.Regular,
-  justify: 'center',
+  justify: JustifyType.Center,
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -47,13 +52,13 @@ const title = computed(() => {
   <div ref="dropDown">
     <GenericButton
       data-test="drop-down-button"
-      :class="{ 'w-full': isWidthFull }"
-      justify="justify-between"
       :type="ButtonType.Outline"
       :text="title"
       :size="size"
-      image-name="chevron_down"
-      :image-position="HorizontalPositionType.Right"
+      :justify="JustifyType.Between"
+      :is-width-full="isWidthFull"
+      icon-name="chevron_down"
+      :icon-position="HorizontalPositionType.Right"
       @click="toggle"
     />
     <div

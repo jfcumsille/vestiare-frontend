@@ -66,7 +66,7 @@ const copyKey = () => {
         </div>
         <GenericButton
           class="ml-2"
-          image-name="copy"
+          icon-name="copy"
           :type="ButtonType.Secondary"
           @click="copyKey"
         />

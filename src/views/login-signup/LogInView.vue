@@ -128,18 +128,13 @@ onMounted(() => {
 
           <div>
             <GenericButton
-              class="mt-4 w-full"
+              class="mt-4"
               :type="ButtonType.Primary"
+              :is-width-full="true"
               :text="$tLogIn('logIn')"
               :disabled="loading"
               @click="logIn"
             />
-            <span
-              v-if="error"
-              class="ml-4 font-black text-xl text-danger-main"
-            >
-              !
-            </span>
           </div>
           <div class="mt-6 text-center text-body-color text-sm font-normal ">
             {{ $tLogIn('dontHaveAccount') }}

@@ -21,20 +21,22 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
 <template>
   <div>
     <GenericButton
-      class="mt-5 w-full"
+      class="mt-5"
       :type="ButtonType.Outline"
+      :is-width-full="true"
       :text="`${buttonLabel} Google`"
-      image-name="auth_google"
-      :image-position="HorizontalPositionType.Left"
+      icon-name="auth_google"
+      :icon-position="HorizontalPositionType.Left"
       @click="authenticateWithRedirect('google-oauth2', mode)"
     />
     <GenericButton
-      class="mt-5 w-full"
+      class="mt-5"
       :type="ButtonType.Outline"
+      :is-width-full="true"
       :text="`${buttonLabel} Github`"
       :size="SizeType.Regular"
-      image-name="auth_github"
-      :image-position="HorizontalPositionType.Left"
+      icon-name="auth_github"
+      :icon-position="HorizontalPositionType.Left"
       @click="authenticateWithRedirect('github', mode)"
     />
   </div>

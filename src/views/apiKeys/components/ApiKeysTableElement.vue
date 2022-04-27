@@ -104,8 +104,8 @@ const handleEndHoverIcon = () => {
       <GenericButton
         v-if="activationRequired"
         data-test="activate-key-button"
-        class="w-full"
         :type="ButtonType.Primary"
+        :is-width-full="true"
         :text="$t('activateSecretKey')"
         @click="handleActivateKey"
       />
@@ -131,13 +131,13 @@ const handleEndHoverIcon = () => {
         <GenericButton
           data-test="eye-toggle"
           class="ml-2"
-          :image-name="showKey ? 'eye' : 'eye_closed'"
+          :icon-name="showKey ? 'eye' : 'eye_closed'"
           :type="ButtonType.Secondary"
           @click="toggleKey"
         />
         <GenericButton
           class="ml-2"
-          image-name="copy"
+          icon-name="copy"
           :type="ButtonType.Secondary"
           @click="copyKey"
         />

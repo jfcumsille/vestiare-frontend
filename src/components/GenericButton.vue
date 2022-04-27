@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { computed, ComponentPublicInstance } from 'vue';
-import { ButtonType, SizeType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import {
+  ButtonType,
+  SizeType,
+  HorizontalPositionType,
+  JustifyType,
+} from '@/interfaces/utilities/enums';
 import Spinner from '@/components/LoadingSpinner.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
 import ChevronDown from '@/assets/svg/ChevronDown.vue';
@@ -17,15 +22,17 @@ const props = withDefaults(defineProps<{
   type: ButtonType,
   size?: SizeType,
   text?: string,
-  imageName?: string,
-  imagePosition?: HorizontalPositionType,
+  iconName?: string,
+  iconPosition?: HorizontalPositionType,
   loading?: boolean,
-  justify?: string
+  justify?: JustifyType
+  isWidthFull?: boolean,
 }>(), {
   loading: false,
-  imagePosition: HorizontalPositionType.Left,
-  justify: 'justify-center',
+  iconPosition: HorizontalPositionType.Left,
+  justify: JustifyType.Center,
   size: SizeType.Regular,
+  isWidthFull: false,
 });
 
 const emit = defineEmits<{(e: 'click'): void }>();
@@ -44,7 +51,7 @@ const colorClasses = computed(() => {
     return `
       bg-primary-main text-white
       hover:bg-primary-hover
-      focus:bg-primary-main focus:ring focus:ring-primary-focus
+      focus:ring focus:ring-primary-focus
       active:bg-primary-pressed active:ring-0`;
   }
   if (props.type === ButtonType.Secondary) {
@@ -53,9 +60,9 @@ const colorClasses = computed(() => {
     }
     return `
       bg-primary-surface text-primary-main
-      hover:bg-primary-surface hover:text-primary-hover
-      focus:bg-primary-surface focus:ring focus:ring-primary-focus focus:text-primary-hover
-      active:bg-primary-surface active:text-primary-pressed`;
+      hover:text-primary-hover
+      focus:ring focus:ring-primary-focus focus:text-primary-hover
+      active:text-primary-pressed`;
   }
   if (props.type === ButtonType.Outline) {
     if (props.loading) {
@@ -63,9 +70,9 @@ const colorClasses = computed(() => {
     }
     return `
       bg-transparent border-border-color border-1 text-primary-main
-      hover:bg-transparent hover:text-primary-hover
-      focus:bg-transparent focus:ring focus:ring-primary-focus focus:text-primary-hover
-      active:bg-transparent active:text-primary-pressed active:ring-0`;
+      hover:text-primary-hover
+      focus:ring focus:ring-primary-focus focus:text-primary-hover
+      active:text-primary-pressed active:ring-0`;
   }
   if (props.type === ButtonType.Text) {
     if (props.loading) {
@@ -73,9 +80,9 @@ const colorClasses = computed(() => {
     }
     return `
       bg-transparent text-primary-main
-      hover:bg-transparent hover:text-primary-hover
-      focus:bg-transparent focus:ring focus:ring-primary-focus focus:text-primary-hover
-      active:bg-transparent active:text-primary-pressed active:ring-0`;
+      hover:text-primary-hover
+      focus:ring focus:ring-primary-focus focus:text-primary-hover
+      active:text-primary-pressed active:ring-0`;
   }
   if (props.type === ButtonType.Danger) {
     if (props.loading) {
@@ -90,7 +97,7 @@ const colorClasses = computed(() => {
   return '';
 });
 
-const buttonImages = {
+const buttonIcons = {
   copy: CopyIcon,
   chevron_down: ChevronDown,
   cross: CrossIcon,
@@ -103,39 +110,40 @@ const buttonImages = {
   loading: Spinner,
 } as Record<string, ComponentPublicInstance>;
 
-const imageComponent = computed((): Nullable<ComponentPublicInstance> => {
+const iconComponent = computed((): Nullable<ComponentPublicInstance> => {
   if (props.loading) {
-    return buttonImages.loading;
+    return buttonIcons.loading;
   }
-  if (props.imageName && (props.imageName in buttonImages)) {
-    return buttonImages[props.imageName];
+  if (props.iconName && (props.iconName in buttonIcons)) {
+    return buttonIcons[props.iconName];
   }
   return null;
 });
 
-const showOnlyImage = computed(() => {
-  const isLoading = props.loading && props.imagePosition === null;
-  return (!props.text && imageComponent) || isLoading;
+const showOnlyIcon = computed(() => {
+  const showLoading = props.loading && props.iconPosition === null;
+  return (!props.text && iconComponent) || showLoading;
 });
 
-const showLeftImage = computed(() => {
-  const isImagePositionLeftText = props.imagePosition === HorizontalPositionType.Left;
-  const isLoading = props.loading && !showOnlyImage.value;
-  return (props.text && imageComponent && isImagePositionLeftText) || isLoading;
+const showLeftIcon = computed(() => {
+  const isIconPositionLeft = props.iconPosition === HorizontalPositionType.Left;
+  const isIconPositionRight = props.iconPosition === HorizontalPositionType.Right;
+  const showLoadingLeft = props.loading && !showOnlyIcon.value && !isIconPositionRight;
+  return (props.text && iconComponent && isIconPositionLeft) || showLoadingLeft;
 });
 
-const showRightImage = computed(() => {
-  const isImagePositionRightText = props.imagePosition === HorizontalPositionType.Right;
-  const isLoading = props.loading && isImagePositionRightText;
-  return (props.text && imageComponent && isImagePositionRightText) || isLoading;
+const showRightIcon = computed(() => {
+  const isIconPositionRight = props.iconPosition === HorizontalPositionType.Right;
+  const showLoadingRight = props.loading && isIconPositionRight;
+  return (props.text && iconComponent && isIconPositionRight) || showLoadingRight;
 });
 
-const imageSizeClasses = computed(() => {
+const iconSizeClasses = computed(() => {
   if (props.size === SizeType.Small) {
     return 'w-3.5 h-3.5';
   }
   if (props.size === SizeType.Regular) {
-    if (showOnlyImage.value) {
+    if (showOnlyIcon.value) {
       return 'w-5 h-5';
     }
     return 'w-4 h-4';
@@ -151,27 +159,33 @@ const sizeClasses = computed(() => {
     return 'text-base inline-block disabled:bg-transparent';
   }
   if (props.size === SizeType.Small) {
-    if (showOnlyImage.value) {
+    if (showOnlyIcon.value) {
       return 'flex py-2 px-3 h-7.5 w-7.5';
     }
     return 'flex py-2 px-3 h-7.5 text-sm';
   }
   if (props.size === SizeType.Regular) {
-    if (showOnlyImage.value) {
-      return 'flex p-3.5 w-10 h-11';
+    if (showOnlyIcon.value) {
+      return 'flex p-3.5 w-11 h-11';
     }
     return 'flex p-3.5 text-base h-11';
   }
   if (props.size === SizeType.Large) {
-    if (showOnlyImage.value) {
+    if (showOnlyIcon.value) {
       return 'flex p-4 w-12.5 h-12.5';
     }
     return 'flex py-4 px-6 text-lg h-12.5';
   }
-  return 'flex py-4 px-5 text-base';
+  return 'flex p-3.5 text-base h-11';
 });
 
-const isJustifyBetween = computed(() => props.justify === 'justify-between');
+const isJustifyBetween = computed(() => props.justify === JustifyType.Between);
+const width = computed(() => {
+  if (props.isWidthFull) {
+    return 'w-full';
+  }
+  return '';
+});
 </script>
 
 <template>
@@ -180,17 +194,17 @@ const isJustifyBetween = computed(() => props.justify === 'justify-between');
     :class="`
       items-center ${props.justify} rounded-lg font-medium min-w-max
       disabled:bg-light-gray disabled:text-disabled-color
-      ${colorClasses} ${sizeClasses}`
+      ${colorClasses} ${sizeClasses} ${width}`
     "
     @click="onClick"
   >
     <div>
       <component
-        :is="imageComponent"
-        v-if="showLeftImage"
-        data-test="generic-button-image-left"
+        :is="iconComponent"
+        v-if="showLeftIcon"
+        data-test="generic-button-icon-left"
         class="mr-1.5"
-        :class="imageSizeClasses"
+        :class="iconSizeClasses"
       />
     </div>
     <div
@@ -202,19 +216,19 @@ const isJustifyBetween = computed(() => props.justify === 'justify-between');
     </div>
     <div>
       <component
-        :is="imageComponent"
-        v-if="showRightImage"
-        data-test="generic-button-image-right"
+        :is="iconComponent"
+        v-if="showRightIcon"
+        data-test="generic-button-icon-right"
         class="ml-1.5"
-        :class="imageSizeClasses"
+        :class="iconSizeClasses"
       />
     </div>
     <div class="flex items-center justify-center">
       <component
-        :is="imageComponent"
-        v-if="showOnlyImage"
-        data-test="generic-button-only-image"
-        :class="imageSizeClasses"
+        :is="iconComponent"
+        v-if="showOnlyIcon"
+        data-test="generic-button-only-icon"
+        :class="iconSizeClasses"
       />
     </div>
   </button>

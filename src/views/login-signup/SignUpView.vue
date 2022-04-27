@@ -206,8 +206,9 @@ onMounted(() => {
             <div>
               <GenericButton
                 data-test="sign-up-button"
-                class="w-full mt-4"
+                class="mt-4"
                 :type="ButtonType.Primary"
+                :is-width-full="true"
                 :text="$tSignUp('signUp')"
                 :loading="loading"
                 :disabled="!isSignUpEnabled"

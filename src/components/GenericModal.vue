@@ -31,7 +31,7 @@ const close = () => {
             <GenericButton
               :type="ButtonType.Secondary"
               :size="SizeType.Small"
-              image-name="cross"
+              icon-name="cross"
               @click="close"
             />
           </div>
