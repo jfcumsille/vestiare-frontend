@@ -6,16 +6,15 @@ import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import {
-  DOCS, NEWS, CONTACT, BLOG, FINTOC_HOME,
+  DOCS, NEWS, CONTACT, BLOG,
 } from '@/constants/urls';
-import FintocLogo from '@/assets/svg/FintocLogo.vue';
-import FintocIso from '@/assets/svg/FintocIso.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
 import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import UserOptionsButton from './UserOptionsButton.vue';
+import NavBarLogo from './NavBarLogo.vue';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -67,29 +66,9 @@ const signUp = () => {
 <template>
   <nav>
     <div
-      class="
-        container flex flex-wrap items-center p-6
-        justify-between mx-auto max-w-screen-xl min-w-max
-      "
+      class="container flex flex-wrap items-center p-6 justify-between"
     >
-      <a
-        data-test="fintoc-logo"
-        :href="isLoggedIn ? undefined : FINTOC_HOME"
-      >
-        <FintocLogo
-          v-if="!userStore.organizationName"
-          class="h-6 w-min"
-        />
-        <div class="flex">
-          <FintocIso
-            v-if="userStore.organizationName"
-            class="h-6 w-min"
-          />
-          <p class="ml-3 -mt-1 text-heading-color font-bold text-2xl">
-            {{ userStore.organizationName }}
-          </p>
-        </div>
-      </a>
+      <NavBarLogo />
       <div
         v-if="!isLoggedIn && isLargeWidth"
         class="block w-auto text-heading-color font-medium mx-auto"
