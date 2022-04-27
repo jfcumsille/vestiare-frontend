@@ -28,3 +28,32 @@ export const enum APIModule {
   Banking = 'Banking',
   Fiscal = 'Fiscal'
 }
+
+export const enum ButtonType {
+  Primary = 'Primary',
+  Secondary = 'Secondary',
+  Outline = 'Outline',
+  Text = 'Text',
+  Danger = 'Danger',
+}
+
+export const enum SizeType {
+  Inline = 'Inline',
+  Small = 'Small',
+  Regular = 'Regular',
+  Large = 'Large',
+}
+
+export const enum HorizontalPositionType {
+  Left = 'Left',
+  Right = 'Right',
+}
+
+export const enum JustifyType {
+  Start = 'justify-start',
+  End = 'justify-end',
+  Center = 'justify-center',
+  Between = 'justify-between',
+  Around = 'justify-around',
+  Evenly = 'justify-evenly',
+}

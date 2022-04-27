@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useTranslation } from '@/locales';
-import CopyIcon from '@/assets/svg/CopyIcon.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import GenericModal from '@/components/GenericModal.vue';
+import { ButtonType } from '@/interfaces/utilities/enums';
+import GenericButton from '@/components/GenericButton.vue';
 import { DOCS_LINK_TOKEN } from '@/constants/urls';
 import { Nullable } from '@/interfaces/common';
 
@@ -33,7 +34,7 @@ const copyKey = () => {
   >
     <div class="space-y-5">
       <div class="flex flex-row bg-warning-surface p-2 rounded-md">
-        <WarningIcon class="mt-1 ml-1" />
+        <WarningIcon class="mt-1 ml-1 min-w-16px max-w-16px" />
         <div class="ml-2 text-body-color font-light">
           {{ $t('warning') }}
         </div>
@@ -49,10 +50,10 @@ const copyKey = () => {
           {{ $t('learnMore') }}
         </a>
       </div>
-      <div class="flex flex-row justify-center relative">
+      <div class="flex flex-row justify-center items-center relative">
         <div
           class="
-            bg-light-gray rounded-md px-4 py-2 min-w-sm
+            bg-primary-surface rounded-md p-4 truncate
             text-center text-body-color text-xs
           "
         >
@@ -62,13 +63,13 @@ const copyKey = () => {
           <code v-else>
             {{ $t('loading') }}
           </code>
-          <button
-            class="ml-2 hover:opacity-75"
-            @click="copyKey"
-          >
-            <CopyIcon class="w-5 h-5" />
-          </button>
         </div>
+        <GenericButton
+          class="ml-2"
+          icon-name="copy"
+          :type="ButtonType.Secondary"
+          @click="copyKey"
+        />
       </div>
     </div>
   </GenericModal>

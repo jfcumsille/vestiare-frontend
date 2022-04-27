@@ -75,8 +75,8 @@ defineExpose({ valid });
     <input
       data-test="input"
       :class="`
-        block w-full px-3 py-2 border rounded-md text-sm shadow-sm focus:outline-none
-        focus:ring-1 h-12 ${inputColorClasses}
+        block w-full p-3 border rounded-md text-sm shadow-sm focus:outline-none
+        focus:ring-1 ${inputColorClasses}
       `"
       :placeholder="props.placeholder"
       :value="props.modelValue"

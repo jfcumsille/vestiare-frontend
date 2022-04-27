@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { Mode } from '@/interfaces/utilities/enums';
+import { Mode, ButtonType } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { Nullable } from '@/interfaces/common';
 import { trackWebhookCreated } from '@/services/analytics';
@@ -11,6 +11,7 @@ import GenericModal from '@/components/GenericModal.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericTextArea from '@/components/forms/GenericTextArea.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
+import GenericButton from '@/components/GenericButton.vue';
 
 const props = defineProps<{ live: boolean }>();
 
@@ -129,21 +130,14 @@ watch(() => events.value, () => { eventsError.value = ''; });
       </p>
     </GenericForm>
     <div class="w-full flex justify-end">
-      <button
+      <GenericButton
         data-test="create-webhook-button"
+        :type="ButtonType.Primary"
         :disabled="loading"
-        type="button"
-        class="
-          py-2.5 px-5 mr-2 text-sm font-medium text-heading-color bg-white
-          rounded-lg border border-gray-200 hover:bg-light-gray
-        hover:text-primary-main focus:z-10 focus:ring-2 focus:ring-primary-focus
-        focus:text-primary-main inline-flex items-center min-w-max ml-6
-        "
-        :class="{ 'opacity-50': loading }"
+        :text="$t('buttonText')"
+        :loading="loading"
         @click="createWebhookEndpoint"
-      >
-        {{ $t('buttonText') }}
-      </button>
+      />
     </div>
   </GenericModal>
 </template>

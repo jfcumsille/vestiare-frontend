@@ -9,8 +9,9 @@ import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls'
 import { USER_SIGNED_UP, EMAIL_SENT, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
+import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericInput from '@/components/forms/GenericInput.vue';
-import Spinner from '@/components/LoadingSpinner.vue';
+import GenericButton from '@/components/GenericButton.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import BulletPoint from '@/assets/svg/BulletPoint.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
@@ -145,6 +146,7 @@ onMounted(() => {
                 <GenericDropDown
                   :selected="country"
                   :options="countryOptions"
+                  :is-width-full="true"
                   @select="selectCountryFilter"
                 />
               </div>
@@ -202,24 +204,16 @@ onMounted(() => {
             </div>
 
             <div>
-              <button
+              <GenericButton
                 data-test="sign-up-button"
-                class="
-                  flex mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
-                  rounded text-white bg-primary-main hover:bg-primary-hover
-                  disabled:cursor-default disabled:bg-disabled-color
-                  justify-center h-12
-                "
+                class="mt-4"
+                :type="ButtonType.Primary"
+                :is-width-full="true"
+                :text="$tSignUp('signUp')"
+                :loading="loading"
                 :disabled="!isSignUpEnabled"
                 @click="signUp"
-              >
-                <Spinner
-                  v-if="loading"
-                />
-                <span
-                  v-if="!loading"
-                > {{ $tSignUp('signUp') }} </span>
-              </button>
+              />
               <span
                 v-if="error"
                 class="ml-4 font-black text-xl text-danger-main"
@@ -326,22 +320,22 @@ onMounted(() => {
           </div>
           <div class="text-center font-light mt-4 text-body-color">
             {{ $tSignUp('didntReceive') }}
-            <button
+            <GenericButton
               data-test="resend-verify-email-button"
-              class="text-primary-main font-normal disabled:text-disabled-color"
+              :type="ButtonType.Text"
+              :size="SizeType.Inline"
+              :text="$tSignUp('resendEmail')"
               :disabled="isEmailResent"
               @click="resendVerificationEmail"
-            >
-              {{ $tSignUp('resendEmail') }}
-            </button>
+            />
           </div>
-          <button
-            class="mt-8 bg-primary-main text-center text-white font-semibold py-3 rounded"
+          <GenericButton
+            class="mt-8"
+            :type="ButtonType.Primary"
+            :text="$tSignUp('logIn')"
             :disabled="loading"
             @click="logIn"
-          >
-            {{ $tSignUp('logIn') }}
-          </button>
+          />
         </div>
       </div>
     </div>

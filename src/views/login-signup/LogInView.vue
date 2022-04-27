@@ -6,7 +6,9 @@ import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { USER_LOGGED_IN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericInput from '@/components/forms/GenericInput.vue';
+import GenericButton from '@/components/GenericButton.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import { AxiosError } from 'axios';
@@ -124,20 +126,17 @@ onMounted(() => {
             </div>
           </div>
 
-          <button
-            data-test="login-button"
-            class="
-                mt-4 items-center w-full px-6 py-2 text-sm font-medium text-center
-                rounded text-white bg-primary-main hover:bg-primary-hover
-                disabled:cursor-default h-12
-                disabled:bg-gray-300
-              "
-            :disabled="loading"
-            type="submit"
-          >
-            {{ $tLogIn('logIn') }}
-          </button>
-          <div class="mt-6 text-center text-body-color text-sm font-normal">
+          <div>
+            <GenericButton
+              class="mt-4"
+              :type="ButtonType.Primary"
+              :is-width-full="true"
+              :text="$tLogIn('logIn')"
+              :disabled="loading"
+              @click="logIn"
+            />
+          </div>
+          <div class="mt-6 text-center text-body-color text-sm font-normal ">
             {{ $tLogIn('dontHaveAccount') }}
             <a
               href="/signup"

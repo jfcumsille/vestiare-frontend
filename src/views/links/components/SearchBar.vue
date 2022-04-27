@@ -37,7 +37,7 @@ const onInput = ($event: Event) => {
       type="text"
       class="
           bg-light-gray border border-border-color text-heading-color text-sm rounded-lg
-          focus:outline-none focus:ring-1 block w-80 pl-10 p-2.5
+          focus:outline-none focus:ring-1 block w-80 pl-10 p-2
           focus:ring-primary-focus focus:border-primary-border
         "
       :placeholder="props.placeholder"

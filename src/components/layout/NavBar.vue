@@ -1,21 +1,28 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
-import {
-  DOCS, NEWS, CONTACT, BLOG, FINTOC_HOME,
-} from '@/constants/urls';
+import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
 import { track } from '@/services/analytics';
+import GenericButton from '@/components/GenericButton.vue';
 import FintocLogo from '@/assets/svg/FintocLogo.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
+import {
+  DOCS,
+  NEWS,
+  CONTACT,
+  BLOG,
+  FINTOC_HOME,
+} from '@/constants/urls';
 
 const userStore = useUserStore();
 const route = useRoute();
+const router = useRouter();
 const $t = useTranslation('navBar');
 
 const isLoggedIn = computed(() => (userStore.authenticated));
@@ -67,10 +74,16 @@ const selectionClasses = (path: string) => {
   return 'text-body-color hover:text-primary-main';
 };
 
+const logIn = () => {
+  router.push({ path: '/login' });
+};
 const logOut = () => {
   userStore.logOut();
-  window.location.href = '/';
+  logIn();
   track(USER_LOGGED_OUT);
+};
+const signUp = () => {
+  router.push({ path: '/signup' });
 };
 </script>
 
@@ -106,21 +119,20 @@ const logOut = () => {
       </div>
       <div
         v-if="!isLoggedIn && isLargeWidth"
+        class="flex"
       >
-        <a
-          class="ml-8 text-primary-main hover:text-primary-hover font-medium"
-          href="/login"
-        >
-          {{ $t('logIn') }}
-        </a>
-        <a
-          class="
-            ml-8 px-6 py-2 text-sm font-medium text-center rounded shadow-sm
-            text-white bg-primary-main hover:bg-primary-hover justify-center h-12"
-          href="/signup"
-        >
-          {{ $t('getAPIKeys') }}
-        </a>
+        <GenericButton
+          :type="ButtonType.Text"
+          :size="SizeType.Inline"
+          :text="$t('logIn')"
+          @click="logIn"
+        />
+        <GenericButton
+          class="ml-4"
+          :type="ButtonType.Primary"
+          :text="$t('getAPIKeys')"
+          @click="signUp"
+        />
       </div>
       <div
         v-if="!isLoggedIn && !isLargeWidth"

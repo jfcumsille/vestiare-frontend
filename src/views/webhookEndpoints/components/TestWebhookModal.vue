@@ -4,6 +4,8 @@ import { decamelizeKeys } from 'humps';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
+import { ButtonType } from '@/interfaces/utilities/enums';
+import GenericButton from '@/components/GenericButton.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -53,6 +55,7 @@ const close = () => {
   >
     <div
       v-if="!requestSent"
+      class="flex flex-row"
     >
       <GenericDropDown
         class="inline-block"
@@ -60,15 +63,12 @@ const close = () => {
         :selected="selectedEvent"
         @select="selectEvent"
       />
-      <button
-        class="
-            mt-1 ml-2 h-12 px-4 rounded-md cursor-pointer
-            text-primary-main bg-primary-main/20 hover:bg-primary-focus/10
-          "
+      <GenericButton
+        class="ml-4"
+        :type="ButtonType.Secondary"
+        :text="$t('buttonText')"
         @click="sendTestWebhook"
-      >
-        {{ $t('buttonText') }}
-      </button>
+      />
     </div>
     <div v-else>
       <div

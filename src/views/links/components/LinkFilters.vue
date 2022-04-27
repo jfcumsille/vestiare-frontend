@@ -28,7 +28,7 @@ const onInput = ($event: Event) => {
 </script>
 
 <template>
-  <div class="flex my-auto">
+  <div class="flex my-auto items-center">
     <div class="flex my-auto mr-6">
       <p
         class="pr-4 text-body-color text-md font-medium"
