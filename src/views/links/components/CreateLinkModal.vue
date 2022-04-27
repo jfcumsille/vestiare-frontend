@@ -41,7 +41,9 @@ const countryText = (countryCode: CountryCode) => {
 };
 
 const selectedAPIModule = ref(APIModule.Banking);
-const APIModules = [APIModule.Banking, APIModule.Fiscal];
+const APIModules = computed(() => (
+  props.live ? [APIModule.Banking, APIModule.Fiscal] : [APIModule.Banking]
+));
 const selectedProduct = ref(Product.Movements);
 const handleChangeAPI = () => {
   if (selectedAPIModule.value === APIModule.Banking) {
@@ -53,7 +55,15 @@ const handleChangeAPI = () => {
 };
 
 const selectedHolderType = ref(HolderType.Individual);
-const holderTypes = [HolderType.Individual, HolderType.Business];
+const holderTypes = computed(() => {
+  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Fiscal) {
+    return [HolderType.Business];
+  }
+  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Banking) {
+    return [HolderType.Individual];
+  }
+  return [HolderType.Individual, HolderType.Business];
+});
 
 const apiKey = computed(() => apiKeysStore.searchKey(true));
 
