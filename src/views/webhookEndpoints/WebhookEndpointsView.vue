@@ -70,7 +70,7 @@ onMounted(() => {
           :type="ButtonType.Primary"
           :text="$t('creation.buttonText')"
           :disabled="modalOpened"
-          @click="setModalOpened(true)"
+          @click="() => setModalOpened(true)"
         />
       </div>
       <GenericTable class="mt-6">

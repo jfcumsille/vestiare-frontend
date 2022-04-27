@@ -147,7 +147,8 @@ onMounted(() => {
 <template>
   <div
     data-test="links-view"
-    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full">
+    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full"
+  >
     <CreateLinkModal
       v-if="isCreateLinkOpened"
       :live="live"
