@@ -11,7 +11,7 @@ import {
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
-import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
+// import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import UserOptionsButton from './UserOptionsButton.vue';
 import NavBarLogo from './NavBarLogo.vue';
@@ -131,7 +131,7 @@ const signUp = () => {
           >
             {{ link.text }}
           </a>
-          <button
+          <!-- <button
             data-test="nav-bar-organization-settings-link"
             class="cursor-pointer text-primary-main hover:text-primary-hover flex"
           >
@@ -141,7 +141,7 @@ const signUp = () => {
             >
               {{ userStore.organizationName || $t('organizationName') }}
             </router-link>
-          </button>
+          </button> -->
           <UserOptionsButton />
         </div>
       </div>
