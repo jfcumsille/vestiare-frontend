@@ -44,13 +44,14 @@ describe('NavBar', () => {
       expect(fintocLogo.exists()).toBe(true);
       expect(fintocLogo.attributes('href')).toEqual(undefined);
     });
-    it('shows organization settings link', () => {
-      const wrapper = getWrapper();
-      const navBarInternalLinks = wrapper.find('[data-test="nav-bar-internal-links"]');
-      expect(navBarInternalLinks.exists()).toBe(true);
-      const organizationSettingsLink = wrapper.find('[data-test="nav-bar-organization-settings-link"]');
-      expect(organizationSettingsLink.exists()).toBe(true);
-    });
+    // it('shows organization settings link', () => {
+    //   const wrapper = getWrapper();
+    //   const navBarInternalLinks = wrapper.find('[data-test="nav-bar-internal-links"]');
+    //   expect(navBarInternalLinks.exists()).toBe(true);
+    //   const organizationSettingsLink =
+    //   wrapper.find('[data-test="nav-bar-organization-settings-link"]');
+    //   expect(organizationSettingsLink.exists()).toBe(true);
+    // });
     it('shows profile settings link', () => {
       const wrapper = getWrapper();
       const navBarInternalLinks = wrapper.find('[data-test="nav-bar-internal-links"]');
