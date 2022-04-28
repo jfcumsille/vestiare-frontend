@@ -1,4 +1,6 @@
 export interface LinksViewLocale {
+  title: string,
+  learnMore: string,
   filters: {
     searchBarPlaceholder: string,
     active: {

@@ -1,28 +1,24 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
-import { useRoute, useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
-import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
-import { track } from '@/services/analytics';
-import GenericButton from '@/components/GenericButton.vue';
-import FintocLogo from '@/assets/svg/FintocLogo.vue';
+import {
+  DOCS, NEWS, CONTACT, BLOG,
+} from '@/constants/urls';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
-import {
-  DOCS,
-  NEWS,
-  CONTACT,
-  BLOG,
-  FINTOC_HOME,
-} from '@/constants/urls';
+import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
+import GenericButton from '@/components/GenericButton.vue';
+import UserOptionsButton from './UserOptionsButton.vue';
+import NavBarLogo from './NavBarLogo.vue';
 
 const userStore = useUserStore();
-const route = useRoute();
 const router = useRouter();
+
 const $t = useTranslation('navBar');
 
 const isLoggedIn = computed(() => (userStore.authenticated));
@@ -33,18 +29,10 @@ const pressMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const navBarInternalLinks = [
+const navBarLoggedInLinks = [
   {
-    text: 'API Keys',
-    path: '/api-keys',
-  },
-  {
-    text: 'Links',
-    path: '/links',
-  },
-  {
-    text: 'Webhook Endpoints',
-    path: '/webhook-endpoints',
+    text: $t('docs'),
+    href: DOCS,
   },
 ];
 
@@ -67,20 +55,8 @@ const navBarPublicLinks = [
   },
 ];
 
-const selectionClasses = (path: string) => {
-  if (route.path === path) {
-    return 'text-primary-main';
-  }
-  return 'text-body-color hover:text-primary-main';
-};
-
 const logIn = () => {
   router.push({ path: '/login' });
-};
-const logOut = () => {
-  userStore.logOut();
-  logIn();
-  track(USER_LOGGED_OUT);
 };
 const signUp = () => {
   router.push({ path: '/signup' });
@@ -90,19 +66,9 @@ const signUp = () => {
 <template>
   <nav>
     <div
-      class="
-        container flex flex-wrap items-center p-6
-        justify-between mx-auto max-w-screen-xl min-w-max
-      "
+      class="container flex flex-wrap items-center p-6 justify-between"
     >
-      <a
-        data-test="fintoc-logo"
-        :href="isLoggedIn ? '/' : FINTOC_HOME"
-      >
-        <FintocLogo
-          class="h-6 w-min"
-        />
-      </a>
+      <NavBarLogo />
       <div
         v-if="!isLoggedIn && isLargeWidth"
         class="block w-auto text-heading-color font-medium mx-auto"
@@ -151,25 +117,33 @@ const signUp = () => {
         class="block w-auto ml-4"
         data-test="nav-bar-internal-links"
       >
-        <ul class="flex flex-row space-x-8 text-sm font-medium">
-          <li
-            v-for="link in navBarInternalLinks"
-            :key="link.path"
+        <div
+          class="
+            flex flex-row space-x-8 text-sm font-medium
+          "
+        >
+          <a
+            v-for="link in navBarLoggedInLinks"
+            :key="link.text"
+            class="cursor-pointer text-primary-main hover:text-primary-hover"
+            :href="link.href"
+            target="_blank"
           >
+            {{ link.text }}
+          </a>
+          <button
+            data-test="nav-bar-organization-settings-link"
+            class="cursor-pointer text-primary-main hover:text-primary-hover flex"
+          >
+            <SettingsIcon class="mr-2 mt-1" />
             <router-link
-              :to="link.path"
-              :class="`block p-0 ${selectionClasses(link.path)}`"
+              to="/"
             >
-              {{ link.text }}
+              {{ userStore.organizationName || $t('organizationName') }}
             </router-link>
-          </li>
-          <li
-            class="cursor-pointer"
-            @click="logOut"
-          >
-            Log Out
-          </li>
-        </ul>
+          </button>
+          <UserOptionsButton />
+        </div>
       </div>
     </div>
     <div

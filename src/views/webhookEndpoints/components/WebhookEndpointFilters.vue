@@ -1,11 +1,15 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useConfigStore } from '@/stores/config';
+import { Mode } from '@/interfaces/utilities/enums';
 import GenericToggle from '@/components/GenericToggle.vue';
 
-const props = defineProps<{ live: boolean }>();
-
-const emit = defineEmits<{
-  (e: 'toggle-live'): void,
-}>();
+const configStore = useConfigStore();
+const live = computed(() => configStore.mode === Mode.Live);
+const toggle = () => {
+  const newMode = live.value ? Mode.Test : Mode.Live;
+  configStore.updateMode(newMode);
+};
 </script>
 
 <template>
@@ -17,8 +21,8 @@ const emit = defineEmits<{
       Test
     </p>
     <GenericToggle
-      :active="props.live"
-      @toggle="() => emit('toggle-live')"
+      :active="live"
+      @toggle="toggle"
     />
     <p
       class="pl-4 text-heading-color text-md font-medium"

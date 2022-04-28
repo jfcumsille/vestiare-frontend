@@ -3,24 +3,19 @@ import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { DOCS_WEBHOOKS } from '@/constants/urls';
 import { page, trackModal } from '@/services/analytics';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
-import WebhookEndpointFilters from './components/WebhookEndpointFilters.vue';
 import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
 
 const $webhookEndpointsStore = useWebhookEndpointsStore();
-
-const live = ref(true);
-const toggleLive = () => {
-  live.value = !live.value;
-};
 
 const tableHeaders = [
   $t('table.headers.url'),
@@ -37,11 +32,7 @@ const setModalOpened = (value: boolean) => {
 };
 
 const webhookEndpoints = computed(
-  () => (
-    live.value
-      ? $webhookEndpointsStore.liveWebhookEndpoints
-      : $webhookEndpointsStore.testWebhookEndpoints
-  ),
+  () => ($webhookEndpointsStore.webhookEndpoints),
 );
 
 onMounted(() => {
@@ -52,19 +43,28 @@ onMounted(() => {
 <template>
   <div
     data-test="webhook-endpoints-view"
-    class="flex flex-col mx-auto p-6 items-center max-w-screen-xl w-full"
+    class="flex flex-col p-10 items-center max-w-screen-xl w-full"
   >
     <WebhookEndpointCreationModal
       v-if="modalOpened"
-      :live="live"
       @close="() => setModalOpened(false)"
     />
     <div class="flex flex-col w-full">
       <div class="flex justify-between">
-        <WebhookEndpointFilters
-          :live="live"
-          @toggle-live="toggleLive"
-        />
+        <div>
+          <div class="font-medium text-2xl text-heading-color self-start">
+            {{ $t('title') }}
+          </div>
+          <div class="flex flex-row justify-between items-center py-2 self-start">
+            <a
+              class="text-primary-main text-sm"
+              :href="DOCS_WEBHOOKS"
+              target="_blank"
+            >
+              {{ $t('learnMore') }}
+            </a>
+          </div>
+        </div>
         <GenericButton
           data-test="webhook-create-button"
           :type="ButtonType.Primary"
@@ -73,7 +73,7 @@ onMounted(() => {
           @click="() => setModalOpened(true)"
         />
       </div>
-      <GenericTable class="mt-6">
+      <GenericTable>
         <template #header>
           <GenericTableHeader :headers="tableHeaders" />
         </template>

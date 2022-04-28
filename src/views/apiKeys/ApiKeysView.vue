@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useAPIKeysStore } from '@/stores/apiKeys';
+import { useConfigStore } from '@/stores/config';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
 import { API_KEYS_VIEWED } from '@/constants/analyticsEvents';
+import { DOCS_API_KEYS } from '@/constants/urls';
 import { page, trackAPIKeyCreated, trackAPIKeyDeleted } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import GenericToggle from '@/components/GenericToggle.vue';
 import GenericTable from '@/components/GenericTable.vue';
 import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import ApiKeysTableElement from './components/ApiKeysTableElement.vue';
@@ -21,15 +22,10 @@ const headers = [
   $t('table.headers.created'),
   '',
 ];
-
-const isLiveMode = ref(true);
-const mode = computed(() => (isLiveMode.value ? Mode.Live : Mode.Test));
-const publicKey = computed(() => apiKeysStore.searchKey(true, mode.value));
-const secretKey = computed(() => apiKeysStore.searchKey(false, mode.value));
-
-const toggle = () => {
-  isLiveMode.value = !isLiveMode.value;
-};
+const configStore = useConfigStore();
+const mode = computed(() => (configStore.mode));
+const publicKey = computed(() => apiKeysStore.searchKey(true));
+const secretKey = computed(() => apiKeysStore.searchKey(false));
 
 const createAPIKey = async () => {
   await apiKeysStore.createAPIKey();
@@ -40,7 +36,7 @@ const destroyAPIKey = async (key: APIKey) => {
   trackAPIKeyDeleted(key);
 };
 
-const activationRequired = computed(() => (isLiveMode.value && !secretKey.value));
+const activationRequired = computed(() => (mode.value === Mode.Live && !secretKey.value));
 const secretKeyToActivate: APIKey = {
   id: 'liveSecretKeyToActivate',
   token: 'token',
@@ -59,7 +55,7 @@ onMounted(() => {
     data-test="api-keys-view"
     class="flex items-center"
   >
-    <div class="h-full w-full flex justify-center min-w-fit">
+    <div class="h-full w-full flex min-w-fit">
       <div
         v-if="apiKeysStore.loading"
         class="flex justify-center h-full w-full pt-4 mt-28"
@@ -73,36 +69,14 @@ onMounted(() => {
         <div class="font-medium text-2xl text-heading-color">
           {{ $t('title') }}
         </div>
-        <div class="flex flex-row justify-between items-center">
+        <div class="flex flex-row justify-between items-center py-2">
           <a
             class="text-primary-main text-sm"
-            href="https://docs.fintoc.com/docs/api-keys"
+            :href="DOCS_API_KEYS"
+            target="_blank"
           >
             {{ $t('learnMore') }}
           </a>
-          <div>
-            <div class="flex py-2 px-3 text-sm font-medium">
-              <p
-                data-test="mode-test"
-                class="pr-4 text-body-color"
-                :class="{ 'opacity-25 font-normal': isLiveMode }"
-              >
-                Test
-              </p>
-              <GenericToggle
-                data-test="mode-toggle"
-                :active="isLiveMode"
-                @toggle="toggle"
-              />
-              <p
-                data-test="mode-live"
-                class="pl-4 text-body-color"
-                :class="{ 'opacity-25 font-normal': !isLiveMode }"
-              >
-                Live
-              </p>
-            </div>
-          </div>
         </div>
         <div class="flex justify-center w-full">
           <GenericTable

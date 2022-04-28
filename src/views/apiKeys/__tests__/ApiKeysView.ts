@@ -101,32 +101,13 @@ describe('ApiKeysView', () => {
     });
 
     it('should show test keys when mode is test', async () => {
-      const modeToggle = wrapper.find('[data-test="mode-toggle"]');
-      expect(modeToggle.exists()).toBe(true);
-      await modeToggle.trigger('click');
+      wrapper.vm.configStore.mode = 'test';
       await wrapper.vm.$forceUpdate();
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
         checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_test_');
       });
-    });
-
-    it('should change opacity for test when mode toggle is pressed', async () => {
-      const modeToggle = wrapper.find('[data-test="mode-toggle"]');
-      const testText = wrapper.find('[data-test="mode-test"]');
-      const liveText = wrapper.find('[data-test="mode-live"]');
-      expect(modeToggle.exists()).toBe(true);
-      expect(testText.exists()).toBe(true);
-      expect(liveText.exists()).toBe(true);
-
-      expect(liveText.classes().some((cls) => cls.includes('opacity-25'))).toBe(false);
-      expect(testText.classes().some((cls) => cls.includes('opacity-25'))).toBe(true);
-
-      await modeToggle.trigger('click');
-
-      expect(liveText.classes().some((cls) => cls.includes('opacity-25'))).toBe(true);
-      expect(testText.classes().some((cls) => cls.includes('opacity-25'))).toBe(false);
     });
 
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
@@ -152,7 +133,7 @@ describe('ApiKeysView', () => {
     });
 
     it('tracks \'API Key Deleted\' with analytics when key is deleted', async () => {
-      wrapper.vm.mode = Mode.Live;
+      wrapper.vm.configStore.mode = 'live';
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       const moreOptionsButton = apiKeyTableElements[1].find('[data-test="more-options-button"]');
       expect(moreOptionsButton.exists()).toBe(true);
@@ -212,32 +193,13 @@ describe('ApiKeysView', () => {
     });
 
     it('should show test keys when mode is test', async () => {
-      const modeToggle = wrapper.find('[data-test="mode-toggle"]');
-      expect(modeToggle.exists()).toBe(true);
-      await modeToggle.trigger('click');
+      wrapper.vm.configStore.mode = 'test';
       await wrapper.vm.$forceUpdate();
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
         checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_test_');
       });
-    });
-
-    it('should change opacity for test when mode toggle is pressed', async () => {
-      const modeToggle = wrapper.find('[data-test="mode-toggle"]');
-      const testText = wrapper.find('[data-test="mode-test"]');
-      const liveText = wrapper.find('[data-test="mode-live"]');
-      expect(modeToggle.exists()).toBe(true);
-      expect(testText.exists()).toBe(true);
-      expect(liveText.exists()).toBe(true);
-
-      expect(liveText.classes().some((cls) => cls.includes('opacity-25'))).toBe(false);
-      expect(testText.classes().some((cls) => cls.includes('opacity-25'))).toBe(true);
-
-      await modeToggle.trigger('click');
-
-      expect(liveText.classes().some((cls) => cls.includes('opacity-25'))).toBe(true);
-      expect(testText.classes().some((cls) => cls.includes('opacity-25'))).toBe(false);
     });
 
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {

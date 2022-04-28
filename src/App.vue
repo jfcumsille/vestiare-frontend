@@ -1,20 +1,17 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { useRouterStore } from '@/stores/router';
 import { useLocaleStore } from '@/stores/locale';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { identify } from '@/services/analytics';
-import NavBar from '@/components/layout/NavBar.vue';
 import Hotjar from '@/assets/javascripts/hotjar';
 import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
-import LoadingSpinner from './components/LoadingSpinner.vue';
+import Layout from '@/components/layout/Layout.vue';
 
 import '@/assets/javascripts/segment';
 
-const $routerStore = useRouterStore();
 const $localeStore = useLocaleStore();
 const $userStore = useUserStore();
 const $apiKeysStore = useAPIKeysStore();
@@ -51,15 +48,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <NavBar />
-  <div
-    v-if="$routerStore.loading"
-    class="flex justify-center w-full h-96"
-  >
-    <LoadingSpinner class="mt-auto w-20 h-20" />
-  </div>
-  <router-view
-    v-else
-    :key="$localeStore.language"
-  />
+  <Layout :key="$localeStore.language">
+    <router-view />
+  </Layout>
 </template>

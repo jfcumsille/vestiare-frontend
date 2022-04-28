@@ -5,6 +5,7 @@ import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
 import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
 import { OptionalAuthenticationHeaders } from '@/interfaces/utilities/authentication';
+import { isValidEmail } from '@/utils/email';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -75,6 +76,13 @@ export const useUserStore = defineStore('user', {
         return true;
       }
       return false;
+    },
+    organizationName(state) {
+      const name = state.user?.organizations[0].name;
+      if (name && !isValidEmail(name)) {
+        return state.user?.organizations[0].name;
+      }
+      return null;
     },
   },
 });

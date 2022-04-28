@@ -22,6 +22,7 @@ module.exports = {
         'primary-hover': '#2E45D4',
         'primary-pressed': '#1B2980',
         'primary-focus': '#D7DDFF',
+        'primary-gradient': '#5480FF',
         // Success
         'success-main': '#33D098',
         'success-surface': '#E0F8F0',
@@ -77,6 +78,9 @@ module.exports = {
         4.5: '18px',
         7.5: '30px',
         12.5: '50px',
+      },
+      fontSize: {
+        xxs: '11px',
       },
     },
   },

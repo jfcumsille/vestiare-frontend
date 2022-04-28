@@ -1,6 +1,8 @@
 import { WebhookEndpointsViewLocale } from '@/interfaces/locales/views/webhookEndpoints';
 
 export default <WebhookEndpointsViewLocale>{
+  title: 'Webhook Endpoints',
+  learnMore: 'Learn more about Fintoc Webhooks →',
   table: {
     headers: {
       url: 'URL',

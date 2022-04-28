@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useTranslation } from '@/locales';
-import GenericToggle from '@/components/GenericToggle.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import SearchBar from './SearchBar.vue';
 
@@ -10,14 +9,12 @@ const props = defineProps<{
   activeOptions: Array<string>,
   passwordFilter: string,
   passwordOptions: Array<string>,
-  live: boolean,
 }>();
 
 const emit = defineEmits<{
   (e: 'update:search', value: string): void,
   (e: 'select-active-filter', value: string): void,
   (e: 'select-password-filter', value: string): void,
-  (e: 'toggle-live'): void,
 }>();
 
 const $t = useTranslation('views.links.filters');
@@ -28,25 +25,7 @@ const onInput = ($event: Event) => {
 </script>
 
 <template>
-  <div class="flex my-auto items-center">
-    <div class="flex my-auto mr-6">
-      <p
-        class="pr-4 text-body-color text-md font-medium"
-        :class="{ 'opacity-25': props.live }"
-      >
-        Test
-      </p>
-      <GenericToggle
-        :active="props.live"
-        @toggle="() => emit('toggle-live')"
-      />
-      <p
-        class="pl-4 text-body-color text-md font-medium"
-        :class="{ 'opacity-25': !props.live }"
-      >
-        Live
-      </p>
-    </div>
+  <div class="flex my-auto">
     <SearchBar
       :placeholder="$t('searchBarPlaceholder')"
       :model-value="props.search"
