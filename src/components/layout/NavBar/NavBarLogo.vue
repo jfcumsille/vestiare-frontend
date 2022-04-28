@@ -17,16 +17,16 @@ const isLoggedIn = computed(() => (userStore.authenticated));
   >
     <FintocLogo
       v-if="!userStore.organizationName"
-      class="h-6 w-min"
+      class="h-6"
     />
     <div
       v-else
       class="flex"
     >
       <FintocIso
-        class="h-6 w-min"
+        class="h-6 w-6"
       />
-      <p class="ml-3 -mt-1 text-heading-color font-bold text-2xl">
+      <p class="ml-3 -mt-1 text-heading-color font-bold text-2xl select-none">
         {{ userStore.organizationName }}
       </p>
     </div>

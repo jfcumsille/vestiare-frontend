@@ -66,7 +66,7 @@ const signUp = () => {
 <template>
   <nav>
     <div
-      class="container flex flex-wrap items-center p-6 justify-between"
+      class="flex items-center p-6 justify-between"
     >
       <NavBarLogo />
       <div

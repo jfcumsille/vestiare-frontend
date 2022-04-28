@@ -17,7 +17,10 @@ const $t = useTranslation('sideBar');
       <div class="absolute mt-20">
         <router-link
           data-test="links-link"
-          class="flex items-center px-4 py-3 text-primary-main rounded-md hover:text-primary-hover"
+          class="
+            flex items-center px-4 py-3 text-primary-main
+            rounded-md hover:text-primary-hover w-40
+          "
           active-class="bg-primary-surface"
           to="/links"
         >
@@ -26,7 +29,10 @@ const $t = useTranslation('sideBar');
         </router-link>
         <router-link
           data-test="api-keys-link"
-          class="flex items-center px-4 py-3 text-primary-main rounded-md hover:text-primary-hover"
+          class="
+            flex items-center px-4 py-3 text-primary-main
+            rounded-md hover:text-primary-hover w-40
+          "
           active-class="bg-primary-surface"
           to="/api-keys"
         >
@@ -35,7 +41,10 @@ const $t = useTranslation('sideBar');
         </router-link>
         <router-link
           data-test="webhook-endpoints-link"
-          class="flex items-center px-4 py-3 text-primary-main rounded-md hover:text-primary-hover"
+          class="
+            flex items-center px-4 py-3 text-primary-main
+            rounded-md hover:text-primary-hover w-40
+          "
           active-class="bg-primary-surface"
           to="/webhook-endpoints"
         >

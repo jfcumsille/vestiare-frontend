@@ -41,7 +41,7 @@ onClickOutside(modeDropdown, () => {
   <div
     ref="modeDropdown"
     data-test="mode-dropdown"
-    class="my-2 flex flex-col z-50 w-36"
+    class="my-2 flex flex-col z-50 w-40 bg-white"
   >
     <button
       :class="`
@@ -76,7 +76,7 @@ onClickOutside(modeDropdown, () => {
       v-if="optionsOpened"
       :class="`
         mt-4 drop-shadow-md items-center justify-between rounded-lg font-medium
-        ${isLive? testModeClass : liveModeClass} px-6 py-4 w-36
+        ${isLive? testModeClass : liveModeClass} px-6 py-4 w-40
         divide-y-1 divide-primary-border`
       "
       @click="() => selectMode(isLive ? Mode.Test : Mode.Live)"
