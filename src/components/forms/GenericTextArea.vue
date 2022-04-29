@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRegistration } from '@/composables/registration';
 import {
   ValidatePropType,
@@ -7,13 +7,13 @@ import {
   makeValidatedModelPropsDefaults,
   useValidatedModel,
 } from '@/composables/validatedModel';
+import WarningIcon from '@/assets/svg/WarningIcon.vue';
 
 const props = withDefaults(defineProps<{
+  textAreaId: string,
   label?: string,
   placeholder?: string,
   error?: string,
-  rightText?: string,
-  rightHref?: string,
   // Validated Model
   modelValue: ModelValuePropType<string>,
   validations?: ValidatePropType<string>,
@@ -27,67 +27,98 @@ const {
   startValidating, valid, internalValid, error,
 } = useValidatedModel(props);
 
-const labelColorClasses = computed(() => (internalValid.value ? 'text-secondary-color' : 'text-danger-main'));
+const isTextAreaActive = ref(false);
+const onInput = ($event: Event) => {
+  isTextAreaActive.value = true;
+  document.getElementById(props.textAreaId).focus();
+  emit('update:modelValue', ($event.target as HTMLInputElement).value);
+};
 
-const inputColorClasses = computed(() => {
+const onBlur = () => {
+  isTextAreaActive.value = false;
+  startValidating();
+};
+
+const focusInput = () => {
+  document.getElementById(props.textAreaId).focus();
+  if (document.activeElement === document.getElementById(props.textAreaId)) {
+    isTextAreaActive.value = true;
+  }
+};
+
+const textAreaColorClasses = computed(() => {
   if (!internalValid.value) {
+    if (isTextAreaActive.value) {
+      return `
+      text-danger-main placeholder-placeholder-color
+      ring-danger-focus border-danger-main ring bg-white
+    `;
+    }
     return `
       text-danger-main border-danger-border placeholder-placeholder-color
       focus:ring-danger-focus focus:border-danger-focus
     `;
   }
+  if (isTextAreaActive.value) {
+    return `
+    text-body-color placeholder-placeholder-color
+    ring-primary-focus border-primary-main ring bg-white
+  `;
+  }
   return `
-    text-body-color bg-white border-main-border placeholder-placeholder-color
-    focus:ring-primary-main focus:border-primary-focus
+    text-body-color border-main-border placeholder-placeholder-color
+    hover:border-primary-main bg-white 
   `;
 });
-
-const hasRightLink = computed(() => props.rightText && props.rightHref);
-
-const onInput = ($event: Event) => {
-  emit('update:modelValue', ($event.target as HTMLInputElement).value);
-};
 
 defineExpose({ valid });
 </script>
 
 <template>
-  <label class="block">
-    <span
-      v-if="props.label"
-      data-test="label"
-      :class="`
-        flex flex-row justify-between mb-1 text-sm font-medium
-        ${labelColorClasses}
-      `"
-    >
-      {{ props.label }}
-      <a
-        v-if="hasRightLink"
-        :href="props.rightHref"
-        class="font-medium text-primary-main text-sm"
+  <div class="block h-full justify-center items-center">
+    <div class="relative w-full">
+      <label
+        v-if="props.label"
+        data-test="label"
+        class="
+          absolute left-0 -mt-3 px-1 mx-2 pointer-events-none
+          text-sm text-placeholder-color bg-white
+        "
       >
-        {{ props.rightText }}
-      </a>
-    </span>
-    <textarea
-      data-test="textarea"
-      rows="4"
-      :class="`
-        block w-full px-3 py-2 border rounded-md text-sm shadow-sm focus:outline-none
-        focus:ring-1 resize-none ${inputColorClasses}
-      `"
-      :placeholder="props.placeholder"
-      :value="props.modelValue"
-      v-bind="$attrs"
-      @input="onInput"
-      @blur="startValidating"
-    />
-    <p
+        {{ props.label }}
+      </label>
+      <div
+        :class="`
+          flex w-full p-3 border-1.5 rounded-lg text-sm shadow-sm
+          duration-100 ease-out ${textAreaColorClasses}
+        `"
+        tabIndex="0"
+        @click="focusInput"
+      >
+        <textarea
+          :id="props.textAreaId"
+          data-test="textarea"
+          class="w-full outline-none"
+          :placeholder="props.placeholder"
+          :value="props.modelValue"
+          v-bind="$attrs"
+          tabIndex="-1"
+          @input="onInput"
+          @blur="onBlur"
+        />
+      </div>
+    </div>
+    <div
       v-if="!internalValid"
-      class="mt-1 text-sm text-danger-main"
+      class="flex flex-row items-center text-danger-main my-1"
     >
-      {{ error }}
-    </p>
-  </label>
+      <WarningIcon
+        class="mx-1 w-2.5 h-2.5"
+        fill="currentColor"
+      />
+      <div class="text-sm">
+        {{ error }}
+      </div>
+    </div>
+  </div>
 </template>
