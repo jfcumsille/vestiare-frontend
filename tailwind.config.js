@@ -82,6 +82,8 @@ module.exports = {
       fontSize: {
         '2xs': '11px',
         '3xs': '8px',
+      padding: {
+        11.5: '46px',
       },
     },
   },

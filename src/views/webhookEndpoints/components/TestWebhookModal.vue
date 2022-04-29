@@ -59,6 +59,7 @@ const close = () => {
     >
       <GenericDropDown
         class="inline-block"
+        :label="$t('eventType')"
         :options="props.webhookEndpoint.enabledEvents"
         :selected="selectedEvent"
         @select="selectEvent"

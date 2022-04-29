@@ -31,19 +31,19 @@ const onInput = ($event: Event) => {
       :model-value="props.search"
       @input="onInput"
     />
-    <GenericDropDown
-      class="ml-4"
-      :text-prefix="$t('active.label')"
-      :selected="props.activeFilter"
-      :options="props.activeOptions"
-      @select="(value: string) => emit('select-active-filter', value)"
+    <div class="flex ml-4 space-x-4">
+      <GenericDropDown
+        :text-prefix="$t('active.label')"
+        :selected="props.activeFilter"
+        :options="props.activeOptions"
+        @select="(value: string) => emit('select-active-filter', value)"
+      />
+      <GenericDropDown
+        :text-prefix="$t('password.label')"
+        :selected="props.passwordFilter"
+        :options="props.passwordOptions"
+        @select="(value: string) => emit('select-password-filter', value)"
     />
-    <GenericDropDown
-      class="ml-4 my-auto"
-      :text-prefix="$t('password.label')"
-      :selected="props.passwordFilter"
-      :options="props.passwordOptions"
-      @select="(value: string) => emit('select-password-filter', value)"
-    />
+    </div>
   </div>
 </template>

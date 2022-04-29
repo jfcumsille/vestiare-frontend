@@ -28,6 +28,7 @@ export default <WebhookEndpointsViewLocale>{
   testWebhook: {
     modalTitle: 'Send Test Webhook',
     buttonText: 'Send Test Webhook',
+    eventType: 'Event type',
   },
   creation: {
     modalTitle: 'Create Webhook Endpoint',

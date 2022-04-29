@@ -1,25 +1,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import {
-  ButtonType,
-  SizeType,
-  HorizontalPositionType,
-  JustifyType,
-} from '@/interfaces/utilities/enums';
-import GenericButton from '@/components/GenericButton.vue';
+import ChevronDown from '@/assets/svg/ChevronDown.vue';
 
 const props = withDefaults(defineProps<{
+  label: string,
   selected: string,
   options: Array<string>,
   textPrefix?: string,
-  size?: SizeType,
   isWidthFull?: boolean,
-  justify?: string
 }>(), {
   isWidthFull: false,
-  size: SizeType.Regular,
-  justify: JustifyType.Center,
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -46,27 +37,44 @@ const title = computed(() => {
   }
   return props.selected;
 });
+
+const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
 </script>
 
 <template>
-  <div ref="dropDown">
-    <GenericButton
+  <div
+    ref="dropDown"
+    class="relative"
+  >
+    <label
+      data-test="label"
+      class="
+          absolute left-0 -mt-3 px-1 mx-2 pointer-events-none
+          text-sm text-placeholder-color bg-white
+        "
+    >
+      {{ props.label }}
+    </label>
+    <button
       data-test="drop-down-button"
-      :type="ButtonType.Outline"
-      :text="title"
-      :size="size"
-      :justify="JustifyType.Between"
-      :is-width-full="isWidthFull"
-      icon-name="chevron_down"
-      :icon-position="HorizontalPositionType.Right"
+      :class="`
+        flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
+        disabled:bg-light-gray disabled:text-disabled-color
+        border-1.5 border-border-color text-sm
+        text-body-color ${width}`
+      "
       @click="toggle"
-    />
-
+    >
+      <div> {{ title }} </div>
+      <ChevronDown
+        class="ml-1.5 text-placeholder-color w-4 h-4"
+      />
+    </button>
     <div
       data-test="drop-down-list"
       class="
-        absolute z-10 text-base list-none bg-white rounded cursor-pointer
-        divide-y divide-divider-color shadow-lg
+        absolute z-10 text-base list-none bg-white cursor-pointer mt-1 w-full
+        divide-y divide-divider-color shadow-lg rounded-lg
       "
       :class="{ 'hidden': !opened }"
     >
@@ -76,7 +84,10 @@ const title = computed(() => {
           :key="option"
         >
           <span
-            class="block py-2 px-4 text-sm text-body-color font-normal hover:bg-light-gray"
+            class="
+              block py-2 px-4 text-sm text-body-color font-medium
+              hover:bg-light-gray hover:text-primary-hover
+            "
             @click="() => select(option)"
           >
             {{ option }}
