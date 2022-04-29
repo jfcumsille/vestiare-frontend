@@ -90,7 +90,7 @@ const handleEndHoverIcon = () => {
             v-show="hoverInfoIcon"
             class="
                 absolute left-0 ml-36 -mt-2 px-3 py-2 break-words max-w-xxs whitespace-normal
-                bg-white rounded-md border border-bg-gray-200 drop-shadow-md text-sm
+                bg-white rounded-lg border border-bg-gray-200 drop-shadow-md text-sm
               "
             @mouseover="hoverInfoText = true"
             @mouseleave="handleEndHoverText"
@@ -114,17 +114,17 @@ const handleEndHoverIcon = () => {
         data-test="api-key-token"
         class="
           flex flex-row items-center
-          rounded-md w-min-fit"
+          rounded-lg w-min-fit"
       >
         <div
           v-if="showKey"
-          class="px-4 py-2 text-md rounded-md truncate w-72 bg-primary-surface"
+          class="px-4 py-2 text-md rounded-lg truncate w-72 bg-primary-surface"
         >
           {{ props.apiKey.token }}
         </div>
         <div
           v-else
-          class="px-4 py-2 text-md rounded-md font-bold w-72 bg-primary-surface"
+          class="px-4 py-2 text-md rounded-lg font-bold w-72 bg-primary-surface"
         >
           •••••••••••••••••••••••••••••••••••
         </div>
@@ -168,7 +168,7 @@ const handleEndHoverIcon = () => {
           v-if="showConfigKeysModal"
           class="
             absolute right-0 -mr-20 px-4 py-3
-            bg-white rounded-md border border-light-gray drop-shadow-md
+            bg-white rounded-lg border border-light-gray drop-shadow-md
           "
         >
           <button

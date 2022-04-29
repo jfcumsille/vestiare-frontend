@@ -84,7 +84,7 @@ const revealWebhookEndpointSecret = async () => {
       <a
         v-else
         class="
-          px-4 py-2 rounded-md cursor-pointer
+          px-4 py-2 rounded-lg cursor-pointer
           text-primary-main bg-primary-main/20 hover:bg-primary-hover/10
         "
         @click="revealWebhookEndpointSecret"

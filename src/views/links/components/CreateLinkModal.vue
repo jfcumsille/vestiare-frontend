@@ -164,7 +164,7 @@ onMounted(async () => {
         <select
           v-model="selectedCountry"
           class="
-            focus:ring-2 justify-between font-normal rounded-md text-sm
+            focus:ring-2 justify-between font-normal rounded-lg text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-color bg-white hover:bg-light-gray
             focus:ring-primary-focus border-border-color
@@ -192,7 +192,7 @@ onMounted(async () => {
         <select
           v-model="selectedAPIModule"
           class="
-            focus:ring-2 justify-between font-normal rounded-md text-sm
+            focus:ring-2 justify-between font-normal rounded-lg text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-color bg-white hover:bg-light-gray
             focus:ring-primary-focus border-border-color
@@ -221,7 +221,7 @@ onMounted(async () => {
         <select
           v-model="selectedHolderType"
           class="
-            focus:ring-2 justify-between font-normal rounded-md text-sm
+            focus:ring-2 justify-between font-normal rounded-lg text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-color bg-white hover:bg-light-gray
             focus:ring-primary-focus border-border-color capitalize
