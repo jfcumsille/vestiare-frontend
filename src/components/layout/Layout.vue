@@ -22,9 +22,12 @@ const shouldDisplaySidebar = computed(() => ['/links', '/api-keys', '/webhook-en
       >
         <LoadingSpinner class="mt-auto w-20 h-20" />
       </div>
-      <slot
+      <div
         v-else
-      />
+        class="w-full"
+      >
+        <slot />
+      </div>
     </div>
   </div>
 </template>
