@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import {
+  ref,
+  computed,
+  onMounted,
+  watch,
+} from 'vue';
 import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
 import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
@@ -40,11 +45,11 @@ const countryText = (countryCode: CountryCode) => {
   return 'Chile';
 };
 
-const selectedAPIModule = ref(APIModule.Banking);
+const selectedAPIModule = ref<Nullable<APIModule>>(APIModule.Banking);
 const APIModules = computed(() => (
-  props.live ? [APIModule.Banking, APIModule.Fiscal] : [APIModule.Banking]
+  live.value ? [APIModule.Banking, APIModule.Fiscal] : [APIModule.Banking]
 ));
-const selectedProduct = ref(Product.Movements);
+const selectedProduct = ref<Nullable<Product>>(Product.Movements);
 const handleChangeAPI = () => {
   if (selectedAPIModule.value === APIModule.Banking) {
     selectedProduct.value = Product.Movements;
@@ -54,7 +59,7 @@ const handleChangeAPI = () => {
   }
 };
 
-const selectedHolderType = ref(HolderType.Individual);
+const selectedHolderType = ref<Nullable<HolderType>>(HolderType.Individual);
 const holderTypes = computed(() => {
   if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Fiscal) {
     return [HolderType.Business];
@@ -65,15 +70,32 @@ const holderTypes = computed(() => {
   return [HolderType.Individual, HolderType.Business];
 });
 
+watch(() => selectedCountry.value, () => {
+  selectedAPIModule.value = null;
+  selectedProduct.value = null;
+  selectedHolderType.value = null;
+});
+watch(() => selectedAPIModule.value, () => {
+  selectedHolderType.value = null;
+});
+
 const apiKey = computed(() => apiKeysStore.searchKey(true));
 
 const fintoc = ref<Nullable<Fintoc>>(null);
 
-const disabledButton = computed(() => props.widgetOpened || (fintoc.value === null));
+const areAllParamsSelected = computed(() => (
+  selectedCountry.value && selectedProduct.value && selectedHolderType.value
+));
+
+const disabledButton = computed(() => (
+  props.widgetOpened || (fintoc.value === null) || !areAllParamsSelected.value
+));
 
 const onSuccess = async (link: Link) => {
   emit('set-widget-open-status', false);
-  emit('set-link', link, selectedProduct.value);
+  if (selectedProduct.value) {
+    emit('set-link', link, selectedProduct.value);
+  }
 };
 
 const onExit = () => {
