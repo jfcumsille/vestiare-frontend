@@ -102,18 +102,16 @@ onMounted(() => {
           <div class="space-y-6">
             <GenericInput
               v-model="email"
-              input-id="login-email-input"
               type="email"
               :label="$tForms('labels.email')"
               :placeholder="$tForms('placeholders.email')"
             />
             <GenericInput
               v-model="password"
-              input-id="login-password-input"
               :type="passwordType"
               :label="$tForms('labels.password')"
               :placeholder="$tForms('placeholders.password')"
-              :right-icon-name="showPassword ? 'eye' : 'eye_closed'"
+              :right-icon-name="showPassword ? 'eye_closed' : 'eye'"
               @click-right-icon="togglePassword"
             />
           </div>

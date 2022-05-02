@@ -118,7 +118,6 @@ describe('GenericInput', () => {
     it('returns correct components', () => {
       const wrapper = mount(GenericInput, {
         props: {
-          inputId: 'test-input',
           leftIconName: 'eye',
         },
       });
@@ -133,7 +132,6 @@ describe('GenericInput', () => {
     it('returns correct components', () => {
       const wrapper = mount(GenericInput, {
         props: {
-          inputId: 'test-input',
           rightIconName: 'eye',
         },
       });
@@ -148,7 +146,6 @@ describe('GenericInput', () => {
     it('returns correct components', () => {
       const wrapper = mount(GenericInput, {
         props: {
-          inputId: 'test-input',
           hint: 'this is a hint',
         },
       });
@@ -161,7 +158,6 @@ describe('GenericInput', () => {
     it('returns correct components', () => {
       const wrapper = mount(GenericInput, {
         props: {
-          inputId: 'test-input',
           rightText: 'this is the right text',
           rightHref: 'this is the right href',
         },

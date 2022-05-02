@@ -124,14 +124,14 @@ const handleEndHoverIcon = () => {
         </div>
         <div
           v-else
-          class="px-4 py-2 text-md rounded-lg font-bold w-72 bg-primary-surface"
+          class="px-4 py-2 text-md rounded-lg font-bold w-72 bg-primary-surface tracking-widest"
         >
           •••••••••••••••••••••••••••••••••••
         </div>
         <GenericButton
           data-test="eye-toggle"
           class="ml-2"
-          :icon-name="showKey ? 'eye' : 'eye_closed'"
+          :icon-name="showKey ? 'eye_closed' : 'eye'"
           :type="ButtonType.Secondary"
           @click="toggleKey"
         />

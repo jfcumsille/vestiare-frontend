@@ -96,7 +96,6 @@ watch(() => events.value, () => { eventsError.value = ''; });
       <div class="space-y-6">
         <GenericInput
           v-model="url"
-          input-id="webhook-url-input"
           :label="$t('form.url.label')"
           :placeholder="$t('form.url.placeholder')"
           :hint="$t('form.url.hint')"
@@ -106,14 +105,12 @@ watch(() => events.value, () => { eventsError.value = ''; });
         />
         <GenericInput
           v-model="name"
-          input-id="webhook-name-input"
           :label="$t('form.name.label')"
           :placeholder="$t('form.name.placeholder')"
           :validations="nameValidations"
         />
         <GenericTextArea
           v-model="description"
-          text-area-id="webhook-description-textarea"
           :label="$t('form.description.label')"
           :placeholder="$t('form.description.placeholder')"
         />

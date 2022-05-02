@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ComponentPublicInstance, ref } from 'vue';
+import { computed, ref, ComponentPublicInstance } from 'vue';
 import { useRegistration } from '@/composables/registration';
 import {
   ValidatePropType,
@@ -8,11 +8,10 @@ import {
   useValidatedModel,
 } from '@/composables/validatedModel';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
+import { findIcon } from '@/utils/icons';
 import { Nullable } from '@/interfaces/common';
-import { icons } from '@/utils/icons';
 
 const props = withDefaults(defineProps<{
-  inputId: string,
   label?: string,
   placeholder?: string,
   hint?: string,
@@ -23,7 +22,7 @@ const props = withDefaults(defineProps<{
   // Validated Model
   modelValue: ModelValuePropType<string>,
   validations?: ValidatePropType<string>,
-  disabled: boolean,
+  disabled?: boolean,
 }>(), {
   disabled: false,
   ...makeValidatedModelPropsDefaults<string>(),
@@ -41,65 +40,33 @@ const {
   startValidating, valid, internalValid, error,
 } = useValidatedModel(props);
 
-const isInputActive = ref(false);
 const onInput = ($event: Event) => {
-  isInputActive.value = true;
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 
-const onBlur = () => {
-  startValidating();
-  isInputActive.value = false;
-};
-
-const leftIconComponent = computed((): Nullable<ComponentPublicInstance> => {
-  if (props.leftIconName && (props.leftIconName in icons)) {
-    return icons[props.leftIconName];
-  }
-  return null;
-});
-
-const rightIconComponent = computed((): Nullable<ComponentPublicInstance> => {
-  if (props.rightIconName && (props.rightIconName in icons)) {
-    return icons[props.rightIconName];
-  }
-  return null;
-});
-
-const showLeftIcon = computed(() => (leftIconComponent.value));
-const showRightIcon = computed(() => (rightIconComponent.value));
-
+const inputRef = ref<HTMLElement | null>(null);
 const focusInput = () => {
-  document.getElementById(props.inputId).focus();
-  if (document.activeElement === document.getElementById(props.inputId)) {
-    isInputActive.value = true;
+  if (inputRef.value) {
+    inputRef.value.focus();
   }
 };
 
-const clickIcon = (position: string) => {
-  emit(`click-${position}-icon`);
-};
+const leftIconComponent = computed((): Nullable<ComponentPublicInstance> => (
+  props.leftIconName ? findIcon(props.leftIconName) : null
+));
+const rightIconComponent = computed((): Nullable<ComponentPublicInstance> => (
+  props.rightIconName ? findIcon(props.rightIconName) : null
+));
 
 const inputColorClasses = computed(() => {
   if (props.disabled) {
     return 'text-disabled-color border-divider-color';
   }
   if (!internalValid.value) {
-    return `
-      text-body-color border-danger-main placeholder-placeholder-color
-      focus:ring-danger-focus focus:border-danger-focus
-    `;
+    return 'text-body-color border-danger-main focus-within:ring-danger-focus focus-within:ring';
   }
-  if (isInputActive.value) {
-    return `
-    text-body-color placeholder-placeholder-color
-    ring-primary-focus border-primary-main ring
-  `;
-  }
-  return `
-    text-body-color border-main-border placeholder-placeholder-color
-    hover:border-primary-main
-  `;
+  return `text-body-color border-main-border hover:border-primary-main
+    focus-within:text-body-color focus-within:ring-primary-focus focus-within:border-primary-main focus-within:ring`;
 });
 
 const hintText = computed(() => {
@@ -142,22 +109,22 @@ defineExpose({ valid });
         data-test="input-div"
         :class="`
           flex w-full p-3 border-1.5 border-border-color rounded-lg shadow-sm
-          text-sm duration-100 ease-out ${inputColorClasses}
+          text-sm duration-100 ease-out cursor-text ${inputColorClasses}
         `"
         tabIndex="0"
         @click="focusInput"
       >
         <component
           :is="leftIconComponent"
-          v-if="showLeftIcon"
+          v-if="leftIconComponent"
           data-test="generic-input-icon-left"
           class="mr-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5"
           @click="() => emit('click-left-icon')"
         />
         <input
-          :id="props.inputId"
+          ref="inputRef"
           data-test="input"
-          class="w-full outline-none placeholder-placeholder-color"
+          class="w-full outline-none placeholder-placeholder-color input-autofill"
           :class="{ 'text-disabled-color placeholder-disabled-color bg-white': props.disabled }"
           :placeholder="props.placeholder"
           :value="props.modelValue"
@@ -165,11 +132,11 @@ defineExpose({ valid });
           tabIndex="-1"
           :disabled="props.disabled"
           @input="onInput"
-          @blur="onBlur"
+          @blur="startValidating"
         >
         <component
           :is="rightIconComponent"
-          v-if="showRightIcon"
+          v-if="rightIconComponent"
           data-test="generic-input-icon-right"
           class="ml-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5"
           @click="() => emit('click-right-icon')"
@@ -204,13 +171,3 @@ defineExpose({ valid });
     </div>
   </div>
 </template>
-
-<style>
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  transition: background-color 5000s ease-in-out 0s;
-  -webkit-text-fill-color: #4a4672 !important;
-}
-</style>

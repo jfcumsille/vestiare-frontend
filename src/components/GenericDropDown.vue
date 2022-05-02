@@ -32,10 +32,13 @@ onClickOutside(dropDown, () => {
 });
 
 const title = computed(() => {
-  if (props.textPrefix) {
-    return `${props.textPrefix} - ${props.selected}`;
+  if (props.selected) {
+    if (props.textPrefix) {
+      return `${props.textPrefix} - ${props.selected}`;
+    }
+    return props.selected;
   }
-  return props.selected;
+  return '';
 });
 
 const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
@@ -44,7 +47,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
 <template>
   <div
     ref="dropDown"
-    class="relative"
+    class="relative h-12"
   >
     <label
       v-if="props.label"

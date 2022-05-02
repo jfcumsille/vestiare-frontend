@@ -10,6 +10,7 @@ import GoogleLogo from '@/assets/svg/auth/GoogleLogo.vue';
 import GithubLogo from '@/assets/svg/auth/GithubLogo.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
+import { Nullable } from '@/interfaces/common';
 
 export const icons = {
   copy: CopyIcon,
@@ -23,3 +24,10 @@ export const icons = {
   eye_closed: EyeClosedIcon,
   loading: Spinner,
 } as Record<string, ComponentPublicInstance>;
+
+export const findIcon = (iconName: string): Nullable<ComponentPublicInstance> => {
+  if (iconName && (iconName in icons)) {
+    return icons[iconName];
+  }
+  return null;
+};

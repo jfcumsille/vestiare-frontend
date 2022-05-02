@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRegistration } from '@/composables/registration';
 import {
   ValidatePropType,
@@ -10,7 +10,6 @@ import {
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 
 const props = withDefaults(defineProps<{
-  textAreaId: string,
   label?: string,
   placeholder?: string,
   error?: string,
@@ -27,47 +26,24 @@ const {
   startValidating, valid, internalValid, error,
 } = useValidatedModel(props);
 
-const isTextAreaActive = ref(false);
 const onInput = ($event: Event) => {
-  isTextAreaActive.value = true;
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 
-const onBlur = () => {
-  startValidating();
-  isTextAreaActive.value = false;
-};
-
+const textAreaRef = ref<HTMLElement | null>(null);
 const focusInput = () => {
-  document.getElementById(props.textAreaId).focus();
-  if (document.activeElement === document.getElementById(props.textAreaId)) {
-    isTextAreaActive.value = true;
+  if (textAreaRef.value) {
+    textAreaRef.value.focus();
   }
 };
 
 const textAreaColorClasses = computed(() => {
   if (!internalValid.value) {
-    if (isTextAreaActive.value) {
-      return `
-      text-danger-main placeholder-placeholder-color
-      ring-danger-focus border-danger-main ring bg-white
-    `;
-    }
-    return `
-      text-danger-main border-danger-border placeholder-placeholder-color
-      focus:ring-danger-focus focus:border-danger-focus
-    `;
+    return 'text-body-color border-danger-main focus-within:ring-danger-focus focus-within:ring';
   }
-  if (isTextAreaActive.value) {
-    return `
-    text-body-color placeholder-placeholder-color
-    ring-primary-focus border-primary-main ring bg-white
-  `;
-  }
-  return `
-    text-body-color border-main-border placeholder-placeholder-color
-    hover:border-primary-main bg-white 
-  `;
+  return `text-body-color border-main-border hover:border-primary-main bg-white
+    focus-within:text-body-color focus-within:ring-primary-focus focus-within:border-primary-main
+    focus-within:ring focus-within:bg-white`;
 });
 
 defineExpose({ valid });
@@ -90,21 +66,21 @@ defineExpose({ valid });
         data-test="textarea-div"
         :class="`
           flex w-full p-3 border-1.5 border-border-color rounded-lg text-sm shadow-sm
-          duration-100 ease-out ${textAreaColorClasses}
+          duration-100 ease-out cursor-text ${textAreaColorClasses}
         `"
         tabIndex="0"
         @click="focusInput"
       >
         <textarea
-          :id="props.textAreaId"
+          ref="textAreaRef"
           data-test="textarea"
-          class="w-full outline-none"
+          class="w-full outline-none placeholder-placeholder-color"
           :placeholder="props.placeholder"
           :value="props.modelValue"
           v-bind="$attrs"
           tabIndex="-1"
           @input="onInput"
-          @blur="onBlur"
+          @blur="startValidating"
         />
       </div>
     </div>

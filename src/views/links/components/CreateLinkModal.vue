@@ -59,7 +59,7 @@ const APIModules = computed(() => (
 ));
 const selectedProduct = computed(() => {
   if (selectedAPIModule.value === APIModule.Banking) {
-    return Product.Fiscal;
+    return Product.Movements;
   }
   if (selectedAPIModule.value === APIModule.Fiscal) {
     return Product.Invoices;
@@ -72,10 +72,11 @@ const selectAPIModule = (value: string) => {
 
 const selectedHolderType = ref<Nullable<HolderType>>(HolderType.Individual);
 const holderTypes = computed(() => {
-  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Fiscal) {
+  const selectedMexico = selectedCountryCode.value === CountryCode.MX;
+  if (selectedMexico && selectedAPIModule.value === APIModule.Fiscal) {
     return [HolderType.Business];
   }
-  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Banking) {
+  if (selectedMexico && selectedAPIModule.value === APIModule.Banking) {
     return [HolderType.Individual];
   }
   return [HolderType.Individual, HolderType.Business];
@@ -86,7 +87,6 @@ const selectHolderType = (value: string) => {
 
 watch(() => selectedCountry.value, () => {
   selectedAPIModule.value = null;
-  selectedProduct.value = null;
   selectedHolderType.value = null;
 });
 watch(() => selectedAPIModule.value, () => {
@@ -98,7 +98,7 @@ const apiKey = computed(() => apiKeysStore.searchKey(true));
 const fintoc = ref<Nullable<Fintoc>>(null);
 
 const areAllParamsSelected = computed(() => (
-  selectedCountry.value && selectedProduct.value && selectedHolderType.value
+  selectedCountryCode.value && selectedProduct.value && selectedHolderType.value
 ));
 
 const disabledButton = computed(() => (
@@ -174,21 +174,21 @@ onMounted(async () => {
       <div class="space-y-6">
         <GenericDropDown
           :label="$t('country')"
-          :selected="selectedCountry"
+          :selected="selectedCountry ? selectedCountry : ''"
           :options="countryLabels"
           :is-width-full="true"
           @select="selectCountry"
         />
         <GenericDropDown
           :label="$t('api')"
-          :selected="selectedAPIModule"
+          :selected="selectedAPIModule ? selectedAPIModule : ''"
           :options="APIModules"
           :is-width-full="true"
           @select="selectAPIModule"
         />
         <GenericDropDown
           :label="$t('holderType')"
-          :selected="selectedHolderType"
+          :selected="selectedHolderType ? selectedHolderType : ''"
           :options="holderTypes"
           :is-width-full="true"
           @select="selectHolderType"

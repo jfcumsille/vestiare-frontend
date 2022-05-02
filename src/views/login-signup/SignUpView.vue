@@ -120,13 +120,11 @@ onMounted(() => {
             <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="name"
-                input-id="signup-name-input"
                 :label="$tForms('labels.name')"
                 :placeholder="$tForms('placeholders.name')"
               />
               <GenericInput
                 v-model="lastName"
-                input-id="signup-lastname-input"
                 :label="$tForms('labels.lastName')"
                 :placeholder="$tForms('placeholders.lastName')"
               />
@@ -134,12 +132,10 @@ onMounted(() => {
             <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="company"
-                input-id="signup-company-input"
                 :label="$tForms('labels.company')"
                 :placeholder="$tForms('placeholders.company')"
                 class="w-full"
               />
-
               <div class="w-full">
                 <GenericDropDown
                   :label="$tSignUp('country')"
@@ -153,13 +149,11 @@ onMounted(() => {
             <div class="space-y-5">
               <GenericInput
                 v-model="email"
-                input-id="signup-email-input"
                 :label="$tForms('labels.email')"
                 :placeholder="$tForms('placeholders.email')"
               />
               <GenericInput
                 v-model="password"
-                input-id="signup-password-input"
                 type="password"
                 :label="$tForms('labels.password')"
                 :placeholder="$tForms('placeholders.password')"
@@ -254,19 +248,19 @@ onMounted(() => {
           </div>
           <div class="z-10">
             <div class="mt-4 flex flex-row justify-start">
-              <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
+              <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
               <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint1') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
-              <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
+              <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
               <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint2') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
-              <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
+              <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
               <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint3') }}
               </div>
