@@ -80,7 +80,8 @@ module.exports = {
         12.5: '50px',
       },
       fontSize: {
-        xxs: '11px',
+        '2xs': '11px',
+        '3xs': '8px',
       },
     },
   },

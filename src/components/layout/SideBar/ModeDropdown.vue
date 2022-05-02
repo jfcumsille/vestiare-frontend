@@ -67,7 +67,7 @@ onClickOutside(modeDropdown, () => {
       </div>
       <div
         v-if="optionsOpened"
-        class="text-xxs font-light text-left pt-0.5"
+        class="text-2xs font-light text-left pt-0.5"
       >
         {{ isLive ? $t('liveMode') : $t('testMode') }}
       </div>
@@ -86,7 +86,7 @@ onClickOutside(modeDropdown, () => {
           {{ isLive ? 'Test' : 'Live' }}
         </div>
       </div>
-      <div class="text-xxs font-light text-left pt-0.5">
+      <div class="text-2xs font-light text-left pt-0.5">
         {{ isLive ? $t('testMode') : $t('liveMode') }}
       </div>
     </button>

@@ -12,6 +12,7 @@ import GenericTableHeader from '@/components/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
 import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
+import NoWebhookEndpointsContent from './components/noWebhookEndpointsContent.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
 
@@ -49,31 +50,49 @@ onMounted(() => {
       v-if="modalOpened"
       @close="() => setModalOpened(false)"
     />
-    <div class="flex flex-col w-full">
+    <div class="w-full">
       <div class="flex justify-between">
-        <div>
-          <div class="font-medium text-2xl text-heading-color self-start">
-            {{ $t('title') }}
-          </div>
-          <div class="flex flex-row justify-between items-center py-2 self-start">
-            <a
-              class="text-primary-main text-sm"
-              :href="DOCS_WEBHOOKS"
-              target="_blank"
-            >
-              {{ $t('learnMore') }}
-            </a>
-          </div>
+        <div class="font-medium text-2xl text-heading-color self-start">
+          {{ $t('title') }}
         </div>
         <GenericButton
           data-test="webhook-create-button"
           :type="ButtonType.Primary"
           :text="$t('creation.buttonText')"
           :disabled="modalOpened"
+          icon-name="add"
+          class="px-6"
           @click="() => setModalOpened(true)"
         />
       </div>
-      <GenericTable>
+      <div class="flex justify-between mt-2">
+        <div
+          v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
+          class="text-body-color font-light max-w-3xl"
+        >
+          {{ $t('subtitle') }}
+        </div>
+        <a
+          v-else
+          class="text-primary-main hover:text-primary-hover"
+          :href="DOCS_WEBHOOKS"
+          target="_blank"
+        >
+          {{ $t('whatisAWebhookEndpoint') }}
+        </a>
+        <a
+          class="text-primary-main hover:text-primary-hover"
+          :href="DOCS_WEBHOOKS"
+          target="_blank"
+        >
+          {{ $t('learnMore') }}
+        </a>
+      </div>
+
+      <GenericTable
+        v-if="webhookEndpoints.length"
+        class="mt-6"
+      >
         <template #header>
           <GenericTableHeader :headers="tableHeaders" />
         </template>
@@ -93,13 +112,8 @@ onMounted(() => {
     >
       <LoadingSpinner />
     </div>
-    <div
+    <NoWebhookEndpointsContent
       v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
-      class="flex justify-center w-full pt-4"
-    >
-      <p class="text-heading-color text-3xl font-bold">
-        {{ $t('table.noWebhookEndpointsFound') }}
-      </p>
-    </div>
+    />
   </div>
 </template>
