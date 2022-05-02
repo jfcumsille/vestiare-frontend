@@ -210,7 +210,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-text-fill-color: #4A4672 !important;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #4a4672 !important;
 }
 </style>

@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import ChevronDown from '@/assets/svg/ChevronDown.vue';
 
 const props = withDefaults(defineProps<{
-  label: string,
+  label?: string,
   selected: string,
   options: Array<string>,
   textPrefix?: string,
@@ -47,6 +47,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
     class="relative"
   >
     <label
+      v-if="props.label"
       data-test="label"
       class="
           absolute left-0 -mt-3 px-1 mx-2 pointer-events-none
