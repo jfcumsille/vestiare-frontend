@@ -11,7 +11,7 @@ import { useTranslation } from '@/locales';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { USER_LOGGED_IN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
-import { ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
@@ -113,8 +113,7 @@ onMounted(() => {
               :type="passwordType"
               :label="$tForms('labels.password')"
               :placeholder="$tForms('placeholders.password')"
-              :icon-name="showPassword ? 'eye' : 'eye_closed'"
-              :icon-position="HorizontalPositionType.Right"
+              :right-icon-name="showPassword ? 'eye' : 'eye_closed'"
               @click-right-icon="togglePassword"
             />
           </div>

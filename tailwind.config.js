@@ -50,13 +50,18 @@ module.exports = {
         xxs: '16rem',
       },
       minWidth: {
-        '10px': '10px',
+        2.5: '0.625rem',
+        4.5: '1.125rem;',
         '16px': '16px',
         xs: '20rem',
         sm: '24rem',
         md: '28rem',
         lg: '32rem',
         xl: '36rem',
+      },
+      minHeight: {
+        2.5: '0.625rem',
+        4.5: '1.125rem;',
       },
       zIndex: {
         1: '1',

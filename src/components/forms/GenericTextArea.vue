@@ -30,13 +30,12 @@ const {
 const isTextAreaActive = ref(false);
 const onInput = ($event: Event) => {
   isTextAreaActive.value = true;
-  document.getElementById(props.textAreaId).focus();
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
 };
 
 const onBlur = () => {
-  isTextAreaActive.value = false;
   startValidating();
+  isTextAreaActive.value = false;
 };
 
 const focusInput = () => {
@@ -88,8 +87,9 @@ defineExpose({ valid });
         {{ props.label }}
       </label>
       <div
+        data-test="textarea-div"
         :class="`
-          flex w-full p-3 border-1.5 rounded-lg text-sm shadow-sm
+          flex w-full p-3 border-1.5 border-border-color rounded-lg text-sm shadow-sm
           duration-100 ease-out ${textAreaColorClasses}
         `"
         tabIndex="0"

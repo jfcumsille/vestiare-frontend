@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { artificialWait } from '@/utils/tests';
+import { artificialWait } from '@/utils/tests/common';
 import GenericTextArea from '@/components/forms/GenericTextArea.vue';
 
 describe('GenericTextArea', () => {
@@ -106,7 +106,8 @@ describe('GenericTextArea', () => {
     // may be wrong for that milisecond
     await artificialWait();
 
-    expect(textarea.classes().some((cls) => cls.includes('danger'))).toBe(true);
+    const textareaDiv = wrapper.find('[data-test="textarea-div"]');
+    expect(textareaDiv.classes().some((cls) => cls.includes('danger'))).toBe(true);
     expect(wrapper.vm.valid).toBe(false);
   });
 });

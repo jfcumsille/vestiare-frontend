@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { artificialWait } from '@/utils/tests';
+import { artificialWait } from '@/utils/tests/common';
 import GenericInput from '@/components/forms/GenericInput.vue';
 
 describe('GenericInput', () => {
@@ -106,7 +106,68 @@ describe('GenericInput', () => {
     // may be wrong for that milisecond
     await artificialWait();
 
-    expect(input.classes().some((cls) => cls.includes('danger'))).toBe(true);
+    const inputDiv = wrapper.find('[data-test="input-div"]');
+    expect(inputDiv.classes().some((cls) => cls.includes('danger'))).toBe(true);
     expect(wrapper.vm.valid).toBe(false);
+
+    const hint = wrapper.find('[data-test="input-hint"]');
+    expect(hint.exists()).toBe(true);
+  });
+
+  describe('when a valid left icon name is passed as a prop', () => {
+    it('returns correct components', () => {
+      const wrapper = mount(GenericInput, {
+        props: {
+          inputId: 'test-input',
+          leftIconName: 'eye',
+        },
+      });
+      const iconLeft = wrapper.find('[data-test="generic-input-icon-left"]');
+      const iconRight = wrapper.find('[data-test="generic-input-icon-right"]');
+      expect(iconLeft.exists()).toBe(true);
+      expect(iconRight.exists()).toBe(false);
+    });
+  });
+
+  describe('when a valid right icon name is passed as a prop', () => {
+    it('returns correct components', () => {
+      const wrapper = mount(GenericInput, {
+        props: {
+          inputId: 'test-input',
+          rightIconName: 'eye',
+        },
+      });
+      const iconLeft = wrapper.find('[data-test="generic-input-icon-left"]');
+      const iconRight = wrapper.find('[data-test="generic-input-icon-right"]');
+      expect(iconLeft.exists()).toBe(false);
+      expect(iconRight.exists()).toBe(true);
+    });
+  });
+
+  describe('when a hint is passed as a prop', () => {
+    it('returns correct components', () => {
+      const wrapper = mount(GenericInput, {
+        props: {
+          inputId: 'test-input',
+          hint: 'this is a hint',
+        },
+      });
+      const hint = wrapper.find('[data-test="input-hint"]');
+      expect(hint.exists()).toBe(true);
+    });
+  });
+
+  describe('when a right link is passed as a prop', () => {
+    it('returns correct components', () => {
+      const wrapper = mount(GenericInput, {
+        props: {
+          inputId: 'test-input',
+          rightText: 'this is the right text',
+          rightHref: 'this is the right href',
+        },
+      });
+      const rightHref = wrapper.find('[data-test="input-right-href"]');
+      expect(rightHref.exists()).toBe(true);
+    });
   });
 });
