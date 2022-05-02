@@ -93,12 +93,15 @@ watch(() => events.value, () => { eventsError.value = ''; });
       ref="formRef"
       class="space-y-3"
     >
-      <div class="space-y-5">
+      <div class="space-y-6">
         <GenericInput
           v-model="url"
           input-id="webhook-url-input"
           :label="$t('form.url.label')"
           :placeholder="$t('form.url.placeholder')"
+          :hint="$t('form.url.hint')"
+          right-text="webhook.site ->"
+          right-href="https://webhook.site/"
           :validations="urlValidations"
         />
         <GenericInput
