@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import {
+  ref,
+  computed,
+  onMounted,
+  watch,
+} from 'vue';
 import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
 import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
@@ -40,9 +45,11 @@ const countryText = (countryCode: CountryCode) => {
   return 'Chile';
 };
 
-const selectedAPIModule = ref(APIModule.Banking);
-const APIModules = [APIModule.Banking, APIModule.Fiscal];
-const selectedProduct = ref(Product.Movements);
+const selectedAPIModule = ref<Nullable<APIModule>>(APIModule.Banking);
+const APIModules = computed(() => (
+  live.value ? [APIModule.Banking, APIModule.Fiscal] : [APIModule.Banking]
+));
+const selectedProduct = ref<Nullable<Product>>(Product.Movements);
 const handleChangeAPI = () => {
   if (selectedAPIModule.value === APIModule.Banking) {
     selectedProduct.value = Product.Movements;
@@ -52,18 +59,43 @@ const handleChangeAPI = () => {
   }
 };
 
-const selectedHolderType = ref(HolderType.Individual);
-const holderTypes = [HolderType.Individual, HolderType.Business];
+const selectedHolderType = ref<Nullable<HolderType>>(HolderType.Individual);
+const holderTypes = computed(() => {
+  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Fiscal) {
+    return [HolderType.Business];
+  }
+  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Banking) {
+    return [HolderType.Individual];
+  }
+  return [HolderType.Individual, HolderType.Business];
+});
+
+watch(() => selectedCountry.value, () => {
+  selectedAPIModule.value = null;
+  selectedProduct.value = null;
+  selectedHolderType.value = null;
+});
+watch(() => selectedAPIModule.value, () => {
+  selectedHolderType.value = null;
+});
 
 const apiKey = computed(() => apiKeysStore.searchKey(true));
 
 const fintoc = ref<Nullable<Fintoc>>(null);
 
-const disabledButton = computed(() => props.widgetOpened || (fintoc.value === null));
+const areAllParamsSelected = computed(() => (
+  selectedCountry.value && selectedProduct.value && selectedHolderType.value
+));
+
+const disabledButton = computed(() => (
+  props.widgetOpened || (fintoc.value === null) || !areAllParamsSelected.value
+));
 
 const onSuccess = async (link: Link) => {
   emit('set-widget-open-status', false);
-  emit('set-link', link, selectedProduct.value);
+  if (selectedProduct.value) {
+    emit('set-link', link, selectedProduct.value);
+  }
 };
 
 const onExit = () => {
