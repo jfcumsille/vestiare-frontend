@@ -15,6 +15,5 @@ export interface SignUpViewLocale {
   verifyEmail: string,
   thankYou: string,
   verifyAccount: string,
-  didntReceive: string,
   resendEmail: string,
 }

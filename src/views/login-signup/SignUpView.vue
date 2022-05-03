@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls';
-import { USER_SIGNED_UP, EMAIL_SENT, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
+import { USER_SIGNED_UP, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
@@ -42,7 +42,6 @@ const isChecked = ref(false);
 const isSignUpEnabled = computed(() => (
   isChecked.value && name.value && lastName.value && email.value && password.value
 ));
-const isEmailResent = ref(false);
 
 const signUp = async () => {
   loading.value = true;
@@ -62,16 +61,6 @@ const signUp = async () => {
     completed.value = false;
   } finally {
     loading.value = false;
-  }
-};
-
-const resendVerificationEmail = async () => {
-  try {
-    await $store.sendConfirmationEmail(email.value);
-    isEmailResent.value = true;
-    track(EMAIL_SENT, { type: 'resend_verification_email' });
-  } catch {
-    error.value = true;
   }
 };
 
@@ -317,17 +306,6 @@ onMounted(() => {
               {{ email }}
             </span>
             {{ $tSignUp('verifyAccount') }}
-          </div>
-          <div class="text-center font-normal mt-4 text-body-color">
-            {{ $tSignUp('didntReceive') }}
-            <GenericButton
-              data-test="resend-verify-email-button"
-              :type="ButtonType.Text"
-              :size="SizeType.Inline"
-              :text="$tSignUp('resendEmail')"
-              :disabled="isEmailResent"
-              @click="resendVerificationEmail"
-            />
           </div>
           <GenericButton
             class="mt-8"
