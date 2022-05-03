@@ -47,7 +47,7 @@ const isEmailResent = ref(false);
 const signUp = async () => {
   loading.value = true;
   try {
-    await $store.signUp({
+    await $store.manualSignup({
       email: email.value,
       password: password.value,
       name: name.value,

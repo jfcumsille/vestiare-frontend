@@ -22,14 +22,14 @@ export const useUserStore = defineStore('user', {
       const userData = await api.sessions.create({ email, password, token });
       this.user = userData;
     },
-    async signUp({
+    async manualSignup({
       email, password, name, lastName, company, country,
     }: SignUpOptions) {
       const user = await manualSignup({
         email, password, name, lastName, company, country,
       });
       await this.createUser({
-        id: user.Id,
+        id: `auth0|${user.Id}`,
         email: user.email,
         name: user.givenName,
         lastName: user.familyName,

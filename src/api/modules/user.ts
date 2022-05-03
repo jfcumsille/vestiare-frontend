@@ -10,10 +10,10 @@ export const get = async (): Promise<User> => {
 };
 
 export const create = async ({
-  email, password, name, lastName, company, country,
+  id, email, name, lastName, company, country,
 }: SignUpOptions): Promise<User> => {
   const response = await client.post(BASE_PATH, {
-    email, password, name, lastName, company, country,
+    id, email, name, lastName, company, country,
   });
   return response.data;
 };
