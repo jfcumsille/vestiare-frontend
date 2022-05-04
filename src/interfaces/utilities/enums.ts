@@ -20,8 +20,8 @@ export const enum Product {
 }
 
 export const enum HolderType {
-  Individual = 'Individual',
-  Business = 'Business'
+  Individual = 'individual',
+  Business = 'business'
 }
 
 export const enum APIModule {
