@@ -224,7 +224,7 @@ onMounted(async () => {
             focus:ring-2 justify-between font-normal rounded-md text-sm
             px-2 py-3 shadow-sm text-left inline-flex items-center
             w-full border text-body-color bg-white hover:bg-light-gray
-            focus:ring-primary-focus border-border-color
+            focus:ring-primary-focus border-border-color capitalize
           "
         >
           <option
