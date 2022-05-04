@@ -93,7 +93,7 @@ onMounted(() => {
       v-if="!completed"
       class="relative flex flex-col lg:flex-row items-start justify-center px-20 pb-20 pt-12"
     >
-      <div class="relative w-full max-w-md min-w-max">
+      <div class="relative w-full max-w-sm min-w-max">
         <Circle
           class="w-72 absolute top-0 left-0 -ml-28 -mt-8 z-0"
           fill="#F2F4FF"
@@ -105,7 +105,7 @@ onMounted(() => {
           opacity="0.5"
         />
         <div
-          class="bg-white relative p-10 rounded-md border
+          class="bg-white relative p-11.5 rounded-lg border
           border-light-gray drop-shadow-md z-10"
         >
           <div class="mb-5 font-medium text-2xl text-heading-color">
@@ -116,34 +116,29 @@ onMounted(() => {
 
           <div class="my-7 h-px bg-divider-color" />
 
-          <div class="grow flex flex-col justify-center">
-            <div class="flex flex-col lg:flex-row lg:mb-4">
+          <div class="grow flex flex-col justify-center space-y-5">
+            <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="name"
                 :label="$tForms('labels.name')"
                 :placeholder="$tForms('placeholders.name')"
-                class="mr-3 w-full mb-2 lg:mb-0"
               />
               <GenericInput
                 v-model="lastName"
                 :label="$tForms('labels.lastName')"
                 :placeholder="$tForms('placeholders.lastName')"
-                class="w-full mb-2 lg:mb-0"
               />
             </div>
-            <div class="flex flex-col lg:flex-row lg:mb-4">
+            <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="company"
                 :label="$tForms('labels.company')"
                 :placeholder="$tForms('placeholders.company')"
-                class="mr-3 w-full mb-2 lg:mb-0"
+                class="w-full"
               />
-
-              <div class="block w-full mb-4 lg:mb-0">
-                <div class="block mb-1 text-sm font-medium text-secondary-color">
-                  {{ $tSignUp('country') }}
-                </div>
+              <div class="w-full">
                 <GenericDropDown
+                  :label="$tSignUp('country')"
                   :selected="country"
                   :options="countryOptions"
                   :is-width-full="true"
@@ -151,21 +146,21 @@ onMounted(() => {
                 />
               </div>
             </div>
-            <GenericInput
-              v-model="email"
-              :label="$tForms('labels.email')"
-              :placeholder="$tForms('placeholders.email')"
-              class="mb-2"
-            />
-            <GenericInput
-              v-model="password"
-              type="password"
-              :label="$tForms('labels.password')"
-              :placeholder="$tForms('placeholders.password')"
-            />
-
+            <div class="space-y-5">
+              <GenericInput
+                v-model="email"
+                :label="$tForms('labels.email')"
+                :placeholder="$tForms('placeholders.email')"
+              />
+              <GenericInput
+                v-model="password"
+                type="password"
+                :label="$tForms('labels.password')"
+                :placeholder="$tForms('placeholders.password')"
+              />
+            </div>
             <div class="block">
-              <div class="mt-4">
+              <div>
                 <label class="inline-flex items-center">
                   <input
                     v-model="isChecked"
@@ -206,7 +201,6 @@ onMounted(() => {
             <div>
               <GenericButton
                 data-test="sign-up-button"
-                class="mt-4"
                 :type="ButtonType.Primary"
                 :is-width-full="true"
                 :text="$tSignUp('signUp')"
@@ -248,25 +242,25 @@ onMounted(() => {
           fill="#F2F4FF"
           opacity="0.5"
         />
-        <div class="flex flex-col min-w-fit max-w-md">
+        <div class="flex flex-col min-w-fit max-w-sm">
           <div class="text-lg text-heading-color z-10">
             {{ $tSignUp('infoTitle') }}
           </div>
           <div class="z-10">
             <div class="mt-4 flex flex-row justify-start">
-              <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
+              <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
               <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint1') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
-              <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
+              <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
               <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint2') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
-              <BulletPoint class="w-3 mt-3 max-w-10px min-w-10px" />
+              <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
               <div class="ml-3 text-base text-body-color font-light">
                 {{ $tSignUp('infoPoint3') }}
               </div>
@@ -305,7 +299,7 @@ onMounted(() => {
         />
         <div
           class="flex flex-col bg-white px-20 py-16 relative
-          rounded-md border border-light-gray drop-shadow-md z-10 max-w-xl"
+          rounded-lg border border-light-gray drop-shadow-md z-10 max-w-xl"
         >
           <div class="font-medium text-2xl text-heading-color">
             {{ $tSignUp('verifyEmail') }}

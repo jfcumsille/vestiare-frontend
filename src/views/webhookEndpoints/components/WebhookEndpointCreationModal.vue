@@ -93,23 +93,28 @@ watch(() => events.value, () => { eventsError.value = ''; });
       ref="formRef"
       class="space-y-3"
     >
-      <GenericInput
-        v-model="url"
-        :label="$t('form.url.label')"
-        :placeholder="$t('form.url.placeholder')"
-        :validations="urlValidations"
-      />
-      <GenericInput
-        v-model="name"
-        :label="$t('form.name.label')"
-        :placeholder="$t('form.name.placeholder')"
-        :validations="nameValidations"
-      />
-      <GenericTextArea
-        v-model="description"
-        :label="$t('form.description.label')"
-        :placeholder="$t('form.description.placeholder')"
-      />
+      <div class="space-y-6">
+        <GenericInput
+          v-model="url"
+          :label="$t('form.url.label')"
+          :placeholder="$t('form.url.placeholder')"
+          :hint="$t('form.url.hint')"
+          right-text="webhook.site ->"
+          right-href="https://webhook.site/"
+          :validations="urlValidations"
+        />
+        <GenericInput
+          v-model="name"
+          :label="$t('form.name.label')"
+          :placeholder="$t('form.name.placeholder')"
+          :validations="nameValidations"
+        />
+        <GenericTextArea
+          v-model="description"
+          :label="$t('form.description.label')"
+          :placeholder="$t('form.description.placeholder')"
+        />
+      </div>
       <p class="text-xl">
         {{ $t('events') }}
       </p>

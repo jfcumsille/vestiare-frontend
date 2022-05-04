@@ -6,19 +6,8 @@ import {
   HorizontalPositionType,
   JustifyType,
 } from '@/interfaces/utilities/enums';
-import Spinner from '@/components/LoadingSpinner.vue';
-import CopyIcon from '@/assets/svg/CopyIcon.vue';
-import ChevronDown from '@/assets/svg/ChevronDown.vue';
-import CrossIcon from '@/assets/svg/CrossIcon.vue';
-import EyeIcon from '@/assets/svg/EyeIcon.vue';
-import EyeClosedIcon from '@/assets/svg/EyeClosedIcon.vue';
-import GoogleLogo from '@/assets/svg/auth/GoogleLogo.vue';
-import GithubLogo from '@/assets/svg/auth/GithubLogo.vue';
-import MenuIcon from '@/assets/svg/MenuIcon.vue';
-import ThreeDots from '@/assets/svg/ThreeDots.vue';
-import LogOutIcon from '@/assets/svg/LogOutIcon.vue';
-import AddIcon from '@/assets/svg/AddIcon.vue';
 import { Nullable } from '@/interfaces/common';
+import { icons } from '@/utils/icons';
 
 const props = withDefaults(defineProps<{
   type: ButtonType,
@@ -97,27 +86,12 @@ const colorClasses = computed(() => {
   }
 });
 
-const buttonIcons = {
-  copy: CopyIcon,
-  chevron_down: ChevronDown,
-  cross: CrossIcon,
-  menu: MenuIcon,
-  auth_google: GoogleLogo,
-  auth_github: GithubLogo,
-  three_dots: ThreeDots,
-  eye: EyeIcon,
-  eye_closed: EyeClosedIcon,
-  loading: Spinner,
-  logout: LogOutIcon,
-  add: AddIcon,
-} as Record<string, ComponentPublicInstance>;
-
 const iconComponent = computed((): Nullable<ComponentPublicInstance> => {
   if (props.loading) {
-    return buttonIcons.loading;
+    return icons.loading;
   }
-  if (props.iconName && (props.iconName in buttonIcons)) {
-    return buttonIcons[props.iconName];
+  if (props.iconName && (props.iconName in icons)) {
+    return icons[props.iconName];
   }
   return null;
 });

@@ -22,6 +22,7 @@ export interface WebhookEndpointsViewLocale {
   testWebhook: {
     modalTitle: string,
     buttonText: string,
+    event: string,
   },
   creation: {
     modalTitle: string,
@@ -31,6 +32,7 @@ export interface WebhookEndpointsViewLocale {
       url: {
         label: string,
         placeholder: string,
+        hint: string,
       },
       description: {
         label: string,

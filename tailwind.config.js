@@ -2,6 +2,9 @@ module.exports = {
   content: ['./index.html', './src/**/*.{vue,ts}'],
   theme: {
     extend: {
+      screens: {
+        xs: '300px',
+      },
       colors: {
         // Text
         'heading-color': '#060235',
@@ -46,17 +49,20 @@ module.exports = {
         'warning-focus': '#FBE4CF',
       },
       maxWidth: {
-        '10px': '10px',
+        2.5: '0.625rem',
         xxs: '16rem',
       },
       minWidth: {
-        '10px': '10px',
+        2.5: '0.625rem',
         '16px': '16px',
         xs: '20rem',
         sm: '24rem',
         md: '28rem',
         lg: '32rem',
         xl: '36rem',
+      },
+      minHeight: {
+        2.5: '0.625rem',
       },
       zIndex: {
         1: '1',
@@ -82,6 +88,9 @@ module.exports = {
       fontSize: {
         '2xs': '11px',
         '3xs': '8px',
+      },
+      padding: {
+        11.5: '46px',
       },
     },
   },

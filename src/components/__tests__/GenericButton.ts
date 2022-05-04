@@ -172,7 +172,7 @@ describe('GenericButton', () => {
     ],
   } as Record<string, string[]>;
 
-  describe('renders correct component', () => {
+  describe('renders correct icon component', () => {
     Object.keys(buttonIcons).forEach((key) => {
       const buttonIcon = buttonIcons[key];
       const props = {

@@ -15,6 +15,7 @@ import {
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
+import GenericDropDown from '@/components/GenericDropDown.vue';
 import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/urls';
 import { useConfigStore } from '@/stores/config';
 
@@ -36,43 +37,56 @@ const title = computed(() => {
   return `${$t('create')} ${mode} Link`;
 });
 
-const selectedCountry = ref(CountryCode.CL);
-const countries = [CountryCode.CL, CountryCode.MX];
-const countryText = (countryCode: CountryCode) => {
-  if (countryCode === CountryCode.MX) {
-    return 'Mexico';
-  }
-  return 'Chile';
+const selectedCountry = ref('Chile');
+const selectedCountryCode = ref(CountryCode.CL);
+const countries = [
+  { countryCode: CountryCode.CL, label: 'Chile' },
+  { countryCode: CountryCode.MX, label: 'México' },
+];
+const countryLabels = countries.map((item) => item.label);
+const selectCountry = (value: string) => {
+  selectedCountry.value = value;
+  countries.forEach((country) => {
+    if (country.label === value) {
+      selectedCountryCode.value = country.countryCode;
+    }
+  });
 };
 
 const selectedAPIModule = ref<Nullable<APIModule>>(APIModule.Banking);
 const APIModules = computed(() => (
   live.value ? [APIModule.Banking, APIModule.Fiscal] : [APIModule.Banking]
 ));
-const selectedProduct = ref<Nullable<Product>>(Product.Movements);
-const handleChangeAPI = () => {
+const selectedProduct = computed(() => {
   if (selectedAPIModule.value === APIModule.Banking) {
-    selectedProduct.value = Product.Movements;
+    return Product.Movements;
   }
   if (selectedAPIModule.value === APIModule.Fiscal) {
-    selectedProduct.value = Product.Invoices;
+    return Product.Invoices;
   }
+  return null;
+});
+const selectAPIModule = (value: string) => {
+  selectedAPIModule.value = value as APIModule;
 };
 
 const selectedHolderType = ref<Nullable<HolderType>>(HolderType.Individual);
 const holderTypes = computed(() => {
-  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Fiscal) {
+  const selectedMexico = selectedCountryCode.value === CountryCode.MX;
+  if (selectedMexico && selectedAPIModule.value === APIModule.Fiscal) {
     return [HolderType.Business];
   }
-  if (selectedCountry.value === CountryCode.MX && selectedAPIModule.value === APIModule.Banking) {
+  if (selectedMexico && selectedAPIModule.value === APIModule.Banking) {
     return [HolderType.Individual];
   }
   return [HolderType.Individual, HolderType.Business];
 });
+const selectHolderType = (value: string) => {
+  selectedHolderType.value = value as HolderType;
+};
 
 watch(() => selectedCountry.value, () => {
   selectedAPIModule.value = null;
-  selectedProduct.value = null;
   selectedHolderType.value = null;
 });
 watch(() => selectedAPIModule.value, () => {
@@ -84,7 +98,7 @@ const apiKey = computed(() => apiKeysStore.searchKey(true));
 const fintoc = ref<Nullable<Fintoc>>(null);
 
 const areAllParamsSelected = computed(() => (
-  selectedCountry.value && selectedProduct.value && selectedHolderType.value
+  selectedCountryCode.value && selectedProduct.value && selectedHolderType.value
 ));
 
 const disabledButton = computed(() => (
@@ -108,7 +122,7 @@ const openWidget = () => {
       holderType: selectedHolderType.value,
       product: selectedProduct.value,
       publicKey: apiKey.value.token,
-      country: selectedCountry.value,
+      country: selectedCountryCode.value,
       webhookUrl: 'https://fintoc.com',
       onSuccess,
       onExit,
@@ -128,7 +142,7 @@ onMounted(async () => {
     :title="title"
     @close="emit('close')"
   >
-    <div class="space-y-3 text-body-color">
+    <div class="space-y-6 text-body-color">
       <div
         v-if="live"
         class="text-left text-body-color font-light"
@@ -157,90 +171,28 @@ onMounted(async () => {
           {{ $t('learnMoreTest') }}
         </a>
       </div>
-      <div>
-        <div class="font-medium text-body-color text-sm mb-1">
-          {{ $t('country') }}
-        </div>
-        <select
-          v-model="selectedCountry"
-          class="
-            focus:ring-2 justify-between font-normal rounded-md text-sm
-            px-2 py-3 shadow-sm text-left inline-flex items-center
-            w-full border text-body-color bg-white hover:bg-light-gray
-            focus:ring-primary-focus border-border-color
-          "
-        >
-          <option
-            selected
-            disabled
-          >
-            {{ $t('chooseCountry') }}
-          </option>
-          <option
-            v-for="(country, index) in countries"
-            :key="index"
-            :value="country"
-          >
-            {{ countryText(country) }}
-          </option>
-        </select>
-      </div>
-      <div>
-        <div class="font-medium text-body-color text-sm mb-1">
-          {{ $t('api') }}
-        </div>
-        <select
-          v-model="selectedAPIModule"
-          class="
-            focus:ring-2 justify-between font-normal rounded-md text-sm
-            px-2 py-3 shadow-sm text-left inline-flex items-center
-            w-full border text-body-color bg-white hover:bg-light-gray
-            focus:ring-primary-focus border-border-color
-          "
-          @change="handleChangeAPI"
-        >
-          <option
-            selected
-            disabled
-          >
-            {{ $t('chooseApi') }}
-          </option>
-          <option
-            v-for="(apiModule, index) in APIModules"
-            :key="index"
-            :value="apiModule"
-          >
-            {{ apiModule }}
-          </option>
-        </select>
-      </div>
-      <div>
-        <div class="font-medium text-body-color text-sm mb-1">
-          {{ $t('holderType') }}
-        </div>
-        <select
-          v-model="selectedHolderType"
-          class="
-            focus:ring-2 justify-between font-normal rounded-md text-sm
-            px-2 py-3 shadow-sm text-left inline-flex items-center
-            w-full border text-body-color bg-white hover:bg-light-gray
-            focus:ring-primary-focus border-border-color capitalize
-          "
-        >
-          <option
-            selected
-            disabled
-          >
-            {{ $t('chooseHolderType') }}
-          </option>
-          <option
-            v-for="holderType in holderTypes"
-            :key="holderType"
-            :value="holderType"
-          >
-            {{ holderType }}
-          </option>
-        </select>
+      <div class="space-y-6">
+        <GenericDropDown
+          :label="$t('country')"
+          :selected="selectedCountry ? selectedCountry : ''"
+          :options="countryLabels"
+          :is-width-full="true"
+          @select="selectCountry"
+        />
+        <GenericDropDown
+          :label="$t('api')"
+          :selected="selectedAPIModule ? selectedAPIModule : ''"
+          :options="APIModules"
+          :is-width-full="true"
+          @select="selectAPIModule"
+        />
+        <GenericDropDown
+          :label="$t('holderType')"
+          :selected="selectedHolderType ? selectedHolderType : ''"
+          :options="holderTypes"
+          :is-width-full="true"
+          @select="selectHolderType"
+        />
       </div>
     </div>
     <div class="w-full flex justify-end">

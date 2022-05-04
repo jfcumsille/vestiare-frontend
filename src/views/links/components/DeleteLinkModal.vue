@@ -25,7 +25,7 @@ const remove = () => {
     :title="$t('title')"
     @close="emit('close')"
   >
-    <div class="flex flex-row bg-danger-surface p-2 rounded-md mb-2">
+    <div class="flex flex-row bg-danger-surface p-2 rounded-lg mb-2">
       <WarningIcon
         class="mt-1 ml-1 text-danger-main"
         fill="currentColor"

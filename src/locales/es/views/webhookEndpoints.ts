@@ -28,6 +28,7 @@ export default <WebhookEndpointsViewLocale>{
   testWebhook: {
     modalTitle: 'Enviar Webhook de prueba',
     buttonText: 'Enviar Webhook de prueba',
+    event: 'Evento',
   },
   creation: {
     modalTitle: 'Crear Webhook Endpoint',
@@ -37,6 +38,7 @@ export default <WebhookEndpointsViewLocale>{
       url: {
         label: 'URL del Webhook Endpoint',
         placeholder: 'https://tu.backend/webhook',
+        hint: 'Si aún no tienes un URL de tu servidor, revisa esta herramienta:',
       },
       description: {
         label: 'Descripción',

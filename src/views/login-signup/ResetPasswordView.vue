@@ -78,7 +78,7 @@ onMounted(() => {
       />
       <div
         class="flex flex-col bg-white px-20 py-16 relative max-w-xl
-        rounded-md border border-light-gray drop-shadow-md z-10"
+        rounded-lg border border-light-gray drop-shadow-md z-10"
       >
         <div class="font-medium text-2xl text-heading-color">
           {{ $tResetPassword('title') }}

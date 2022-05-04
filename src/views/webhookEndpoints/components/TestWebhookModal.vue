@@ -55,16 +55,18 @@ const close = () => {
   >
     <div
       v-if="!requestSent"
-      class="flex flex-row"
+      class="flex flex-col sm:flex-row"
     >
       <GenericDropDown
         class="inline-block"
+        :is-width-full="true"
+        :label="$t('event')"
         :options="props.webhookEndpoint.enabledEvents"
         :selected="selectedEvent"
         @select="selectEvent"
       />
       <GenericButton
-        class="ml-4"
+        class="mt-4 sm:ml-4 sm:mt-0"
         :type="ButtonType.Secondary"
         :text="$t('buttonText')"
         @click="sendTestWebhook"

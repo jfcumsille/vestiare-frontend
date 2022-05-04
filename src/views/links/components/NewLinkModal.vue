@@ -33,7 +33,7 @@ const copyKey = () => {
     @close="close"
   >
     <div class="space-y-5">
-      <div class="flex flex-row bg-warning-surface p-2 rounded-md">
+      <div class="flex flex-row bg-warning-surface p-2 rounded-lg">
         <WarningIcon class="mt-1 ml-1 min-w-16px max-w-16px" />
         <div class="ml-2 text-body-color font-light">
           {{ $t('warning') }}
@@ -53,7 +53,7 @@ const copyKey = () => {
       <div class="flex flex-row justify-center items-center relative">
         <div
           class="
-            bg-primary-surface rounded-md p-4 truncate
+            bg-primary-surface rounded-lg p-4 truncate
             text-center text-body-color text-xs
           "
         >

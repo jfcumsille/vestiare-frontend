@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { artificialWait } from '@/utils/tests';
+import { artificialWait } from '@/utils/tests/common';
 import { useValidatedModel, Validation, ValidatedModelProps } from '@/composables/validatedModel';
 
 const EMPTY_ERROR = 'Text empty';
