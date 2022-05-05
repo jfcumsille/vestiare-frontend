@@ -30,11 +30,11 @@ const remove = () => {
         class="mt-1 ml-1 text-danger-main"
         fill="currentColor"
       />
-      <div class="ml-2 text-body-color font-light">
+      <div class="ml-2 text-body-color font-normal">
         {{ $t('warning') }}
       </div>
     </div>
-    <p class="text-body-color font-light">
+    <p class="text-body-color font-normal">
       {{ $t('text') }}
     </p>
     <div class="w-full flex justify-end">

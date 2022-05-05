@@ -35,11 +35,11 @@ const copyKey = () => {
     <div class="space-y-5">
       <div class="flex flex-row bg-warning-surface p-2 rounded-lg">
         <WarningIcon class="mt-1 ml-1 min-w-16px max-w-16px" />
-        <div class="ml-2 text-body-color font-light">
+        <div class="ml-2 text-body-color font-normal">
           {{ $t('warning') }}
         </div>
       </div>
-      <div class="ml-2 text-left text-body-color font-light">
+      <div class="ml-2 text-left text-body-color font-normal">
         {{ $t('subtitle') }}
         <a
           class="text-primary-main font-medium cursor-pointer hover:text-primary-hover"

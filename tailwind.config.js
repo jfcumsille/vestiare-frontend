@@ -54,6 +54,7 @@ module.exports = {
       },
       minWidth: {
         2.5: '0.625rem',
+        4.5: '1.1125rem',
         '16px': '16px',
         xs: '20rem',
         sm: '24rem',
@@ -63,6 +64,7 @@ module.exports = {
       },
       minHeight: {
         2.5: '0.625rem',
+        4.5: '1.1125rem',
       },
       zIndex: {
         1: '1',

@@ -29,7 +29,7 @@ const close = () => {
               {{ props.title }}
             </h3>
             <GenericButton
-              :type="ButtonType.Secondary"
+              :type="ButtonType.Text"
               :size="SizeType.Small"
               icon-name="cross"
               @click="close"

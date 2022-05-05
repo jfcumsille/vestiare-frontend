@@ -249,19 +249,19 @@ onMounted(() => {
           <div class="z-10">
             <div class="mt-4 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
-              <div class="ml-3 text-base text-body-color font-light">
+              <div class="ml-3 text-base text-body-color font-normal">
                 {{ $tSignUp('infoPoint1') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
-              <div class="ml-3 text-base text-body-color font-light">
+              <div class="ml-3 text-base text-body-color font-normal">
                 {{ $tSignUp('infoPoint2') }}
               </div>
             </div>
             <div class="mt-3 flex flex-row justify-start">
               <BulletPoint class="w-3 mt-3 max-w-2.5 min-w-2.5" />
-              <div class="ml-3 text-base text-body-color font-light">
+              <div class="ml-3 text-base text-body-color font-normal">
                 {{ $tSignUp('infoPoint3') }}
               </div>
             </div>
@@ -304,7 +304,7 @@ onMounted(() => {
           <div class="font-medium text-2xl text-heading-color">
             {{ $tSignUp('verifyEmail') }}
           </div>
-          <div class="mt-4 text-body-color font-light">
+          <div class="mt-4 text-body-color font-normal">
             {{ name }},
             {{ $tSignUp('thankYou') }}
             <span class="font-normal">
@@ -312,7 +312,7 @@ onMounted(() => {
             </span>
             {{ $tSignUp('verifyAccount') }}
           </div>
-          <div class="text-center font-light mt-4 text-body-color">
+          <div class="text-center font-normal mt-4 text-body-color">
             {{ $tSignUp('didntReceive') }}
             <GenericButton
               data-test="resend-verify-email-button"

@@ -99,7 +99,7 @@ watch(() => events.value, () => { eventsError.value = ''; });
           :label="$t('form.url.label')"
           :placeholder="$t('form.url.placeholder')"
           :hint="$t('form.url.hint')"
-          right-text="webhook.site ->"
+          right-text="webhook.site →"
           right-href="https://webhook.site/"
           :validations="urlValidations"
         />
