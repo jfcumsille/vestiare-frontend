@@ -7,6 +7,7 @@ import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import { WEBHOOK_ENDPOINT_DELETED } from '@/constants/analyticsEvents';
 import { trackId } from '@/services/analytics';
 import GenericToggle from '@/components/GenericToggle.vue';
+import TableRow from '@/components/table/TableRow.vue';
 
 const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
@@ -38,7 +39,7 @@ const openDetailedView = () => {
 </script>
 
 <template>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  <TableRow>
     <td
       class="py-4 px-6 text-sm font-medium whitespace-nowrap cursor-pointer"
       @click="openDetailedView"
@@ -77,5 +78,5 @@ const openDetailedView = () => {
         @click="remove"
       >{{ $t('remove') }}</a>
     </td>
-  </tr>
+  </TableRow>
 </template>

@@ -7,11 +7,11 @@ import { DOCS_WEBHOOKS } from '@/constants/urls';
 import { page, trackModal } from '@/services/analytics';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import GenericTable from '@/components/GenericTable.vue';
-import GenericTableHeader from '@/components/GenericTableHeader.vue';
+import GenericTable from '@/components/table/GenericTable.vue';
+import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
-import WebhookEndpointsTableElement from './components/WebhookEndpointsTableElement.vue';
+import WebhookEndpointsTableRow from './components/WebhookEndpointsTableRow.vue';
 import NoWebhookEndpointsContent from './components/noWebhookEndpointsContent.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
@@ -98,7 +98,7 @@ onMounted(() => {
         </template>
 
         <template #content>
-          <WebhookEndpointsTableElement
+          <WebhookEndpointsTableRow
             v-for="webhookEndpoint in webhookEndpoints"
             :key="webhookEndpoint.id"
             :webhook-endpoint="webhookEndpoint"

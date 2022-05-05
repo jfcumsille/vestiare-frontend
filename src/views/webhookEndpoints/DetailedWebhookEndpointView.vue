@@ -7,8 +7,8 @@ import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { page } from '@/services/analytics';
 import { Mode, ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
-import GenericTable from '@/components/GenericTable.vue';
-import GenericTableHeader from '@/components/GenericTableHeader.vue';
+import GenericTable from '@/components/table/GenericTable.vue';
+import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
 import TestWebhookModal from './components/TestWebhookModal.vue';
 
