@@ -9,9 +9,9 @@ import { API_KEYS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_API_KEYS } from '@/constants/urls';
 import { page, trackAPIKeyCreated, trackAPIKeyDeleted } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import GenericTable from '@/components/GenericTable.vue';
-import GenericTableHeader from '@/components/GenericTableHeader.vue';
-import ApiKeysTableElement from './components/ApiKeysTableElement.vue';
+import GenericTable from '@/components/table/GenericTable.vue';
+import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
+import ApiKeysTableRow from './components/ApiKeysTableRow.vue';
 
 const $t = useTranslation('views.apiKeys');
 const apiKeysStore = useAPIKeysStore();
@@ -86,18 +86,18 @@ onMounted(() => {
               <GenericTableHeader :headers="headers" />
             </template>
             <template #content>
-              <ApiKeysTableElement
+              <ApiKeysTableRow
                 v-if="publicKey"
                 :key="publicKey.id"
                 :api-key="publicKey"
               />
-              <ApiKeysTableElement
+              <ApiKeysTableRow
                 v-if="secretKey"
                 :key="secretKey.id"
                 :api-key="secretKey"
                 @destroy-api-key="() => destroyAPIKey(secretKey)"
               />
-              <ApiKeysTableElement
+              <ApiKeysTableRow
                 v-if="activationRequired"
                 :key="secretKeyToActivate.id"
                 :api-key="secretKeyToActivate"

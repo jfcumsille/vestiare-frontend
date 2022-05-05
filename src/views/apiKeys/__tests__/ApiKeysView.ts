@@ -12,7 +12,7 @@ import { Mode } from '@/interfaces/utilities/enums';
 import { API_KEY_CREATED, API_KEY_DELETED, API_KEYS_VIEWED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
-import ApiKeysTableElement from '@/views/apiKeys/components/ApiKeysTableElement.vue';
+import ApiKeysTableRow from '@/views/apiKeys/components/ApiKeysTableRow.vue';
 import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
@@ -30,7 +30,7 @@ const getWrapper = () => {
 };
 
 const checkIfApiKeyTableElementContainsText = async (
-  apiKeyTableElement: VueWrapper<InstanceType<typeof ApiKeysTableElement>>,
+  apiKeyTableElement: VueWrapper<InstanceType<typeof ApiKeysTableRow>>,
   text: string,
 ) => {
   const apiKeyEyeToggle = apiKeyTableElement.find('[data-test="eye-toggle"]');
@@ -104,7 +104,7 @@ describe('ApiKeysView', () => {
     it('should show live keys when mode is live', async () => {
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
         checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_live_');
@@ -117,7 +117,7 @@ describe('ApiKeysView', () => {
 
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
         checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_test_');
@@ -127,7 +127,7 @@ describe('ApiKeysView', () => {
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
       const wrapper = getWrapper();
 
-      const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
+      const apiKeyTableElement = wrapper.findComponent(ApiKeysTableRow);
       expect(apiKeyTableElement.exists()).toBe(true);
 
       const liveKeyToken = apiKeyTableElement.find('[data-test="api-key-token"]');
@@ -144,7 +144,7 @@ describe('ApiKeysView', () => {
     it('should not show Activate Secret Key', async () => {
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
         expect(apiKeyTableElement.text()).not.toContain('Activate Secret Key');
       });
@@ -153,7 +153,7 @@ describe('ApiKeysView', () => {
     it('tracks \'API Key Deleted\' with analytics when key is deleted', async () => {
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       const moreOptionsButton = apiKeyTableElements[1].find('[data-test="more-options-button"]');
       expect(moreOptionsButton.exists()).toBe(true);
       await moreOptionsButton.trigger('click');
@@ -201,7 +201,7 @@ describe('ApiKeysView', () => {
     it('should show public live key when mode is live and activate secret key', async () => {
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       expect(apiKeyTableElements.length).toBe(2);
 
       const apiKeyEyeToggle = apiKeyTableElements[0].find('[data-test="eye-toggle"]');
@@ -219,7 +219,7 @@ describe('ApiKeysView', () => {
 
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
         checkIfApiKeyTableElementContainsText(apiKeyTableElement, '_test_');
@@ -229,7 +229,7 @@ describe('ApiKeysView', () => {
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       expect(apiKeyTableElements[1].text()).toContain('Activate Secret Key');
 
       const liveKeyToken = apiKeyTableElements[0].find('[data-test="api-key-token"]');
@@ -246,7 +246,7 @@ describe('ApiKeysView', () => {
     it('tracks \'API Key Created\' with analytics when key is created', async () => {
       const wrapper = getWrapper();
 
-      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
+      const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       expect(apiKeyTableElements[1].text()).toContain('Activate Secret Key');
       const activateKeyButton = apiKeyTableElements[1].find('[data-test="activate-key-button"]');
       expect(activateKeyButton.exists()).toBe(true);

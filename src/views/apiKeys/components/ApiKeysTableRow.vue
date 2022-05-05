@@ -5,6 +5,7 @@ import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode, ButtonType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
+import TableRow from '@/components/table/TableRow.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import InfoIcon from '@/assets/svg/InfoIcon.vue';
@@ -74,10 +75,7 @@ const handleEndHoverIcon = () => {
 </script>
 
 <template>
-  <tr
-    class="px-5 border-b text-body-color font-normal
-    whitespace-nowrap"
-  >
+  <TableRow>
     <td class="px-5 py-7 text-md h-full">
       <div class="flex flex-row items-center">
         {{ name }}
@@ -181,5 +179,5 @@ const handleEndHoverIcon = () => {
         </div>
       </div>
     </td>
-  </tr>
+  </TableRow>
 </template>
