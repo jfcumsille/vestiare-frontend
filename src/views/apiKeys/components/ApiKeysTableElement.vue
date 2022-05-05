@@ -75,7 +75,7 @@ const handleEndHoverIcon = () => {
 
 <template>
   <tr
-    class="px-5 border-b text-body-color font-light
+    class="px-5 border-b text-body-color font-normal
     whitespace-nowrap"
   >
     <td class="px-5 py-7 text-md h-full">

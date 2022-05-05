@@ -23,7 +23,7 @@ const $t = useTranslation('views.webhookEndpoints');
           <div
             class="
             bg-divider-color text-black rounded-lg shadow px-4 py-4
-              text-xs font-light h-20 w-32 flex items-center
+              text-xs font-normal h-20 w-32 flex items-center
           "
           >
             {{ $t('emptyView.customerChanges') }}
@@ -37,7 +37,7 @@ const $t = useTranslation('views.webhookEndpoints');
           <div
             class="
             bg-primary-border text-white rounded-lg shadow px-6 py-4
-              text-xs font-light h-20 w-42 flex items-center
+              text-xs font-normal h-20 w-42 flex items-center
             "
           >
             link.credentials_changed

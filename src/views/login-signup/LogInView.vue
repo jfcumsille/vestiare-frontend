@@ -131,7 +131,7 @@ onMounted(() => {
               fill="currentColor"
               :size="14"
             />
-            <div class="ml-2 text-danger-main font-light">
+            <div class="ml-2 text-danger-main font-normal">
               {{ error }}
               <button
                 v-if="error === $tLogIn('unconfirmedEmail')"

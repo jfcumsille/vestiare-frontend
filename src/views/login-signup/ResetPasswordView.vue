@@ -85,13 +85,13 @@ onMounted(() => {
         </div>
         <div
           v-if="!completed"
-          class="mt-4 mb-6 text-body-color font-light"
+          class="mt-4 mb-6 text-body-color font-normal"
         >
           {{ $tResetPassword('subtitle') }}
         </div>
         <div
           v-if="completed"
-          class="text-left font-light mt-4 mb-6 text-body-color"
+          class="text-left font-normal mt-4 mb-6 text-body-color"
         >
           {{ $tResetPassword('checkYourEmail') }}
           <span class="font-medium">{{ email }}</span>

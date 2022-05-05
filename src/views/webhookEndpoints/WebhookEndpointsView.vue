@@ -68,7 +68,7 @@ onMounted(() => {
       <div class="flex justify-between mt-2">
         <div
           v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
-          class="text-body-color font-light max-w-3xl"
+          class="text-body-color font-normal max-w-3xl"
         >
           {{ $t('subtitle') }}
         </div>

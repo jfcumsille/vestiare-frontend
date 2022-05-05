@@ -145,7 +145,7 @@ onMounted(async () => {
     <div class="space-y-6 text-body-color">
       <div
         v-if="live"
-        class="text-left text-body-color font-light"
+        class="text-left text-body-color font-normal"
       >
         {{ $t('subtitleLive') }}
         <a
@@ -159,7 +159,7 @@ onMounted(async () => {
       </div>
       <div
         v-else
-        class="text-left text-body-color font-light"
+        class="text-left text-body-color font-normal"
       >
         {{ $t('subtitleTest') }}
         <a
