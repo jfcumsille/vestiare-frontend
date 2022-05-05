@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import GenericTableHeader from '@/components/GenericTableHeader.vue';
+import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
 
 describe('GenericTableHeader', () => {
   it('renders all props.headers', () => {

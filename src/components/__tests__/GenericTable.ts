@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import GenericTable from '@/components/GenericTable.vue';
+import GenericTable from '@/components/table/GenericTable.vue';
 
 describe('GenericTable', () => {
   it('renders header and content slots when passed both', () => {
