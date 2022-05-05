@@ -64,7 +64,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
       :class="`
         flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
         disabled:bg-light-gray disabled:text-disabled-color
-        border-1.5 border-border-color text-sm
+        border-1.5 border-border-color text-sm capitalize
         text-body-color ${width}`
       "
       @click="toggle"
@@ -78,7 +78,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
       data-test="drop-down-list"
       class="
         absolute z-10 text-base list-none bg-white cursor-pointer mt-1 w-full
-        divide-y divide-divider-color shadow-lg rounded-lg
+        divide-y divide-divider-color shadow-lg rounded-lg capitalize
       "
       :class="{ 'hidden': !opened }"
     >

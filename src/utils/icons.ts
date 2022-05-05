@@ -10,6 +10,8 @@ import GoogleLogo from '@/assets/svg/auth/GoogleLogo.vue';
 import GithubLogo from '@/assets/svg/auth/GithubLogo.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
+import AddIcon from '@/assets/svg/AddIcon.vue';
+import LogOutIcon from '@/assets/svg/LogOutIcon.vue';
 import { Nullable } from '@/interfaces/common';
 
 export const icons = {
@@ -22,6 +24,8 @@ export const icons = {
   three_dots: ThreeDots,
   eye: EyeIcon,
   eye_closed: EyeClosedIcon,
+  add: AddIcon,
+  logout: LogOutIcon,
   loading: Spinner,
 } as Record<string, ComponentPublicInstance>;
 
