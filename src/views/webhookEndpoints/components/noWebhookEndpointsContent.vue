@@ -10,7 +10,7 @@ const $t = useTranslation('views.webhookEndpoints');
 <template>
   <div class="flex self-start pt-4 w-full">
     <div
-      class="text-center w-4/5 min-w-min bg-white rounded-lg drop-shadow-md overflow-scroll px-10"
+      class="text-center w-4/5 min-w-min bg-white rounded-lg drop-shadow-md px-10"
     >
       <div class="m-6 text-body-color font-bold">
         {{ $t('emptyView.noWebhookEndpointsFound') }}
