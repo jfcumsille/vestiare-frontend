@@ -9,15 +9,15 @@ import { getFilterValues } from '@/utils/table';
 
 const $t = useTranslation('views.links.table');
 
-const emit = defineEmits<{(e: 'update', filterValues: Record<string, Array<boolean>>): void }>();
+const emit = defineEmits<{(e: 'update', filterValues: Record<string, unknown>): void }>();
 
-const activeFilters = ref<Array<Filter<boolean>>>([
+const activeFilters = ref<Array<Filter>>([
   { name: $t('filters.active.options.valid'), value: true, checked: true },
   { name: $t('filters.active.options.invalid'), value: false, checked: true },
 ]);
 const activeFilterSelectedValues = computed(() => getFilterValues(activeFilters.value));
 
-const passwordFilters = ref<Array<Filter<boolean>>>([
+const passwordFilters = ref<Array<Filter>>([
   { name: $t('filters.password.options.valid'), value: false, checked: true },
   { name: $t('filters.password.options.invalid'), value: true, checked: true },
 ]);
