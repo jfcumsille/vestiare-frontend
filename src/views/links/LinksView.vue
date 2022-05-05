@@ -13,13 +13,13 @@ import { LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_LINKS } from '@/constants/urls';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import GenericTable from '@/components/GenericTable.vue';
-import GenericTableHeader from '@/components/GenericTableHeader.vue';
+import GenericTable from '@/components/table/GenericTable.vue';
+import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinkFilters from '@/views/links/components/LinkFilters.vue';
-import LinksTableElement from '@/views/links/components/LinksTableElement.vue';
+import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
 import { useConfigStore } from '@/stores/config';
 
 const $t = useTranslation('views.links');
@@ -203,7 +203,7 @@ onMounted(() => {
         </template>
 
         <template #content>
-          <LinksTableElement
+          <LinksTableRow
             v-for="link in filteredLinks"
             :key="link.id"
             :link="link"

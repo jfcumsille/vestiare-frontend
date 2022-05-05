@@ -8,6 +8,7 @@ import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime } from '@/utils/date';
 import { LINK_DELETED, LINK_REFRESHED } from '@/constants/analyticsEvents';
 import { trackLinkStatus, trackModal, trackId } from '@/services/analytics';
+import TableRow from '@/components/table/TableRow.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -97,7 +98,7 @@ const remove = async () => {
     @close="() => setRefreshModalOpened(false)"
     @refresh="refresh"
   />
-  <tr class="bg-white border-b hover:bg-light-gray">
+  <TableRow>
     <td class="p-4 flex flex-row items-center">
       <InstitutionLogo
         :institution-id="props.link.institution.id"
@@ -173,5 +174,5 @@ const remove = async () => {
         @click="() => setDeleteModalOpened(true)"
       >{{ $t('buttons.remove') }}</a>
     </td>
-  </tr>
+  </TableRow>
 </template>

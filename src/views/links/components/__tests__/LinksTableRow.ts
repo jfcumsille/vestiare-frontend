@@ -17,7 +17,7 @@ import {
 } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
-import LinksTableElement from '@/views/links/components/LinksTableElement.vue';
+import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
 import DeleteLinkModal from '@/views/links/components/DeleteLinkModal.vue';
 import ResumeLinkRefreshingModal from '@/views/links/components/ResumeLinkRefreshingModal.vue';
 
@@ -45,7 +45,7 @@ const getWrapper = () => {
     lastTimeRefreshed: 'x',
     accountsCount: 1,
   };
-  const wrapper = mount(LinksTableElement, {
+  const wrapper = mount(LinksTableRow, {
     global: {
       plugins: [testingPinia, router],
     },
@@ -54,7 +54,7 @@ const getWrapper = () => {
   return wrapper;
 };
 
-describe('LinksTableElement', () => {
+describe('LinksTableRow', () => {
   beforeAll(() => {
     const { restore } = mockCrypto();
 
