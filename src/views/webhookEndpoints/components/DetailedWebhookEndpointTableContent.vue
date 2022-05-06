@@ -5,6 +5,7 @@ import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Nullable } from '@/interfaces/common';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
+import TableRow from '@/components/table/TableRow.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 
 const $t = useTranslation('views.webhookEndpoints.table');
@@ -28,7 +29,7 @@ const revealWebhookEndpointSecret = async () => {
 </script>
 
 <template>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  <TableRow>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-heading-color">
         {{ $t('headers.url') }}
@@ -39,8 +40,8 @@ const revealWebhookEndpointSecret = async () => {
         {{ props.webhookEndpoint.url }}
       </p>
     </td>
-  </tr>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  </TableRow>
+  <TableRow>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-heading-color">
         {{ $t('headers.mode') }}
@@ -53,8 +54,8 @@ const revealWebhookEndpointSecret = async () => {
         :color="props.webhookEndpoint.mode === Mode.Live ? 'green' : 'yellow'"
       />
     </td>
-  </tr>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  </TableRow>
+  <TableRow>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-heading-color">
         {{ $t('headers.active') }}?
@@ -67,8 +68,8 @@ const revealWebhookEndpointSecret = async () => {
         :color="props.webhookEndpoint.status === 'enabled' ? 'green' : 'red'"
       />
     </td>
-  </tr>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  </TableRow>
+  <TableRow>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-heading-color">
         {{ $t('headers.webhookEndpointSecret') }}
@@ -90,8 +91,8 @@ const revealWebhookEndpointSecret = async () => {
         @click="revealWebhookEndpointSecret"
       >{{ $t('buttons.revealWebhookEndpointSecret') }}</a>
     </td>
-  </tr>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  </TableRow>
+  <TableRow>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-heading-color">
         {{ $t('headers.name') }}
@@ -102,8 +103,8 @@ const revealWebhookEndpointSecret = async () => {
         {{ props.webhookEndpoint.name }}
       </p>
     </td>
-  </tr>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  </TableRow>
+  <TableRow>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-heading-color">
         {{ $t('headers.description') }}
@@ -114,8 +115,8 @@ const revealWebhookEndpointSecret = async () => {
         {{ props.webhookEndpoint.description }}
       </p>
     </td>
-  </tr>
-  <tr class="bg-white border-b hover:bg-light-gray">
+  </TableRow>
+  <TableRow>
     <td class="py-4 px-6 text-sm font-medium whitespace-nowrap">
       <p class="text-heading-color">
         {{ $t('headers.types') }}
@@ -130,5 +131,5 @@ const revealWebhookEndpointSecret = async () => {
         {{ event }}
       </p>
     </td>
-  </tr>
+  </TableRow>
 </template>
