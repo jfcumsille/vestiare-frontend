@@ -5,10 +5,12 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
 import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
-import { formatDate, formatTime } from '@/utils/date';
 import { LINK_DELETED, LINK_REFRESHED } from '@/constants/analyticsEvents';
 import { trackLinkStatus, trackModal, trackId } from '@/services/analytics';
 import TableRow from '@/components/table/TableRow.vue';
+import TableData from '@/components/table/TableData.vue';
+import TableLabel from '@/components/table/utils/TableLabel.vue';
+import TableDate from '@/components/table/utils/TableDate.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
@@ -99,7 +101,7 @@ const remove = async () => {
     @refresh="refresh"
   />
   <TableRow>
-    <td class="p-4 flex flex-row items-center">
+    <TableData class="flex">
       <InstitutionLogo
         :institution-id="props.link.institution.id"
         class="flex-shrink-0 h-10 w-10 rounded-full"
@@ -112,45 +114,27 @@ const remove = async () => {
           {{ props.link.holderType }}
         </p>
       </div>
-    </td>
-    <td class="p-4 text-sm font-medium whitespace-nowrap">
-      <p
-        v-if="props.link.holderType === HolderType.Individual"
-        class="text-heading-color"
-      >
-        {{ props.link.holderName }}
-      </p>
-      <p class="font-normal text-body-color">
-        {{ formattedUsername }}
-      </p>
-    </td>
-    <td class="p-4 text-sm font-medium whitespace-nowrap">
-      <div v-if="props.link.holderType === HolderType.Business">
-        <p class="text-heading-color">
-          {{ props.link.holderName }}
-        </p>
-        <p class="font-normal text-body-color">
-          {{ formattedHolderId }}
-        </p>
-      </div>
-      <p v-else>
-        -
-      </p>
-    </td>
-    <td class="p-4 text-sm text-body-color whitespace-nowrap flex-col">
-      <div v-if="props.link.lastTimeRefreshed">
-        <div>
-          {{ formatDate(props.link.lastTimeRefreshed) }}
-        </div>
-        <div class="text-xs">
-          {{ formatTime(props.link.lastTimeRefreshed) }}
-        </div>
-      </div>
-      <div v-else>
-        -
-      </div>
-    </td>
-    <td class="p-4 text-sm text-body-color whitespace-nowrap">
+    </TableData>
+    <TableData>
+      <TableLabel
+        :show-label="props.link.holderType === HolderType.Individual"
+        :label="props.link.holderName"
+        :sub-label="formattedUsername"
+      />
+    </TableData>
+    <TableData>
+      <TableLabel
+        :show-label="props.link.holderType === HolderType.Business"
+        :label="props.link.holderName"
+        :sub-label="formattedHolderId"
+      />
+    </TableData>
+    <TableData>
+      <TableDate
+        :date-string="props.link.lastTimeRefreshed"
+      />
+    </TableData>
+    <TableData>
       <GenericBadge
         data-test="credentials-validity-badge"
         :class="{'cursor-pointer': props.link.preventRefresh}"
@@ -158,21 +142,23 @@ const remove = async () => {
         :color="passwordBadgeColor"
         @click="openRefreshModal"
       />
-    </td>
-    <td class="p-4 text-sm text-body-color whitespace-nowrap">
+    </TableData>
+    <TableData>
       <GenericToggle
         data-test="link-active-toggle"
         :active="props.link.active"
         :loading="updating"
         @toggle="toggleActive"
       />
-    </td>
-    <td class="p-4 text-sm font-medium text-right whitespace-nowrap">
+    </TableData>
+    <TableData>
       <a
         data-test="remove-link-button"
-        class="text-danger-main cursor-pointer hover:underline"
+        class="
+          text-sm font-medium text-right whitespace-nowrap
+          text-danger-main cursor-pointer hover:underline"
         @click="() => setDeleteModalOpened(true)"
       >{{ $t('buttons.remove') }}</a>
-    </td>
+    </TableData>
   </TableRow>
 </template>

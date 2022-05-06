@@ -4,8 +4,9 @@ import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode, ButtonType } from '@/interfaces/utilities/enums';
-import { formatDate, formatTime } from '@/utils/date';
 import TableRow from '@/components/table/TableRow.vue';
+import TableData from '@/components/table/TableData.vue';
+import TableDate from '@/components/table/utils/TableDate.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import InfoIcon from '@/assets/svg/InfoIcon.vue';
@@ -76,7 +77,7 @@ const handleEndHoverIcon = () => {
 
 <template>
   <TableRow>
-    <td class="px-5 py-7 text-md h-full">
+    <TableData>
       <div class="flex flex-row items-center">
         {{ name }}
         <div
@@ -97,8 +98,8 @@ const handleEndHoverIcon = () => {
           </div>
         </div>
       </div>
-    </td>
-    <td class="font-normal m-2">
+    </TableData>
+    <TableData>
       <GenericButton
         v-if="activationRequired"
         data-test="activate-key-button"
@@ -140,25 +141,17 @@ const handleEndHoverIcon = () => {
           @click="copyKey"
         />
       </div>
-    </td>
-    <td class="p-5 text-sm text-body-color whitespace-nowrap flex-col">
-      <div v-if="props.apiKey && !activationRequired">
-        <div>
-          {{ formatDate(props.apiKey.createdAt) }}
-        </div>
-        <div class="text-xs">
-          {{ formatTime(props.apiKey.createdAt) }}
-        </div>
-      </div>
-      <div v-else>
-        -
-      </div>
-    </td>
-    <td class="justify-center w-10">
+    </TableData>
+    <TableData>
+      <TableDate
+        :date-string="props.apiKey.createdAt"
+      />
+    </TableData>
+    <TableData>
       <div ref="configKeysModal">
         <ThreeDots
           data-test="more-options-button"
-          class="cursor-pointer h-6 w-full pl-1 pr-3"
+          class="cursor-pointer h-6 pr-1 w-6"
           :class="{'hidden': hideConfigKey}"
           @click="toggleShowConfigKeys"
         />
@@ -178,6 +171,6 @@ const handleEndHoverIcon = () => {
           </button>
         </div>
       </div>
-    </td>
+    </TableData>
   </TableRow>
 </template>

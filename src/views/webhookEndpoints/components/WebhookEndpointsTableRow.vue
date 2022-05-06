@@ -8,6 +8,8 @@ import { WEBHOOK_ENDPOINT_DELETED } from '@/constants/analyticsEvents';
 import { trackId } from '@/services/analytics';
 import GenericToggle from '@/components/GenericToggle.vue';
 import TableRow from '@/components/table/TableRow.vue';
+import TableData from '@/components/table/TableData.vue';
+import TableLabel from '@/components/table/utils/TableLabel.vue';
 
 const props = defineProps<{ webhookEndpoint: WebhookEndpoint }>();
 
@@ -39,44 +41,40 @@ const openDetailedView = () => {
 </script>
 
 <template>
-  <TableRow>
-    <td
-      class="py-4 px-6 text-sm font-medium whitespace-nowrap cursor-pointer"
-      @click="openDetailedView"
-    >
-      <p class="text-heading-color">
-        {{ props.webhookEndpoint.url }}
-      </p>
-    </td>
-    <td
-      class="py-4 px-6 text-sm text-body-color whitespace-nowrap cursor-pointer"
-      @click="openDetailedView"
-    >
-      <p class="font-normal text-body-color">
-        {{ props.webhookEndpoint.description }}
-      </p>
-    </td>
-    <td
-      class="py-4 px-6 text-sm text-body-color whitespace-nowrap cursor-pointer"
-      @click="openDetailedView"
-    >
-      <p class="font-medium">
-        {{ props.webhookEndpoint.enabledEvents.length }}
-      </p>
-    </td>
-    <td class="py-4 px-6 text-sm text-body-color whitespace-nowrap">
+  <TableRow
+    class="cursor-pointer"
+    @click="openDetailedView"
+  >
+    <TableData>
+      <TableLabel
+        :label="props.webhookEndpoint.url"
+      />
+    </TableData>
+    <TableData>
+      <TableLabel
+        :label="props.webhookEndpoint.description"
+      />
+    </TableData>
+    <TableData>
+      <TableLabel
+        :label="props.webhookEndpoint.enabledEvents.length.toString()"
+      />
+    </TableData>
+    <TableData>
       <GenericToggle
         :active="props.webhookEndpoint.status ==='enabled'"
         :loading="updating"
         @toggle="toggleActive"
       />
-    </td>
-    <td class="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
+    </TableData>
+    <TableData>
       <a
         data-test="remove-webhook"
-        class="text-danger-main cursor-pointer hover:underline"
+        class="
+          text-sm font-medium text-right whitespace-nowrap
+          text-danger-main cursor-pointer hover:underline"
         @click="remove"
       >{{ $t('remove') }}</a>
-    </td>
+    </TableData>
   </TableRow>
 </template>

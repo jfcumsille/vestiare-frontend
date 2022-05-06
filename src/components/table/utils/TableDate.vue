@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { formatDate, formatTime } from '@/utils/date';
+import { Nullable } from '@/interfaces/common';
 
 const props = defineProps<{
-  dateString?: string,
+  dateString: Nullable<string>,
 }>();
 </script>
 
