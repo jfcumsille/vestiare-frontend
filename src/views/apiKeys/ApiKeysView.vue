@@ -10,7 +10,8 @@ import { DOCS_API_KEYS } from '@/constants/urls';
 import { page, trackAPIKeyCreated, trackAPIKeyDeleted } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
-import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
+import TableHead from '@/components/table/TableHead.vue';
+import TableHeader from '@/components/table/TableHeader.vue';
 import ApiKeysTableRow from './components/ApiKeysTableRow.vue';
 
 const $t = useTranslation('views.apiKeys');
@@ -82,8 +83,16 @@ onMounted(() => {
           <GenericTable
             class="grow max-w-screen-xl"
           >
-            <template #header>
-              <GenericTableHeader :headers="headers" />
+            <template #head>
+              <TableHead>
+                <TableHeader
+                  v-for="header in headers"
+                  :key="header"
+                  :header="header"
+                >
+                  <div> {{ header }} </div>
+                </TableHeader>
+              </TableHead>
             </template>
             <template #content>
               <ApiKeysTableRow

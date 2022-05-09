@@ -6,7 +6,7 @@ describe('GenericTable', () => {
   it('renders header and content slots when passed both', () => {
     const wrapper = mount(GenericTable, {
       slots: {
-        header: '<div>Header</div>',
+        head: '<div>Header</div>',
         content: '<div>Content</div>',
       },
     });
@@ -14,10 +14,10 @@ describe('GenericTable', () => {
     expect(wrapper.html()).toContain('<div>Content</div>');
   });
 
-  it('only renders header slot when only passed <template #header>', () => {
+  it('only renders header slot when only passed <template #head>', () => {
     const wrapper = mount(GenericTable, {
       slots: {
-        header: '<div>Header</div>',
+        head: '<div>Header</div>',
       },
     });
     expect(wrapper.html()).toContain('<div>Header</div>');

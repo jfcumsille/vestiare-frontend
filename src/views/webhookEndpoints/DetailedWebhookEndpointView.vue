@@ -8,7 +8,8 @@ import { page } from '@/services/analytics';
 import { Mode, ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
-import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
+import TableHead from '@/components/table/TableHead.vue';
+import TableHeader from '@/components/table/TableHeader.vue';
 import DetailedWebhookEndpointTableContent from './components/DetailedWebhookEndpointTableContent.vue';
 import TestWebhookModal from './components/TestWebhookModal.vue';
 
@@ -51,8 +52,16 @@ onMounted(() => {
     />
     <div class="flex justify-center w-full">
       <GenericTable class="grow mt-6 mx-4 max-w-screen-xl">
-        <template #header>
-          <GenericTableHeader :headers="[$t('details'), '']" />
+        <template #head>
+          <TableHead>
+            <TableHeader
+              v-for="header in [$t('details'), '']"
+              :key="header"
+              :header="header"
+            >
+              <div> {{ header }} </div>
+            </TableHeader>
+          </TableHead>
         </template>
 
         <template #content>

@@ -14,25 +14,15 @@ import { DOCS_LINKS } from '@/constants/urls';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
-import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinkFilters from '@/views/links/components/LinkFilters.vue';
+import LinksTableHead from '@/views/links/components/LinksTableHead.vue';
 import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
 import { useConfigStore } from '@/stores/config';
 
 const $t = useTranslation('views.links');
-
-const headers = [
-  $t('table.headers.institution'),
-  $t('table.headers.user'),
-  $t('table.headers.business'),
-  $t('table.headers.lastRefreshed'),
-  $t('table.headers.password'),
-  $t('table.headers.active'),
-  '',
-];
 
 const linksStore = useLinksStore();
 const configStore = useConfigStore();
@@ -198,8 +188,8 @@ onMounted(() => {
         />
       </div>
       <GenericTable class="mt-6">
-        <template #header>
-          <GenericTableHeader :headers="headers" />
+        <template #head>
+          <LinksTableHead />
         </template>
 
         <template #content>

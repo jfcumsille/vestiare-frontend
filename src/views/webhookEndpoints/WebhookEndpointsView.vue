@@ -8,23 +8,15 @@ import { page, trackModal } from '@/services/analytics';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
-import GenericTableHeader from '@/components/table/GenericTableHeader.vue';
 import GenericButton from '@/components/GenericButton.vue';
-import WebhookEndpointCreationModal from './components/WebhookEndpointCreationModal.vue';
-import WebhookEndpointsTableRow from './components/WebhookEndpointsTableRow.vue';
-import NoWebhookEndpointsContent from './components/noWebhookEndpointsContent.vue';
+import WebhookEndpointCreationModal from '@/views/webhookEndpoints/components/WebhookEndpointCreationModal.vue';
+import WebhookEndpointsTableHead from '@/views/webhookEndpoints/components/WebhookEndpointsTableHead.vue';
+import WebhookEndpointsTableRow from '@/views/webhookEndpoints/components/WebhookEndpointsTableRow.vue';
+import NoWebhookEndpointsContent from '@/views/webhookEndpoints/components/noWebhookEndpointsContent.vue';
 
 const $t = useTranslation('views.webhookEndpoints');
 
 const $webhookEndpointsStore = useWebhookEndpointsStore();
-
-const tableHeaders = [
-  $t('table.headers.url'),
-  $t('table.headers.description'),
-  $t('table.headers.subscribedEventsAmount'),
-  $t('table.headers.active'),
-  '',
-];
 
 const modalOpened = ref(false);
 const setModalOpened = (value: boolean) => {
@@ -93,8 +85,8 @@ onMounted(() => {
         v-if="webhookEndpoints.length"
         class="mt-6"
       >
-        <template #header>
-          <GenericTableHeader :headers="tableHeaders" />
+        <template #head>
+          <WebhookEndpointsTableHead />
         </template>
 
         <template #content>
