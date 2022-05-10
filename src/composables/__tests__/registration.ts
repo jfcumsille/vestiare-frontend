@@ -9,6 +9,7 @@ const register = vi.fn();
 
 const RegisteringComponent = {
   name: 'RegisteringComponent',
+  template: '<div>test</div>',
   setup() {
     useRegistration();
   },

@@ -1,7 +1,6 @@
 import { Organization } from './organizations';
 
 export interface User {
-  authenticationToken: string
   id: string
   email: string
   name: string
@@ -15,6 +14,6 @@ export interface Auth0User {
   email: string
   givenName: string
   familyName: string
-  emailVerified?: boolean
+  emailVerified: boolean
   userMetadata: Record<string, unknown>
 }

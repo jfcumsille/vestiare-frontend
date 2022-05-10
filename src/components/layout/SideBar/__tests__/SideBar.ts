@@ -1,26 +1,36 @@
 import {
-  describe, it, expect, beforeEach,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
+import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { useConfigStore } from '@/stores/config';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
+import { mockCrypto } from '@/utils/tests/crypto';
 import { Mode } from '@/interfaces/utilities/enums';
 import SideBar from '@/components/layout/SideBar/SideBar.vue';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const getWrapper = () => {
   const wrapper = mount(SideBar, {
     global: {
-      plugins: [router],
+      plugins: [testingPinia, router],
     },
   });
   return wrapper;
 };
 
 describe('SideBar', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
   });
 

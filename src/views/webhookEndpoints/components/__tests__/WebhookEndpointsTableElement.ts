@@ -1,7 +1,7 @@
 import {
-  describe, it, expect, beforeEach, vi,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
@@ -10,14 +10,18 @@ import { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
 import { Mode } from '@/interfaces/utilities/enums';
 import { WEBHOOK_ENDPOINT_DELETED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
+import { mockCrypto } from '@/utils/tests/crypto';
 import WebhookEndpointsTableElement from '@/views/webhookEndpoints/components/WebhookEndpointsTableElement.vue';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
 
 const getWrapper = () => {
-  const webhookEndpoint1: WebhookEndpoint = {
+  const webhookEndpoint: WebhookEndpoint = {
     id: 'id',
+    name: 'name',
     enabledEvents: ['link.refresh_intent.succeeded', 'link.refresh_intent.failed'],
     mode: Mode.Test,
     secret: 'secret',
@@ -26,23 +30,24 @@ const getWrapper = () => {
   };
   const wrapper = mount(WebhookEndpointsTableElement, {
     global: {
-      plugins: [
-        createTestingPinia({
-          createSpy: vi.fn,
-        }),
-        router,
-      ],
+      plugins: [testingPinia, router],
     },
     props: {
-      webhookEndpoint: webhookEndpoint1,
+      webhookEndpoint,
     },
   });
   return wrapper;
 };
 
 describe('WebhookEndpointsTableElement', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
     mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
   });
