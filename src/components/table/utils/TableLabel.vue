@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-const props = withDefaults(defineProps<{
-  showLabel?: boolean,
+const props = defineProps<{
   label?: string,
   subLabel?: string,
-}>(), {
-  showLabel: true,
-});
+}>();
 
 const subLabelFontSizeClass = computed(() => {
-  if (!props.label && props.subLabel && props.showLabel) {
+  if (!props.label && props.subLabel) {
     return 'text-sm';
   }
   return 'text-xs';
@@ -18,23 +15,18 @@ const subLabelFontSizeClass = computed(() => {
 </script>
 
 <template>
-  <div class="whitespace-nowrap">
-    <div v-if="props.showLabel">
-      <p
-        v-if="props.label"
-        class="font-medium text-body-color text-sm"
-      >
-        {{ props.label }}
-      </p>
-      <p
-        v-if="props.subLabel"
-        :class="`font-normal text-secondary-color ${subLabelFontSizeClass}`"
-      >
-        {{ subLabel }}
-      </p>
-    </div>
-    <p v-else>
-      -
+  <div class="whitespace-nowrap disabled:text-disabled-color">
+    <p
+      v-if="props.label"
+      class="font-medium text-body-color text-sm"
+    >
+      {{ props.label }}
+    </p>
+    <p
+      v-if="props.subLabel"
+      :class="`font-normal text-secondary-color ${subLabelFontSizeClass}`"
+    >
+      {{ subLabel }}
     </p>
   </div>
 </template>

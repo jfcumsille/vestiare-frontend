@@ -117,17 +117,27 @@ const remove = async () => {
     </TableData>
     <TableData>
       <TableLabel
-        :show-label="props.link.holderType === HolderType.Individual"
+        v-if="props.link.holderType === HolderType.Individual"
         :label="props.link.holderName"
         :sub-label="formattedUsername"
+      />
+      <TableLabel
+        v-else
+        :label="formattedUsername"
       />
     </TableData>
     <TableData>
       <TableLabel
-        :show-label="props.link.holderType === HolderType.Business"
+        v-if="props.link.holderType === HolderType.Business"
         :label="props.link.holderName"
         :sub-label="formattedHolderId"
       />
+      <p
+        v-else
+        class="text-disabled-color text-xs"
+      >
+        N/A
+      </p>
     </TableData>
     <TableData>
       <TableDate
