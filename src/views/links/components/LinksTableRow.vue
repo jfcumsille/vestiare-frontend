@@ -101,19 +101,16 @@ const remove = async () => {
     @refresh="refresh"
   />
   <TableRow>
-    <TableData class="flex">
+    <TableData class="flex space-x-3 items-center">
       <InstitutionLogo
         :institution-id="props.link.institution.id"
-        class="flex-shrink-0 h-10 w-10 rounded-full"
+        class="flex-shrink-0 w-8 h-8 rounded"
       />
-      <div class="ml-3 text-sm text-body-color whitespace-nowrap">
-        <p class="font-medium">
-          {{ props.link.institution.name }}
-        </p>
-        <p class="font-normal capitalize">
-          {{ props.link.holderType }}
-        </p>
-      </div>
+      <TableLabel
+        class="capitalize"
+        :label="props.link.institution.name"
+        :sub-label="props.link.holderType"
+      />
     </TableData>
     <TableData>
       <TableLabel

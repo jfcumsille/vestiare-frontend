@@ -60,7 +60,7 @@ const currentComponent = computed((): ComponentPublicInstance => {
   <div>
     <component
       :is="currentComponent"
-      class="w-10 h-10"
+      v-bind="$attrs"
     />
   </div>
 </template>
