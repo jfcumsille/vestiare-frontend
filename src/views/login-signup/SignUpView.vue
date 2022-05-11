@@ -120,11 +120,13 @@ onMounted(() => {
             <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="name"
+                :size="SizeType.Large"
                 :label="$tForms('labels.name')"
                 :placeholder="$tForms('placeholders.name')"
               />
               <GenericInput
                 v-model="lastName"
+                :size="SizeType.Large"
                 :label="$tForms('labels.lastName')"
                 :placeholder="$tForms('placeholders.lastName')"
               />
@@ -132,6 +134,7 @@ onMounted(() => {
             <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="company"
+                :size="SizeType.Large"
                 :label="$tForms('labels.company')"
                 :placeholder="$tForms('placeholders.company')"
                 class="w-full"
@@ -149,11 +152,13 @@ onMounted(() => {
             <div class="space-y-5">
               <GenericInput
                 v-model="email"
+                :size="SizeType.Large"
                 :label="$tForms('labels.email')"
                 :placeholder="$tForms('placeholders.email')"
               />
               <GenericInput
                 v-model="password"
+                :size="SizeType.Large"
                 type="password"
                 :label="$tForms('labels.password')"
                 :placeholder="$tForms('placeholders.password')"

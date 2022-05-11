@@ -108,6 +108,7 @@ onMounted(() => {
         <GenericInput
           v-if="!completed"
           v-model="email"
+          :size="SizeType.Large"
           :label="$tForms('labels.email')"
           :placeholder="$tForms('placeholders.email')"
         />

@@ -50,6 +50,10 @@ module.exports = {
       },
       maxWidth: {
         2.5: '0.625rem',
+        50: '12.5rem',
+        80: '20rem',
+        104: '26rem',
+        158: '39.5rem',
         xxs: '16rem',
       },
       minWidth: {
@@ -86,6 +90,9 @@ module.exports = {
         4.5: '18px',
         7.5: '30px',
         12.5: '50px',
+        50: '12.5rem',
+        104: '26rem',
+        158: '39.5rem',
       },
       fontSize: {
         '2xs': '11px',

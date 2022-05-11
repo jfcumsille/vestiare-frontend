@@ -10,8 +10,10 @@ import {
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import { findIcon } from '@/utils/icons';
 import { Nullable } from '@/interfaces/common';
+import { SizeType } from '@/interfaces/utilities/enums';
 
 const props = withDefaults(defineProps<{
+  size?: SizeType,
   label?: string,
   placeholder?: string,
   hint?: string,
@@ -25,6 +27,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean,
 }>(), {
   disabled: false,
+  size: SizeType.Medium,
   ...makeValidatedModelPropsDefaults<string>(),
 });
 
@@ -88,18 +91,34 @@ const warningIconColor = computed(() => {
 
 const showHint = computed(() => !internalValid.value || props.hint);
 const hasRightLink = computed(() => props.rightText && props.rightHref);
+
+const sizeClasses = computed(() => {
+  switch (props.size) {
+    case SizeType.Small:
+      return 'max-w-50';
+    case SizeType.Medium:
+      return 'max-w-80';
+    case SizeType.Large:
+      return 'max-w-104';
+    case SizeType.XLarge:
+      return 'max-w-158';
+    default:
+      return 'max-w-80';
+  }
+});
+
 defineExpose({ valid });
 </script>
 
 <template>
-  <div class="block h-full justify-center items-center">
-    <div class="relative w-full min-w-max">
+  <div :class="`block h-full justify-center items-center ${sizeClasses}`">
+    <div class="relative">
       <label
         v-if="props.label"
         data-test="label"
         class="
           absolute left-0 -mt-3 px-1 mx-2 pointer-events-none
-          text-sm text-placeholder-color bg-white min-w-max
+          text-sm text-placeholder-color bg-white
         "
         :class="{ 'text-disabled-color': props.disabled }"
       >
@@ -108,7 +127,7 @@ defineExpose({ valid });
       <div
         data-test="input-div"
         :class="`
-          flex w-full p-3 border-1.5 border-border-color rounded-lg shadow-sm
+          flex p-3 border-1.5 border-border-color rounded-lg shadow-sm
           text-sm duration-100 ease-out cursor-text ${inputColorClasses}
         `"
         tabIndex="0"
@@ -143,7 +162,7 @@ defineExpose({ valid });
         />
       </div>
     </div>
-    <div class="my-1 ml-3.5 flex justify-between items-start">
+    <div class="my-1 ml-3.5 h-2 flex justify-between items-start">
       <div
         v-if="showHint"
         data-test="input-hint"
@@ -161,7 +180,7 @@ defineExpose({ valid });
         v-if="hasRightLink"
         data-test="input-right-href"
         :href="props.rightHref"
-        class="font-medium text-primary-main text-xs hover:text-primary-hover min-w-max ml-2"
+        class="font-medium text-primary-main text-xs hover:text-primary-hover ml-2"
         tabIndex="-1"
         target="_blank"
         rel="noopener noreferrer"

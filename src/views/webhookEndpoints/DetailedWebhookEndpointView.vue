@@ -72,7 +72,7 @@ onMounted(() => {
       <GenericButton
         :type="ButtonType.Secondary"
         :text="$t('testWebhook.buttonText')"
-        :size="SizeType.Regular"
+        :size="SizeType.Medium"
         @click="toggleWebhookModal"
       />
     </div>
