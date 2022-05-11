@@ -141,6 +141,7 @@ onMounted(() => {
               />
               <div class="w-full">
                 <GenericDropDown
+                  class="mb-4"
                   :label="$tSignUp('country')"
                   :selected="country"
                   :options="countryOptions"
