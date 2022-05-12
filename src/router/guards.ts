@@ -3,16 +3,22 @@ import { useUserStore } from '@/stores/user';
 import { getAuth0Client } from '@/services/auth0';
 import { storeRedirection } from '@/services/redirections';
 
+const tryToLoadUserWithNoError = async () => {
+  const auth0 = await getAuth0Client();
+  const userStore = useUserStore();
+
+  try {
+    await auth0.getTokenSilently();
+    await userStore.loadUser();
+  } catch { } // eslint-disable-line no-empty
+};
+
 export const loadUser = async (to: RouteLocationNormalized) => {
   if (to.path !== '/login/oauth' && to.path !== '/signup/oauth' && to.path !== '/reset') {
-    const auth0 = await getAuth0Client();
     const userStore = useUserStore();
 
     if (!userStore.authenticated) {
-      try {
-        await auth0.getTokenSilently();
-        await userStore.loadUser();
-      } catch { } // eslint-disable-line no-empty
+      tryToLoadUserWithNoError();
     }
   }
 };
