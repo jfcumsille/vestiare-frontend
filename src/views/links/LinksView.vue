@@ -15,9 +15,9 @@ import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
 import GenericButton from '@/components/GenericButton.vue';
+import SearchBar from '@/components/SearchBar.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
-import LinkFilters from '@/views/links/components/LinkFilters.vue';
 import LinksTableHead from '@/views/links/components/LinksTableHead.vue';
 import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
 import { useConfigStore } from '@/stores/config';
@@ -67,35 +67,61 @@ const stopShowingLink = () => {
 
 const links = computed(() => linksStore.links);
 
-const activeFilter = ref('all');
-const activeOptions = ['all', 'valid', 'invalid'];
-const selectActiveFilter = (value: string) => {
-  activeFilter.value = value;
-};
-const filterByActive = (rawLinks: Array<Link>) => {
-  if (activeFilter.value === 'all') {
-    return rawLinks;
-  }
-  if (activeFilter.value === 'valid') {
-    return rawLinks.filter((link) => link.active);
-  }
-  return rawLinks.filter((link) => !link.active);
-};
+const activeOptions = ref([
+  { name: 'active', checked: true },
+  { name: 'unactive', checked: true },
+]);
 
-const passwordFilter = ref('all');
-const passwordOptions = ['all', 'valid', 'invalid'];
-const selectPasswordFilter = (value: string) => {
-  passwordFilter.value = value;
-};
-const filterByPassword = (rawLinks: Array<Link>) => {
-  if (passwordFilter.value === 'all') {
-    return rawLinks;
+const activeFilters = computed(() => {
+  const filters = [];
+  activeOptions.value.forEach((option) => {
+    if (option.checked) {
+      filters.push(option.name);
+    }
+  });
+  return filters;
+});
+
+const filteredLinksByActive = computed(() => {
+  if (activeFilters.value.includes('active') && activeFilters.value.includes('unactive')) {
+    return links.value;
   }
-  if (passwordFilter.value === 'valid') {
-    return rawLinks.filter((link) => !link.preventRefresh);
+  if (activeFilters.value.includes('active')) {
+    return links.value.filter((link) => link.active);
   }
-  return rawLinks.filter((link) => link.preventRefresh);
-};
+  if (activeFilters.value.includes('unactive')) {
+    return links.value.filter((link) => !link.active);
+  }
+  return links.value.filter((link) => !link.active && link.active);
+});
+
+const passwordOptions = ref([
+  { name: 'valid', checked: true },
+  { name: 'invalid', checked: true },
+]);
+
+const passwordFilters = computed(() => {
+  const filters = [];
+  passwordOptions.value.forEach((option) => {
+    if (option.checked) {
+      filters.push(option.name);
+    }
+  });
+  return filters;
+});
+
+const filteredLinksByPassword = computed(() => {
+  if (passwordFilters.value.includes('valid') && passwordFilters.value.includes('invalid')) {
+    return filteredLinksByActive.value;
+  }
+  if (passwordFilters.value.includes('valid')) {
+    return filteredLinksByActive.value.filter((link) => !link.preventRefresh);
+  }
+  if (passwordFilters.value.includes('invalid')) {
+    return filteredLinksByActive.value.filter((link) => link.preventRefresh);
+  }
+  return filteredLinksByActive.value.filter((link) => link.preventRefresh && !link.preventRefresh);
+});
 
 const search = ref('');
 const formattedId = (id: string, country: CountryCode) => {
@@ -129,7 +155,7 @@ const filterBySearch = (rawLinks: Array<Link>) => {
   return rawLinks.filter((link) => linkMatchesSearchId(link, search.value.trim()));
 };
 
-const filteredLinks = computed(() => filterBySearch(filterByPassword(filterByActive(links.value))));
+const filteredLinks = computed(() => filterBySearch(filteredLinksByPassword.value));
 
 onMounted(() => {
   page(LINKS_VIEWED);
@@ -170,14 +196,9 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex justify-between">
-        <LinkFilters
-          v-model:search="search"
-          :active-filter="activeFilter"
-          :active-options="activeOptions"
-          :password-filter="passwordFilter"
-          :password-options="passwordOptions"
-          @select-active-filter="selectActiveFilter"
-          @select-password-filter="selectPasswordFilter"
+        <SearchBar
+          v-model="search"
+          :placeholder="$t('filters.searchBarPlaceholder')"
         />
         <GenericButton
           data-test="create-link-button"
@@ -189,7 +210,10 @@ onMounted(() => {
       </div>
       <GenericTable class="mt-6">
         <template #head>
-          <LinksTableHead />
+          <LinksTableHead
+            :password-options="passwordOptions"
+            :active-options="activeOptions"
+          />
         </template>
 
         <template #content>
