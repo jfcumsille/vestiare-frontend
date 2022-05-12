@@ -7,6 +7,7 @@ import ChevronLeft from '@/assets/svg/ChevronLeft.vue';
 import CrossIcon from '@/assets/svg/CrossIcon.vue';
 import EyeIcon from '@/assets/svg/EyeIcon.vue';
 import EyeClosedIcon from '@/assets/svg/EyeClosedIcon.vue';
+import FilterIcon from '@/assets/svg/FilterIcon.vue';
 import GoogleLogo from '@/assets/svg/auth/GoogleLogo.vue';
 import GithubLogo from '@/assets/svg/auth/GithubLogo.vue';
 import MailIcon from '@/assets/svg/MailIcon.vue';
@@ -26,6 +27,7 @@ export const icons = {
   'auth-github': GithubLogo,
   mail: MailIcon,
   'three-dots': ThreeDots,
+  filter: FilterIcon,
   eye: EyeIcon,
   'eye-closed': EyeClosedIcon,
   add: AddIcon,
