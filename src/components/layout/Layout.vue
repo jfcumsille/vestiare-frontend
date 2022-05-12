@@ -2,13 +2,16 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useRouterStore } from '@/stores/router';
+import { API_KEYS_ROUTE, LINKS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE } from '@/constants/router';
 import NavBar from '@/components/layout/NavBar/NavBar.vue';
 import SideBar from '@/components/layout/SideBar/SideBar.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const routerStore = useRouterStore();
 const route = useRoute();
-const shouldDisplaySidebar = computed(() => ['/links', '/api-keys', '/webhook-endpoints'].includes(route.path));
+const shouldDisplaySidebar = computed(() => [
+  LINKS_ROUTE, API_KEYS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE,
+].includes(route.path));
 
 </script>
 <template>

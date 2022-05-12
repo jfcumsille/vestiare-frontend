@@ -8,6 +8,7 @@ import { useConfigStore } from '@/stores/config';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { mockCrypto } from '@/utils/tests/crypto';
+import { API_KEYS_ROUTE, LINKS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE } from '@/constants/router';
 import { Mode } from '@/interfaces/utilities/enums';
 import SideBar from '@/components/layout/SideBar/SideBar.vue';
 
@@ -54,7 +55,11 @@ describe('SideBar', () => {
       });
     };
 
-    const linksToRender = [['links-link', '/links'], ['api-keys-link', '/api-keys'], ['webhook-endpoints-link', '/webhook-endpoints']];
+    const linksToRender = [
+      ['links-link', LINKS_ROUTE],
+      ['api-keys-link', API_KEYS_ROUTE],
+      ['webhook-endpoints-link', WEBHOOK_ENDPOINTS_ROUTE],
+    ];
     linksToRender.forEach(([dataTest, href]) => testLinksRendering(dataTest, href));
   };
 

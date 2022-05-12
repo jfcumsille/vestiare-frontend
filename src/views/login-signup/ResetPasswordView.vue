@@ -3,8 +3,9 @@ import { ref, watch, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
-import { EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
+import { EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
+import { LOGIN_ROUTE } from '@/constants/router';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -47,7 +48,7 @@ const resendResetPasswordEmail = async () => {
 };
 
 const logIn = () => {
-  router.push({ path: '/login' });
+  router.push({ path: LOGIN_ROUTE });
 };
 
 onMounted(() => {

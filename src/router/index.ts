@@ -1,4 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import {
+  HOME_ROUTE,
+  API_KEYS_ROUTE,
+  LINKS_ROUTE,
+  WEBHOOK_ENDPOINTS_ROUTE,
+  DETAILED_WEBHOOK_ENDPOINT_VIEW,
+  LOGIN_ROUTE,
+  SIGNUP_ROUTE,
+  PASSWORD_RESET_ROUTE,
+  OAUTH_LOGIN_ROUTE,
+  OAUTH_SIGNUP_ROUTE,
+} from '@/constants/router';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
 import ResetPasswordView from '@/views/login-signup/ResetPasswordView.vue';
@@ -18,39 +30,39 @@ import {
 import { handleAuth0RedirectCallback } from './handlers';
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: () => ({ path: '/links' }) },
+  { path: HOME_ROUTE, redirect: () => ({ path: LINKS_ROUTE }) },
   {
-    path: '/login/oauth',
+    path: OAUTH_LOGIN_ROUTE,
     component: LogInView,
     beforeEnter: handleAuth0RedirectCallback,
   },
   {
-    path: '/signup/oauth',
+    path: OAUTH_SIGNUP_ROUTE,
     component: SignUpView,
     beforeEnter: handleAuth0RedirectCallback,
   },
   {
-    path: '/login',
+    path: LOGIN_ROUTE,
     component: LogInView,
     beforeEnter: skipLogInIfAlreadyLoggedIn,
   },
   {
-    path: '/signup',
+    path: SIGNUP_ROUTE,
     component: SignUpView,
     beforeEnter: skipSignUpIfAlreadyLoggedIn,
   },
   {
-    path: '/reset',
+    path: PASSWORD_RESET_ROUTE,
     component: ResetPasswordView,
     beforeEnter: [
       skipResetPasswordIfAlreadyLoggedIn,
     ],
   },
-  { path: '/api-keys', component: ApiKeysView },
-  { path: '/links', component: LinksView },
-  { path: '/webhook-endpoints', component: WebhookEndpointsView },
+  { path: API_KEYS_ROUTE, component: ApiKeysView },
+  { path: LINKS_ROUTE, component: LinksView },
+  { path: WEBHOOK_ENDPOINTS_ROUTE, component: WebhookEndpointsView },
   {
-    path: '/webhook-endpoints/:webhookEndpointId',
+    path: DETAILED_WEBHOOK_ENDPOINT_VIEW,
     component: DetailedWebhookEndpointView,
   },
 ];

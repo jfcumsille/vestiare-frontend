@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { LOGIN_ROUTE, SIGNUP_ROUTE } from '@/constants/router';
 import {
   DOCS, NEWS, CONTACT, BLOG,
 } from '@/constants/urls';
@@ -56,10 +57,10 @@ const navBarPublicLinks = [
 ];
 
 const logIn = () => {
-  router.push({ path: '/login' });
+  router.push({ path: LOGIN_ROUTE });
 };
 const signUp = () => {
-  router.push({ path: '/signup' });
+  router.push({ path: SIGNUP_ROUTE });
 };
 </script>
 
