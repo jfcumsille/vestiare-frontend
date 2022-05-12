@@ -1,4 +1,4 @@
-import webAuth0 from 'auth0-js';
+import { WebAuth } from 'auth0-js';
 import createAuth0Client, { Auth0Client } from '@auth0/auth0-spa-js';
 import {
   AUTH0_DOMAIN, AUTH0_CLIENT_ID, USERNAME_PASSWORD_CONNECTION, BASE_API_HOST,
@@ -7,7 +7,7 @@ import { Auth0User } from '@/interfaces/entities/user';
 import { SignUpOptions } from '@/interfaces/options/account';
 import { Nullable } from '@/interfaces/common';
 
-export const webAuth = new webAuth0.WebAuth({
+export const webAuth = new WebAuth({
   domain: AUTH0_DOMAIN,
   clientID: AUTH0_CLIENT_ID,
 });
