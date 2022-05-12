@@ -30,7 +30,7 @@ export const loadUser = async (to: RouteLocationNormalized) => {
     const userStore = useUserStore();
 
     if (!userStore.authenticated) {
-      tryToLoadUserWithNoError();
+      await tryToLoadUserWithNoError();
     }
   }
 };
