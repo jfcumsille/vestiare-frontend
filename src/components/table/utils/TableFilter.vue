@@ -3,10 +3,11 @@ import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import FilterIcon from '@/assets/svg/FilterIcon.vue';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
+import { Filter } from '@/interfaces/utilities/table';
 
 const props = defineProps<{
   label: string,
-  options: Record<string, unknown>,
+  filters: Array<Filter<unknown>>,
 }>();
 
 const opened = ref(false);
@@ -26,7 +27,6 @@ onClickOutside(tableFilter, () => {
     class="whitespace-nowrap"
   >
     <button
-      data-test="generic-button"
       class="flex flex-row items-center justify-center rounded-lg font-medium min-w-max space-x-1"
       @click="toggle"
     >
@@ -43,11 +43,11 @@ onClickOutside(tableFilter, () => {
       :class="{ 'hidden': !opened }"
     >
       <GenericCheckbox
-        v-for="option in props.options"
-        :key="option.name"
-        v-model="option.checked"
+        v-for="filter in props.filters"
+        :key="filter.name"
+        v-model="filter.checked"
         class="py-4 px-5"
-        :text="option.name"
+        :text="filter.name"
       />
     </div>
   </div>

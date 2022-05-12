@@ -12,10 +12,7 @@ const toggle = ($event: Event) => {
 </script>
 
 <template>
-  <div
-    class="flex items-center"
-    v-bind="$attrs"
-  >
+  <div class="flex items-center">
     <input
       type="checkbox"
       class="

@@ -3,25 +3,6 @@ import { LinksViewLocale } from '@/interfaces/locales/views/links';
 export default <LinksViewLocale>{
   title: 'Links',
   learnMore: 'Learn more about Fintoc Links →',
-  filters: {
-    searchBarPlaceholder: 'Search for a user ID',
-    active: {
-      label: 'Active',
-      options: {
-        all: 'All',
-        valid: 'Active',
-        invalid: 'Inactive',
-      },
-    },
-    password: {
-      label: 'Password',
-      options: {
-        all: 'All',
-        valid: 'Valid',
-        invalid: 'Invalid',
-      },
-    },
-  },
   createLinkModal: {
     create: 'Create',
     subtitleTest: 'Create a Link with test credentials to get information about bank or fiscal accounts from the sandbox.',
@@ -58,6 +39,23 @@ export default <LinksViewLocale>{
       lastRefreshed: 'Last Refreshed',
       password: 'Password',
       active: 'Active',
+    },
+    filters: {
+      searchBarPlaceholder: 'Search for a user ID',
+      active: {
+        label: 'Active',
+        options: {
+          valid: 'Active',
+          invalid: 'Inactive',
+        },
+      },
+      password: {
+        label: 'Password',
+        options: {
+          valid: 'Valid',
+          invalid: 'Invalid',
+        },
+      },
     },
     buttons: {
       remove: 'Remove',
