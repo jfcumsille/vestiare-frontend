@@ -25,7 +25,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       class="mt-5"
       :type="ButtonType.Outline"
       :text="`${buttonLabel} Google`"
-      icon-name="auth_google"
+      icon-name="auth-google"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
       @click="() => authenticateWithRedirect('google-oauth2', mode)"
@@ -34,7 +34,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       class="mt-5"
       :type="ButtonType.Outline"
       :text="`${buttonLabel} Github`"
-      icon-name="auth_github"
+      icon-name="auth-github"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
       @click="() => authenticateWithRedirect('github', mode)"
@@ -44,7 +44,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       class="mt-5"
       :type="ButtonType.Outline"
       :text="`${buttonLabel} Email`"
-      icon-name="auth_google"
+      icon-name="mail"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
       @click="() => authenticateWithRedirect(USERNAME_PASSWORD_CONNECTION, mode)"
