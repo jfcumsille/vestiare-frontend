@@ -45,7 +45,7 @@ describe('GenericButton', () => {
 
   const sizeTypes = {
     small: SizeType.Small,
-    regular: SizeType.Regular,
+    medium: SizeType.Medium,
     large: SizeType.Large,
     inline: SizeType.Inline,
   } as Record<string, SizeType>;
@@ -130,7 +130,7 @@ describe('GenericButton', () => {
       'h-7.5',
       'text-sm',
     ],
-    regular: [
+    medium: [
       'flex',
       'p-3.5',
       'text-base',
@@ -158,7 +158,7 @@ describe('GenericButton', () => {
       'w-7.5',
       'h-7.5',
     ],
-    regular: [
+    medium: [
       'flex',
       'p-3.5',
       'w-11',

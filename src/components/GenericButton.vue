@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<{
   loading: false,
   iconPosition: HorizontalPositionType.Left,
   justify: JustifyType.Center,
-  size: SizeType.Regular,
+  size: SizeType.Medium,
   isWidthFull: false,
 });
 
@@ -120,7 +120,7 @@ const iconSizeClasses = computed(() => {
       return 'w-3 h-3';
     case SizeType.Small:
       return 'w-3.5 h-3.5';
-    case SizeType.Regular:
+    case SizeType.Medium:
       if (showOnlyIcon.value) {
         return 'w-5 h-5';
       }
@@ -141,7 +141,7 @@ const sizeClasses = computed(() => {
         return 'flex py-2 px-3 h-7.5 w-7.5';
       }
       return 'flex py-2 px-3 h-7.5 text-sm';
-    case SizeType.Regular:
+    case SizeType.Medium:
       if (showOnlyIcon.value) {
         return 'flex p-3.5 w-11 h-11';
       }

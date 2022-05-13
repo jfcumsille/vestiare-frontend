@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import { artificialWait } from '@/utils/tests/common';
+import { SizeType } from '@/interfaces/utilities/enums';
 import GenericInput from '@/components/forms/GenericInput.vue';
 
 describe('GenericInput', () => {
@@ -164,6 +165,43 @@ describe('GenericInput', () => {
       });
       const rightHref = wrapper.find('[data-test="input-right-href"]');
       expect(rightHref.exists()).toBe(true);
+    });
+  });
+
+  const checkClasses = (wrapper: VueWrapper, classes: Array<string>) => {
+    classes.forEach((className) => {
+      expect(wrapper.classes()).toContain(className);
+    });
+  };
+
+  const sizeTypes = {
+    small: SizeType.Small,
+    medium: SizeType.Medium,
+    large: SizeType.Large,
+    xlarge: SizeType.XLarge,
+    inline: SizeType.Inline,
+  } as Record<string, SizeType>;
+
+  const sizeClasses = {
+    small: ['max-w-50'],
+    medium: ['max-w-80'],
+    large: ['max-w-104'],
+    xlarge: ['max-w-158'],
+    inline: [],
+  } as Record<string, string[]>;
+
+  describe('renders correct size classes', () => {
+    Object.keys(sizeClasses).forEach((key) => {
+      const sizeType = sizeTypes[key];
+      const wrapper = mount(GenericInput, {
+        props: {
+          size: sizeType,
+        },
+      });
+      const buttonClasses = sizeClasses[key];
+      it(`when SizeType is ${sizeType}`, () => {
+        checkClasses(wrapper, buttonClasses);
+      });
     });
   });
 });

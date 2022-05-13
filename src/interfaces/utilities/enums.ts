@@ -40,8 +40,9 @@ export const enum ButtonType {
 export const enum SizeType {
   Inline = 'Inline',
   Small = 'Small',
-  Regular = 'Regular',
+  Medium = 'Medium',
   Large = 'Large',
+  XLarge = 'XLarge',
 }
 
 export const enum HorizontalPositionType {

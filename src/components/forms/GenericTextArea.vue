@@ -8,15 +8,20 @@ import {
   useValidatedModel,
 } from '@/composables/validatedModel';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
+import { SizeType } from '@/interfaces/utilities/enums';
 
 const props = withDefaults(defineProps<{
+  size?: SizeType,
   label?: string,
   placeholder?: string,
   error?: string,
   // Validated Model
   modelValue: ModelValuePropType<string>,
   validations?: ValidatePropType<string>,
-}>(), { ...makeValidatedModelPropsDefaults<string>() });
+}>(), {
+  size: SizeType.Medium,
+  ...makeValidatedModelPropsDefaults<string>(),
+});
 
 const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
 
@@ -46,12 +51,27 @@ const textAreaColorClasses = computed(() => {
     focus-within:ring focus-within:bg-white`;
 });
 
+const sizeClasses = computed(() => {
+  switch (props.size) {
+    case SizeType.Small:
+      return 'max-w-50';
+    case SizeType.Medium:
+      return 'max-w-80';
+    case SizeType.Large:
+      return 'max-w-104';
+    case SizeType.XLarge:
+      return 'max-w-158';
+    default:
+      return 'max-w-80';
+  }
+});
+
 defineExpose({ valid });
 </script>
 
 <template>
-  <div class="block h-full justify-center items-center">
-    <div class="relative w-full">
+  <div :class="`block h-full justify-center items-center ${sizeClasses}`">
+    <div class="relative">
       <label
         v-if="props.label"
         data-test="label"

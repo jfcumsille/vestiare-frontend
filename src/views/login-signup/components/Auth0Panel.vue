@@ -34,7 +34,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       :type="ButtonType.Outline"
       :is-width-full="true"
       :text="`${buttonLabel} Github`"
-      :size="SizeType.Regular"
+      :size="SizeType.Medium"
       icon-name="auth_github"
       :icon-position="HorizontalPositionType.Left"
       @click="authenticateWithRedirect('github', mode)"

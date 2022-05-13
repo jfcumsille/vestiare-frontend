@@ -89,8 +89,10 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
         >
           <span
             class="
-              block py-2 px-4 text-sm text-body-color font-medium
-              hover:bg-light-gray hover:text-primary-hover
+              block py-2 px-4 text-sm bg-white text-body-color font-medium
+              focus:bg-primary-surface focus:text-primary-main
+              hover:bg-primary-surface hover:text-primary-hover
+              active:bg-primary-border active:text-primary-main
             "
             @click="() => select(option)"
           >

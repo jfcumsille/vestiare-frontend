@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import { artificialWait } from '@/utils/tests/common';
+import { SizeType } from '@/interfaces/utilities/enums';
 import GenericTextArea from '@/components/forms/GenericTextArea.vue';
 
 describe('GenericTextArea', () => {
@@ -109,5 +110,42 @@ describe('GenericTextArea', () => {
     const textareaDiv = wrapper.find('[data-test="textarea-div"]');
     expect(textareaDiv.classes().some((cls) => cls.includes('danger'))).toBe(true);
     expect(wrapper.vm.valid).toBe(false);
+  });
+
+  const checkClasses = (wrapper: VueWrapper, classes: Array<string>) => {
+    classes.forEach((className) => {
+      expect(wrapper.classes()).toContain(className);
+    });
+  };
+
+  const sizeTypes = {
+    small: SizeType.Small,
+    medium: SizeType.Medium,
+    large: SizeType.Large,
+    xlarge: SizeType.XLarge,
+    inline: SizeType.Inline,
+  } as Record<string, SizeType>;
+
+  const sizeClasses = {
+    small: ['max-w-50'],
+    medium: ['max-w-80'],
+    large: ['max-w-104'],
+    xlarge: ['max-w-158'],
+    inline: [],
+  } as Record<string, string[]>;
+
+  describe('renders correct size classes', () => {
+    Object.keys(sizeClasses).forEach((key) => {
+      const sizeType = sizeTypes[key];
+      const wrapper = mount(GenericTextArea, {
+        props: {
+          size: sizeType,
+        },
+      });
+      const buttonClasses = sizeClasses[key];
+      it(`when SizeType is ${sizeType}`, () => {
+        checkClasses(wrapper, buttonClasses);
+      });
+    });
   });
 });

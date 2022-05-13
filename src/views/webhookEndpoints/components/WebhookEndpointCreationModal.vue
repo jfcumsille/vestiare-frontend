@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { ButtonType } from '@/interfaces/utilities/enums';
+import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { Nullable } from '@/interfaces/common';
 import { trackWebhookCreated } from '@/services/analytics';
@@ -96,6 +96,7 @@ watch(() => events.value, () => { eventsError.value = ''; });
       <div class="space-y-6">
         <GenericInput
           v-model="url"
+          :size="SizeType.XLarge"
           :label="$t('form.url.label')"
           :placeholder="$t('form.url.placeholder')"
           :hint="$t('form.url.hint')"
@@ -105,12 +106,14 @@ watch(() => events.value, () => { eventsError.value = ''; });
         />
         <GenericInput
           v-model="name"
+          :size="SizeType.XLarge"
           :label="$t('form.name.label')"
           :placeholder="$t('form.name.placeholder')"
           :validations="nameValidations"
         />
         <GenericTextArea
           v-model="description"
+          :size="SizeType.XLarge"
           :label="$t('form.description.label')"
           :placeholder="$t('form.description.placeholder')"
         />
