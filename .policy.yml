@@ -3,7 +3,6 @@ policy:
   approval:
     - someone from fintoc has approved
     - the dashboard team has approved
-    - a dashboard maintainer has approved
 
 
 approval_rules:
@@ -23,14 +22,3 @@ approval_rules:
     requires:
       count: 1
       users: ["paulamardones", "daleal", "parayab"]
-  - name: a dashboard maintainer has approved
-    if:
-      has_not_labels:
-        - "tank"
-    options:
-      request_review:
-        enabled: true
-        mode: random-users
-    requires:
-      count: 1
-      users: ["nateare", "daleal"]
