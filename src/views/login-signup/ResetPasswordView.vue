@@ -132,7 +132,7 @@ onMounted(() => {
         />
         <a
           v-if="!completed"
-          href="/login"
+          :href="LOGIN_ROUTE"
           class="mt-6 text-primary-main text-center font-medium text-sm hover:text-primary-hover"
         >
           {{ $tResetPassword('backToLogin') }}

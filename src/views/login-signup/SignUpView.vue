@@ -5,6 +5,7 @@ import {
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
+import { LOGIN_ROUTE } from '@/constants/router';
 import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls';
 import { USER_SIGNED_UP, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
@@ -216,7 +217,7 @@ onMounted(() => {
             >
               {{ $tSignUp('alreadyHaveAccount') }}
               <a
-                href="/login"
+                :href="LOGIN_ROUTE"
                 class="text-primary-main font-medium"
               >
                 {{ $tSignUp('logIn') }}

@@ -3,6 +3,7 @@ import { onMounted } from 'vue';
 import { page } from '@/services/analytics';
 import { useTranslation } from '@/locales';
 import { LOG_IN_VIEWED } from '@/constants/analyticsEvents';
+import { SIGNUP_ROUTE } from '@/constants/router';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
@@ -42,7 +43,7 @@ onMounted(() => {
         <div class="mt-6 text-center text-body-color text-sm font-normal ">
           {{ $tLogIn('dontHaveAccount') }}
           <a
-            href="/signup"
+            :href="SIGNUP_ROUTE"
             class="text-primary-main hover:text-primary-hover"
           >
             {{ $tLogIn('signUp') }}

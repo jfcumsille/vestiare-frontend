@@ -138,7 +138,7 @@ const signUp = () => {
           >
             <SettingsIcon class="mr-2 mt-1" />
             <router-link
-              to="/"
+              :to="HOME_ROUTE"
             >
               {{ userStore.organizationName || $t('organizationName') }}
             </router-link>
@@ -170,7 +170,7 @@ const signUp = () => {
         </a>
         <a
           class="mx-2 px-3 py-2 text-primary-main hover:text-primary-hover font-medium"
-          href="/login"
+          :href="LOGIN_ROUTE"
         >
           {{ $t('logIn') }}
         </a>
@@ -178,7 +178,7 @@ const signUp = () => {
           class="
               mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
               text-white bg-primary-main hover:bg-primary-hover justify-center"
-          href="/signup"
+          :href="SIGNUP_ROUTE"
         >
           {{ $t('getAPIKeys') }}
         </a>

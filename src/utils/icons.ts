@@ -8,6 +8,7 @@ import EyeIcon from '@/assets/svg/EyeIcon.vue';
 import EyeClosedIcon from '@/assets/svg/EyeClosedIcon.vue';
 import GoogleLogo from '@/assets/svg/auth/GoogleLogo.vue';
 import GithubLogo from '@/assets/svg/auth/GithubLogo.vue';
+import MailIcon from '@/assets/svg/MailIcon.vue';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import AddIcon from '@/assets/svg/AddIcon.vue';
@@ -16,18 +17,19 @@ import { Nullable } from '@/interfaces/common';
 
 export const icons = {
   copy: CopyIcon,
-  chevron_down: ChevronDown,
+  'chevron-down': ChevronDown,
   cross: CrossIcon,
   menu: MenuIcon,
-  auth_google: GoogleLogo,
-  auth_github: GithubLogo,
-  three_dots: ThreeDots,
+  'auth-google': GoogleLogo,
+  'auth-github': GithubLogo,
+  mail: MailIcon,
+  'three-dots': ThreeDots,
   eye: EyeIcon,
-  eye_closed: EyeClosedIcon,
+  'eye-closed': EyeClosedIcon,
   add: AddIcon,
   logout: LogOutIcon,
   loading: Spinner,
-} as Record<string, ComponentPublicInstance>;
+} as unknown as Record<string, ComponentPublicInstance>;
 
 export const findIcon = (iconName: string): Nullable<ComponentPublicInstance> => {
   if (iconName && (iconName in icons)) {

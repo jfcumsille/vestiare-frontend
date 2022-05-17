@@ -106,7 +106,7 @@ describe('NavBar', () => {
       const organizationSettingsLink = wrapper.find('[data-test="nav-bar-organization-settings-link"]');
       expect(organizationSettingsLink.exists()).toBe(false);
     });
-    it('shows profile settings link', async () => {
+    it('shows profile settings link', () => {
       const wrapper = getWrapper();
       const profileSettingsLink = wrapper.find('[data-test="nav-bar-profile-settings-link"]');
       expect(profileSettingsLink.exists()).toBe(false);

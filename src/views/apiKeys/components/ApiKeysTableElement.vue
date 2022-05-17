@@ -131,7 +131,7 @@ const handleEndHoverIcon = () => {
         <GenericButton
           data-test="eye-toggle"
           class="ml-2"
-          :icon-name="showKey ? 'eye_closed' : 'eye'"
+          :icon-name="showKey ? 'eye-closed' : 'eye'"
           :type="ButtonType.Secondary"
           @click="toggleKey"
         />
