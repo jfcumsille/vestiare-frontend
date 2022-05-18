@@ -17,14 +17,21 @@ const emit = defineEmits<{ (e: 'close'): void }>();
 
 const eventNames = [
   'link.credentials_changed',
+  'link.refresh_intent.succeeded',
+  'link.refresh_intent.failed',
+  'account.refresh_intent.succeeded',
+  'account.refresh_intent.failed',
+  'account.refresh_intent.rejected',
   'payment_intent.succeeded',
   'payment_intent.failed',
-  'account.refresh_intent.succeeded',
-  'link.refresh_intent.succeeded',
-  'account.refresh_intent.failed',
   'payment_intent.rejected',
-  'link.refresh_intent.failed',
-  'account.refresh_intent.rejected',
+  'subscription_intent.succeeded',
+  'subscription_intent.rejected',
+  'subscription_intent.failed',
+  'subscription.activated',
+  'subscription.canceled',
+  'charge.succeeded',
+  'charge.failed',
 ];
 
 const $t = useTranslation('views.webhookEndpoints.creation');
@@ -121,12 +128,14 @@ watch(() => events.value, () => { eventsError.value = ''; });
       <p class="text-xl">
         {{ $t('events') }}
       </p>
-      <GenericCheckbox
-        v-for="event in events"
-        :key="event.eventName"
-        v-model="event.checked"
-        :text="event.eventName"
-      />
+      <div class="columns-2">
+        <GenericCheckbox
+          v-for="event in events"
+          :key="event.eventName"
+          v-model="event.checked"
+          :text="event.eventName"
+        />
+      </div>
       <p
         v-if="eventsError"
         class="mt-1 text-sm font-bold text-danger-main"
