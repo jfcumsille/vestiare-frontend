@@ -17,6 +17,6 @@ export default <SignUpViewLocale>{
   contactSales: 'Contact Sales',
   verifyEmail: 'Verify your email',
   thankYou: 'thank you for joining Fintoc! Please check your email and visit the link sent to',
-  verifyAccount: 'to verify your account.',
+  verifyAccount: 'to verify your account. The verification email may take up to 5 minutes to arrive.',
   resendEmail: 'Resend verification email',
 };
