@@ -6,6 +6,7 @@ import GenericForm from '@/components/forms/GenericForm.vue';
 
 const ExposedValid = {
   name: 'ExposedValid',
+  template: '<div>test</div>',
   setup(_: unknown, context: SetupContext) {
     context.expose({ valid: true });
   },
@@ -13,6 +14,7 @@ const ExposedValid = {
 
 const ExposedInvalid = {
   name: 'ExposedInvalid',
+  template: '<div>test</div>',
   setup(_: unknown, context: SetupContext) {
     useRegistration();
     context.expose({ valid: false });

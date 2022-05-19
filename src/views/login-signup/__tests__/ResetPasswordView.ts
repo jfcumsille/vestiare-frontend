@@ -1,14 +1,17 @@
 import {
-  describe, it, expect, beforeEach, vi,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
+import { mockCrypto } from '@/utils/tests/crypto';
 import ResetPasswordView from '@/views/login-signup/ResetPasswordView.vue';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
@@ -16,20 +19,21 @@ const analyticsTrackMock = vi.fn();
 const getWrapper = () => {
   const wrapper = mount(ResetPasswordView, {
     global: {
-      plugins: [
-        createTestingPinia({
-          createSpy: vi.fn,
-        }),
-        router,
-      ],
+      plugins: [testingPinia, router],
     },
   });
   return wrapper;
 };
 
 describe('LogInView', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
     mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
   });

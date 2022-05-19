@@ -2,8 +2,9 @@
 import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { authenticateWithRedirect } from '@/services/auth0';
-import { ButtonType, SizeType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import { ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
+import { USERNAME_PASSWORD_CONNECTION } from '@/constants/api';
 
 const $t = useTranslation('auth0Panel');
 
@@ -23,21 +24,30 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
     <GenericButton
       class="mt-5"
       :type="ButtonType.Outline"
-      :is-width-full="true"
       :text="`${buttonLabel} Google`"
-      icon-name="auth_google"
+      icon-name="auth-google"
       :icon-position="HorizontalPositionType.Left"
-      @click="authenticateWithRedirect('google-oauth2', mode)"
+      is-width-full
+      @click="() => authenticateWithRedirect('google-oauth2', mode)"
     />
     <GenericButton
       class="mt-5"
       :type="ButtonType.Outline"
-      :is-width-full="true"
       :text="`${buttonLabel} Github`"
-      :size="SizeType.Medium"
-      icon-name="auth_github"
+      icon-name="auth-github"
       :icon-position="HorizontalPositionType.Left"
-      @click="authenticateWithRedirect('github', mode)"
+      is-width-full
+      @click="() => authenticateWithRedirect('github', mode)"
+    />
+    <GenericButton
+      v-if="!props.isSignup"
+      class="mt-5"
+      :type="ButtonType.Outline"
+      :text="`${buttonLabel} Email`"
+      icon-name="mail"
+      :icon-position="HorizontalPositionType.Left"
+      is-width-full
+      @click="() => authenticateWithRedirect(USERNAME_PASSWORD_CONNECTION, mode)"
     />
   </div>
 </template>

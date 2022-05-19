@@ -4,8 +4,9 @@ import { useRouter } from 'vue-router';
 import { onClickOutside } from '@vueuse/core';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
-import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
 import { track } from '@/services/analytics';
+import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
+import { LOGIN_ROUTE } from '@/constants/router';
 import PersonIcon from '@/assets/svg/PersonIcon.vue';
 import GenericOptionsModal from '@/components/GenericOptionsModal.vue';
 
@@ -18,7 +19,7 @@ const pressUserMenu = () => {
   isUserMenuOpen.value = !isUserMenuOpen.value;
 };
 const logIn = () => {
-  router.push({ path: '/login' });
+  router.push({ path: LOGIN_ROUTE });
 };
 const logOut = () => {
   userStore.logOut();

@@ -1,23 +1,21 @@
 import {
-  describe, it, expect, beforeEach, vi,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
-import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import { CountryCode, APIModule, HolderType } from '@/interfaces/utilities/enums';
+import { mockCrypto } from '@/utils/tests/crypto';
+import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const getWrapper = (props: Record<string, unknown>) => {
   const wrapper = mount(CreateLinkModal, {
     global: {
-      plugins: [
-        createTestingPinia({
-          createSpy: vi.fn,
-        }),
-        router,
-      ],
+      plugins: [testingPinia, router],
     },
     props,
   });
@@ -25,8 +23,14 @@ const getWrapper = (props: Record<string, unknown>) => {
 };
 
 describe('CreateLinkModal', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
   });
 

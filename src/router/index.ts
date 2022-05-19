@@ -1,4 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import {
+  HOME_ROUTE,
+  API_KEYS_ROUTE,
+  LINKS_ROUTE,
+  WEBHOOK_ENDPOINTS_ROUTE,
+  DETAILED_WEBHOOK_ENDPOINT_VIEW,
+  LOGIN_ROUTE,
+  SIGNUP_ROUTE,
+  PASSWORD_RESET_ROUTE,
+  OAUTH_LOGIN_ROUTE,
+  OAUTH_SIGNUP_ROUTE,
+} from '@/constants/router';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
 import ResetPasswordView from '@/views/login-signup/ResetPasswordView.vue';
@@ -9,6 +21,7 @@ import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhoo
 
 import { enableLoader, disableLoader } from './loader';
 import {
+  loadUser,
   loginRequired,
   skipLogInIfAlreadyLoggedIn,
   skipSignUpIfAlreadyLoggedIn,
@@ -17,35 +30,39 @@ import {
 import { handleAuth0RedirectCallback } from './handlers';
 
 const routes: RouteRecordRaw[] = [
-  { path: '/', redirect: () => ({ path: '/links' }) },
+  { path: HOME_ROUTE, redirect: () => ({ path: LINKS_ROUTE }) },
   {
-    path: '/login',
+    path: OAUTH_LOGIN_ROUTE,
     component: LogInView,
-    beforeEnter: [
-      skipLogInIfAlreadyLoggedIn,
-      handleAuth0RedirectCallback,
-    ],
+    beforeEnter: handleAuth0RedirectCallback,
   },
   {
-    path: '/signup',
+    path: OAUTH_SIGNUP_ROUTE,
     component: SignUpView,
-    beforeEnter: [
-      skipSignUpIfAlreadyLoggedIn,
-      handleAuth0RedirectCallback,
-    ],
+    beforeEnter: handleAuth0RedirectCallback,
   },
   {
-    path: '/reset',
+    path: LOGIN_ROUTE,
+    component: LogInView,
+    beforeEnter: skipLogInIfAlreadyLoggedIn,
+  },
+  {
+    path: SIGNUP_ROUTE,
+    component: SignUpView,
+    beforeEnter: skipSignUpIfAlreadyLoggedIn,
+  },
+  {
+    path: PASSWORD_RESET_ROUTE,
     component: ResetPasswordView,
     beforeEnter: [
       skipResetPasswordIfAlreadyLoggedIn,
     ],
   },
-  { path: '/api-keys', component: ApiKeysView },
-  { path: '/links', component: LinksView },
-  { path: '/webhook-endpoints', component: WebhookEndpointsView },
+  { path: API_KEYS_ROUTE, component: ApiKeysView },
+  { path: LINKS_ROUTE, component: LinksView },
+  { path: WEBHOOK_ENDPOINTS_ROUTE, component: WebhookEndpointsView },
   {
-    path: '/webhook-endpoints/:webhookEndpointId',
+    path: DETAILED_WEBHOOK_ENDPOINT_VIEW,
     component: DetailedWebhookEndpointView,
   },
 ];
@@ -57,6 +74,7 @@ const router = createRouter({
 
 enableLoader(router);
 
+router.beforeEach(loadUser);
 router.beforeEach(loginRequired);
 
 disableLoader(router);

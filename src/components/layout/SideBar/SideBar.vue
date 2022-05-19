@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTranslation } from '@/locales';
+import { API_KEYS_ROUTE, LINKS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE } from '@/constants/router';
 import LinkIcon from '@/assets/svg/LinksIcon.vue';
 import KeyIcon from '@/assets/svg/KeyIcon.vue';
 import WebhooksIcon from '@/assets/svg/WebhooksIcon.vue';
@@ -22,7 +23,7 @@ const $t = useTranslation('sideBar');
             rounded-md hover:text-primary-hover w-40
           "
           active-class="bg-primary-surface"
-          to="/links"
+          :to="LINKS_ROUTE"
         >
           <LinkIcon />
           <span class="mx-4 font-medium">{{ $t('links') }}</span>
@@ -34,7 +35,7 @@ const $t = useTranslation('sideBar');
             rounded-md hover:text-primary-hover w-40
           "
           active-class="bg-primary-surface"
-          to="/api-keys"
+          :to="API_KEYS_ROUTE"
         >
           <KeyIcon />
           <span class="mx-4 font-medium">{{ $t('apiKeys') }}</span>
@@ -46,7 +47,7 @@ const $t = useTranslation('sideBar');
             rounded-md hover:text-primary-hover w-40
           "
           active-class="bg-primary-surface"
-          to="/webhook-endpoints"
+          :to="WEBHOOK_ENDPOINTS_ROUTE"
         >
           <WebhooksIcon />
           <span class="mx-4 font-medium">{{ $t('webhooks') }}</span>

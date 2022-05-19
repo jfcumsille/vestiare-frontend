@@ -1,7 +1,7 @@
 import {
-  describe, it, expect, beforeEach, vi,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
@@ -16,9 +16,12 @@ import {
   LINK_REFRESHED,
 } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
+import { mockCrypto } from '@/utils/tests/crypto';
 import LinksTableElement from '@/views/links/components/LinksTableElement.vue';
 import DeleteLinkModal from '@/views/links/components/DeleteLinkModal.vue';
 import ResumeLinkRefreshingModal from '@/views/links/components/ResumeLinkRefreshingModal.vue';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
@@ -44,23 +47,22 @@ const getWrapper = () => {
   };
   const wrapper = mount(LinksTableElement, {
     global: {
-      plugins: [
-        createTestingPinia({
-          createSpy: vi.fn,
-        }),
-        router,
-      ],
+      plugins: [testingPinia, router],
     },
-    props: {
-      link,
-    },
+    props: { link },
   });
   return wrapper;
 };
 
 describe('LinksTableElement', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
     mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
   });

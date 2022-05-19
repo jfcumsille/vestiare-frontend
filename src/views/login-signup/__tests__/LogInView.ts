@@ -1,14 +1,17 @@
 import {
-  describe, it, expect, beforeEach, vi,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
-import { USER_LOGGED_IN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
+import { LOG_IN_VIEWED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
+import { mockCrypto } from '@/utils/tests/crypto';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import router from '@/router/index';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
@@ -16,20 +19,21 @@ const analyticsTrackMock = vi.fn();
 const getWrapper = () => {
   const wrapper = mount(LogInView, {
     global: {
-      plugins: [
-        createTestingPinia({
-          createSpy: vi.fn,
-        }),
-        router,
-      ],
+      plugins: [testingPinia, router],
     },
   });
   return wrapper;
 };
 
 describe('LogInView', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
     mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
   });
@@ -40,17 +44,6 @@ describe('LogInView', () => {
       const loginView = wrapper.find('[data-test="login-view"]');
       expect(loginView.exists()).toBe(true);
       expectToTrackWithAnalytics(analyticsPageMock, LOG_IN_VIEWED);
-    });
-  });
-
-  describe('when user logs in', () => {
-    it('tracks \'User Logged In\' with analytics', async () => {
-      const wrapper = getWrapper();
-      wrapper.vm.email = 'email@gmail.com';
-      wrapper.vm.password = 'password';
-      await wrapper.vm.$forceUpdate();
-      await wrapper.vm.logIn();
-      expectToTrackWithAnalytics(analyticsTrackMock, USER_LOGGED_IN);
     });
   });
 });

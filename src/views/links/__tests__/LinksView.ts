@@ -1,12 +1,13 @@
 import {
-  describe, it, expect, beforeEach, vi,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { Link } from '@/interfaces/entities/links';
+import { CountryCode, Mode } from '@/interfaces/utilities/enums';
 import {
   MODAL_VIEWED,
   MODAL_CLOSED,
@@ -14,9 +15,11 @@ import {
   LINKS_VIEWED,
 } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
+import { mockCrypto } from '@/utils/tests/crypto';
 import LinksView from '@/views/links/LinksView.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
-import { CountryCode, Mode } from '@/interfaces/utilities/enums';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
@@ -24,20 +27,21 @@ const analyticsTrackMock = vi.fn();
 const getWrapper = () => {
   const wrapper = mount(LinksView, {
     global: {
-      plugins: [
-        createTestingPinia({
-          createSpy: vi.fn,
-        }),
-        router,
-      ],
+      plugins: [testingPinia, router],
     },
   });
   return wrapper;
 };
 
 describe('LinksView', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
     mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
   });

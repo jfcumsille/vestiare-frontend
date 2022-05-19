@@ -18,6 +18,5 @@ export default <SignUpViewLocale>{
   verifyEmail: 'Verify your email',
   thankYou: 'thank you for joining Fintoc! Please check your email and visit the link sent to',
   verifyAccount: 'to verify your account.',
-  didntReceive: 'Didn\'t receive an email?',
   resendEmail: 'Resend verification email',
 };

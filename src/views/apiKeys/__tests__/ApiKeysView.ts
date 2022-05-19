@@ -1,16 +1,21 @@
 import {
-  describe, it, expect, beforeEach, vi,
+  beforeAll, beforeEach, describe, expect, it, vi,
 } from 'vitest';
-import { setActivePinia, createPinia } from 'pinia';
+import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount, VueWrapper } from '@vue/test-utils';
 import router from '@/router/index';
 import { setupLocales } from '@/locales';
+import { useAPIKeysStore } from '@/stores/apiKeys';
+import { useConfigStore } from '@/stores/config';
 import { Mode } from '@/interfaces/utilities/enums';
 import { API_KEY_CREATED, API_KEY_DELETED, API_KEYS_VIEWED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
+import { mockCrypto } from '@/utils/tests/crypto';
 import ApiKeysTableElement from '@/views/apiKeys/components/ApiKeysTableElement.vue';
 import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
+
+const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const analyticsPageMock = vi.fn();
 const analyticsTrackMock = vi.fn();
@@ -18,12 +23,7 @@ const analyticsTrackMock = vi.fn();
 const getWrapper = () => {
   const wrapper = mount(ApiKeysView, {
     global: {
-      plugins: [
-        createTestingPinia({
-          createSpy: vi.fn,
-        }),
-        router,
-      ],
+      plugins: [testingPinia, router],
     },
   });
   return wrapper;
@@ -41,8 +41,14 @@ const checkIfApiKeyTableElementContainsText = async (
 };
 
 describe('ApiKeysView', () => {
+  beforeAll(() => {
+    const { restore } = mockCrypto();
+
+    return () => { restore(); };
+  });
+
   beforeEach(() => {
-    setActivePinia(createPinia());
+    setActivePinia(testingPinia);
     setupLocales();
     mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
   });
@@ -57,11 +63,14 @@ describe('ApiKeysView', () => {
   });
 
   describe('when user has 2 live keys and 2 test keys', () => {
-    let wrapper: VueWrapper<InstanceType<typeof ApiKeysView>>;
+    let apiKeysStore;
     beforeEach(() => {
-      wrapper = getWrapper();
-      wrapper.vm.apiKeysStore.loading = false;
-      wrapper.vm.apiKeysStore.apiKeys = [
+      const configStore = useConfigStore();
+      configStore.mode = Mode.Live;
+
+      apiKeysStore = useAPIKeysStore();
+      apiKeysStore.loading = false;
+      apiKeysStore.apiKeys = [
         {
           id: 'public_live_key_1',
           token: 'pk_live_XXX',
@@ -93,6 +102,8 @@ describe('ApiKeysView', () => {
       ];
     });
     it('should show live keys when mode is live', async () => {
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
@@ -101,8 +112,11 @@ describe('ApiKeysView', () => {
     });
 
     it('should show test keys when mode is test', async () => {
-      wrapper.vm.configStore.mode = 'test';
-      await wrapper.vm.$forceUpdate();
+      const configStore = useConfigStore();
+      configStore.mode = Mode.Test;
+
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
@@ -111,6 +125,8 @@ describe('ApiKeysView', () => {
     });
 
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
+      const wrapper = getWrapper();
+
       const apiKeyTableElement = wrapper.findComponent(ApiKeysTableElement);
       expect(apiKeyTableElement.exists()).toBe(true);
 
@@ -126,6 +142,8 @@ describe('ApiKeysView', () => {
     });
 
     it('should not show Activate Secret Key', async () => {
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
         expect(apiKeyTableElement.text()).not.toContain('Activate Secret Key');
@@ -133,7 +151,8 @@ describe('ApiKeysView', () => {
     });
 
     it('tracks \'API Key Deleted\' with analytics when key is deleted', async () => {
-      wrapper.vm.configStore.mode = 'live';
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       const moreOptionsButton = apiKeyTableElements[1].find('[data-test="more-options-button"]');
       expect(moreOptionsButton.exists()).toBe(true);
@@ -143,18 +162,19 @@ describe('ApiKeysView', () => {
       expect(deleteKeyButton.exists()).toBe(true);
       await deleteKeyButton.trigger('click');
 
-      await wrapper.vm.$forceUpdate();
-
       expectToTrackWithAnalytics(analyticsTrackMock, API_KEY_DELETED, { id: 'secret_live_key_2', mode: 'live', is_public: 'false' });
     });
   });
 
   describe('when user has 1 live key and 2 test keys', () => {
-    let wrapper: VueWrapper<InstanceType<typeof ApiKeysView>>;
+    let apiKeysStore;
     beforeEach(() => {
-      wrapper = getWrapper();
-      wrapper.vm.apiKeysStore.loading = false;
-      wrapper.vm.apiKeysStore.apiKeys = [
+      const configStore = useConfigStore();
+      configStore.mode = Mode.Live;
+
+      apiKeysStore = useAPIKeysStore();
+      apiKeysStore.loading = false;
+      apiKeysStore.apiKeys = [
         {
           id: 'public_live_key_1',
           token: 'pk_live_XXX',
@@ -179,7 +199,8 @@ describe('ApiKeysView', () => {
       ];
     });
     it('should show public live key when mode is live and activate secret key', async () => {
-      await wrapper.vm.$forceUpdate();
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
 
@@ -193,8 +214,11 @@ describe('ApiKeysView', () => {
     });
 
     it('should show test keys when mode is test', async () => {
-      wrapper.vm.configStore.mode = 'test';
-      await wrapper.vm.$forceUpdate();
+      const configStore = useConfigStore();
+      configStore.mode = Mode.Test;
+
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {
@@ -203,6 +227,8 @@ describe('ApiKeysView', () => {
     });
 
     it('should show keys hidden, and after toggle eye icon, show keys', async () => {
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements[1].text()).toContain('Activate Secret Key');
 
@@ -218,12 +244,14 @@ describe('ApiKeysView', () => {
     });
 
     it('tracks \'API Key Created\' with analytics when key is created', async () => {
+      const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableElement);
       expect(apiKeyTableElements[1].text()).toContain('Activate Secret Key');
       const activateKeyButton = apiKeyTableElements[1].find('[data-test="activate-key-button"]');
       expect(activateKeyButton.exists()).toBe(true);
       await activateKeyButton.trigger('click');
-      await wrapper.vm.$forceUpdate();
+
       expectToTrackWithAnalytics(analyticsTrackMock, API_KEY_CREATED, { mode: 'live', is_public: 'false' });
     });
   });
