@@ -44,10 +44,10 @@ export const useUserStore = defineStore('user', {
     },
     async logOut() {
       const auth0 = await getAuth0Client();
+      this.user = null;
       await auth0.logout({
         returnTo: window.location.origin,
       });
-      this.user = null;
     },
     async sendResetPasswordEmail(email: string) {
       await api.user.sendResetPasswordEmail(email);
