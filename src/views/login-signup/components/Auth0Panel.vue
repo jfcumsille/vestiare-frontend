@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useTranslation } from '@/locales';
-import { authenticateWithRedirect } from '@/services/auth0';
+import { authenticateWithPopup } from '@/services/auth0';
 import { ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import { USERNAME_PASSWORD_CONNECTION } from '@/constants/api';
@@ -13,8 +13,6 @@ const props = withDefaults(defineProps<{
 }>(), {
   isSignup: false,
 });
-
-const mode = computed(() => (props.isSignup ? 'signup' : 'login'));
 
 const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logInWith')));
 </script>
@@ -28,7 +26,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="auth-google"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect('google-oauth2', mode)"
+      @click="() => authenticateWithPopup('google-oauth2')"
     />
     <GenericButton
       class="mt-5"
@@ -37,7 +35,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="auth-github"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect('github', mode)"
+      @click="() => authenticateWithPopup('github')"
     />
     <GenericButton
       v-if="!props.isSignup"
@@ -47,7 +45,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="mail"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect(USERNAME_PASSWORD_CONNECTION, mode)"
+      @click="() => authenticateWithPopup(USERNAME_PASSWORD_CONNECTION)"
     />
   </div>
 </template>
