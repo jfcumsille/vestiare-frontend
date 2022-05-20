@@ -40,18 +40,6 @@ export const authenticateWithRedirect = async (
   });
 };
 
-export const authenticateWithPopup = async (
-  connection: (
-    'github' | 'google-oauth2' | 'username-password-staging' | 'username-password-production'
-  ),
-) => {
-  const auth0 = await getAuth0Client();
-
-  await auth0.loginWithPopup({ connection });
-
-  window.location.href = window.location.origin;
-};
-
 export const logout = async () => {
   const auth0 = await getAuth0Client();
 
