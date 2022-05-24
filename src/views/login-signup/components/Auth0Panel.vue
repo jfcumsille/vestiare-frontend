@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { authenticateWithRedirect } from '@/services/auth0';
-import { ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
+import { Auth0Database, ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import { USERNAME_PASSWORD_CONNECTION } from '@/constants/api';
 
@@ -28,7 +28,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="auth-google"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect('google-oauth2', mode)"
+      @click="() => authenticateWithRedirect(Auth0Database.Google, mode)"
     />
     <GenericButton
       class="mt-5"
@@ -37,7 +37,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="auth-github"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect('github', mode)"
+      @click="() => authenticateWithRedirect(Auth0Database.GitHub, mode)"
     />
     <GenericButton
       v-if="!props.isSignup"
