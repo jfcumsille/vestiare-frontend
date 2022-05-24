@@ -13,11 +13,13 @@ export const handleAuth0RedirectCallback = async (to: RouteLocationNormalized) =
     const user = await auth0.getUser();
 
     if (user && to.path.includes('signup')) {
+      const name = user.given_name ?? user.name?.split(' ')[0];
+      const lastName = user.family_name ?? user.name?.split(' ')[1];
       await userStore.createUser({
         id: user.sub,
         email: user.email,
-        name: user.given_name,
-        lastName: user.family_name,
+        name,
+        lastName,
       });
     }
 
