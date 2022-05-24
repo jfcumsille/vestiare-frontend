@@ -5,6 +5,7 @@ import {
 } from '@/constants/api';
 import { Auth0User } from '@/interfaces/entities/user';
 import { SignUpOptions } from '@/interfaces/options/account';
+import { Auth0Database } from '@/interfaces/utilities/enums';
 import { Nullable } from '@/interfaces/common';
 
 export const webAuth = new WebAuth({
@@ -27,9 +28,7 @@ export const getAuth0Client = async () => {
 };
 
 export const authenticateWithRedirect = async (
-  connection: (
-    'github' | 'google-oauth2' | 'username-password-staging' | 'username-password-production'
-  ),
+  connection: Auth0Database,
   mode: 'login' | 'signup',
 ) => {
   const auth0 = await getAuth0Client();

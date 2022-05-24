@@ -7,6 +7,7 @@ import {
 } from '@/services/auth0';
 import { mockCrypto } from '@/utils/tests/crypto';
 import { USERNAME_PASSWORD_CONNECTION } from '@/constants/api';
+import { Auth0Database } from '@/interfaces/utilities/enums';
 
 describe('auth0 service', () => {
   beforeAll(() => {
@@ -47,15 +48,15 @@ describe('auth0 service', () => {
 
   describe('authenticateWithRedirect', () => {
     const params = [
-      ['github', 'login'],
-      ['github', 'signup'],
-      ['google-oauth2', 'login'],
-      ['google-oauth2', 'signup'],
-      ['username-password-staging', 'login'],
-      ['username-password-staging', 'signup'],
-      ['username-password-production', 'login'],
-      ['username-password-production', 'signup'],
-    ] as Array<['github' | 'google-oauth2' | 'username-password-staging' | 'username-password-production', 'login' | 'signup']>;
+      [Auth0Database.GitHub, 'login'],
+      [Auth0Database.GitHub, 'signup'],
+      [Auth0Database.Google, 'login'],
+      [Auth0Database.Google, 'signup'],
+      [Auth0Database.EmailPasswordStaging, 'login'],
+      [Auth0Database.EmailPasswordStaging, 'signup'],
+      [Auth0Database.EmailPasswordProduction, 'login'],
+      [Auth0Database.EmailPasswordProduction, 'signup'],
+    ] as Array<[Auth0Database, 'login' | 'signup']>;
     it.each(params)('redirects using the %s connection in % mode', async (connection, mode) => {
       const client = await getAuth0Client();
 

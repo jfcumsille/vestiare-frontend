@@ -1,14 +1,14 @@
-export const enum Mode {
+export enum Mode {
   Live = 'live',
-  Test = 'test'
+  Test = 'test',
 }
 
-export const enum CountryCode {
+export enum CountryCode {
   CL = 'cl',
-  MX = 'mx'
+  MX = 'mx',
 }
 
-export const enum Product {
+export enum Product {
   Movements = 'MOVEMENTS',
   Invoices = 'INVOICES',
   Subscriptions = 'SUBSCRIPTION',
@@ -19,17 +19,17 @@ export const enum Product {
   TaxReturns = 'TAX_RETURNS',
 }
 
-export const enum HolderType {
+export enum HolderType {
   Individual = 'individual',
-  Business = 'business'
+  Business = 'business',
 }
 
-export const enum APIModule {
+export enum APIModule {
   Banking = 'Banking',
-  Fiscal = 'Fiscal'
+  Fiscal = 'Fiscal',
 }
 
-export const enum ButtonType {
+export enum ButtonType {
   Primary = 'Primary',
   Secondary = 'Secondary',
   Outline = 'Outline',
@@ -37,7 +37,7 @@ export const enum ButtonType {
   Danger = 'Danger',
 }
 
-export const enum SizeType {
+export enum SizeType {
   Inline = 'Inline',
   Small = 'Small',
   Medium = 'Medium',
@@ -45,12 +45,12 @@ export const enum SizeType {
   XLarge = 'XLarge',
 }
 
-export const enum HorizontalPositionType {
+export enum HorizontalPositionType {
   Left = 'Left',
   Right = 'Right',
 }
 
-export const enum JustifyType {
+export enum JustifyType {
   Start = 'justify-start',
   End = 'justify-end',
   Center = 'justify-center',
@@ -58,3 +58,21 @@ export const enum JustifyType {
   Around = 'justify-around',
   Evenly = 'justify-evenly',
 }
+
+export enum Auth0EmailPasswordDatabase {
+  EmailPasswordProduction = 'username-password-production',
+  EmailPasswordStaging = 'username-password-staging',
+  EmailPasswordLocal = 'username-password-local',
+}
+
+export enum Auth0SocialDatabase {
+  Google = 'google-oauth2',
+  GitHub = 'github',
+}
+
+export const Auth0Database = {
+  ...Auth0EmailPasswordDatabase,
+  ...Auth0SocialDatabase,
+};
+
+export type Auth0Database = Auth0SocialDatabase | Auth0EmailPasswordDatabase;
