@@ -62,6 +62,7 @@ export enum JustifyType {
 export enum Auth0EmailPasswordDatabase {
   EmailPasswordProduction = 'username-password-production',
   EmailPasswordStaging = 'username-password-staging',
+  EmailPasswordLocal = 'username-password-local',
 }
 
 export enum Auth0SocialDatabase {
