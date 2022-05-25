@@ -8,6 +8,7 @@ import { page, trackModal } from '@/services/analytics';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
+import TablePagination from '@/components/table/TablePagination.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WebhookEndpointCreationModal from '@/views/webhookEndpoints/components/WebhookEndpointCreationModal.vue';
 import WebhookEndpointsTableHead from '@/views/webhookEndpoints/components/WebhookEndpointsTableHead.vue';
@@ -24,9 +25,27 @@ const setModalOpened = (value: boolean) => {
   trackModal(value, 'webhook_endpoints', 'create');
 };
 
-const webhookEndpoints = computed(
-  () => ($webhookEndpointsStore.webhookEndpoints),
-);
+const totalWebhookEndpoints = computed(() => (
+  $webhookEndpointsStore.webhookEndpoints
+));
+
+const resultsPerPage = ref(10);
+const currentPage = ref(1);
+
+const webhookEndpoints = computed(() => {
+  const start = ((currentPage.value - 1) * resultsPerPage.value);
+  const end = currentPage.value * resultsPerPage.value;
+  return totalWebhookEndpoints.value.slice(start, end);
+});
+
+const updateResultsPerPage = (value: number) => {
+  currentPage.value = 1;
+  resultsPerPage.value = value;
+};
+
+const updateCurrentPage = (value: number) => {
+  currentPage.value += value;
+};
 
 onMounted(() => {
   page(WEBHOOK_ENDPOINTS_VIEWED, { type: 'main' });
@@ -94,6 +113,17 @@ onMounted(() => {
             v-for="webhookEndpoint in webhookEndpoints"
             :key="webhookEndpoint.id"
             :webhook-endpoint="webhookEndpoint"
+          />
+        </template>
+        <template #pagination>
+          <TablePagination
+            :loading="$webhookEndpointsStore.loading"
+            :current-page="currentPage"
+            :results-per-page="resultsPerPage"
+            :total-results="Object.keys(totalWebhookEndpoints).length"
+            :result-item-text="$t('title')"
+            @update-results-per-page="updateResultsPerPage"
+            @update-page="updateCurrentPage"
           />
         </template>
       </GenericTable>

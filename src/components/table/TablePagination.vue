@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import GenericButton from '@/components/GenericButton.vue';
-import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { ButtonType } from '@/interfaces/utilities/enums';
+import { useTranslation } from '@/locales';
 
 const props = defineProps<{
+  loading: boolean,
   currentPage: number,
   resultsPerPage: number,
   totalResults: number,
+  resultItemText: string,
 }>();
 
 const emit = defineEmits<{
@@ -15,8 +18,10 @@ const emit = defineEmits<{
   (e: 'updatePage', amount: number): void,
 }>();
 
+const $t = useTranslation('table.pagination');
+
 const numberOfPages = computed(() => {
-  let quot = ~~(props.totalResults/props.resultsPerPage)
+  let quot = Math.trunc(props.totalResults / props.resultsPerPage);
   const rem = props.totalResults % props.resultsPerPage;
   if (rem > 0) {
     quot += 1;
@@ -26,30 +31,33 @@ const numberOfPages = computed(() => {
 
 const showFirstPage = computed(() => props.currentPage !== 1);
 
-const showLastPage = computed(() => {
-  return (props.currentPage !== numberOfPages.value);
-});
+const showLastPage = computed(() => (
+  props.currentPage !== numberOfPages.value && numberOfPages.value !== 0
+));
 
-const resultsAmounts = [10, 50, 100];
+const resultsAmounts = [10, 20, 30, 40, 50, 75, 100];
+
 const selectResultAmount = (amount: number) => {
-  emit('updateResultsPerPage', amount)
+  emit('updateResultsPerPage', amount);
 };
 
 const updatePage = (amount: number) => {
-  emit('updatePage', amount)
+  emit('updatePage', amount);
 };
 
-const disableNextPage = computed(() => {
-  return numberOfPages.value === props.currentPage;
-});
+const disableNextPage = computed(() => (
+  numberOfPages.value === props.currentPage || props.loading
+));
 
-const disablePreviousPage = computed(() => {
-  return props.currentPage === 1;
-});
+const disablePreviousPage = computed(() => props.currentPage === 1);
+
+const linksText = computed(() => (
+  (props.totalResults === 1) ? props.resultItemText.slice(0, -1) : props.resultItemText
+));
 </script>
 
 <template>
-  <div class="flex justify-between mt-5">
+  <div class="flex justify-between mt-5 mb-10">
     <div class="flex flex-row space-x-3 items-center">
       <GenericDropDown
         label="Show"
@@ -60,7 +68,7 @@ const disablePreviousPage = computed(() => {
       <div
         class="text-body-color text-base padding p-4"
       >
-        {{totalResults}} Results
+        {{ $t('of') }} {{ totalResults }} {{ linksText }}
       </div>
     </div>
     <div class="flex flex-row items-center">
@@ -76,9 +84,23 @@ const disablePreviousPage = computed(() => {
         text="1"
         @click="() => updatePage(-props.currentPage + 1)"
       />
-      <p v-if="showFirstPage" class="py-2 leading-tight text-primary-main">...</p>
-      <a href="#" aria-current="page" class="z-10 py-2 px-3 leading-tight text-primary-pressed underline">{{currentPage}}</a>
-      <p v-if="showLastPage" class="py-2 leading-tight text-primary-main">...</p>
+      <p
+        v-if="showFirstPage"
+        class="py-2 leading-tight text-primary-main"
+      >
+        ...
+      </p>
+      <div
+        class="z-10 py-2 px-3 leading-tight text-primary-pressed underline"
+      >
+        {{ currentPage }}
+      </div>
+      <p
+        v-if="showLastPage"
+        class="py-2 leading-tight text-primary-main"
+      >
+        ...
+      </p>
       <GenericButton
         v-if="showLastPage"
         :type="ButtonType.Text"
