@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { authenticateWithRedirect } from '@/services/auth0';
+import { setSelectedLoginMethod } from '@/services/loginMethods';
 import { Auth0Database, ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import { USERNAME_PASSWORD_CONNECTION } from '@/constants/api';
@@ -17,6 +18,11 @@ const props = withDefaults(defineProps<{
 const mode = computed(() => (props.isSignup ? 'signup' : 'login'));
 
 const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logInWith')));
+
+const authenticateAndSetLoginMethod = (connection: Auth0Database) => {
+  setSelectedLoginMethod(connection);
+  authenticateWithRedirect(connection, mode.value);
+};
 </script>
 
 <template>
@@ -28,7 +34,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="auth-google"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect(Auth0Database.Google, mode)"
+      @click="() => authenticateAndSetLoginMethod(Auth0Database.Google)"
     />
     <GenericButton
       class="mt-5"
@@ -37,7 +43,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="auth-github"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect(Auth0Database.GitHub, mode)"
+      @click="() => authenticateAndSetLoginMethod(Auth0Database.GitHub)"
     />
     <GenericButton
       v-if="!props.isSignup"
@@ -47,7 +53,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       icon-name="mail"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateWithRedirect(USERNAME_PASSWORD_CONNECTION, mode)"
+      @click="() => authenticateAndSetLoginMethod(USERNAME_PASSWORD_CONNECTION)"
     />
   </div>
 </template>

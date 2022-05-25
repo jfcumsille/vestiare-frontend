@@ -5,6 +5,7 @@ import { isValidEmail } from '@/utils/email';
 import { Nullable } from '@/interfaces/common';
 import { User } from '@/interfaces/entities/user';
 import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
+import { setSelectedLoginMethod } from '@/services/loginMethods';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -21,6 +22,7 @@ export const useUserStore = defineStore('user', {
     async logIn({ email, password, token }: LogInOptions) {
       const userData = await api.sessions.create({ email, password, token });
       this.user = userData;
+      setSelectedLoginMethod(null);
     },
     async manualSignup({
       email, password, name, lastName, company, country,
