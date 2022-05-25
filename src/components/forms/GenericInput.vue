@@ -130,7 +130,6 @@ defineExpose({ valid });
           flex p-3 border-1.5 border-border-color rounded-lg shadow-sm
           text-sm duration-100 ease-out cursor-text ${inputColorClasses}
         `"
-        tabIndex="0"
         @click="focusInput"
       >
         <component
@@ -148,7 +147,6 @@ defineExpose({ valid });
           :placeholder="props.placeholder"
           :value="props.modelValue"
           v-bind="$attrs"
-          tabIndex="-1"
           :disabled="props.disabled"
           @input="onInput"
           @blur="startValidating"
