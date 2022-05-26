@@ -11,7 +11,7 @@ const $t = useTranslation('sideBar');
 
 <template>
   <aside
-    class="bg-white flex flex-col w-64 px-4 py-8 overflow-y-auto shrink-0 -mt-2"
+    class="bg-white flex flex-col w-fit px-4 pt-6 pb-8 overflow-y-auto shrink-0"
   >
     <ul class="flex flex-col text-center relative">
       <ModeDropdown />

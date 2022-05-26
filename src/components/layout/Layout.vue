@@ -17,6 +17,7 @@ const route = useRoute();
 const shouldDisplaySidebar = computed(() => [
   LINKS_ROUTE, API_KEYS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE,
 ].includes(route.path));
+const shouldDisplayBackButton = computed(() => ['/organization'].includes(route.path));
 
 const shouldDisplayBackButton = computed(() => [PROFILE_ROUTE].includes(route.path));
 

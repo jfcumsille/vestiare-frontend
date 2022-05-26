@@ -11,6 +11,7 @@ import {
   OAUTH_LOGIN_ROUTE,
   OAUTH_SIGNUP_ROUTE,
   PROFILE_ROUTE,
+  ORGANIZATION_ROUTE,
 } from '@/constants/router';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
@@ -20,6 +21,7 @@ import LinksView from '@/views/links/LinksView.vue';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
 import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
 import ProfileView from '@/views/profile/ProfileView.vue';
+import OrganizationView from '@/views/organization/OrganizationView.vue';
 
 import { enableLoader, disableLoader } from './loader';
 import {
@@ -69,6 +71,7 @@ const routes: RouteRecordRaw[] = [
     component: DetailedWebhookEndpointView,
   },
   { path: PROFILE_ROUTE, component: ProfileView },
+  { path: ORGANIZATION_ROUTE, component: OrganizationView },
   { path: '/:pathMatch(.*)*', redirect: () => ({ path: LINKS_ROUTE }) },
 ];
 

@@ -145,7 +145,7 @@ const sizeClasses = computed(() => {
       if (showOnlyIcon.value) {
         return 'flex p-3.5 w-11 h-11';
       }
-      return 'flex p-3.5 text-base h-11';
+      return 'flex px-5 py-4 text-base h-11';
     case SizeType.Large:
       if (showOnlyIcon.value) {
         return 'flex p-4 w-12.5 h-12.5';
@@ -164,7 +164,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
   <button
     data-test="generic-button"
     :class="`
-      items-center ${props.justify} rounded-lg font-medium min-w-max
+      flex items-center ${props.justify} rounded-lg font-medium min-w-max
       disabled:bg-light-gray disabled:text-disabled-color
       ${colorClasses} ${sizeClasses} ${width}`
     "

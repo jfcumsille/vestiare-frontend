@@ -25,7 +25,7 @@ const logOut = async () => {
 
 const userMenuOptions = [
   { label: $t('myProfileSettings'), action: 'goToMyProfile' },
-  { label: $t('logOut'), action: 'logout', iconName: 'logout' },
+  { label: $t('logOut'), action: 'logout', iconName: 'log_out' },
 ];
 
 const handleOptionSelected = (value: string) => {

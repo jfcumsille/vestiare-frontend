@@ -60,6 +60,7 @@ module.exports = {
         2.5: '0.625rem',
         4.5: '1.1125rem',
         '16px': '16px',
+        56: '14rem',
         xs: '20rem',
         sm: '24rem',
         md: '28rem',
