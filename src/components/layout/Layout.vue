@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router';
 import router from '@/router';
 import { useRouterStore } from '@/stores/router';
 import {
-  API_KEYS_ROUTE, LINKS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE, PROFILE_ROUTE,
+  API_KEYS_ROUTE, LINKS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE, PROFILE_ROUTE, ORGANIZATION_ROUTE,
 } from '@/constants/router';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import NavBar from '@/components/layout/NavBar/NavBar.vue';
@@ -17,11 +17,11 @@ const route = useRoute();
 const shouldDisplaySidebar = computed(() => [
   LINKS_ROUTE, API_KEYS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE,
 ].includes(route.path));
-const shouldDisplayBackButton = computed(() => ['/organization'].includes(route.path));
-
-const shouldDisplayBackButton = computed(() => [PROFILE_ROUTE].includes(route.path));
-
+const shouldDisplayBackButton = computed(
+  () => [PROFILE_ROUTE, ORGANIZATION_ROUTE].includes(route.path),
+);
 </script>
+
 <template>
   <div class="flex flex-col mx-10">
     <NavBar />

@@ -5,7 +5,7 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
-import { LOGIN_ROUTE, SIGNUP_ROUTE, ORGANIZATIONS_ROUTE } from '@/constants/router';
+import { LOGIN_ROUTE, SIGNUP_ROUTE, ORGANIZATION_ROUTE } from '@/constants/router';
 import {
   DOCS, NEWS, CONTACT, BLOG,
 } from '@/constants/urls';
@@ -138,7 +138,7 @@ const signUp = () => {
           >
             <SettingsIcon class="mr-2 mt-1" />
             <router-link
-              :to="ORGANIZATIONS_ROUTE"
+              :to="ORGANIZATION_ROUTE"
             >
               {{ userStore.organizationName || $t('organizationName') }}
             </router-link>

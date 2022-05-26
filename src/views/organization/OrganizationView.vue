@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useTranslation } from '@/locales';
-import { useOrganizationStore } from '@/stores/organization';
+// import { useOrganizationStore } from '@/stores/organization';
 import { useUserStore } from '@/stores/user';
 import { User } from '@/interfaces/entities/user';
 import { Organization } from '@/interfaces/entities/organization';
@@ -16,7 +16,7 @@ import TeamTableHead from '@/views/organization/components/TeamTableHead.vue';
 import TeamTableRow from '@/views/organization/components/TeamTableRow.vue';
 
 const $t = useTranslation('views.organization');
-const organizationStore = useOrganizationStore();
+// const organizationStore = useOrganizationStore();
 const userStore = useUserStore();
 
 const organization: Organization = {
@@ -247,10 +247,10 @@ const search = ref('search');
       </GenericTable>
     </div>
   </div>
-  <div
+  <!-- <div
     v-if="organizationStore.loading"
     class="flex justify-center w-full pt-4"
   >
     <LoadingSpinner />
-  </div>
+  </div> -->
 </template>

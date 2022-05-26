@@ -66,10 +66,7 @@ const routes: RouteRecordRaw[] = [
   { path: API_KEYS_ROUTE, component: ApiKeysView },
   { path: LINKS_ROUTE, component: LinksView },
   { path: WEBHOOK_ENDPOINTS_ROUTE, component: WebhookEndpointsView },
-  {
-    path: DETAILED_WEBHOOK_ENDPOINT_VIEW,
-    component: DetailedWebhookEndpointView,
-  },
+  { path: DETAILED_WEBHOOK_ENDPOINT_VIEW, component: DetailedWebhookEndpointView },
   { path: PROFILE_ROUTE, component: ProfileView },
   { path: ORGANIZATION_ROUTE, component: OrganizationView },
   { path: '/:pathMatch(.*)*', redirect: () => ({ path: LINKS_ROUTE }) },
