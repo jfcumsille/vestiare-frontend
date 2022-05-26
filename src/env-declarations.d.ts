@@ -9,6 +9,7 @@ declare module '*.vue' {
 
 interface ImportMetaEnv {
   readonly VITE_BASE_API_HOST?: string
+  readonly VITE_FINTOC_WIDGET_URL?: string
   readonly VITE_AUTH0_DOMAIN?: string
   readonly VITE_AUTH0_CLIENT_ID?: string
   readonly VITE_USERNAME_PASSWORD_CONNECTION?: string
