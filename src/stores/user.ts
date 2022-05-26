@@ -39,7 +39,10 @@ export const useUserStore = defineStore('user', {
       id, email, name, lastName,
     }: SignUpOptions) {
       await api.user.create({
-        id, email, name, lastName,
+        id,
+        email,
+        name: name || 'pending-name',
+        lastName: lastName || 'pending-last-name',
       });
     },
     async logOut() {
