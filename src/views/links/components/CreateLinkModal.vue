@@ -5,13 +5,14 @@ import {
   onMounted,
   watch,
 } from 'vue';
-import { getFintoc, Fintoc } from '@fintoc/fintoc-js';
+import { useFintocWidget } from '@/composables/fintocWidget';
 import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import {
   Mode, CountryCode, Product, HolderType, APIModule, ButtonType,
 } from '@/interfaces/utilities/enums';
+import { Fintoc } from '@/interfaces/utilities/widget';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
@@ -133,7 +134,7 @@ const openWidget = () => {
 };
 
 onMounted(async () => {
-  fintoc.value = await getFintoc();
+  fintoc.value = await useFintocWidget();
 });
 </script>
 
