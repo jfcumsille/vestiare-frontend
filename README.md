@@ -28,6 +28,10 @@ $ npm run dev
 
 You should be able to navigate to `http://localhost:8000` and see the `Home` component with its counters.
 
+### Dependencies
+
+For this to work locally, you need to be running Rails (`http://api.localhost:3000`), sidekiq and the widget (`http://localhost:8080`, you **just** need the widget running, the script gets served from a bucket in AWS, you can run the widget using `npm run serve`).
+
 ## Linters
 
 There are two types of linters in the project: linters for code and linters for style. You can run them separately:
