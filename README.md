@@ -26,7 +26,7 @@ To run the dev server, just execute:
 $ npm run dev
 ```
 
-You should be able to navigate to `http://localhost:8000` and see the `Home` component with its counters.
+You should be able to navigate to `http://localhost:8888` and see the `Home` component with its counters.
 
 ### Dependencies
 
