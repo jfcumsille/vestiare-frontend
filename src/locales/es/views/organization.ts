@@ -11,4 +11,11 @@ export default <OrganizationViewLocale>{
       status: 'Estado',
     },
   },
+  products: {
+    title: 'Productos',
+    subtitle: 'Estos son los productos disponibles para esta organización',
+    bankingAPI: 'API Bancaria',
+    fiscalAPI: 'API Fiscal',
+    callToAction: 'Pregunta por otros productos y casos de uso →',
+  },
 };

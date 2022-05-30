@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useTranslation } from '@/locales';
-// import { useOrganizationStore } from '@/stores/organization';
+import { useOrganizationStore } from '@/stores/organization';
 import { useUserStore } from '@/stores/user';
 import { User } from '@/interfaces/entities/user';
 import { Organization } from '@/interfaces/entities/organization';
@@ -14,15 +14,17 @@ import GenericDropDown from '@/components/GenericDropDown.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import TeamTableHead from '@/views/organization/components/TeamTableHead.vue';
 import TeamTableRow from '@/views/organization/components/TeamTableRow.vue';
+import ProductsSection from './components/ProductsSection.vue';
 
 const $t = useTranslation('views.organization');
-// const organizationStore = useOrganizationStore();
+const organizationStore = useOrganizationStore();
 const userStore = useUserStore();
 
 const organization: Organization = {
   id: 'org_id',
   name: 'sample name',
   refreshIntervalSec: 100,
+  countryCode: 'cl',
 };
 
 const member1: User = {
@@ -61,13 +63,11 @@ const selectCountryFilter = (value: string) => {
   country.value = value;
 };
 
-const products = {
-  banking: ['movements', 'subscription', 'payments'],
-  fiscal: ['invoices', 'tax returns'],
-};
-
 const search = ref('search');
 
+onMounted(() => {
+  organizationStore.loadOrganization();
+});
 </script>
 
 <template>
@@ -167,34 +167,7 @@ const search = ref('search');
         </div>
       </div>
       <div class="break-normal border p-5 space-y-12 bg-white rounded-lg drop-shadow">
-        <GenericLabel
-          label="Fintoc Products"
-          sub-label="These are the products currently available for this Organization."
-        />
-        <div class="divide-y divide-divider-color">
-          <GenericLabel label="Banking API" />
-          <div class="mt-2 pt-2 capitalize grid grid-cols-2 gap-2">
-            <div
-              v-for="product in products.banking"
-              :key="product"
-            >
-              <GenericLabel
-                :sub-label="product"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="divide-y divide-divider-color">
-          <GenericLabel label="Fiscal API" />
-          <div class="mt-2 pt-2 capitalize grid grid-cols-2 gap-2">
-            <div
-              v-for="product in products.fiscal"
-              :key="product"
-            >
-              <GenericLabel :sub-label="product" />
-            </div>
-          </div>
-        </div>
+        <ProductsSection />
       </div>
     </div>
 

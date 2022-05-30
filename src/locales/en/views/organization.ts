@@ -18,4 +18,11 @@ export default <OrganizationViewLocale>{
       userRejected: 'User Rejected',
     },
   },
+  products: {
+    title: 'Products',
+    subtitle: 'These are the products currently available for this Organization.',
+    bankingAPI: 'Banking API',
+    fiscalAPI: 'Fiscal API',
+    callToAction: 'Ask about other products and use cases →',
+  },
 };

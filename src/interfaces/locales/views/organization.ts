@@ -9,4 +9,11 @@ export interface OrganizationViewLocale {
       status: string,
     },
   },
+  products: {
+    title: string,
+    subtitle: string,
+    bankingAPI: string,
+    fiscalAPI: string,
+    callToAction: string,
+  },
 }
