@@ -19,6 +19,8 @@ import AddIcon from '@/assets/svg/AddIcon.vue';
 import LogOutIcon from '@/assets/svg/LogOutIcon.vue';
 import SearchIcon from '@/assets/svg/SearchIcon.vue';
 import TrashIcon from '@/assets/svg/TrashIcon.vue';
+import BanIcon from '@/assets/svg/BanIcon.vue';
+import CheckIcon from '@/assets/svg/CheckIcon.vue';
 import { Nullable } from '@/interfaces/common';
 
 export const icons = {
@@ -41,6 +43,8 @@ export const icons = {
   loading: Spinner,
   search: SearchIcon,
   trash: TrashIcon,
+  ban: BanIcon,
+  check: CheckIcon,
 } as unknown as Record<string, ComponentPublicInstance>;
 
 export const findIcon = (iconName: string): Nullable<ComponentPublicInstance> => {
