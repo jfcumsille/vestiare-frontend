@@ -68,12 +68,12 @@ const stopShowingLink = () => {
 
 const links = computed(() => linksStore.links);
 
-const filters = ref({});
-const updateFilterValues = (filterValues: Record<string, unknown>) => {
+const filters = ref<Record<string, Array<boolean>>>({});
+const updateFilterValues = (filterValues: Record<string, Array<boolean>>) => {
   filters.value = filterValues;
 };
 const filteredByFilters = computed(
-  () => filterByFilters(links.value, filters.value) as unknown as Array<Link>,
+  () => filterByFilters(links.value, filters.value),
 );
 
 const search = ref('');

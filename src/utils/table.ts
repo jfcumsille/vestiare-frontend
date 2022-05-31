@@ -1,14 +1,16 @@
-import { Filter } from '@/interfaces/utilities/table';
+import type { Filter } from '@/interfaces/utilities/table';
 
-export const getFilterValues = <T>(filters: Array<Filter<T>>): Array<T> => (
-  filters.filter((filter) => filter.checked).map((filter) => filter.value)
-);
+export const getFilterValues = <FilterValueType>(
+  filters: Array<Filter<FilterValueType>>,
+): Array<FilterValueType> => (
+    filters.filter((filter) => filter.checked).map((filter) => filter.value)
+  );
 
-export const filterByFilters = <T>(
-  array: Array<Record<string, T>>,
-  filters: Record<string, Array<unknown>>,
+export const filterByFilters = <ElementType extends Record<string, unknown>, FilterValueType>(
+  array: Array<ElementType>,
+  filters: Record<string, Array<FilterValueType>>,
 ) => array.filter((item) => (
     Object.keys(filters).every(
-      (key) => Object.values(filters[key]).indexOf(item[key]) > -1,
+      (key) => Object.values(filters[key]).indexOf(item[key] as FilterValueType) > -1,
     )
   ));
