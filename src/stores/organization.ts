@@ -1,12 +1,12 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
-import { Organization } from '@/interfaces/entities/organization';
+import { OrganizationFull } from '@/interfaces/entities/organization';
 
 export const useOrganizationStore = defineStore('organization', {
   state: () => ({
     loading: false,
-    organization: <Nullable<Organization>>null,
+    organization: <Nullable<OrganizationFull>>null,
   }),
   actions: {
     async loadOrganization() {

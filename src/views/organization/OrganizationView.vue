@@ -23,8 +23,9 @@ const userStore = useUserStore();
 const organization: Organization = {
   id: 'org_id',
   name: 'sample name',
-  refreshIntervalSec: 100,
   countryCode: 'cl',
+  rut: null,
+  billingEmail: null,
 };
 
 const member1: User = {

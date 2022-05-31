@@ -43,7 +43,9 @@ describe('NavBar', () => {
         email: 'email',
         name: 'userName',
         lastName: 'last-name',
-        organizations: [{ id: 'orgId', name: 'orgName', refreshIntervalSec: 18000 }],
+        organizations: [{
+          id: 'orgId', name: 'orgName', countryCode: 'cl', rut: null, billingEmail: null,
+        }],
         defaultOrganizationId: 'orgId',
       };
     });

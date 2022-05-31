@@ -1,15 +1,18 @@
+import { Nullable } from '@/interfaces/common';
 import { OrganizationProduct } from './organizationProduct';
 
 export interface Organization {
   id: string
   name: string
-  refreshIntervalSec: number
   countryCode: string
-  rut?: string
-  billingEmail?: string
-  technicalEmail?: string
-  isPayingCustomer?: boolean
-  freeTrialExpirationDate?: string
-  refreshPolicies?: Array<string>
-  organizationProducts?: Array<OrganizationProduct>
+  rut: Nullable<string>
+  billingEmail: Nullable<string>
+}
+
+export interface OrganizationFull extends Organization {
+  freeTrialExpirationDate: string
+  isPayingCustomer: boolean
+  refreshPolicies: Array<string>
+  organizationProducts: Array<OrganizationProduct>
+  technicalEmail: Nullable<string>
 }
