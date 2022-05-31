@@ -166,7 +166,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <div class="break-normal border p-5 space-y-12 bg-white rounded-lg drop-shadow">
+      <div class="break-normal border p-5 bg-white rounded-lg drop-shadow min-w-sm min-h-lg">
         <ProductsSection />
       </div>
     </div>

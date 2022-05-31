@@ -70,6 +70,7 @@ module.exports = {
       minHeight: {
         2.5: '0.625rem',
         4.5: '1.1125rem',
+        lg: '34rem',
       },
       zIndex: {
         1: '1',
