@@ -66,6 +66,7 @@ const routes: RouteRecordRaw[] = [
     path: DETAILED_WEBHOOK_ENDPOINT_VIEW,
     component: DetailedWebhookEndpointView,
   },
+  { path: '/:pathMatch(.*)*', redirect: () => ({ path: LINKS_ROUTE }) },
 ];
 
 const router = createRouter({
