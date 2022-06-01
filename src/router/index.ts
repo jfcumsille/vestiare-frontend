@@ -26,6 +26,7 @@ import {
   skipLogInIfAlreadyLoggedIn,
   skipSignUpIfAlreadyLoggedIn,
   skipResetPasswordIfAlreadyLoggedIn,
+  removeTrailingSlash,
 } from './guards';
 import { handleAuth0RedirectCallback } from './handlers';
 
@@ -74,6 +75,7 @@ const router = createRouter({
 
 enableLoader(router);
 
+router.beforeEach(removeTrailingSlash);
 router.beforeEach(loadUser);
 router.beforeEach(loginRequired);
 

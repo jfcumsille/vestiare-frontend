@@ -1,4 +1,4 @@
-import { RouteLocationNormalized } from 'vue-router';
+import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { getAuth0Client } from '@/services/auth0';
 import { storeRedirection } from '@/services/redirections';
@@ -10,6 +10,12 @@ import {
   OAUTH_LOGIN_ROUTE,
   OAUTH_SIGNUP_ROUTE,
 } from '@/constants/router';
+
+export const removeTrailingSlash = (
+  to: RouteLocationNormalized,
+  _: RouteLocationNormalized,
+  next: NavigationGuardNext,
+) => (to.path.endsWith('/') ? next(to.path.replace(/\/$/, '')) : next());
 
 const tryToLoadUserWithNoError = async () => {
   const auth0 = await getAuth0Client();
