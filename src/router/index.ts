@@ -26,6 +26,7 @@ import {
   skipLogInIfAlreadyLoggedIn,
   skipSignUpIfAlreadyLoggedIn,
   skipResetPasswordIfAlreadyLoggedIn,
+  removeTrailingSlash,
 } from './guards';
 import { handleAuth0RedirectCallback } from './handlers';
 
@@ -65,6 +66,7 @@ const routes: RouteRecordRaw[] = [
     path: DETAILED_WEBHOOK_ENDPOINT_VIEW,
     component: DetailedWebhookEndpointView,
   },
+  { path: '/:pathMatch(.*)*', redirect: () => ({ path: LINKS_ROUTE }) },
 ];
 
 const router = createRouter({
@@ -74,6 +76,7 @@ const router = createRouter({
 
 enableLoader(router);
 
+router.beforeEach(removeTrailingSlash);
 router.beforeEach(loadUser);
 router.beforeEach(loginRequired);
 
