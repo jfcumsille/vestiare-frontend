@@ -153,6 +153,7 @@ onMounted(() => {
                 type="password"
                 :label="$tForms('labels.password')"
                 :placeholder="$tForms('placeholders.password')"
+                autocomplete="off"
               />
             </div>
             <div class="block">
