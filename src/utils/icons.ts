@@ -3,6 +3,7 @@ import { ComponentPublicInstance } from 'vue';
 import Spinner from '@/components/LoadingSpinner.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
 import ChevronDown from '@/assets/svg/ChevronDown.vue';
+import ChevronLeft from '@/assets/svg/ChevronLeft.vue';
 import CrossIcon from '@/assets/svg/CrossIcon.vue';
 import EyeIcon from '@/assets/svg/EyeIcon.vue';
 import EyeClosedIcon from '@/assets/svg/EyeClosedIcon.vue';
@@ -18,6 +19,7 @@ import { Nullable } from '@/interfaces/common';
 export const icons = {
   copy: CopyIcon,
   'chevron-down': ChevronDown,
+  'chevron-left': ChevronLeft,
   cross: CrossIcon,
   menu: MenuIcon,
   'auth-google': GoogleLogo,

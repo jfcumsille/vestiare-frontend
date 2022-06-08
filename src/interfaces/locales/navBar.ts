@@ -6,6 +6,6 @@ export interface NavBarLocale {
   logIn: string,
   getAPIKeys: string,
   organizationName: string,
-  myProfile: string,
-  logOut: string
+  myProfileSettings: string,
+  logOut: string,
 }

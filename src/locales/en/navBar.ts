@@ -8,6 +8,6 @@ export default <NavBarLocale>{
   logIn: 'Log in',
   getAPIKeys: 'Get API Keys',
   organizationName: 'My Organization',
-  myProfile: 'My profile',
+  myProfileSettings: 'My profile',
   logOut: 'Log Out',
 };

@@ -4,6 +4,7 @@ import webhookEndpoints from './webhookEndpoints';
 import logIn from './logIn';
 import signUp from './signUp';
 import resetPassword from './resetPassword';
+import profile from './profile';
 
 export {
   apiKeys,
@@ -12,4 +13,5 @@ export {
   logIn,
   signUp,
   resetPassword,
+  profile,
 };

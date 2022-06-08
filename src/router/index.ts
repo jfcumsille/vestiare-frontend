@@ -10,6 +10,7 @@ import {
   PASSWORD_RESET_ROUTE,
   OAUTH_LOGIN_ROUTE,
   OAUTH_SIGNUP_ROUTE,
+  PROFILE_ROUTE,
 } from '@/constants/router';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
@@ -18,6 +19,7 @@ import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
 import LinksView from '@/views/links/LinksView.vue';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
 import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
+import ProfileView from '@/views/profile/ProfileView.vue';
 
 import { enableLoader, disableLoader } from './loader';
 import {
@@ -66,6 +68,7 @@ const routes: RouteRecordRaw[] = [
     path: DETAILED_WEBHOOK_ENDPOINT_VIEW,
     component: DetailedWebhookEndpointView,
   },
+  { path: PROFILE_ROUTE, component: ProfileView },
   { path: '/:pathMatch(.*)*', redirect: () => ({ path: LINKS_ROUTE }) },
 ];
 

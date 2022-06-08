@@ -4,6 +4,7 @@ export const API_KEYS_ROUTE = '/api-keys';
 export const LINKS_ROUTE = '/links';
 export const WEBHOOK_ENDPOINTS_ROUTE = '/webhook-endpoints';
 export const DETAILED_WEBHOOK_ENDPOINT_VIEW = '/webhook-endpoints/:webhookEndpointId';
+export const PROFILE_ROUTE = '/profile';
 
 // Authentication
 export const LOGIN_ROUTE = '/login';
