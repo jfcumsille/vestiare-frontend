@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ButtonType } from '@/interfaces/utilities/enums';
+import { ButtonType, JustifyType } from '@/interfaces/utilities/enums';
 import GenericButton from './GenericButton.vue';
 
 const props = defineProps<{
-  options: Array<{label: string, action: string, icon?: string}>,
+  options: Array<{label: string, action: string, iconName?: string}>,
 }>();
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -16,7 +16,7 @@ const handleClick = (option: string) => {
 <template>
   <div
     class="
-      absolute mt-6 divide-y
+      absolute mt-6 right-14 items-start
       bg-white rounded-lg drop-shadow-md flex flex-col
     "
   >
@@ -25,8 +25,9 @@ const handleClick = (option: string) => {
       :key="option.label"
       :text="option.label"
       :type="ButtonType.Text"
-      class="bg-white hover:bg-light-gray"
-      icon-name="logout"
+      class="bg-white hover:bg-light-gray capitalize items-start w-full px-5"
+      :icon-name="option.iconName"
+      :justify="JustifyType.Start"
       @click="() => handleClick(option.action)"
     />
   </div>

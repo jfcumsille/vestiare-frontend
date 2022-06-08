@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import router from '@/router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { track } from '@/services/analytics';
 import { USER_LOGGED_OUT } from '@/constants/analyticsEvents';
+import { PROFILE_ROUTE } from '@/constants/router';
 import PersonIcon from '@/assets/svg/PersonIcon.vue';
 import GenericOptionsModal from '@/components/GenericOptionsModal.vue';
 
@@ -22,12 +24,15 @@ const logOut = async () => {
 };
 
 const userMenuOptions = [
-  { label: $t('logOut'), action: 'logout' },
+  { label: $t('myProfileSettings'), action: 'goToMyProfile' },
+  { label: $t('logOut'), action: 'logout', iconName: 'logout' },
 ];
 
 const handleOptionSelected = (value: string) => {
   if (value === 'logout') {
     logOut();
+  } else if (value === 'goToMyProfile') {
+    router.push(PROFILE_ROUTE);
   }
 };
 const dropdownMenu = ref(null);
