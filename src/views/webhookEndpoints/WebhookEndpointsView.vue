@@ -29,18 +29,18 @@ const totalWebhookEndpoints = computed(() => (
   $webhookEndpointsStore.webhookEndpoints
 ));
 
-const resultsPerPage = ref(10);
+const pageSize = ref(10);
 const currentPage = ref(1);
 
 const webhookEndpoints = computed(() => {
-  const start = ((currentPage.value - 1) * resultsPerPage.value);
-  const end = currentPage.value * resultsPerPage.value;
+  const start = ((currentPage.value - 1) * pageSize.value);
+  const end = currentPage.value * pageSize.value;
   return totalWebhookEndpoints.value.slice(start, end);
 });
 
-const updateResultsPerPage = (value: number) => {
+const updatePageSize = (value: number) => {
   currentPage.value = 1;
-  resultsPerPage.value = value;
+  pageSize.value = value;
 };
 
 const updateCurrentPage = (value: number) => {
@@ -119,10 +119,10 @@ onMounted(() => {
           <TablePagination
             :loading="$webhookEndpointsStore.loading"
             :current-page="currentPage"
-            :results-per-page="resultsPerPage"
+            :page-size="pageSize"
             :total-results="Object.keys(totalWebhookEndpoints).length"
             :result-item-text="$t('title')"
-            @update-results-per-page="updateResultsPerPage"
+            @update-page-size="updatePageSize"
             @update-page="updateCurrentPage"
           />
         </template>

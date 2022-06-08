@@ -20,3 +20,9 @@ export interface Link {
 export interface CompleteLink extends Link {
   linkToken: string
 }
+
+export interface LinkFilter {
+  active?: boolean
+  preventRefresh?: boolean
+  rut?: string
+}

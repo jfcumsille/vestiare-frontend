@@ -25,8 +25,8 @@ const filtersAmount = computed(() => {
 });
 
 const title = computed(() => {
-  const amountText = `(${filtersAmount.value})`;
   if (filtersAmount.value > 0) {
+    const amountText = `(${filtersAmount.value})`;
     return `${props.label} ${amountText}`;
   }
   return props.label;

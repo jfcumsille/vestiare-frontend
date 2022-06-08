@@ -1,11 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import TableHeader from '@/components/table/TableHeader.vue';
 import TableFilter from '@/components/table/utils/TableFilter.vue';
 
-describe('TableHead', () => {
-  it('renders TableHeader in slot when passed TableHeader', () => {
-    const wrapper = mount(TableHeader, {
+describe('TableHeader', () => {
+  it('renders TableFilter in slot when passed TableFilter', () => {
+    const wrapper = shallowMount(TableHeader, {
       slots: {
         default: [TableFilter],
       },

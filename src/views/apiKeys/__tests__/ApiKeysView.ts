@@ -103,6 +103,7 @@ describe('ApiKeysView', () => {
     });
     it('should show live keys when mode is live', async () => {
       const wrapper = getWrapper();
+
       const apiKeyTableElements = wrapper.findAllComponents(ApiKeysTableRow);
       expect(apiKeyTableElements.length).toBe(2);
       apiKeyTableElements.forEach((apiKeyTableElement) => {

@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
-import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
-import { Link } from '@/interfaces/entities/links';
-import {
-  CountryCode, Product, ButtonType, Mode,
-} from '@/interfaces/utilities/enums';
+import { Link, LinkFilter } from '@/interfaces/entities/links';
+import { Product, ButtonType } from '@/interfaces/utilities/enums';
+import { Json } from '@/interfaces/utilities/json';
 import * as api from '@/api';
 import { LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_LINKS } from '@/constants/urls';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
+import TablePagination from '@/components/table/TablePagination.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import SearchBar from '@/components/SearchBar.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
@@ -21,19 +20,14 @@ import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinksTableHead from '@/views/links/components/LinksTableHead.vue';
 import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
 import { useConfigStore } from '@/stores/config';
-import { filterByFilters } from '@/utils/table';
 
 const $t = useTranslation('views.links');
 
 const linksStore = useLinksStore();
 const configStore = useConfigStore();
+const mode = computed(() => configStore.mode);
 
-const live = computed(() => configStore.mode === Mode.Live);
-
-const linkCreationButtonText = computed(() => {
-  const mode = live.value ? 'Live' : 'Test';
-  return `${$t('createLinkModal.create')} ${mode} Link`;
-});
+const linkCreationButtonText = computed(() => `${$t('createLinkModal.create')} ${mode.value} Link`);
 
 const isCreateLinkOpened = ref(false);
 const setCreateLinkOpened = (value: boolean) => {
@@ -67,48 +61,43 @@ const stopShowingLink = () => {
 };
 
 const links = computed(() => linksStore.links);
+const total = computed(() => linksStore.total);
 
-const filters = ref<Record<string, Array<boolean>>>({});
-const updateFilterValues = (filterValues: Record<string, Array<boolean>>) => {
-  filters.value = filterValues;
+const pageSize = computed(() => linksStore.pageSize);
+const updatePageSize = (value: number) => {
+  linksStore.updatePageSize(value);
 };
-const filteredByFilters = computed(
-  () => filterByFilters(links.value, filters.value),
-);
+
+const currentPage = computed(() => linksStore.currentPage);
+const updateCurrentPage = (value: number) => {
+  linksStore.updateCurrentPage(value);
+};
 
 const search = ref('');
-const formattedId = (id: string, country: CountryCode) => {
-  if (!id) {
-    return null;
+const headerFilters = ref({});
+
+const updateHeaderFilterValues = (filters: Record<string, unknown>) => {
+  headerFilters.value = filters;
+  const allFilters: LinkFilter = filters;
+  if (search.value.trim() !== '') {
+    allFilters.rut = search.value.trim();
   }
-  if (country === CountryCode.CL) {
-    return rutFormat(id);
-  }
-  return id;
-};
-const linkMatchesSearchId = (link: Link, searchValue: string) => {
-  if (link.holderId?.includes(searchValue)) {
-    return true;
-  }
-  if (link.username?.includes(searchValue)) {
-    return true;
-  }
-  if (formattedId(link.holderId, link.institution.country)?.includes(searchValue)) {
-    return true;
-  }
-  if (formattedId(link.username, link.institution.country)?.includes(searchValue)) {
-    return true;
-  }
-  return false;
-};
-const filterBySearch = (rawLinks: Array<Link>) => {
-  if (search.value.trim() === '') {
-    return rawLinks;
-  }
-  return rawLinks.filter((link) => linkMatchesSearchId(link, search.value.trim()));
+  linksStore.removeLinks();
+  linksStore.loadLinks(allFilters as Json);
 };
 
-const filteredLinks = computed(() => filterBySearch(filteredByFilters.value));
+const filterBySearch = () => {
+  const allFilters: LinkFilter = headerFilters.value;
+  allFilters.rut = search.value.trim();
+  linksStore.removeLinks();
+  linksStore.loadLinks(allFilters as Json);
+};
+
+const paginatedlinks = computed(() => {
+  const start = ((currentPage.value - 1) * pageSize.value);
+  const end = currentPage.value * pageSize.value;
+  return links.value.slice(start, end);
+});
 
 onMounted(() => {
   page(LINKS_VIEWED);
@@ -149,13 +138,23 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex justify-between">
-        <SearchBar
-          v-model="search"
-          :placeholder="$t('table.filters.searchBarPlaceholder')"
-        />
+        <div class="flex flex-row">
+          <SearchBar
+            v-model="search"
+            :placeholder="$t('table.filters.searchBarPlaceholder')"
+          />
+          <GenericButton
+            class="ml-4 capitalize"
+            :type="ButtonType.Secondary"
+            :disabled="search.trim() === ''"
+            icon-name="search"
+            text="Search"
+            @click="filterBySearch"
+          />
+        </div>
         <GenericButton
           data-test="create-link-button"
-          class="ml-4"
+          class="ml-4 capitalize"
           :type="ButtonType.Primary"
           :text="linkCreationButtonText"
           @click="setCreateLinkOpened(true)"
@@ -164,15 +163,26 @@ onMounted(() => {
       <GenericTable class="mt-6">
         <template #head>
           <LinksTableHead
-            @update="updateFilterValues"
+            @update="updateHeaderFilterValues"
           />
         </template>
 
         <template #content>
           <LinksTableRow
-            v-for="link in filteredLinks"
+            v-for="link in paginatedlinks"
             :key="link.id"
             :link="link"
+          />
+        </template>
+        <template #pagination>
+          <TablePagination
+            :loading="linksStore.loading"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total-results="total"
+            :result-item-text="$t('title')"
+            @update-page-size="updatePageSize"
+            @update-page="updateCurrentPage"
           />
         </template>
       </GenericTable>
@@ -184,7 +194,7 @@ onMounted(() => {
       <LoadingSpinner />
     </div>
     <div
-      v-if="!filteredLinks.length && !linksStore.loading"
+      v-if="!links.length && !linksStore.loading"
       class="flex justify-center w-full pt-4"
     >
       <p class="text-heading-color text-3xl font-bold">

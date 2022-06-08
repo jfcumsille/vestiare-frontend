@@ -1,55 +1,64 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useTranslation } from '@/locales';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import GenericButton from '@/components/GenericButton.vue';
-import { ButtonType } from '@/interfaces/utilities/enums';
-import { useTranslation } from '@/locales';
 
 const props = defineProps<{
   loading: boolean,
   currentPage: number,
-  resultsPerPage: number,
+  pageSize: number,
   totalResults: number,
   resultItemText: string,
 }>();
 
 const emit = defineEmits<{
-  (e: 'updateResultsPerPage', amount: number): void,
+  (e: 'updatePageSize', amount: number): void,
   (e: 'updatePage', amount: number): void,
 }>();
 
 const $t = useTranslation('table.pagination');
 
 const numberOfPages = computed(() => {
-  let quot = Math.trunc(props.totalResults / props.resultsPerPage);
-  const rem = props.totalResults % props.resultsPerPage;
+  let quot = Math.trunc(props.totalResults / props.pageSize);
+  const rem = props.totalResults % props.pageSize;
   if (rem > 0) {
     quot += 1;
   }
   return quot;
 });
 
-const showFirstPage = computed(() => props.currentPage !== 1);
-
-const showLastPage = computed(() => (
-  props.currentPage !== numberOfPages.value && numberOfPages.value !== 0
+const isFirstPage = computed(() => props.currentPage === 1);
+const isLastPage = computed(() => props.currentPage === numberOfPages.value);
+const showLastPageNumber = computed(() => !isLastPage.value && numberOfPages.value !== 0);
+const isLeftPageNextToCurrentPage = computed(() => props.currentPage - 1 !== 1);
+const isRightPageNextToCurrentPage = computed(() => (
+  props.currentPage + 1 !== numberOfPages.value
 ));
+const disableNextPage = computed(() => isLastPage.value || props.loading);
 
-const resultsAmounts = [10, 20, 30, 40, 50, 75, 100];
+const pageSizeOptions = ['10', '20', '30', '40', '50', '75', '100'];
 
-const selectResultAmount = (amount: number) => {
-  emit('updateResultsPerPage', amount);
+const selectResultAmount = (amount: string) => {
+  emit('updatePageSize', Number(amount));
 };
 
 const updatePage = (amount: number) => {
   emit('updatePage', amount);
 };
 
-const disableNextPage = computed(() => (
-  numberOfPages.value === props.currentPage || props.loading
-));
+const goToPreviousPage = () => {
+  updatePage(-1);
+};
 
-const disablePreviousPage = computed(() => props.currentPage === 1);
+const goToNextPage = () => {
+  updatePage(1);
+};
+
+const goToFirstPage = () => {
+  updatePage(-props.currentPage + 1);
+};
 
 const linksText = computed(() => (
   (props.totalResults === 1) ? props.resultItemText.slice(0, -1) : props.resultItemText
@@ -61,8 +70,8 @@ const linksText = computed(() => (
     <div class="flex flex-row space-x-3 items-center">
       <GenericDropDown
         label="Show"
-        :selected="props.resultsPerPage.toString()"
-        :options="resultsAmounts"
+        :selected="props.pageSize.toString()"
+        :options="pageSizeOptions"
         @select="selectResultAmount"
       />
       <div
@@ -73,19 +82,20 @@ const linksText = computed(() => (
     </div>
     <div class="flex flex-row items-center">
       <GenericButton
+        class="rotate-180"
         :type="ButtonType.Text"
-        :disabled="disablePreviousPage"
-        icon-name="chevron-left"
-        @click="() => updatePage(-1)"
+        :disabled="isFirstPage"
+        icon-name="chevron"
+        @click="goToPreviousPage"
       />
       <GenericButton
-        v-if="showFirstPage"
+        v-if="!isFirstPage"
         :type="ButtonType.Text"
         text="1"
-        @click="() => updatePage(-props.currentPage + 1)"
+        @click="goToFirstPage"
       />
       <p
-        v-if="showFirstPage"
+        v-if="!isFirstPage && isLeftPageNextToCurrentPage"
         class="py-2 leading-tight text-primary-main"
       >
         ...
@@ -96,22 +106,22 @@ const linksText = computed(() => (
         {{ currentPage }}
       </div>
       <p
-        v-if="showLastPage"
+        v-if="showLastPageNumber && isRightPageNextToCurrentPage"
         class="py-2 leading-tight text-primary-main"
       >
         ...
       </p>
-      <GenericButton
-        v-if="showLastPage"
-        :type="ButtonType.Text"
-        :text="numberOfPages.toString()"
-        @click="() => updatePage(numberOfPages - props.currentPage)"
-      />
+      <div
+        v-if="showLastPageNumber"
+        class="z-10 py-2 px-3 leading-tight text-primary-main"
+      >
+        {{ numberOfPages.toString() }}
+      </div>
       <GenericButton
         :type="ButtonType.Text"
         :disabled="disableNextPage"
-        icon-name="chevron-right"
-        @click="() => updatePage(1)"
+        icon-name="chevron"
+        @click="goToNextPage"
       />
     </div>
   </div>

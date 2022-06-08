@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useConfigStore } from '@/stores/config';
 import { useTranslation } from '@/locales';
 import { Mode } from '@/interfaces/utilities/enums';
-import ChevronDown from '@/assets/svg/ChevronDown.vue';
+import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 
 const $t = useTranslation('sideBar');
 
@@ -59,9 +59,9 @@ onClickOutside(modeDropdown, () => {
           {{ isLive ? 'Live' : 'Test' }}
         </div>
         <div>
-          <ChevronDown
-            class="mt-1 ml-1.5 w-4 h-4"
-            :class="{'rotate-180': optionsOpened}"
+          <ChevronIcon
+            class="mt-1 ml-1.5 w-4 h-4 rotate-90"
+            :class="{'-rotate-90': optionsOpened}"
           />
         </div>
       </div>
