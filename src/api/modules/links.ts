@@ -6,9 +6,9 @@ export const BASE_PATH = '/internal/v1/links/dashboard';
 
 export const list = async (
   params: Json = {},
-): Promise<Array<Link>> => {
+): Promise<{total: number, links: Array<Link>}> => {
   const response = await client.get(BASE_PATH, { params });
-  return response.data;
+  return { total: Number(response.headers['x-total-count']), links: response.data };
 };
 
 export const update = async (
