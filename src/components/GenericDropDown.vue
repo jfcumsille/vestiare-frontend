@@ -9,8 +9,10 @@ const props = withDefaults(defineProps<{
   options: Array<string>,
   textPrefix?: string,
   isWidthFull?: boolean,
+  isCapitalizeOptions?: boolean,
 }>(), {
   isWidthFull: false,
+  isCapitalizeOptions: true,
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -42,6 +44,7 @@ const title = computed(() => {
 });
 
 const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
+const capitalize = computed(() => (props.isCapitalizeOptions ? 'capitalize' : ''));
 </script>
 
 <template>
@@ -54,7 +57,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
       data-test="label"
       class="
           absolute left-0 -mt-3 px-1 mx-2 pointer-events-none
-          text-sm text-placeholder-color bg-white
+          text-sm text-placeholder-color bg-white capitalize
         "
     >
       {{ props.label }}
@@ -64,8 +67,8 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
       :class="`
         flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
         disabled:bg-light-gray disabled:text-disabled-color
-        border-1.5 border-border-color text-sm capitalize
-        text-body-color ${width}`
+        border-1.5 border-border-color text-sm
+        text-body-color ${width} ${capitalize}`
       "
       @click="toggle"
     >
@@ -78,7 +81,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
       data-test="drop-down-list"
       class="
         absolute z-10 text-base list-none bg-white cursor-pointer mt-1 w-full
-        divide-y divide-divider-color shadow-lg rounded-lg capitalize
+        divide-y divide-divider-color shadow-lg rounded-lg
       "
       :class="{ 'hidden': !opened }"
     >
@@ -88,11 +91,12 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
           :key="option"
         >
           <span
-            class="
+            :class="`
               block py-2 px-4 text-sm bg-white text-body-color font-medium
               focus:bg-primary-surface focus:text-primary-main
               hover:bg-primary-surface hover:text-primary-hover
               active:bg-primary-border active:text-primary-main
+              ${capitalize}`
             "
             @click="() => select(option)"
           >
