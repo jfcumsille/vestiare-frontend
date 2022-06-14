@@ -1,5 +1,6 @@
 export interface LinksViewLocale {
-  title: string,
+  title_one: string,
+  title_other: string,
   learnMore: string,
   createLinkModal: {
     create: string,

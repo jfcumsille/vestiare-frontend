@@ -14,19 +14,13 @@ const props = defineProps<{
 
 const emit = defineEmits<{(e: 'apply'): void }>();
 
-const filtersAmount = computed(() => {
-  let total = 0;
-  props.filters.forEach((filter) => {
-    if (!filter.checked) {
-      total += 1;
-    }
-  });
-  return total;
-});
+const filterValuesSelectedTotal = computed(() => (
+  props.filters.filter((filter) => !filter.checked).length
+));
 
 const title = computed(() => {
-  if (filtersAmount.value > 0) {
-    const amountText = `(${filtersAmount.value})`;
+  if (filterValuesSelectedTotal.value > 0) {
+    const amountText = `(${filterValuesSelectedTotal.value})`;
     return `${props.label} ${amountText}`;
   }
   return props.label;

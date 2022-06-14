@@ -5,7 +5,6 @@ import { useLinksStore } from '@/stores/links';
 import { Nullable } from '@/interfaces/common';
 import { Link, LinkFilter } from '@/interfaces/entities/links';
 import { Product, ButtonType } from '@/interfaces/utilities/enums';
-import { Json } from '@/interfaces/utilities/json';
 import * as api from '@/api';
 import { LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_LINKS } from '@/constants/urls';
@@ -25,9 +24,8 @@ const $t = useTranslation('views.links');
 
 const linksStore = useLinksStore();
 const configStore = useConfigStore();
-const mode = computed(() => configStore.mode);
 
-const linkCreationButtonText = computed(() => `${$t('createLinkModal.create')} ${mode.value} Link`);
+const linkCreationButtonText = computed(() => `${$t('createLinkModal.create')} ${configStore.mode} Link`);
 
 const isCreateLinkOpened = ref(false);
 const setCreateLinkOpened = (value: boolean) => {
@@ -50,7 +48,7 @@ const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
   loading.value = true;
   trackLinkCreated(link, product);
-  linksStore.loadLinks();
+  linksStore.reloadLinks();
   const regeneratedLink = await api.links.regenerate(link.id);
   createdLinkToken.value = regeneratedLink.linkToken;
   loading.value = false;
@@ -60,44 +58,20 @@ const stopShowingLink = () => {
   createdLinkToken.value = null;
 };
 
-const links = computed(() => linksStore.links);
-const total = computed(() => linksStore.total);
-
-const pageSize = computed(() => linksStore.pageSize);
-const updatePageSize = (value: number) => {
-  linksStore.updatePageSize(value);
-};
-
-const currentPage = computed(() => linksStore.currentPage);
-const updateCurrentPage = (value: number) => {
-  linksStore.updateCurrentPage(value);
-};
-
 const search = ref('');
-const headerFilters = ref({});
+const filterBySearch = () => {
+  const allFilters: LinkFilter = linksStore.allFilters;
+  allFilters.rut = search.value.trim();
+  linksStore.updateFilters(allFilters);
+};
 
 const updateHeaderFilterValues = (filters: Record<string, unknown>) => {
-  headerFilters.value = filters;
   const allFilters: LinkFilter = filters;
   if (search.value.trim() !== '') {
     allFilters.rut = search.value.trim();
   }
-  linksStore.removeLinks();
-  linksStore.loadLinks(allFilters as Json);
+  linksStore.updateFilters(allFilters);
 };
-
-const filterBySearch = () => {
-  const allFilters: LinkFilter = headerFilters.value;
-  allFilters.rut = search.value.trim();
-  linksStore.removeLinks();
-  linksStore.loadLinks(allFilters as Json);
-};
-
-const paginatedlinks = computed(() => {
-  const start = ((currentPage.value - 1) * pageSize.value);
-  const end = currentPage.value * pageSize.value;
-  return links.value.slice(start, end);
-});
 
 onMounted(() => {
   page(LINKS_VIEWED);
@@ -125,7 +99,7 @@ onMounted(() => {
     <div class="flex flex-col w-full">
       <div>
         <div class="font-medium text-2xl text-heading-color self-start">
-          {{ $t('title') }}
+          {{ $t('title_other') }}
         </div>
         <div class="flex flex-row justify-between items-center py-2 self-start">
           <a
@@ -169,7 +143,7 @@ onMounted(() => {
 
         <template #content>
           <LinksTableRow
-            v-for="link in paginatedlinks"
+            v-for="link in linksStore.paginatedlinks"
             :key="link.id"
             :link="link"
           />
@@ -177,12 +151,12 @@ onMounted(() => {
         <template #pagination>
           <TablePagination
             :loading="linksStore.loading"
-            :current-page="currentPage"
-            :page-size="pageSize"
-            :total-results="total"
-            :result-item-text="$t('title')"
-            @update-page-size="updatePageSize"
-            @update-page="updateCurrentPage"
+            :current-page="linksStore.currentPage"
+            :page-size="linksStore.pageSize"
+            :total-results="linksStore.total"
+            :result-item-text="$t('title', { count: linksStore.total})"
+            @update-page-size="linksStore.updatePageSize"
+            @change-page-by="linksStore.changeCurrentPageBy"
           />
         </template>
       </GenericTable>
@@ -194,7 +168,7 @@ onMounted(() => {
       <LoadingSpinner />
     </div>
     <div
-      v-if="!links.length && !linksStore.loading"
+      v-if="!linksStore.links.length && !linksStore.loading"
       class="flex justify-center w-full pt-4"
     >
       <p class="text-heading-color text-3xl font-bold">

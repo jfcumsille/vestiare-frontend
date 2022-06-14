@@ -41,21 +41,24 @@ const openDetailedView = () => {
 </script>
 
 <template>
-  <TableRow
-    class="cursor-pointer"
-    @click="openDetailedView"
-  >
-    <TableData>
+  <TableRow class="cursor-pointer">
+    <TableData
+      @click="openDetailedView"
+    >
       <TableLabel
         :label="props.webhookEndpoint.url"
       />
     </TableData>
-    <TableData>
+    <TableData
+      @click="openDetailedView"
+    >
       <TableLabel
         :label="props.webhookEndpoint.description"
       />
     </TableData>
-    <TableData>
+    <TableData
+      @click="openDetailedView"
+    >
       <TableLabel
         :label="props.webhookEndpoint.enabledEvents.length.toString()"
       />

@@ -1,7 +1,8 @@
 import { WebhookEndpointsViewLocale } from '@/interfaces/locales/views/webhookEndpoints';
 
 export default <WebhookEndpointsViewLocale>{
-  title: 'Webhook Endpoints',
+  title_one: 'Webhook Endpoint',
+  title_other: 'Webhook Endpoints',
   learnMore: 'Learn more →',
   subtitle: `
     A webhook is a mechanism that allows us to notify to your server about a specific action that took place on

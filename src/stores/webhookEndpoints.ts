@@ -71,6 +71,9 @@ export const useWebhookEndpointsStore = defineStore('webhookEndpoints', {
     getById: (state) => (id: string) => state.allWebhookEndpoints.find(
       (webhookEndpoint) => webhookEndpoint.id === id,
     ),
+    total(): number {
+      return this.webhookEndpoints.length;
+    },
   },
 });
 

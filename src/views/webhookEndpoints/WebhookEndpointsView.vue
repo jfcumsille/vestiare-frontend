@@ -4,6 +4,7 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_WEBHOOKS } from '@/constants/urls';
+import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { page, trackModal } from '@/services/analytics';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -17,7 +18,7 @@ import NoWebhookEndpointsContent from '@/views/webhookEndpoints/components/noWeb
 
 const $t = useTranslation('views.webhookEndpoints');
 
-const $webhookEndpointsStore = useWebhookEndpointsStore();
+const webhookEndpointsStore = useWebhookEndpointsStore();
 
 const modalOpened = ref(false);
 const setModalOpened = (value: boolean) => {
@@ -25,17 +26,13 @@ const setModalOpened = (value: boolean) => {
   trackModal(value, 'webhook_endpoints', 'create');
 };
 
-const totalWebhookEndpoints = computed(() => (
-  $webhookEndpointsStore.webhookEndpoints
-));
-
-const pageSize = ref(10);
+const pageSize = ref(DEFAULT_PAGE_SIZE);
 const currentPage = ref(1);
 
 const webhookEndpoints = computed(() => {
   const start = ((currentPage.value - 1) * pageSize.value);
   const end = currentPage.value * pageSize.value;
-  return totalWebhookEndpoints.value.slice(start, end);
+  return webhookEndpointsStore.webhookEndpoints.slice(start, end);
 });
 
 const updatePageSize = (value: number) => {
@@ -43,7 +40,7 @@ const updatePageSize = (value: number) => {
   pageSize.value = value;
 };
 
-const updateCurrentPage = (value: number) => {
+const changeCurrentPageBy = (value: number) => {
   currentPage.value += value;
 };
 
@@ -64,7 +61,7 @@ onMounted(() => {
     <div class="w-full">
       <div class="flex justify-between">
         <div class="font-medium text-2xl text-heading-color self-start">
-          {{ $t('title') }}
+          {{ $t('title_other') }}
         </div>
         <GenericButton
           data-test="webhook-create-button"
@@ -78,7 +75,7 @@ onMounted(() => {
       </div>
       <div class="flex justify-between mt-2">
         <div
-          v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
+          v-if="!webhookEndpoints.length && !webhookEndpointsStore.loading"
           class="text-body-color font-normal max-w-3xl"
         >
           {{ $t('subtitle') }}
@@ -117,25 +114,25 @@ onMounted(() => {
         </template>
         <template #pagination>
           <TablePagination
-            :loading="$webhookEndpointsStore.loading"
+            :loading="webhookEndpointsStore.loading"
             :current-page="currentPage"
             :page-size="pageSize"
-            :total-results="Object.keys(totalWebhookEndpoints).length"
-            :result-item-text="$t('title')"
+            :total-results="webhookEndpointsStore.total"
+            :result-item-text="$t('title', { count: webhookEndpointsStore.total})"
             @update-page-size="updatePageSize"
-            @update-page="updateCurrentPage"
+            @change-page-by="changeCurrentPageBy"
           />
         </template>
       </GenericTable>
     </div>
     <div
-      v-if="$webhookEndpointsStore.loading"
+      v-if="webhookEndpointsStore.loading"
       class="flex justify-center w-full pt-4"
     >
       <LoadingSpinner />
     </div>
     <NoWebhookEndpointsContent
-      v-if="!webhookEndpoints.length && !$webhookEndpointsStore.loading"
+      v-if="!webhookEndpoints.length && !webhookEndpointsStore.loading"
     />
   </div>
 </template>

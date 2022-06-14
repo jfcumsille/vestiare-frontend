@@ -47,8 +47,7 @@ watch(() => $userStore.authenticated, () => {
 const configStore = useConfigStore();
 watch(() => configStore.mode, () => {
   if ($userStore.authenticated) {
-    $linksStore.removeLinks();
-    $linksStore.loadLinks();
+    $linksStore.reloadLinks();
   }
 });
 </script>

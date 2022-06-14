@@ -1,5 +1,6 @@
 export interface WebhookEndpointsViewLocale {
-  title: string,
+  title_one: string,
+  title_other: string,
   learnMore: string,
   subtitle: string,
   whatisAWebhookEndpoint: string,

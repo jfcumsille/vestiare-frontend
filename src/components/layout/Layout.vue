@@ -31,7 +31,8 @@ const shouldDisplayBackButton = computed(() => [PROFILE_ROUTE].includes(route.pa
         class="pt-10 pl-20"
       >
         <GenericButton
-          icon-name="chevron-left"
+          class="rotate-180"
+          icon-name="chevron"
           :type="ButtonType.Secondary"
           @click="router.go(-1)"
         />

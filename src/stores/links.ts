@@ -1,7 +1,8 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { Link } from '@/interfaces/entities/links';
+import { Link, LinkFilter } from '@/interfaces/entities/links';
 import { Json } from '@/interfaces/utilities/json';
+import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { useConfigStore } from './config';
 
 export const useLinksStore = defineStore('links', {
@@ -9,13 +10,14 @@ export const useLinksStore = defineStore('links', {
     links: <Array<Link>>[],
     remainingLinks: -1,
     total: 0,
-    pageSize: 30,
+    pageSize: DEFAULT_PAGE_SIZE,
     currentPage: 1,
     backendPage: 1,
     loading: true,
+    allFilters: {},
   }),
   actions: {
-    async loadLinks(params: Json = {}) {
+    async loadLinks() {
       this.loading = true;
       const configStore = useConfigStore();
       const mode = configStore.mode;
@@ -23,12 +25,10 @@ export const useLinksStore = defineStore('links', {
       const perPage = 100;
 
       const result = await api.links.list({
-        ...params, page, mode, perPage,
+        ...this.allFilters, page, mode, perPage,
       });
-      if (result !== undefined) {
-        this.links = [...this.links, ...result.links];
-        this.total = result.total;
-      }
+      this.links = [...this.links, ...result.links];
+      this.total = result.total;
       this.loading = false;
     },
     async updateLink(link: Link, data: Json) {
@@ -45,10 +45,9 @@ export const useLinksStore = defineStore('links', {
       }
       const index = this.links.indexOf(link);
       await api.links.remove(link.id);
-      this.links = [
-        ...this.links.slice(0, index),
-        ...this.links.slice(index + 1),
-      ];
+      this.links.splice(index, 1);
+      this.total -= 1;
+      this.updateRemainingLinks();
     },
     removeLinks() {
       this.links = [];
@@ -57,21 +56,21 @@ export const useLinksStore = defineStore('links', {
       this.currentPage = 1;
       this.backendPage = 1;
     },
+    reloadLinks() {
+      this.removeLinks();
+      this.loadLinks();
+    },
+    updateFilters(filters: LinkFilter) {
+      this.allFilters = filters;
+      this.reloadLinks();
+    },
     updateRemainingLinks() {
-      let resultsSeen = 0;
-      if (this.links.length < this.total) {
-        resultsSeen = this.currentPage * this.pageSize;
-      } else {
-        const last = this.links[this.links.length - 1];
-        resultsSeen = this.links.indexOf(last) + 1;
-      }
+      const resultsSeen = this.links.length < this.total
+        ? this.currentPage * this.pageSize : this.links.length;
       this.remainingLinks = this.links.length - resultsSeen;
       this.loadMoreLinksIfNecessary();
     },
-    updateBackendPage() {
-      this.backendPage += 1;
-    },
-    updateCurrentPage(value: number) {
+    changeCurrentPageBy(value: number) {
       this.currentPage += value;
       this.updateRemainingLinks();
     },
@@ -82,9 +81,16 @@ export const useLinksStore = defineStore('links', {
     },
     loadMoreLinksIfNecessary() {
       if (this.remainingLinks < this.pageSize && this.links.length < this.total) {
-        this.updateBackendPage();
+        this.backendPage += 1;
         this.loadLinks();
       }
+    },
+  },
+  getters: {
+    paginatedlinks: (state) => {
+      const start = ((state.currentPage - 1) * state.pageSize);
+      const end = state.currentPage * state.pageSize;
+      return state.links.slice(start, end);
     },
   },
 });

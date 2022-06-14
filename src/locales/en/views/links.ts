@@ -1,7 +1,8 @@
 import { LinksViewLocale } from '@/interfaces/locales/views/links';
 
 export default <LinksViewLocale>{
-  title: 'Links',
+  title_one: 'Link',
+  title_other: 'Links',
   learnMore: 'Learn more about Fintoc Links →',
   createLinkModal: {
     create: 'Create',
