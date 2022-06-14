@@ -62,6 +62,7 @@ const close = () => {
         :is-width-full="true"
         :label="$t('event')"
         :options="props.webhookEndpoint.enabledEvents"
+        :is-capitalize-options="false"
         :selected="selectedEvent"
         @select="selectEvent"
       />
