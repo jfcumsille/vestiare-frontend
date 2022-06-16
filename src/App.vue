@@ -9,6 +9,7 @@ import { identify } from '@/services/analytics';
 import Hotjar from '@/assets/javascripts/hotjar';
 import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
 import Layout from '@/components/layout/Layout.vue';
+import { useConfigStore } from '@/stores/config';
 
 import '@/assets/javascripts/segment';
 
@@ -40,6 +41,13 @@ const loadUserData = () => {
 watch(() => $userStore.authenticated, () => {
   if ($userStore.authenticated) {
     loadUserData();
+  }
+});
+
+const configStore = useConfigStore();
+watch(() => configStore.mode, () => {
+  if ($userStore.authenticated) {
+    $linksStore.reloadLinks();
   }
 });
 </script>

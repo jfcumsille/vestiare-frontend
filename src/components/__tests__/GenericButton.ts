@@ -7,7 +7,7 @@ import {
 import { ButtonType, SizeType, HorizontalPositionType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
-import ChevronDown from '@/assets/svg/ChevronDown.vue';
+import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 import CrossIcon from '@/assets/svg/CrossIcon.vue';
 import EyeIcon from '@/assets/svg/EyeIcon.vue';
 import EyeClosedIcon from '@/assets/svg/EyeClosedIcon.vue';
@@ -25,7 +25,7 @@ describe('GenericButton', () => {
 
   const buttonIcons = {
     copy: CopyIcon,
-    'chevron-down': ChevronDown,
+    chevron: ChevronIcon,
     cross: CrossIcon,
     menu: MenuIcon,
     'auth-google': GoogleLogo,

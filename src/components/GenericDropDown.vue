@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import ChevronDown from '@/assets/svg/ChevronDown.vue';
+import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 
 const props = withDefaults(defineProps<{
   label?: string,
@@ -73,8 +73,8 @@ const capitalize = computed(() => (props.isCapitalizeOptions ? 'capitalize' : ''
       @click="toggle"
     >
       <div> {{ title }} </div>
-      <ChevronDown
-        class="ml-1.5 text-placeholder-color w-4 h-4"
+      <ChevronIcon
+        class="ml-1.5 text-placeholder-color w-4 h-4 rotate-90"
       />
     </button>
     <div

@@ -11,7 +11,7 @@ import { Mode } from '@/interfaces/utilities/enums';
 import { WEBHOOK_ENDPOINT_DELETED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
-import WebhookEndpointsTableElement from '@/views/webhookEndpoints/components/WebhookEndpointsTableElement.vue';
+import WebhookEndpointsTableRow from '@/views/webhookEndpoints/components/WebhookEndpointsTableRow.vue';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
@@ -27,8 +27,9 @@ const getWrapper = () => {
     secret: 'secret',
     status: 'status',
     url: 'https://url.com',
+    name: 'name',
   };
-  const wrapper = mount(WebhookEndpointsTableElement, {
+  const wrapper = mount(WebhookEndpointsTableRow, {
     global: {
       plugins: [testingPinia, router],
     },
@@ -39,7 +40,7 @@ const getWrapper = () => {
   return wrapper;
 };
 
-describe('WebhookEndpointsTableElement', () => {
+describe('WebhookEndpointsTableRow', () => {
   beforeAll(() => {
     const { restore } = mockCrypto();
 

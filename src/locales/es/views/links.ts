@@ -1,27 +1,9 @@
 import { LinksViewLocale } from '@/interfaces/locales/views/links';
 
 export default <LinksViewLocale>{
-  title: 'Links',
+  title_one: 'Link',
+  title_other: 'Links',
   learnMore: 'Aprende más sobre los Links de Fintoc →',
-  filters: {
-    searchBarPlaceholder: 'Buscar por ID de usuario',
-    active: {
-      label: 'Activo',
-      options: {
-        all: 'Todos',
-        valid: 'Activo',
-        invalid: 'Inactivo',
-      },
-    },
-    password: {
-      label: 'Contraseña',
-      options: {
-        all: 'Todos',
-        valid: 'Válido',
-        invalid: 'Inválido',
-      },
-    },
-  },
   createLinkModal: {
     create: 'Crear',
     subtitleTest: 'Crea un Link con credenciales de prueba para obtener información de cuentas bancarias o fiscales desde el sandbox.',
@@ -59,6 +41,23 @@ export default <LinksViewLocale>{
       lastRefreshed: 'Última Actualización',
       password: 'Contraseña',
       active: 'Activo',
+    },
+    filters: {
+      searchBarPlaceholder: 'Buscar por ID de usuario',
+      active: {
+        label: 'Activo',
+        options: {
+          valid: 'Activo',
+          invalid: 'Inactivo',
+        },
+      },
+      password: {
+        label: 'Contraseña',
+        options: {
+          valid: 'Válido',
+          invalid: 'Inválido',
+        },
+      },
     },
     buttons: {
       remove: 'Borrar',

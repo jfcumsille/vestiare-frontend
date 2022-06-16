@@ -12,7 +12,7 @@ const toggle = ($event: Event) => {
 </script>
 
 <template>
-  <div class="flex items-center mb-2">
+  <div class="flex items-center">
     <input
       type="checkbox"
       class="
@@ -20,7 +20,6 @@ const toggle = ($event: Event) => {
         border-primary-border focus:ring-primary-main
       "
       :checked="props.modelValue"
-      v-bind="$attrs"
       @change="toggle"
     >
     <label

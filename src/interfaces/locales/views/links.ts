@@ -1,25 +1,7 @@
 export interface LinksViewLocale {
-  title: string,
+  title_one: string,
+  title_other: string,
   learnMore: string,
-  filters: {
-    searchBarPlaceholder: string,
-    active: {
-      label: string,
-      options: {
-        all: string,
-        valid: string,
-        invalid: string
-      },
-    },
-    password: {
-      label: string,
-      options: {
-        all: string,
-        valid: string,
-        invalid: string
-      },
-    },
-  },
   createLinkModal: {
     create: string,
     subtitleTest: string,
@@ -54,6 +36,23 @@ export interface LinksViewLocale {
       lastRefreshed: string,
       password: string,
       active: string,
+    },
+    filters: {
+      searchBarPlaceholder: string,
+      active: {
+        label: string,
+        options: {
+          valid: string,
+          invalid: string
+        },
+      },
+      password: {
+        label: string,
+        options: {
+          valid: string,
+          invalid: string
+        },
+      },
     },
     buttons: {
       remove: string,

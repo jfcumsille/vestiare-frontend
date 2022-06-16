@@ -9,9 +9,10 @@ import { API_KEYS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_API_KEYS } from '@/constants/urls';
 import { page, trackAPIKeyCreated, trackAPIKeyDeleted } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import GenericTable from '@/components/GenericTable.vue';
-import GenericTableHeader from '@/components/GenericTableHeader.vue';
-import ApiKeysTableElement from './components/ApiKeysTableElement.vue';
+import GenericTable from '@/components/table/GenericTable.vue';
+import TableHead from '@/components/table/TableHead.vue';
+import TableHeader from '@/components/table/TableHeader.vue';
+import ApiKeysTableRow from './components/ApiKeysTableRow.vue';
 
 const $t = useTranslation('views.apiKeys');
 const apiKeysStore = useAPIKeysStore();
@@ -82,22 +83,30 @@ onMounted(() => {
           <GenericTable
             class="grow max-w-screen-xl"
           >
-            <template #header>
-              <GenericTableHeader :headers="headers" />
+            <template #head>
+              <TableHead>
+                <TableHeader
+                  v-for="header in headers"
+                  :key="header"
+                  :header="header"
+                >
+                  <div> {{ header }} </div>
+                </TableHeader>
+              </TableHead>
             </template>
             <template #content>
-              <ApiKeysTableElement
+              <ApiKeysTableRow
                 v-if="publicKey"
                 :key="publicKey.id"
                 :api-key="publicKey"
               />
-              <ApiKeysTableElement
+              <ApiKeysTableRow
                 v-if="secretKey"
                 :key="secretKey.id"
                 :api-key="secretKey"
                 @destroy-api-key="() => destroyAPIKey(secretKey)"
               />
-              <ApiKeysTableElement
+              <ApiKeysTableRow
                 v-if="activationRequired"
                 :key="secretKeyToActivate.id"
                 :api-key="secretKeyToActivate"

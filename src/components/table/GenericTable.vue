@@ -4,7 +4,7 @@
       <div class="inline-block py-2 min-w-full sm:px-6 lg:px-8">
         <div class="overflow-hidden shadow-md sm:rounded-lg">
           <table class="w-full">
-            <slot name="header" />
+            <slot name="head" />
             <tbody>
               <slot name="content" />
             </tbody>
@@ -12,5 +12,6 @@
         </div>
       </div>
     </div>
+    <slot name="pagination" />
   </div>
 </template>
