@@ -1,14 +1,19 @@
 export interface OrganizationViewLocale {
   title: string,
-  table: {
-    headers: {
-      name: string,
-      email: string
-      role: string,
-      memberSince: string,
-      status: string,
-    },
-  },
+  settings: {
+    name: string
+    nameSubLabel: string,
+    organizationRutRfc: string,
+    billingEmail: string,
+    billingSubLabel: string,
+    technicalEmail: string,
+    technicalSubLabel: string,
+    defaultCountryApi: string,
+    defaultCountryApiSubLabel: string,
+    apiVersion: string,
+    apiVersionSubLabel1: string,
+    apiVersionSubLabel2: string,
+  }
   products: {
     title: string,
     subtitle: string,

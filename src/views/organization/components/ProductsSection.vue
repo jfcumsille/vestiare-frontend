@@ -4,6 +4,7 @@ import { useTranslation } from '@/locales';
 import { useOrganizationStore } from '@/stores/organization';
 import { Nullable } from '@/interfaces/common';
 import { HolderType, Product } from '@/interfaces/utilities/enums';
+import { EMAIL_ANDRES } from '@/constants/urls';
 import GenericLabel from '@/components/GenericLabel.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import { icons } from '@/utils/icons';
@@ -68,7 +69,7 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
   </div>
   <div
     v-else
-    class="space-y-12 "
+    class="space-y-6"
   >
     <GenericLabel
       :label="$t('title')"
@@ -139,8 +140,13 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
         </div>
       </div>
     </div>
-    <p class="text-primary-main text-right text-sm cursor-pointer">
-      {{ $t('callToAction') }}
-    </p>
+    <div class="flex justify-end">
+      <a
+        class="text-primary-main text-right text-sm"
+        :href="EMAIL_ANDRES"
+      >
+        {{ $t('callToAction') }}
+      </a>
+    </div>
   </div>
 </template>

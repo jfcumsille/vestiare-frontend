@@ -1,70 +1,44 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { useOrganizationStore } from '@/stores/organization';
 import { useUserStore } from '@/stores/user';
-import { User } from '@/interfaces/entities/user';
-import { Organization } from '@/interfaces/entities/organization';
-import { ButtonType, SizeType, HorizontalPositionType } from '@/interfaces/utilities/enums';
-import GenericTable from '@/components/table/GenericTable.vue';
+import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { Nullable } from '@/interfaces/common';
+import { DOCS_API_CHANGELOG } from '@/constants/urls';
 import GenericButton from '@/components/GenericButton.vue';
-import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericLabel from '@/components/GenericLabel.vue';
-import GenericDropDown from '@/components/GenericDropDown.vue';
-import SearchBar from '@/components/SearchBar.vue';
-import TeamTableHead from '@/views/organization/components/TeamTableHead.vue';
-import TeamTableRow from '@/views/organization/components/TeamTableRow.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ProductsSection from './components/ProductsSection.vue';
 
 const $t = useTranslation('views.organization');
 const organizationStore = useOrganizationStore();
 const userStore = useUserStore();
 
-const organization: Organization = {
-  id: 'org_id',
-  name: 'sample name',
-  countryCode: 'cl',
-  rut: null,
-  billingEmail: null,
-};
+const countries = {
+  cl: 'Chile',
+  mx: 'Mexico',
+} as Record<string, string>;
+const getCountryName = (country: string): Nullable<string> => (
+  country && (country in countries) ? countries[country] : null
+);
+const countryName = computed(() => {
+  if (organizationStore.organization) {
+    return getCountryName(organizationStore.organization.countryCode) ?? '------';
+  }
+  return '------';
+});
 
-const member1: User = {
-  id: 'id',
-  email: 'liliana@serviejemplo.com',
-  name: 'Liliana Paul',
-  lastName: 'lastName',
-  organizations: [organization],
-  defaultOrganizationId: 'defaultOrganizationId',
-};
-const member2: User = {
-  id: 'id',
-  email: 'nicolle@serviejemplo.com',
-  name: 'Nicolle Haz',
-  lastName: 'lastName',
-  organizations: [organization],
-  defaultOrganizationId: 'defaultOrganizationId',
-};
-const member3: User = {
-  id: 'id',
-  email: 'pedro@serviejemplo.com',
-  name: 'Pedro Saul',
-  lastName: 'lastName',
-  organizations: [organization],
-  defaultOrganizationId: 'defaultOrganizationId',
-};
-
-const members = [member1, member2, member3];
-
-const billingEmail = ref('');
-const technicalEmail = ref('');
-
-const country = ref('Chile');
-const countryOptions = ['Chile', 'México'];
-const selectCountryFilter = (value: string) => {
-  country.value = value;
-};
-
-const search = ref('search');
+const showRut = ref(false);
+const rut = computed(() => {
+  if (!organizationStore.organization?.rut) {
+    return '------';
+  }
+  if (showRut.value) {
+    return organizationStore.organization.rut;
+  }
+  return Array(organizationStore.organization.rut.length + 1).join('*');
+});
 
 onMounted(() => {
   organizationStore.loadOrganization();
@@ -74,7 +48,7 @@ onMounted(() => {
 <template>
   <div
     data-test="links-view"
-    class="flex flex-col p-10 items-center max-w-screen-xl w-full"
+    class="flex flex-col p-10 items-center"
   >
     <div class="flex flex-col w-full">
       <div class="font-semibold text-2xl text-heading-color self-start">
@@ -82,13 +56,23 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="flex flex-row w-full space-x-6">
-      <div class="p-5 space-y-8 w-full bg-white rounded-lg drop-shadow border">
+    <div class="flex flex-row w-full space-x-6 mt-5">
+      <div
+        v-if="organizationStore.loading"
+        class="flex justify-center items-center border bg-white
+          rounded-lg drop-shadow min-w-xl min-h-lg"
+      >
+        <LoadingSpinner />
+      </div>
+      <div
+        v-else
+        class="p-5 space-y-8 bg-white rounded-lg drop-shadow border max-w-186 w-full"
+      >
         <div class="flex justify-between space-x-8">
           <GenericLabel
             class="min-w-56"
-            label="Name"
-            sub-label="As it will appear on your widget."
+            :label="$t('settings.name')"
+            :sub-label="$t('settings.nameSubLabel')"
           />
           <div class="flex flex-row space-x-3 items-center w-full justify-between">
             <GenericLabel
@@ -97,134 +81,82 @@ onMounted(() => {
             />
             <GenericLabel
               v-else
-              sub-label="userStore.user.email"
-            />
-            <GenericButton
-              :type="ButtonType.Secondary"
-              :size="SizeType.Small"
-              text="Request Change"
-              icon-name="mail"
-              :icon-position="HorizontalPositionType.Left"
+              :sub-label="userStore.user?.email || '------'"
             />
           </div>
         </div>
         <div class="flex justify-between space-x-8">
           <GenericLabel
-            class="min-w-56"
-            label="Organization RUT/RFC"
+            class="min-w-56 w-56 h-12"
+            :label="$t('settings.organizationRutRfc')"
           />
           <div class="flex flex-row space-x-3 items-center w-full justify-between">
-            <GenericLabel
-              sub-label="**.***.***-*"
-            />
-            <GenericButton
-              :type="ButtonType.Text"
-              :size="SizeType.Small"
-              icon-name="eye"
-            />
+            <div class="flex flex-row">
+              <GenericButton
+                v-if="organizationStore.organization?.rut"
+                :type="ButtonType.Text"
+                :size="SizeType.Small"
+                :icon-name="showRut ? 'eye-closed' : 'eye'"
+                @click="() => showRut = !showRut"
+              />
+              <GenericLabel
+                :sub-label="rut"
+              />
+            </div>
           </div>
         </div>
-        <div class="flex justify-between space-x-8">
+        <div class="flex space-x-8 h-12">
           <GenericLabel
-            class="min-w-56"
-            label="Billing Email"
-            sub-label="For Fintoc receipts."
+            class="w-56"
+            :label="$t('settings.billingEmail')"
+            :sub-label="$t('settings.billingSubLabel')"
           />
-          <GenericInput
-            v-model="billingEmail"
-            label="Billing Email"
-            placeholder="No billing email"
-            class="w-full"
+          <GenericLabel
+            :sub-label="organizationStore.organization?.billingMail || '------'"
           />
         </div>
-        <div class="flex justify-between space-x-8">
+        <div class="flex space-x-8 h-12">
           <GenericLabel
-            class="min-w-56"
-            label="Technical Email"
-            sub-label="For reports about service interruptions."
+            class="w-56"
+            :label="$t('settings.technicalEmail')"
+            :sub-label="$t('settings.technicalSubLabel')"
           />
-          <GenericInput
-            v-model="technicalEmail"
-            label="Technical Email"
-            placeholder="No technical email"
-            class="w-full"
+          <GenericLabel
+            :sub-label="organizationStore.organization?.technicalEmail || '------'"
           />
         </div>
-        <div class="flex justify-between space-x-8">
+        <div class="flex space-x-8 h-12">
           <GenericLabel
             class="min-w-56"
-            label="Default Country API"
-            sub-label="First API that will show up for developers."
+            :label="$t('settings.defaultCountryApi')"
+            :sub-label="$t('settings.defaultCountryApiSubLabel')"
           />
-          <div class="w-full">
-            <GenericDropDown
-              label="Country API"
-              :selected="country"
-              :options="countryOptions"
-              :is-width-full="true"
-              @select="selectCountryFilter"
-            />
-          </div>
+          <GenericLabel
+            :sub-label="countryName"
+          />
+        </div>
+        <div class="flex space-x-8 h-12">
+          <GenericLabel
+            v-if="organizationStore.organization?.apiVersion"
+            class="min-w-56"
+            :label="$t('settings.apiVersion')"
+            :sub-label="$t('settings.apiVersionSubLabel1')"
+            :sub-label-href="DOCS_API_CHANGELOG"
+          />
+          <GenericLabel
+            v-else
+            class="min-w-56"
+            :label="$t('settings.apiVersion')"
+            :sub-label="$t('settings.apiVersionSubLabel2')"
+          />
+          <GenericLabel
+            :sub-label="organizationStore.organization?.apiVersion || '------'"
+          />
         </div>
       </div>
-      <div class="break-normal border p-5 bg-white rounded-lg drop-shadow min-w-sm min-h-lg">
+      <div class="break-normal border p-5 bg-white rounded-lg drop-shadow min-w-sm min-h-md">
         <ProductsSection />
       </div>
     </div>
-
-    <div class="mt-10 w-full space-y-6">
-      <div class="font-medium text-2xl text-heading-color">
-        {{ $t('teamTitle') }}
-      </div>
-      <div class="flex justify-between">
-        <div class="flex flex-row space-x-2">
-          <GenericButton
-            icon-name="circle-check"
-            :type="ButtonType.Secondary"
-            :disabled="true"
-          />
-          <GenericButton
-            icon-name="circle-cross"
-            :type="ButtonType.Danger"
-            :disabled="true"
-          />
-          <GenericButton
-            icon-name="trash"
-            :type="ButtonType.Secondary"
-            :disabled="true"
-          />
-        </div>
-        <div class="flex flex-row space-x-4">
-          <SearchBar
-            placeholder="search"
-            :model-value="search"
-          />
-          <GenericButton
-            icon-name="add"
-            :type="ButtonType.Primary"
-            text="Invite Member"
-          />
-        </div>
-      </div>
-      <GenericTable>
-        <template #head>
-          <TeamTableHead />
-        </template>
-
-        <template #content>
-          <TeamTableRow
-            v-for="member in members"
-            :key="member.id"
-            :member="member"
-          />
-        </template>
-      </GenericTable>
-    </div>
   </div>
-  <!-- <div
-    v-if="organizationStore.loading"
-    class="flex justify-center w-full pt-4"
-  >
-    <LoadingSpinner />
-  </div> -->
 </template>

@@ -6,7 +6,7 @@ export interface Organization {
   name: string
   countryCode: string
   rut: Nullable<string>
-  billingEmail: Nullable<string>
+  billingMail: Nullable<string>
 }
 
 export interface OrganizationFull extends Organization {
@@ -15,4 +15,5 @@ export interface OrganizationFull extends Organization {
   refreshPolicies: Array<string>
   organizationProducts: Array<OrganizationProduct>
   technicalEmail: Nullable<string>
+  apiVersion: Nullable<string>
 }

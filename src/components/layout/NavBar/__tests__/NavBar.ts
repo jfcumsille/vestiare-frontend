@@ -44,7 +44,7 @@ describe('NavBar', () => {
         name: 'userName',
         lastName: 'last-name',
         organizations: [{
-          id: 'orgId', name: 'orgName', countryCode: 'cl', rut: null, billingEmail: null,
+          id: 'orgId', name: 'orgName', countryCode: 'cl', rut: null, billingMail: null,
         }],
         defaultOrganizationId: 'orgId',
       };
