@@ -11,7 +11,7 @@ import { icons } from '@/utils/icons';
 const $t = useTranslation('views.organization.products');
 const organizationStore = useOrganizationStore();
 
-const bankingCodes = [Product.Movements, Product.Payments, Product.Subscriptions, Product.Charges];
+const bankingCodes = [Product.Movements, Product.Subscriptions, Product.Payments];
 const fiscalCodes = [Product.Invoices, Product.TaxReturns, Product.TaxStatements];
 
 const isProductAvailable = (code: Product, holderType: HolderType) => {
@@ -26,6 +26,10 @@ const isProductAvailable = (code: Product, holderType: HolderType) => {
 };
 
 const isOnDemandAvailable = () => organizationStore.organization?.refreshPolicies?.includes('on_demand');
+const isChargesAvailable = () => (
+  isProductAvailable(Product.Charges, HolderType.Individual)
+  || isProductAvailable(Product.Charges, HolderType.Business)
+);
 
 const isProductBlocked = (
   code: Product,
@@ -84,7 +88,7 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
           <span
             v-for="holderType in [HolderType.Individual, HolderType.Business]"
             :key="holderType"
-            class="flex gap-1 text-xs mb-1"
+            class="flex gap-2 text-xs my-1"
           >
             <component
               :is="iconComponent(productCode, holderType)"
@@ -94,7 +98,7 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
           </span>
           <span
             v-if="productCode === Product.Movements"
-            class="flex gap-1 text-xs"
+            class="flex gap-2 text-xs"
           >
             <component
               :is="isOnDemandAvailable() ? icons.check : icons.lock"
@@ -102,6 +106,17 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
               :class="isOnDemandAvailable() ? 'text-primary-main' : 'text-disabled-color'"
             />
             Refresh on demand
+          </span>
+          <span
+            v-if="productCode === Product.Subscriptions"
+            class="flex gap-2 text-xs"
+          >
+            <component
+              :is="isChargesAvailable() ? icons.check : icons.lock"
+              class="h-4 w-4"
+              :class="isChargesAvailable() ? 'text-primary-main' : 'text-disabled-color'"
+            />
+            Charges (Direct Debit)
           </span>
         </div>
       </div>
