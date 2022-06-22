@@ -1,4 +1,3 @@
-import { RouteLocationNormalized } from 'vue-router';
 import { AxiosError } from 'axios';
 import { useUserStore } from '@/stores/user';
 import { getAuth0Client } from '@/services/auth0';
@@ -13,7 +12,7 @@ const handleLoginError = (loginError: AxiosError) => {
   }
 };
 // eslint-disable-next-line consistent-return
-export const handleAuth0RedirectCallback = async (to: RouteLocationNormalized) => {
+export const handleAuth0RedirectCallback = async () => {
   const userStore = useUserStore();
   const auth0 = await getAuth0Client();
 
@@ -21,7 +20,7 @@ export const handleAuth0RedirectCallback = async (to: RouteLocationNormalized) =
     await auth0.handleRedirectCallback();
     const user = await auth0.getUser();
 
-    if (user && to.path.includes('signup')) {
+    if (user) {
       const name = user.given_name ?? user.name?.split(' ')[0];
       const lastName = user.family_name ?? user.name?.split(' ')[1];
       await userStore.createUser({
