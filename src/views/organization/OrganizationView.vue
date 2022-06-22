@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
+import { page } from '@/services/analytics';
 import { useTranslation } from '@/locales';
 import { useOrganizationStore } from '@/stores/organization';
 import { useUserStore } from '@/stores/user';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import { Nullable } from '@/interfaces/common';
 import { DOCS_API_CHANGELOG } from '@/constants/urls';
+import { DASHBOARD_ORIGIN, ORGANIZATION_VIEWED } from '@/constants/analyticsEvents';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericLabel from '@/components/GenericLabel.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -42,12 +44,15 @@ const rut = computed(() => {
 
 onMounted(() => {
   organizationStore.loadOrganization();
+  page(ORGANIZATION_VIEWED, {
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 </script>
 
 <template>
   <div
-    data-test="links-view"
+    data-test="organization-view"
     class="flex flex-col p-10 items-center"
   >
     <div class="flex flex-col w-full">
