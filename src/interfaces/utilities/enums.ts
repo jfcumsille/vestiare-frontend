@@ -17,6 +17,7 @@ export enum Product {
   RefreshIntent = 'REFRESH_INTENT',
   TaxStatements = 'TAX_STATEMENTS',
   TaxReturns = 'TAX_RETURNS',
+  Charges = 'CHARGES',
 }
 
 export enum HolderType {

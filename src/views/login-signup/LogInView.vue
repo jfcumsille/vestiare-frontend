@@ -3,7 +3,7 @@ import { onMounted } from 'vue';
 import { page } from '@/services/analytics';
 import { popValidLoginMethod, popSelectedLoginMethod } from '@/services/loginMethods';
 import { useTranslation } from '@/locales';
-import { LOG_IN_VIEWED } from '@/constants/analyticsEvents';
+import { DASHBOARD_ORIGIN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
 import { SIGNUP_ROUTE } from '@/constants/router';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
@@ -12,7 +12,9 @@ import Auth0Panel from './components/Auth0Panel.vue';
 const $tLogIn = useTranslation('views.logIn');
 
 onMounted(() => {
-  page(LOG_IN_VIEWED);
+  page(LOG_IN_VIEWED, {
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 
 const validMethod = popValidLoginMethod();

@@ -5,18 +5,19 @@ import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
-import router from '@/router/index';
-import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { ORGANIZATION_VIEWED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
-import DetailedWebhookEndpointsView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
+import OrganizationView from '@/views/organization/OrganizationView.vue';
+import router from '@/router/index';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
 const analyticsPageMock = vi.fn();
+const analyticsTrackMock = vi.fn();
 
 const getWrapper = () => {
-  const wrapper = mount(DetailedWebhookEndpointsView, {
+  const wrapper = mount(OrganizationView, {
     global: {
       plugins: [testingPinia, router],
     },
@@ -24,7 +25,7 @@ const getWrapper = () => {
   return wrapper;
 };
 
-describe('DetailedWebhookEndpointsView', () => {
+describe('OrganizationView', () => {
   beforeAll(() => {
     const { restore } = mockCrypto();
 
@@ -34,15 +35,15 @@ describe('DetailedWebhookEndpointsView', () => {
   beforeEach(() => {
     setActivePinia(testingPinia);
     setupLocales();
-    mockPageAndTrackAnalytics(analyticsPageMock);
+    mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
   });
 
-  describe('when DetailedWebhookEndpointsView is mounted', () => {
-    it('tracks DetailedWebhookEndpointsView page view with analytics', () => {
+  describe('when OrganizationView is mounted', () => {
+    it('tracks OrganizationView page view with analytics', () => {
       const wrapper = getWrapper();
-      const detailedWebhookEndpointsView = wrapper.find('[data-test="detailed-webhook-endpoints-view"]');
-      expect(detailedWebhookEndpointsView.exists()).toBe(true);
-      expectToTrackWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'detail', origin: 'dashboard' });
+      const organizationView = wrapper.find('[data-test="organization-view"]');
+      expect(organizationView.exists()).toBe(true);
+      expectToTrackWithAnalytics(analyticsPageMock, ORGANIZATION_VIEWED, { origin: 'dashboard' });
     });
   });
 });

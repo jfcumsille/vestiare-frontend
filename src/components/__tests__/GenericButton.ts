@@ -134,7 +134,8 @@ describe('GenericButton', () => {
     ],
     medium: [
       'flex',
-      'p-3.5',
+      'px-5',
+      'py-4',
       'text-base',
       'h-11',
     ],

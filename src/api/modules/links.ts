@@ -8,7 +8,8 @@ export const list = async (
   params: Json = {},
 ): Promise<{total: number, links: Array<Link>}> => {
   const response = await client.get(BASE_PATH, { params });
-  return { total: Number(response.headers['x-total-count']), links: response.data };
+  const total = response.headers['x-total-count'];
+  return { total: total ? Number(total) : 0, links: response.data };
 };
 
 export const update = async (

@@ -43,7 +43,9 @@ describe('NavBar', () => {
         email: 'email',
         name: 'userName',
         lastName: 'last-name',
-        organizations: [{ id: 'orgId', name: 'orgName', refreshIntervalSec: 18000 }],
+        organizations: [{
+          id: 'orgId', name: 'orgName', countryCode: 'cl', rut: null, billingMail: null,
+        }],
         defaultOrganizationId: 'orgId',
       };
     });
@@ -63,7 +65,7 @@ describe('NavBar', () => {
       expect(fintocLogo.attributes('href')).toEqual(undefined);
     });
 
-    it.fails('shows organization settings link', () => {
+    it('shows organization settings link', () => {
       // Code for this is commented, should fix when the code gets re-added
       const wrapper = getWrapper();
       const navBarInternalLinks = wrapper.find('[data-test="nav-bar-internal-links"]');

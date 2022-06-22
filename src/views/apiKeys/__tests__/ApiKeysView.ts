@@ -58,7 +58,7 @@ describe('ApiKeysView', () => {
       const wrapper = getWrapper();
       const apiKeysView = wrapper.find('[data-test="api-keys-view"]');
       expect(apiKeysView.exists()).toBe(true);
-      expectToTrackWithAnalytics(analyticsPageMock, API_KEYS_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, API_KEYS_VIEWED, { origin: 'dashboard' });
     });
   });
 

@@ -5,7 +5,7 @@ import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useConfigStore } from '@/stores/config';
 import { APIKey } from '@/interfaces/entities/apiKeys';
 import { Mode } from '@/interfaces/utilities/enums';
-import { API_KEYS_VIEWED } from '@/constants/analyticsEvents';
+import { DASHBOARD_ORIGIN, API_KEYS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_API_KEYS } from '@/constants/urls';
 import { page, trackAPIKeyCreated, trackAPIKeyDeleted } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -47,7 +47,9 @@ const secretKeyToActivate: APIKey = {
 };
 
 onMounted(() => {
-  page(API_KEYS_VIEWED);
+  page(API_KEYS_VIEWED, {
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 </script>
 

@@ -55,11 +55,13 @@ module.exports = {
         104: '26rem',
         158: '39.5rem',
         xxs: '16rem',
+        186: '46.5rem',
       },
       minWidth: {
         2.5: '0.625rem',
         4.5: '1.1125rem',
         '16px': '16px',
+        56: '14rem',
         xs: '20rem',
         sm: '24rem',
         md: '28rem',
@@ -69,6 +71,7 @@ module.exports = {
       minHeight: {
         2.5: '0.625rem',
         4.5: '1.1125rem',
+        lg: '34rem',
       },
       zIndex: {
         1: '1',

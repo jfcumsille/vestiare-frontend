@@ -16,7 +16,7 @@ const handleClick = (option: string) => {
 <template>
   <div
     class="
-      absolute mt-6 right-14 items-start
+      absolute mt-6 items-start
       bg-white rounded-lg drop-shadow-md flex flex-col
     "
   >
@@ -25,7 +25,7 @@ const handleClick = (option: string) => {
       :key="option.label"
       :text="option.label"
       :type="ButtonType.Text"
-      class="bg-white hover:bg-light-gray capitalize items-start w-full px-5"
+      class="bg-white hover:bg-light-gray capitalize items-start w-full"
       :icon-name="option.iconName"
       :justify="JustifyType.Start"
       @click="() => handleClick(option.action)"

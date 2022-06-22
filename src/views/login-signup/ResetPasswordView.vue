@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { page, track } from '@/services/analytics';
-import { EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
+import { DASHBOARD_ORIGIN, EMAIL_SENT, RESET_PASSWORD_VIEWED } from '@/constants/analyticsEvents';
 import { LOGIN_ROUTE } from '@/constants/router';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
@@ -52,7 +52,9 @@ const logIn = () => {
 };
 
 onMounted(() => {
-  page(RESET_PASSWORD_VIEWED);
+  page(RESET_PASSWORD_VIEWED, {
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 </script>
 

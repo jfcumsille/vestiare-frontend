@@ -1,13 +1,23 @@
 <script setup lang="ts">
 /* eslint-disable vue/no-v-html */
+import { onMounted } from 'vue';
+import { page } from '@/services/analytics';
 import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
+import { DASHBOARD_ORIGIN, PROFILE_VIEWED } from '@/constants/analyticsEvents';
 
 const $t = useTranslation('views.profile');
 const userStore = useUserStore();
+
+onMounted(() => {
+  page(PROFILE_VIEWED, {
+    origin: DASHBOARD_ORIGIN,
+  });
+});
 </script>
 <template>
   <div
+    data-test="profile-view"
     class="flex flex-col p-10 items-center max-w-screen-xl w-full"
   >
     <div class="flex flex-col w-full">

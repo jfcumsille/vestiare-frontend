@@ -3,7 +3,7 @@ import { computed, ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { DASHBOARD_ORIGIN, WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { page } from '@/services/analytics';
 import { Mode, ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
@@ -39,7 +39,10 @@ const toggleWebhookModal = () => {
 };
 
 onMounted(() => {
-  page(WEBHOOK_ENDPOINTS_VIEWED, { type: 'detail' });
+  page(WEBHOOK_ENDPOINTS_VIEWED, {
+    type: 'detail',
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 </script>
 

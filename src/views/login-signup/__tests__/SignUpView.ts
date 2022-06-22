@@ -44,7 +44,7 @@ describe('SignUpView', () => {
       const wrapper = getWrapper();
       const signUpView = wrapper.find('[data-test="sign-up-view"]');
       expect(signUpView.exists()).toBe(true);
-      expectToTrackWithAnalytics(analyticsPageMock, SIGN_UP_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, SIGN_UP_VIEWED, { origin: 'dashboard' });
     });
   });
 

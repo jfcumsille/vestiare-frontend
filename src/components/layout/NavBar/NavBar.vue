@@ -5,14 +5,14 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
-import { LOGIN_ROUTE, SIGNUP_ROUTE } from '@/constants/router';
+import { LOGIN_ROUTE, SIGNUP_ROUTE, ORGANIZATION_ROUTE } from '@/constants/router';
 import {
   DOCS, NEWS, CONTACT, BLOG,
 } from '@/constants/urls';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
-// import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
+import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import UserOptionsButton from './UserOptionsButton.vue';
 import NavBarLogo from './NavBarLogo.vue';
@@ -132,17 +132,17 @@ const signUp = () => {
           >
             {{ link.text }}
           </a>
-          <!-- <button
+          <button
             data-test="nav-bar-organization-settings-link"
             class="cursor-pointer text-primary-main hover:text-primary-hover flex"
           >
             <SettingsIcon class="mr-2 mt-1" />
             <router-link
-              :to="HOME_ROUTE"
+              :to="ORGANIZATION_ROUTE"
             >
               {{ userStore.organizationName || $t('organizationName') }}
             </router-link>
-          </button> -->
+          </button>
           <UserOptionsButton />
         </div>
       </div>

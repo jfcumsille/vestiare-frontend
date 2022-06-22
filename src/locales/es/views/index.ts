@@ -5,6 +5,7 @@ import logIn from './logIn';
 import signUp from './signUp';
 import resetPassword from './resetPassword';
 import profile from './profile';
+import organization from './organization';
 
 export {
   apiKeys,
@@ -14,4 +15,5 @@ export {
   signUp,
   resetPassword,
   profile,
+  organization,
 };
