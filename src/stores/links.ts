@@ -14,7 +14,7 @@ export const useLinksStore = defineStore('links', {
     currentPage: 1,
     backendPage: 1,
     loading: true,
-    allFilters: {},
+    allFilters: <LinkFilter>{},
   }),
   actions: {
     async loadLinks() {
