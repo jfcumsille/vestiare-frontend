@@ -9,10 +9,13 @@ const props = defineProps({
     default: () => undefined,
   },
 });
-const emit = defineEmits<{(e: 'update:modelValue', value: string): void}>();
+const emit = defineEmits<{(e: 'update:modelValue', value: string): void, (e:'enter-key'): void}>();
 
 const onInput = ($event: Event) => {
   emit('update:modelValue', ($event.target as HTMLInputElement).value);
+};
+const onSearch = () => {
+  emit('enter-key');
 };
 </script>
 
@@ -44,6 +47,7 @@ const onInput = ($event: Event) => {
       :value="props.modelValue"
       v-bind="$attrs"
       @input="onInput"
+      @keyup.enter="onSearch"
     >
   </div>
 </template>

@@ -120,6 +120,7 @@ onMounted(() => {
           <SearchBar
             v-model="search"
             :placeholder="$t('table.filters.searchBarPlaceholder')"
+            @enter-key="filterBySearch"
           />
           <GenericButton
             class="ml-4 capitalize"
