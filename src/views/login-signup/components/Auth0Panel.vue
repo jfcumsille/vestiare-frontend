@@ -2,7 +2,6 @@
 import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { authenticateWithRedirect } from '@/services/auth0';
-import { setSelectedLoginMethod } from '@/services/loginMethods';
 import { Auth0Database, ButtonType, HorizontalPositionType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import { USERNAME_PASSWORD_CONNECTION } from '@/constants/api';
@@ -18,11 +17,6 @@ const props = withDefaults(defineProps<{
 const mode = computed(() => (props.isSignup ? 'signup' : 'login'));
 
 const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logInWith')));
-
-const authenticateAndSetLoginMethod = (connection: Auth0Database) => {
-  setSelectedLoginMethod(connection);
-  authenticateWithRedirect(connection, mode.value);
-};
 </script>
 
 <template>
@@ -34,7 +28,7 @@ const authenticateAndSetLoginMethod = (connection: Auth0Database) => {
       icon-name="auth-google"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateAndSetLoginMethod(Auth0Database.Google)"
+      @click="() => authenticateWithRedirect(Auth0Database.Google, mode)"
     />
     <GenericButton
       class="mt-5"
@@ -43,7 +37,7 @@ const authenticateAndSetLoginMethod = (connection: Auth0Database) => {
       icon-name="auth-github"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateAndSetLoginMethod(Auth0Database.GitHub)"
+      @click="() => authenticateWithRedirect(Auth0Database.GitHub, mode)"
     />
     <GenericButton
       v-if="!props.isSignup"
@@ -53,7 +47,7 @@ const authenticateAndSetLoginMethod = (connection: Auth0Database) => {
       icon-name="mail"
       :icon-position="HorizontalPositionType.Left"
       is-width-full
-      @click="() => authenticateAndSetLoginMethod(USERNAME_PASSWORD_CONNECTION)"
+      @click="() => authenticateWithRedirect(USERNAME_PASSWORD_CONNECTION, mode)"
     />
   </div>
 </template>

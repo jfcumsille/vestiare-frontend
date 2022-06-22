@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { page } from '@/services/analytics';
-import { popValidLoginMethod, popSelectedLoginMethod } from '@/services/loginMethods';
 import { useTranslation } from '@/locales';
 import { DASHBOARD_ORIGIN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
 import { SIGNUP_ROUTE } from '@/constants/router';
 import Circle from '@/assets/svg/CircleBackground.vue';
-import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
 const $tLogIn = useTranslation('views.logIn');
@@ -16,10 +14,6 @@ onMounted(() => {
     origin: DASHBOARD_ORIGIN,
   });
 });
-
-const validMethod = popValidLoginMethod();
-const selectedMethod = popSelectedLoginMethod();
-const showInvalidLoginMethodError = !!validMethod;
 </script>
 
 <template>
@@ -46,26 +40,6 @@ const showInvalidLoginMethodError = !!validMethod;
       <div class="bg-white relative p-11.5 rounded-lg border border-light-gray drop-shadow-md z-10">
         <div class="mb-5 font-medium text-2xl text-heading-color">
           {{ $tLogIn('title') }}
-        </div>
-        <div
-          v-if="showInvalidLoginMethodError"
-          class="flex flex-row bg-danger-surface p-2 rounded-lg mb-2"
-        >
-          <WarningIcon
-            class="mt-1 ml-1 text-danger-main"
-            fill="currentColor"
-          />
-          <div class="ml-2 text-body-color text-sm">
-            <p class="font-bold">
-              {{ $tLogIn('invalidMethodWarning', { validMethod }) }}
-            </p>
-            <p v-if="selectedMethod">
-              {{ $tLogIn(
-                'invalidMethodWarningSub',
-                { invalidMethod: selectedMethod, validMethod }
-              ) }}
-            </p>
-          </div>
         </div>
         <Auth0Panel />
         <div class="mt-6 text-center text-body-color text-sm font-normal ">
