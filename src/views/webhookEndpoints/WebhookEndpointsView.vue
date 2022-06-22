@@ -2,7 +2,7 @@
 import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
+import { DASHBOARD_ORIGIN, WEBHOOK_ENDPOINTS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_WEBHOOKS } from '@/constants/urls';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { page, trackModal } from '@/services/analytics';
@@ -45,7 +45,10 @@ const changeCurrentPageBy = (value: number) => {
 };
 
 onMounted(() => {
-  page(WEBHOOK_ENDPOINTS_VIEWED, { type: 'main' });
+  page(WEBHOOK_ENDPOINTS_VIEWED, {
+    type: 'main',
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 </script>
 

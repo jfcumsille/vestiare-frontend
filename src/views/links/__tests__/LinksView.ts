@@ -51,7 +51,7 @@ describe('LinksView', () => {
       const wrapper = getWrapper();
       const linksView = wrapper.find('[data-test="links-view"]');
       expect(linksView.exists()).toBe(true);
-      expectToTrackWithAnalytics(analyticsPageMock, LINKS_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, LINKS_VIEWED, { origin: 'dashboard' });
     });
   });
 

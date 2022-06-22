@@ -43,7 +43,7 @@ describe('LogInView', () => {
       const wrapper = getWrapper();
       const resetPasswordView = wrapper.find('[data-test="reset-password-view"]');
       expect(resetPasswordView.exists()).toBe(true);
-      expectToTrackWithAnalytics(analyticsPageMock, RESET_PASSWORD_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, RESET_PASSWORD_VIEWED, { origin: 'dashboard' });
     });
   });
 

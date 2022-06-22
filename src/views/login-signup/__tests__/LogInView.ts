@@ -43,7 +43,7 @@ describe('LogInView', () => {
       const wrapper = getWrapper();
       const loginView = wrapper.find('[data-test="login-view"]');
       expect(loginView.exists()).toBe(true);
-      expectToTrackWithAnalytics(analyticsPageMock, LOG_IN_VIEWED);
+      expectToTrackWithAnalytics(analyticsPageMock, LOG_IN_VIEWED, { origin: 'dashboard' });
     });
   });
 });

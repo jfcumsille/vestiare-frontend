@@ -42,7 +42,7 @@ describe('DetailedWebhookEndpointsView', () => {
       const wrapper = getWrapper();
       const detailedWebhookEndpointsView = wrapper.find('[data-test="detailed-webhook-endpoints-view"]');
       expect(detailedWebhookEndpointsView.exists()).toBe(true);
-      expectToTrackWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'detail' });
+      expectToTrackWithAnalytics(analyticsPageMock, WEBHOOK_ENDPOINTS_VIEWED, { type: 'detail', origin: 'dashboard' });
     });
   });
 });

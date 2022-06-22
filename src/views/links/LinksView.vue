@@ -6,7 +6,7 @@ import { Nullable } from '@/interfaces/common';
 import { Link, LinkFilter } from '@/interfaces/entities/links';
 import { Product, ButtonType } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
-import { LINKS_VIEWED } from '@/constants/analyticsEvents';
+import { DASHBOARD_ORIGIN, LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_LINKS } from '@/constants/urls';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -74,7 +74,9 @@ const updateHeaderFilterValues = (filters: Record<string, unknown>) => {
 };
 
 onMounted(() => {
-  page(LINKS_VIEWED);
+  page(LINKS_VIEWED, {
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 </script>
 

@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { LOGIN_ROUTE } from '@/constants/router';
 import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls';
-import { USER_SIGNED_UP, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
+import { DASHBOARD_ORIGIN, USER_SIGNED_UP, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
@@ -70,7 +70,9 @@ const logIn = () => {
 };
 
 onMounted(() => {
-  page(SIGN_UP_VIEWED);
+  page(SIGN_UP_VIEWED, {
+    origin: DASHBOARD_ORIGIN,
+  });
 });
 </script>
 
