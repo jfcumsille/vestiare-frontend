@@ -58,17 +58,19 @@ const stopShowingLink = () => {
   createdLinkToken.value = null;
 };
 
-const search = ref('');
+const search = ref(linksStore.allFilters.rut || '');
+const formattedSearch = computed(() => search.value.replace(/[.-\s]/g, ''));
+
 const filterBySearch = () => {
   const allFilters: LinkFilter = linksStore.allFilters;
-  allFilters.rut = search.value.trim();
+  allFilters.rut = formattedSearch.value;
   linksStore.updateFilters(allFilters);
 };
 
 const updateHeaderFilterValues = (filters: Record<string, unknown>) => {
   const allFilters: LinkFilter = filters;
-  if (search.value.trim() !== '') {
-    allFilters.rut = search.value.trim();
+  if (formattedSearch.value !== '') {
+    allFilters.rut = formattedSearch.value;
   }
   linksStore.updateFilters(allFilters);
 };
@@ -122,7 +124,7 @@ onMounted(() => {
           <GenericButton
             class="ml-4 capitalize"
             :type="ButtonType.Secondary"
-            :disabled="search.trim() === ''"
+            :disabled="formattedSearch === ''"
             icon-name="search"
             text="Search"
             @click="filterBySearch"
