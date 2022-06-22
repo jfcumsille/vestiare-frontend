@@ -35,6 +35,7 @@ const emit = defineEmits<{
    (e: 'update:modelValue', value: string): void
    (e: 'click-left-icon'): void
    (e: 'click-right-icon'): void
+   (e: 'key-enter'): void
 }>();
 
 useRegistration();
@@ -150,12 +151,13 @@ defineExpose({ valid });
           :disabled="props.disabled"
           @input="onInput"
           @blur="startValidating"
+          @keyup.enter="emit('key-enter')"
         >
         <component
           :is="rightIconComponent"
           v-if="rightIconComponent"
           data-test="generic-input-icon-right"
-          class="ml-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5"
+          class="ml-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5 cursor-pointer"
           @click="() => emit('click-right-icon')"
         />
       </div>
