@@ -10,10 +10,10 @@ import { DASHBOARD_ORIGIN, LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_LINKS } from '@/constants/urls';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
 import TablePagination from '@/components/table/TablePagination.vue';
 import GenericButton from '@/components/GenericButton.vue';
-import SearchBar from '@/components/SearchBar.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinksTableHead from '@/views/links/components/LinksTableHead.vue';
@@ -58,17 +58,26 @@ const stopShowingLink = () => {
   createdLinkToken.value = null;
 };
 
-const search = ref('');
+const search = ref(linksStore.allFilters.rut || '');
+const formattedSearch = computed(() => search.value.replace(/[.-\s]/g, ''));
+
 const filterBySearch = () => {
   const allFilters: LinkFilter = linksStore.allFilters;
-  allFilters.rut = search.value.trim();
+  allFilters.rut = formattedSearch.value;
   linksStore.updateFilters(allFilters);
+};
+
+const clearSearchFilter = () => {
+  if (formattedSearch.value !== '') {
+    search.value = '';
+    filterBySearch();
+  }
 };
 
 const updateHeaderFilterValues = (filters: Record<string, unknown>) => {
   const allFilters: LinkFilter = filters;
-  if (search.value.trim() !== '') {
-    allFilters.rut = search.value.trim();
+  if (formattedSearch.value !== '') {
+    allFilters.rut = formattedSearch.value;
   }
   linksStore.updateFilters(allFilters);
 };
@@ -115,14 +124,19 @@ onMounted(() => {
       </div>
       <div class="flex justify-between">
         <div class="flex flex-row">
-          <SearchBar
+          <GenericInput
             v-model="search"
             :placeholder="$t('table.filters.searchBarPlaceholder')"
+            left-icon-name="search"
+            right-icon-name="circle-cross"
+            class="w-80"
+            @key-enter="filterBySearch"
+            @click-right-icon="clearSearchFilter"
           />
           <GenericButton
             class="ml-4 capitalize"
             :type="ButtonType.Secondary"
-            :disabled="search.trim() === ''"
+            :disabled="formattedSearch === ''"
             icon-name="search"
             text="Search"
             @click="filterBySearch"
