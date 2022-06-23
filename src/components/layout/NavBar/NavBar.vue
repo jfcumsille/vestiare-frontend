@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
-import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import { LOGIN_ROUTE, SIGNUP_ROUTE, ORGANIZATION_ROUTE } from '@/constants/router';
-import {
-  DOCS, NEWS, CONTACT, BLOG,
-} from '@/constants/urls';
+import { DOCS } from '@/constants/urls';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import ChileIcon from '@/assets/svg/ChileIcon.vue';
 import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
@@ -19,6 +17,7 @@ import NavBarLogo from './NavBarLogo.vue';
 
 const userStore = useUserStore();
 const router = useRouter();
+const route = useRoute();
 
 const $t = useTranslation('navBar');
 
@@ -34,25 +33,6 @@ const navBarLoggedInLinks = [
   {
     text: $t('docs'),
     href: DOCS,
-  },
-];
-
-const navBarPublicLinks = [
-  {
-    text: $t('docs'),
-    href: DOCS,
-  },
-  {
-    text: $t('news'),
-    href: NEWS,
-  },
-  {
-    text: $t('contact'),
-    href: CONTACT,
-  },
-  {
-    text: $t('blog'),
-    href: BLOG,
   },
 ];
 
@@ -72,32 +52,28 @@ const signUp = () => {
       <NavBarLogo />
       <div
         v-if="!isLoggedIn && isLargeWidth"
-        class="block w-auto text-heading-color font-medium mx-auto"
-        data-test="nav-bar-public-links"
+        class="flex gap-4"
       >
         <a
-          v-for="link in navBarPublicLinks"
-          :key="link.text"
-          class="ml-8 hover:text-primary-main"
-          :href="link.href"
+          class="
+            text-primary-main hover:text-primary-hover
+            px-5 py-4 h-11 cursor-pointer flex items-center
+          "
+          :href="DOCS"
+          target="_blank"
         >
-          {{ link.text }}
+          {{ $t('docs') }}
         </a>
-      </div>
-      <div
-        v-if="!isLoggedIn && isLargeWidth"
-        class="flex"
-      >
         <GenericButton
-          :type="ButtonType.Text"
-          :size="SizeType.Inline"
+          v-if="!route.path.includes(LOGIN_ROUTE)"
+          :type="ButtonType.Secondary"
           :text="$t('logIn')"
           @click="logIn"
         />
         <GenericButton
-          class="ml-4"
-          :type="ButtonType.Primary"
-          :text="$t('getAPIKeys')"
+          v-if="!route.path.includes(SIGNUP_ROUTE)"
+          :type="ButtonType.Secondary"
+          :text="$t('signUp')"
           @click="signUp"
         />
       </div>
@@ -158,29 +134,30 @@ const signUp = () => {
         "
       >
         <a
-          v-for="link in navBarPublicLinks"
-          :key="link.text"
           class="
             px-3 py-2 border-b-4 border-primary-main border-opacity-0
             hover:border-opacity-100 hover:text-primary-main
           "
-          :href="link.href"
+          :href="DOCS"
+          target="_blank"
         >
-          {{ link.text }}
+          {{ $t('docs') }}
         </a>
         <a
+          v-if="!route.path.includes(LOGIN_ROUTE)"
           class="mx-2 px-3 py-2 text-primary-main hover:text-primary-hover font-medium"
           :href="LOGIN_ROUTE"
         >
           {{ $t('logIn') }}
         </a>
         <a
+          v-if="!route.path.includes(SIGNUP_ROUTE)"
           class="
               mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
               text-white bg-primary-main hover:bg-primary-hover justify-center"
           :href="SIGNUP_ROUTE"
         >
-          {{ $t('getAPIKeys') }}
+          {{ $t('signUp') }}
         </a>
       </div>
     </div>
