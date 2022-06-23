@@ -90,25 +90,18 @@ describe('NavBar', () => {
 
       userStore.user = null;
     });
-    it('shows public nav bar links', () => {
-      const wrapper = getWrapper();
-      const navBarPublicLinks = wrapper.find('[data-test="nav-bar-public-links"]');
-      expect(navBarPublicLinks.exists()).toBe(true);
-      const navBarInternalLinks = wrapper.find('[data-test="nav-bar-internal-links"]');
-      expect(navBarInternalLinks.exists()).toBe(false);
-    });
     it('fintoc logo redirects to fintoc.com', () => {
       const wrapper = getWrapper();
       const fintocLogo = wrapper.find('[data-test="fintoc-logo"]');
       expect(fintocLogo.exists()).toBe(true);
       expect(fintocLogo.attributes('href')).toEqual('https://fintoc.com');
     });
-    it('shows organization settings link', () => {
+    it('doesn\'t show organization settings link', () => {
       const wrapper = getWrapper();
       const organizationSettingsLink = wrapper.find('[data-test="nav-bar-organization-settings-link"]');
       expect(organizationSettingsLink.exists()).toBe(false);
     });
-    it('shows profile settings link', () => {
+    it('doesn\'t show profile settings link', () => {
       const wrapper = getWrapper();
       const profileSettingsLink = wrapper.find('[data-test="nav-bar-profile-settings-link"]');
       expect(profileSettingsLink.exists()).toBe(false);

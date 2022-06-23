@@ -1,7 +1,5 @@
 export const DOCS = 'https://docs.fintoc.com';
-export const NEWS = 'https://fintoc.com/changelog';
 export const CONTACT = 'https://fintoc.com/contact';
-export const BLOG = 'https://blog.fintoc.com';
 export const FINTOC_HOME = 'https://fintoc.com';
 
 export const DOCS_LINKS = 'https://docs.fintoc.com/reference/links';

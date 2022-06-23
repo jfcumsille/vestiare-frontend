@@ -5,7 +5,7 @@ export default <WebhookEndpointsViewLocale>{
   title_other: 'Webhook Endpoints',
   learnMore: 'Learn more →',
   subtitle: `
-    A webhook is a mechanism that allows us to notify to your server about a specific action that took place on
+    A webhook is a mechanism that allows us to notify your server about a specific action that took place on
     Fintoc's side so that your application can react to it, maintaining a "synchronized state" with Fintoc.
   `,
   whatisAWebhookEndpoint: 'What is a Webhook Endpoint?',
@@ -39,7 +39,7 @@ export default <WebhookEndpointsViewLocale>{
       url: {
         label: 'Webhook Endpoint URL',
         placeholder: 'https://your.backend/webhook',
-        hint: 'If you don´t have a server URL yet try this tool out:',
+        hint: 'If you don´t have a server URL yet, try out this tool:',
       },
       description: {
         label: 'Description',
