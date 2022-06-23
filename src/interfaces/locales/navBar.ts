@@ -4,7 +4,7 @@ export interface NavBarLocale {
   contact: string,
   blog: string,
   logIn: string,
-  getAPIKeys: string,
+  signUp: string,
   organizationName: string,
   myProfileSettings: string,
   logOut: string,

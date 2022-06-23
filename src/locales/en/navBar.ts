@@ -6,7 +6,7 @@ export default <NavBarLocale>{
   contact: 'Contact',
   blog: 'Blog',
   logIn: 'Log in',
-  getAPIKeys: 'Get API Keys',
+  signUp: 'Sign up',
   organizationName: 'My Organization',
   myProfileSettings: 'My profile',
   logOut: 'Log Out',
