@@ -96,12 +96,12 @@ describe('NavBar', () => {
       expect(fintocLogo.exists()).toBe(true);
       expect(fintocLogo.attributes('href')).toEqual('https://fintoc.com');
     });
-    it('doesnt show organization settings link', () => {
+    it('doesn\'t show organization settings link', () => {
       const wrapper = getWrapper();
       const organizationSettingsLink = wrapper.find('[data-test="nav-bar-organization-settings-link"]');
       expect(organizationSettingsLink.exists()).toBe(false);
     });
-    it('doesnt show profile settings link', () => {
+    it('doesn\'t show profile settings link', () => {
       const wrapper = getWrapper();
       const profileSettingsLink = wrapper.find('[data-test="nav-bar-profile-settings-link"]');
       expect(profileSettingsLink.exists()).toBe(false);

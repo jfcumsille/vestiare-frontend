@@ -8,8 +8,6 @@ import { ButtonType } from '@/interfaces/utilities/enums';
 import { LOGIN_ROUTE, SIGNUP_ROUTE, ORGANIZATION_ROUTE } from '@/constants/router';
 import { DOCS } from '@/constants/urls';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
-import ChileIcon from '@/assets/svg/ChileIcon.vue';
-import MexicoIcon from '@/assets/svg/MexicoIcon.vue';
 import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import UserOptionsButton from './UserOptionsButton.vue';
@@ -35,6 +33,9 @@ const navBarLoggedInLinks = [
     href: DOCS,
   },
 ];
+
+const isLogInView = computed(() => route.path.includes(LOGIN_ROUTE));
+const isSignUpView = computed(() => route.path.includes(SIGNUP_ROUTE));
 
 const logIn = () => {
   router.push({ path: LOGIN_ROUTE });
@@ -65,13 +66,13 @@ const signUp = () => {
           {{ $t('docs') }}
         </a>
         <GenericButton
-          v-if="!route.path.includes(LOGIN_ROUTE)"
+          v-if="!isLogInView"
           :type="ButtonType.Secondary"
           :text="$t('logIn')"
           @click="logIn"
         />
         <GenericButton
-          v-if="!route.path.includes(SIGNUP_ROUTE)"
+          v-if="!isSignUpView"
           :type="ButtonType.Secondary"
           :text="$t('signUp')"
           @click="signUp"
@@ -81,8 +82,6 @@ const signUp = () => {
         v-if="!isLoggedIn && !isLargeWidth"
         class="flex flex-row"
       >
-        <ChileIcon class="h-6 w-6 mr-3" />
-        <MexicoIcon class="h-6 w-6 mr-8" />
         <button
           @click="pressMenu"
         >
@@ -144,17 +143,19 @@ const signUp = () => {
           {{ $t('docs') }}
         </a>
         <a
-          v-if="!route.path.includes(LOGIN_ROUTE)"
-          class="mx-2 px-3 py-2 text-primary-main hover:text-primary-hover font-medium"
+          v-if="!isLogInView"
+          class="
+            mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
+            text-white bg-primary-main hover:bg-primary-hover justify-center"
           :href="LOGIN_ROUTE"
         >
           {{ $t('logIn') }}
         </a>
         <a
-          v-if="!route.path.includes(SIGNUP_ROUTE)"
+          v-if="!isSignUpView"
           class="
-              mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
-              text-white bg-primary-main hover:bg-primary-hover justify-center"
+            mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
+            text-white bg-primary-main hover:bg-primary-hover justify-center"
           :href="SIGNUP_ROUTE"
         >
           {{ $t('signUp') }}
