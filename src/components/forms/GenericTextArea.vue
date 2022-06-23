@@ -88,7 +88,6 @@ defineExpose({ valid });
           flex w-full p-3 border-1.5 border-border-color rounded-lg text-sm shadow-sm
           duration-100 ease-out cursor-text ${textAreaColorClasses}
         `"
-        tabIndex="0"
         @click="focusInput"
       >
         <textarea
@@ -98,7 +97,6 @@ defineExpose({ valid });
           :placeholder="props.placeholder"
           :value="props.modelValue"
           v-bind="$attrs"
-          tabIndex="-1"
           @input="onInput"
           @blur="startValidating"
         />
