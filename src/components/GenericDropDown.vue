@@ -70,6 +70,7 @@ const capitalize = computed(() => (props.isCapitalizeOptions ? 'capitalize' : ''
         border-1.5 border-border-color text-sm
         text-body-color ${width} ${capitalize}`
       "
+      type="button"
       @click="toggle"
     >
       <div> {{ title }} </div>

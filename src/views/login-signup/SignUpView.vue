@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  ref, watch, computed, onMounted,
+  ref, watch, onMounted, computed,
 } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
@@ -10,7 +10,11 @@ import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls'
 import { DASHBOARD_ORIGIN, USER_SIGNED_UP, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
+import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
+import { isValidEmail } from '@/utils/email';
+import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
@@ -38,34 +42,38 @@ const error = ref(false);
 const loading = ref(false);
 const completed = ref(false);
 
+const form = ref<Nullable<GenericFormPublicAPI>>(null);
+
 watch([email, password], () => { error.value = false; });
 const isChecked = ref(false);
 const isSignUpEnabled = computed(() => (
-  isChecked.value && name.value && lastName.value && email.value && password.value
+  isChecked.value && form.value?.valid
 ));
 
 const signUp = async () => {
-  loading.value = true;
-  try {
-    await $store.manualSignup({
-      email: email.value,
-      password: password.value,
-      name: name.value,
-      lastName: lastName.value,
-      country: country.value,
-      company: company.value,
-    });
-    completed.value = true;
-    track(USER_SIGNED_UP);
-  } catch {
-    error.value = true;
-    completed.value = false;
-  } finally {
-    loading.value = false;
+  if (isChecked.value && form.value?.valid) {
+    loading.value = true;
+    try {
+      await $store.manualSignup({
+        email: email.value,
+        password: password.value,
+        name: name.value,
+        lastName: lastName.value,
+        country: country.value,
+        company: company.value,
+      });
+      completed.value = true;
+      track(USER_SIGNED_UP);
+    } catch {
+      error.value = true;
+      completed.value = false;
+    } finally {
+      loading.value = false;
+    }
   }
 };
 
-const logIn = () => {
+const goToLogIn = () => {
   toStoredRedirectionOrHome(router);
 };
 
@@ -74,6 +82,23 @@ onMounted(() => {
     origin: DASHBOARD_ORIGIN,
   });
 });
+
+const nameValidations = [(value:string) => !!value.trim() || 'Required'];
+const lastNameValidations = [(value:string) => !!value.trim() || 'Required'];
+const emailValidations = [(value: string) => isValidEmail(value) || 'Invalid Email'];
+const passwordValidations = [
+  (val: string) => {
+    const value = val.trim();
+    const lengthValidation = value.length >= 8;
+    const lowerCase = Number(!!value.match(/[a-z]/g));
+    const upperCase = Number(!!value.match(/[A-Z]/g));
+    const number = Number(!!value.match(/[0-9]/g));
+    const speacialChar = Number(!!value.match(/[(!@#$%^&*).]/g));
+    const chars = lowerCase + upperCase + number + speacialChar;
+    const validPassword = lengthValidation && (chars >= 3);
+    return validPassword || 'Choose a stronger password';
+  },
+];
 </script>
 
 <template>
@@ -108,19 +133,24 @@ onMounted(() => {
 
           <div class="my-7 h-px bg-divider-color" />
 
-          <div class="grow flex flex-col justify-center space-y-5">
+          <GenericForm
+            ref="form"
+            class="grow flex flex-col justify-center space-y-5"
+          >
             <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="name"
                 :size="SizeType.Large"
                 :label="$tForms('labels.name')"
                 :placeholder="$tForms('placeholders.name')"
+                :validations="nameValidations"
               />
               <GenericInput
                 v-model="lastName"
                 :size="SizeType.Large"
                 :label="$tForms('labels.lastName')"
                 :placeholder="$tForms('placeholders.lastName')"
+                :validations="lastNameValidations"
               />
             </div>
             <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
@@ -148,6 +178,7 @@ onMounted(() => {
                 :size="SizeType.Large"
                 :label="$tForms('labels.email')"
                 :placeholder="$tForms('placeholders.email')"
+                :validations="emailValidations"
               />
               <GenericInput
                 v-model="password"
@@ -156,6 +187,7 @@ onMounted(() => {
                 :label="$tForms('labels.password')"
                 :placeholder="$tForms('placeholders.password')"
                 autocomplete="off"
+                :validations="passwordValidations"
               />
             </div>
             <div class="block">
@@ -226,7 +258,7 @@ onMounted(() => {
                 {{ $tSignUp('logIn') }}
               </a>
             </div>
-          </div>
+          </GenericForm>
         </div>
       </div>
 
@@ -316,7 +348,7 @@ onMounted(() => {
             :type="ButtonType.Primary"
             :text="$tSignUp('logIn')"
             :disabled="loading"
-            @click="logIn"
+            @click="goToLogIn"
           />
         </div>
       </div>

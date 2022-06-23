@@ -168,6 +168,7 @@ const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
       disabled:bg-light-gray disabled:text-disabled-color
       ${colorClasses} ${sizeClasses} ${width}`
     "
+    type="button"
     @click="onClick"
   >
     <div>
