@@ -13,7 +13,6 @@ import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
-import { GenericInputPublicAPI } from '@/interfaces/components/forms/GenericInput';
 import { isValidEmail } from '@/utils/email';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -51,7 +50,6 @@ const togglePassword = () => {
 };
 
 const form = ref<Nullable<GenericFormPublicAPI>>(null);
-const passwordInput = ref<Nullable<GenericInputPublicAPI>>(null);
 
 watch([email, password, name, lastName], () => { warningTitle.value = ''; });
 const isChecked = ref(false);
@@ -103,19 +101,21 @@ onMounted(() => {
 const nameValidations = [(value:string) => !!value.trim() || $tForms('hints.name') as string];
 const lastNameValidations = [(value:string) => !!value.trim() || $tForms('hints.lastname') as string];
 const emailValidations = [(value: string) => isValidEmail(value) || $tForms('hints.email') as string];
-const passwordValidations = [
-  (val: string) => {
-    const value = val.trim();
-    const lengthValidation = value.length >= 8;
-    const lowerCase = Number(!!value.match(/[a-z]/g));
-    const upperCase = Number(!!value.match(/[A-Z]/g));
-    const number = Number(!!value.match(/[0-9]/g));
-    const speacialChar = Number(!!value.match(/[(!@#$%^&*).]/g));
-    const chars = lowerCase + upperCase + number + speacialChar;
-    const validPassword = lengthValidation && (chars >= 3);
-    return validPassword || $tForms('hints.password') as string;
-  },
-];
+
+const isPasswordValid = (val: string) => {
+  const value = val.trim();
+  const lengthValidation = value.length >= 8;
+  const lowerCase = Number(!!value.match(/[a-z]/g));
+  const upperCase = Number(!!value.match(/[A-Z]/g));
+  const number = Number(!!value.match(/[0-9]/g));
+  const speacialChar = Number(!!value.match(/[(!@#$%^&*).,:;]/g));
+  const chars = lowerCase + upperCase + number + speacialChar;
+  const validPassword = lengthValidation && (chars >= 3);
+  return validPassword;
+};
+
+const showPasswordRules = computed(() => !isPasswordValid(password.value) && password.value !== '');
+const passwordValidations = [(value: string) => isPasswordValid(value) || $tForms('hints.password') as string];
 </script>
 
 <template>
@@ -214,7 +214,6 @@ const passwordValidations = [
               />
               <div class="space-y-2">
                 <GenericInput
-                  ref="passwordInput"
                   v-model="password"
                   :size="SizeType.Large"
                   :type="showPassword ? '': 'password'"
@@ -227,7 +226,7 @@ const passwordValidations = [
                   @click-right-icon="togglePassword"
                 />
                 <div
-                  v-if="passwordInput?.validating && !passwordInput?.valid"
+                  v-if="showPasswordRules"
                   class="ml-1 text-xs text-body-color pl-6 max-w-80"
                 >
                   {{ $tSignUp('passwordHintLength') }}
