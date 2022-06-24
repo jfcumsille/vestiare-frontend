@@ -21,6 +21,7 @@ export default <FormsLocale>{
     hints: {
       email: 'Email inválido',
       password: 'Elige una contraseña más segura.',
+      validPassword: 'Tu contraseña es segura.',
       name: 'Obligatorio',
       lastname: 'Obligatorio',
     },

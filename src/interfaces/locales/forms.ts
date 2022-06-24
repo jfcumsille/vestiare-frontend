@@ -16,5 +16,12 @@ export interface FormsLocale {
       company: string,
       country: string,
     },
+    hints: {
+      email: string,
+      password: string,
+      validPassword: string,
+      name: string,
+      lastname: string,
+    },
   },
 }

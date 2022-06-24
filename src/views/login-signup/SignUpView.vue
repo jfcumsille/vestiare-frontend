@@ -102,7 +102,7 @@ const nameValidations = [(value:string) => !!value.trim() || $tForms('hints.name
 const lastNameValidations = [(value:string) => !!value.trim() || $tForms('hints.lastname') as string];
 const emailValidations = [(value: string) => isValidEmail(value) || $tForms('hints.email') as string];
 
-const isPasswordValid = (val: string) => {
+const validatePassword = (val: string) => {
   const value = val.trim();
   const lengthValidation = value.length >= 8;
   const lowerCase = Number(!!value.match(/[a-z]/g));
@@ -113,9 +113,9 @@ const isPasswordValid = (val: string) => {
   const validPassword = lengthValidation && (chars >= 3);
   return validPassword;
 };
-
-const showPasswordRules = computed(() => !isPasswordValid(password.value) && password.value !== '');
-const passwordValidations = [(value: string) => isPasswordValid(value) || $tForms('hints.password') as string];
+const isValidPassword = computed(() => validatePassword(password.value));
+const showPasswordRules = computed(() => !validatePassword(password.value) && password.value !== '');
+const passwordValidations = [(value: string) => validatePassword(value) || $tForms('hints.password') as string];
 </script>
 
 <template>
@@ -223,6 +223,7 @@ const passwordValidations = [(value: string) => isPasswordValid(value) || $tForm
                   :validations="passwordValidations"
                   bold-hint
                   :right-icon-name="showPassword ? 'eye-closed' : 'eye'"
+                  :hint="isValidPassword ? $tForms('hints.validPassword') : undefined"
                   @click-right-icon="togglePassword"
                 />
                 <div
