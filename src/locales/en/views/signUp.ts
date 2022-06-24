@@ -19,4 +19,12 @@ export default <SignUpViewLocale>{
   thankYou: 'thank you for joining Fintoc! Please check your email and visit the link sent to',
   verifyAccount: 'to verify your account. The verification email may take up to 5 minutes to arrive.',
   resendEmail: 'Resend verification email',
+  passwordHintLength: 'At least 8 characters including at least 3 of the following 4 types of characters:',
+  passwordHintLowerCase: 'a lower-case letter',
+  passwordHintUpperCase: 'an upper-case letter',
+  passwordHintNumber: 'a number',
+  passwordHintSpecialChar: 'a special character (!@#$%^&*).',
+  unauthorizedWarning: 'Your user has been blocked.',
+  invalidSignupWarning: 'Invalid sign up.',
+  warningSubtitle: 'Please contact Fintoc for support.',
 };

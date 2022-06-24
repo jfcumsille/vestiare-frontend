@@ -16,4 +16,12 @@ export interface SignUpViewLocale {
   thankYou: string,
   verifyAccount: string,
   resendEmail: string,
+  passwordHintLength: string,
+  passwordHintLowerCase: string,
+  passwordHintUpperCase: string,
+  passwordHintNumber: string,
+  passwordHintSpecialChar: string,
+  unauthorizedWarning: string,
+  invalidSignupWarning: string,
+  warningSubtitle: string,
 }
