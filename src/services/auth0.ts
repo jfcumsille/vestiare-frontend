@@ -65,7 +65,7 @@ export const manualSignup = ({
     if (!error) {
       resolve(user);
     } else {
-      reject();
+      reject(error);
     }
   });
 });

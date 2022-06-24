@@ -20,12 +20,14 @@ import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import BulletPoint from '@/assets/svg/BulletPoint.vue';
+import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
+import { AxiosError } from 'axios';
 import Auth0Panel from './components/Auth0Panel.vue';
 
 const router = useRouter();
 
-const $store = useUserStore();
+const userStore = useUserStore();
 const $tForms = useTranslation('forms.userData');
 const $tSignUp = useTranslation('views.signUp');
 
@@ -39,24 +41,32 @@ const selectCountryFilter = (value: string) => {
 };
 const email = ref('');
 const password = ref('');
-const error = ref(false);
 const loading = ref(false);
 const completed = ref(false);
+const warningTitle = ref('');
 
 const form = ref<Nullable<GenericFormPublicAPI>>(null);
 const passwordInput = ref<Nullable<GenericInputPublicAPI>>(null);
 
-watch([email, password], () => { error.value = false; });
+watch([email, password, name, lastName], () => { warningTitle.value = ''; });
 const isChecked = ref(false);
 const isSignUpEnabled = computed(() => (
   isChecked.value && form.value?.valid
 ));
 
+const handleSignUpError = (error: AxiosError) => {
+  if (error.code === 'unauthorized') {
+    warningTitle.value = $tSignUp('unauthorizedWarning');
+  } else {
+    warningTitle.value = $tSignUp('invalidSignupWarning');
+  }
+};
+
 const signUp = async () => {
   if (isChecked.value && form.value?.valid) {
     loading.value = true;
     try {
-      await $store.manualSignup({
+      await userStore.manualSignup({
         email: email.value,
         password: password.value,
         name: name.value,
@@ -66,8 +76,8 @@ const signUp = async () => {
       });
       completed.value = true;
       track(USER_SIGNED_UP);
-    } catch {
-      error.value = true;
+    } catch (err) {
+      handleSignUpError(err as AxiosError);
       completed.value = false;
     } finally {
       loading.value = false;
@@ -139,6 +149,21 @@ const passwordValidations = [
             ref="form"
             class="grow flex flex-col justify-center space-y-5"
           >
+            <div
+              v-if="!!warningTitle"
+              class="flex flex-row bg-danger-surface p-2 rounded-lg mb-2"
+            >
+              <WarningIcon
+                class="ml-1 text-danger-main"
+                fill="currentColor"
+              />
+              <div class="ml-2 text-body-color text-sm">
+                <p class="font-bold">
+                  {{ warningTitle }}
+                </p>
+                <p>{{ $tSignUp('warningSubtitle') }}</p>
+              </div>
+            </div>
             <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
               <GenericInput
                 v-model="name"
@@ -257,12 +282,6 @@ const passwordValidations = [
                 :disabled="!isSignUpEnabled"
                 @click="signUp"
               />
-              <span
-                v-if="error"
-                class="ml-4 font-black text-xl text-danger-main"
-              >
-                !
-              </span>
             </div>
 
             <div

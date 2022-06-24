@@ -24,4 +24,7 @@ export default <SignUpViewLocale>{
   passwordHintUpperCase: 'una mayúscula',
   passwordHintNumber: 'un número',
   passwordHintSpecialChar: 'un caracter especial (!@#$%^&*).',
+  unauthorizedWarning: 'Tu usuario ha sido bloqueado.',
+  invalidSignupWarning: 'Registro inválido',
+  warningSubtitle: 'Por favor contacta a Fintoc para ayudarte.',
 };

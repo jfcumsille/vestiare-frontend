@@ -21,4 +21,7 @@ export interface SignUpViewLocale {
   passwordHintUpperCase: string,
   passwordHintNumber: string,
   passwordHintSpecialChar: string,
+  unauthorizedWarning: string,
+  invalidSignupWarning: string,
+  warningSubtitle: string,
 }
