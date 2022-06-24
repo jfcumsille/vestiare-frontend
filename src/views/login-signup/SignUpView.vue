@@ -45,6 +45,11 @@ const loading = ref(false);
 const completed = ref(false);
 const warningTitle = ref('');
 
+const showPassword = ref(false);
+const togglePassword = () => {
+  showPassword.value = !showPassword.value;
+};
+
 const form = ref<Nullable<GenericFormPublicAPI>>(null);
 const passwordInput = ref<Nullable<GenericInputPublicAPI>>(null);
 
@@ -212,12 +217,14 @@ const passwordValidations = [
                   ref="passwordInput"
                   v-model="password"
                   :size="SizeType.Large"
-                  type="password"
+                  :type="showPassword ? '': 'password'"
                   :label="$tForms('labels.password')"
                   :placeholder="$tForms('placeholders.password')"
                   autocomplete="off"
                   :validations="passwordValidations"
                   bold-hint
+                  :right-icon-name="showPassword ? 'eye-closed' : 'eye'"
+                  @click-right-icon="togglePassword"
                 />
                 <div
                   v-if="passwordInput?.validating && !passwordInput?.valid"
