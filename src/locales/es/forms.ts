@@ -18,5 +18,11 @@ export default <FormsLocale>{
       company: 'Fintoc',
       country: 'Chile',
     },
+    hints: {
+      email: 'Email inválido',
+      password: 'Elige una contraseña más segura.',
+      name: 'Obligatorio',
+      lastname: 'Obligatorio',
+    },
   },
 };

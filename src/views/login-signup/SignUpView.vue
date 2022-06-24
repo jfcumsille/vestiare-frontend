@@ -13,6 +13,7 @@ import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
+import { GenericInputPublicAPI } from '@/interfaces/components/forms/GenericInput';
 import { isValidEmail } from '@/utils/email';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -43,6 +44,7 @@ const loading = ref(false);
 const completed = ref(false);
 
 const form = ref<Nullable<GenericFormPublicAPI>>(null);
+const passwordInput = ref<Nullable<GenericInputPublicAPI>>(null);
 
 watch([email, password], () => { error.value = false; });
 const isChecked = ref(false);
@@ -83,9 +85,9 @@ onMounted(() => {
   });
 });
 
-const nameValidations = [(value:string) => !!value.trim() || 'Required'];
-const lastNameValidations = [(value:string) => !!value.trim() || 'Required'];
-const emailValidations = [(value: string) => isValidEmail(value) || 'Invalid Email'];
+const nameValidations = [(value:string) => !!value.trim() || $tForms('hints.name') as string];
+const lastNameValidations = [(value:string) => !!value.trim() || $tForms('hints.lastname') as string];
+const emailValidations = [(value: string) => isValidEmail(value) || $tForms('hints.email') as string];
 const passwordValidations = [
   (val: string) => {
     const value = val.trim();
@@ -96,7 +98,7 @@ const passwordValidations = [
     const speacialChar = Number(!!value.match(/[(!@#$%^&*).]/g));
     const chars = lowerCase + upperCase + number + speacialChar;
     const validPassword = lengthValidation && (chars >= 3);
-    return validPassword || 'Choose a stronger password';
+    return validPassword || $tForms('hints.password') as string;
   },
 ];
 </script>
@@ -180,15 +182,31 @@ const passwordValidations = [
                 :placeholder="$tForms('placeholders.email')"
                 :validations="emailValidations"
               />
-              <GenericInput
-                v-model="password"
-                :size="SizeType.Large"
-                type="password"
-                :label="$tForms('labels.password')"
-                :placeholder="$tForms('placeholders.password')"
-                autocomplete="off"
-                :validations="passwordValidations"
-              />
+              <div class="space-y-2">
+                <GenericInput
+                  ref="passwordInput"
+                  v-model="password"
+                  :size="SizeType.Large"
+                  type="password"
+                  :label="$tForms('labels.password')"
+                  :placeholder="$tForms('placeholders.password')"
+                  autocomplete="off"
+                  :validations="passwordValidations"
+                  bold-hint
+                />
+                <div
+                  v-if="passwordInput?.validating && !passwordInput?.valid"
+                  class="ml-1 text-xs text-body-color pl-6 max-w-80"
+                >
+                  {{ $tSignUp('passwordHintLength') }}
+                  <ul class="pl-4 list-disc">
+                    <li>{{ $tSignUp('passwordHintLowerCase') }}</li>
+                    <li>{{ $tSignUp('passwordHintUpperCase') }}</li>
+                    <li>{{ $tSignUp('passwordHintNumber') }}</li>
+                    <li>{{ $tSignUp('passwordHintSpecialChar') }}</li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div class="block">
               <div>

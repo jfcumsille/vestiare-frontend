@@ -51,5 +51,6 @@ export const useValidatedModel = <T>(props: ValidatedModelProps<T>) => {
     valid: externalValid,
     internalValid,
     error,
+    validating,
   };
 };

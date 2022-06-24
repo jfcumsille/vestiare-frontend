@@ -21,6 +21,7 @@ const props = withDefaults(defineProps<{
   rightHref?: string,
   leftIconName?: string,
   rightIconName?: string,
+  boldHint?: boolean,
   // Validated Model
   modelValue: ModelValuePropType<string>,
   validations?: ValidatePropType<string>,
@@ -41,7 +42,7 @@ const emit = defineEmits<{
 useRegistration();
 
 const {
-  startValidating, valid, internalValid, error,
+  startValidating, valid, internalValid, error, validating,
 } = useValidatedModel(props);
 
 const onInput = ($event: Event) => {
@@ -90,6 +91,8 @@ const warningIconColor = computed(() => {
   return 'text-success-main';
 });
 
+const hintStyle = computed(() => (props.boldHint ? 'font-semibold' : ''));
+
 const showHint = computed(() => !internalValid.value || props.hint);
 const hasRightLink = computed(() => props.rightText && props.rightHref);
 
@@ -108,7 +111,7 @@ const sizeClasses = computed(() => {
   }
 });
 
-defineExpose({ valid });
+defineExpose({ valid, validating });
 </script>
 
 <template>
@@ -166,7 +169,7 @@ defineExpose({ valid });
       <div
         v-if="showHint"
         data-test="input-hint"
-        :class="`flex flex-row items-start ${warningIconColor}`"
+        :class="`flex flex-row items-start ${warningIconColor} ${hintStyle}`"
       >
         <WarningIcon
           class="mt-0.5 w-2.5 h-2.5 min-w-2.5 min-h-2.5"

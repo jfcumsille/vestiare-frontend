@@ -57,19 +57,26 @@ describe('SignUpView', () => {
   const fillInputsForm = (wrapper: VueWrapper) => {
     const inputs = wrapper.findAllComponents(GenericInput);
     inputs.forEach((input) => {
-      input.setValue('something');
+      const label = input.props('label');
+      if (label === 'Password') {
+        input.setValue('V@lidpassword');
+      } else if (label === 'Email') {
+        input.setValue('valid@email.com');
+      } else { input.setValue('something'); }
     });
   };
 
   describe('when user signs up', () => {
     it('tracks \'User Signed Up\' with analytics', async () => {
       const wrapper = getWrapper();
-      fillInputsForm(wrapper);
-      handleCheckbox(wrapper);
-      await wrapper.vm.$forceUpdate();
-
       const signUpButton = wrapper.find('[data-test="sign-up-button"]');
       expect(signUpButton.exists()).toBe(true);
+      expect(signUpButton.classes()).toContain('disabled:bg-light-gray');
+
+      handleCheckbox(wrapper);
+      fillInputsForm(wrapper);
+      await wrapper.vm.$forceUpdate();
+
       await signUpButton.trigger('click');
       await wrapper.vm.$forceUpdate();
 

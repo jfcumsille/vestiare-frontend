@@ -19,4 +19,9 @@ export default <SignUpViewLocale>{
   thankYou: 'gracias por unirte a Fintoc! Por favor revisa tu correo y visita el link enviado a',
   verifyAccount: 'para verificar tu cuenta. El correo de verificación podría tomar hasta 5 minutos en ser enviado.',
   resendEmail: 'Re-enviar correo de verificación',
+  passwordHintLength: 'Al menos 8 caracteres incluyendo al menos 3 de los siguientes 4 tipos:',
+  passwordHintLowerCase: 'una minúscula',
+  passwordHintUpperCase: 'una mayúscula',
+  passwordHintNumber: 'un número',
+  passwordHintSpecialChar: 'un caracter especial (!@#$%^&*).',
 };
