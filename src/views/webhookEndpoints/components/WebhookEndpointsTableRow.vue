@@ -43,6 +43,7 @@ const openDetailedView = () => {
 <template>
   <TableRow class="cursor-pointer">
     <TableData
+      class="max-w-xs"
       @click="openDetailedView"
     >
       <TableLabel
@@ -50,6 +51,7 @@ const openDetailedView = () => {
       />
     </TableData>
     <TableData
+      class="max-w-xs"
       @click="openDetailedView"
     >
       <TableLabel

@@ -42,7 +42,7 @@ onMounted(() => {
           v-for="member in organizationStore.organizationUsers"
           :key="member.email"
         >
-          <TableData>
+          <TableData class="max-w-xs">
             <TableLabel
               :label="member.name"
             />
