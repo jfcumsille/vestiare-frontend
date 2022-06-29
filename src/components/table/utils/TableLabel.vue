@@ -18,7 +18,7 @@ const subLabelFontSizeClass = computed(() => {
   <div class="whitespace-nowrap disabled:text-disabled-color">
     <p
       v-if="props.label"
-      class="font-medium text-body-color text-sm"
+      class="font-medium text-body-color text-sm text-ellipsis overflow-hidden"
     >
       {{ props.label }}
     </p>

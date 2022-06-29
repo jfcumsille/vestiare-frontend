@@ -12,6 +12,7 @@ import GenericButton from '@/components/GenericButton.vue';
 import GenericLabel from '@/components/GenericLabel.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ProductsSection from './components/ProductsSection.vue';
+import OrganizationUsers from './components/OrganizationUsers.vue';
 
 const $t = useTranslation('views.organization');
 const organizationStore = useOrganizationStore();
@@ -53,7 +54,7 @@ onMounted(() => {
 <template>
   <div
     data-test="organization-view"
-    class="flex flex-col p-10 items-center"
+    class="flex flex-col p-10 items-left"
   >
     <div class="flex flex-col w-full">
       <div class="font-semibold text-2xl text-heading-color self-start">
@@ -162,6 +163,10 @@ onMounted(() => {
       <div class="break-normal border p-5 bg-white rounded-lg drop-shadow min-w-sm min-h-md">
         <ProductsSection />
       </div>
+    </div>
+
+    <div class="mt-10 w-full space-y-6 max-w-6xl">
+      <OrganizationUsers />
     </div>
   </div>
 </template>
