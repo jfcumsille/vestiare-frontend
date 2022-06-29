@@ -21,4 +21,10 @@ export interface OrganizationViewLocale {
     fiscalAPI: string,
     callToAction: string,
   },
+  members: {
+    title: string,
+    name: string,
+    email: string,
+    memberSince: string,
+  },
 }

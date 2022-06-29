@@ -23,4 +23,10 @@ export default <OrganizationViewLocale>{
     fiscalAPI: 'Fiscal API',
     callToAction: 'Ask about other products and use cases →',
   },
+  members: {
+    title: 'Team',
+    name: 'Name',
+    email: 'Email',
+    memberSince: 'Member Since',
+  },
 };
