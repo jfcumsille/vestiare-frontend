@@ -1,13 +1,17 @@
 <script setup lang="ts">
 /* eslint-disable vue/no-v-html */
 import { onMounted } from 'vue';
-import { page } from '@/services/analytics';
 import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
+import { useLocale, SUPPORTED_LOCALES } from '@/composables/locale';
+import { page } from '@/services/analytics';
 import { DASHBOARD_ORIGIN, PROFILE_VIEWED } from '@/constants/analyticsEvents';
+import GenericDropDown from '@/components/GenericDropDown.vue';
 
 const $t = useTranslation('views.profile');
 const userStore = useUserStore();
+
+const { locale, changeLocale } = useLocale();
 
 onMounted(() => {
   page(PROFILE_VIEWED, {
@@ -41,6 +45,15 @@ onMounted(() => {
           <p class="text-sm">
             {{ userStore.user?.lastName }}
           </p>
+
+          <p class="font-medium">
+            Language
+          </p>
+          <GenericDropDown
+            :selected="locale"
+            :options="SUPPORTED_LOCALES"
+            @select="changeLocale"
+          />
 
           <p class="font-medium">
             {{ $t('email') }}

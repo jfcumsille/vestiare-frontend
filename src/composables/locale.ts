@@ -1,4 +1,6 @@
+import i18next from 'i18next';
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useNavigatorLanguage, useSessionStorage } from '@vueuse/core';
 import { includes } from '@/utils/arrays';
 
@@ -18,10 +20,13 @@ const getDefaultLocale = () => {
 };
 
 export const useLocale = () => {
+  const router = useRouter();
   const { defaultLocale } = getDefaultLocale();
   const locale = useSessionStorage<SupportedLocales>(LOCALE_KEY, defaultLocale.value);
-  const changeLocale = (newLocale: SupportedLocales) => {
+  const changeLocale = async (newLocale: SupportedLocales) => {
+    await i18next.changeLanguage(newLocale);
     locale.value = newLocale;
+    router.go(0);
   };
 
   return { locale, changeLocale };

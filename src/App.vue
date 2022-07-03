@@ -5,7 +5,6 @@ import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
-import { useLocale } from '@/composables/locale';
 import { getAuth0Client } from '@/services/auth0';
 import { identify } from '@/services/analytics';
 import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
@@ -18,8 +17,6 @@ const userStore = useUserStore();
 const apiKeysStore = useAPIKeysStore();
 const linksStore = useLinksStore();
 const webhookEndpointsStore = useWebhookEndpointsStore();
-
-const { locale } = useLocale();
 
 const startHotjarSessionIfNeeded = () => {
   const organizationId = userStore.user?.defaultOrganizationId;
@@ -58,7 +55,7 @@ watch(() => configStore.mode, () => {
 </script>
 
 <template>
-  <Layout :key="locale">
+  <Layout>
     <router-view />
   </Layout>
 </template>
