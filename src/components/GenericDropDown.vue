@@ -9,10 +9,10 @@ const props = withDefaults(defineProps<{
   options: Array<string>,
   textPrefix?: string,
   fullWidth?: boolean,
-  capitalize?: boolean,
+  capitalizeOptions?: boolean,
 }>(), {
   fullWidth: false,
-  capitalize: false,
+  capitalizeOptions: false,
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -44,7 +44,7 @@ const title = computed(() => {
 });
 
 const width = computed(() => (props.fullWidth ? 'w-full' : ''));
-const capitalizeClass = computed(() => (props.capitalize ? 'capitalize' : ''));
+const capitalizeOptionsClass = computed(() => (props.capitalizeOptions ? 'capitalize' : ''));
 </script>
 
 <template>
@@ -68,7 +68,7 @@ const capitalizeClass = computed(() => (props.capitalize ? 'capitalize' : ''));
         flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
         disabled:bg-light-gray disabled:text-disabled-color
         border-1.5 border-border-color text-sm
-        text-body-color ${width} ${capitalizeClass}`
+        text-body-color ${width} ${capitalizeOptionsClass}`
       "
       type="button"
       @click="toggle"
@@ -97,7 +97,7 @@ const capitalizeClass = computed(() => (props.capitalize ? 'capitalize' : ''));
               focus:bg-primary-surface focus:text-primary-main
               hover:bg-primary-surface hover:text-primary-hover
               active:bg-primary-border active:text-primary-main
-              ${capitalizeClass}`
+              ${capitalizeOptionsClass}`
             "
             @click="() => select(option)"
           >
