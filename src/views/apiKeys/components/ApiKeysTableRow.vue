@@ -104,8 +104,8 @@ const handleEndHoverIcon = () => {
         v-if="activationRequired"
         data-test="activate-key-button"
         :type="ButtonType.Primary"
-        :is-width-full="true"
         :text="$t('activateSecretKey')"
+        full-width
         @click="handleActivateKey"
       />
       <div

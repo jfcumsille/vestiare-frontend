@@ -6,8 +6,10 @@ import { includes } from '@/utils/arrays';
 const LOCALE_KEY = 'locale';
 export const DEFAULT_LOCALE = 'en';
 export const SUPPORTED_LOCALES = ['en', 'es'] as const;
+export const SUPPORTED_LANGUAGES = ['English', 'Español'] as const;
 
 export type SupportedLocales = typeof SUPPORTED_LOCALES[number];
+export type SupportedLanguages = typeof SUPPORTED_LANGUAGES[number];
 
 const getDefaultLocale = () => {
   const { language } = useNavigatorLanguage();
@@ -16,6 +18,14 @@ const getDefaultLocale = () => {
     return includes(SUPPORTED_LOCALES, locale) ? locale : DEFAULT_LOCALE;
   });
 };
+
+export const languageToLocale = (language: SupportedLanguages) => (
+  SUPPORTED_LOCALES[SUPPORTED_LANGUAGES.indexOf(language)]
+);
+
+export const localeToLanguage = (locale: SupportedLocales) => (
+  SUPPORTED_LANGUAGES[SUPPORTED_LOCALES.indexOf(locale)]
+);
 
 export const useLocale = () => {
   const defaultLocale = getDefaultLocale();

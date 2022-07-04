@@ -8,11 +8,11 @@ const props = withDefaults(defineProps<{
   selected: string,
   options: Array<string>,
   textPrefix?: string,
-  isWidthFull?: boolean,
-  isCapitalizeOptions?: boolean,
+  fullWidth?: boolean,
+  capitalize?: boolean,
 }>(), {
-  isWidthFull: false,
-  isCapitalizeOptions: true,
+  fullWidth: false,
+  capitalize: false,
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -43,8 +43,8 @@ const title = computed(() => {
   return '';
 });
 
-const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
-const capitalize = computed(() => (props.isCapitalizeOptions ? 'capitalize' : ''));
+const width = computed(() => (props.fullWidth ? 'w-full' : ''));
+const capitalizeClass = computed(() => (props.capitalize ? 'capitalize' : ''));
 </script>
 
 <template>
@@ -68,7 +68,7 @@ const capitalize = computed(() => (props.isCapitalizeOptions ? 'capitalize' : ''
         flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
         disabled:bg-light-gray disabled:text-disabled-color
         border-1.5 border-border-color text-sm
-        text-body-color ${width} ${capitalize}`
+        text-body-color ${width} ${capitalizeClass}`
       "
       type="button"
       @click="toggle"
@@ -97,7 +97,7 @@ const capitalize = computed(() => (props.isCapitalizeOptions ? 'capitalize' : ''
               focus:bg-primary-surface focus:text-primary-main
               hover:bg-primary-surface hover:text-primary-hover
               active:bg-primary-border active:text-primary-main
-              ${capitalize}`
+              ${capitalizeClass}`
             "
             @click="() => select(option)"
           >

@@ -177,21 +177,24 @@ onMounted(async () => {
           :label="$t('country')"
           :selected="selectedCountry ? selectedCountry : ''"
           :options="countryLabels"
-          :is-width-full="true"
+          full-width
+          capitalize
           @select="selectCountry"
         />
         <GenericDropDown
           :label="$t('api')"
           :selected="selectedAPIModule ? selectedAPIModule : ''"
           :options="APIModules"
-          :is-width-full="true"
+          full-width
+          capitalize
           @select="selectAPIModule"
         />
         <GenericDropDown
           :label="$t('holderType')"
           :selected="selectedHolderType ? selectedHolderType : ''"
           :options="holderTypes"
-          :is-width-full="true"
+          full-width
+          capitalize
           @select="selectHolderType"
         />
       </div>

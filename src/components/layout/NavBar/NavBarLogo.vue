@@ -8,7 +8,6 @@ import { FINTOC_HOME } from '@/constants/urls';
 
 const userStore = useUserStore();
 const isLoggedIn = computed(() => (userStore.authenticated));
-
 </script>
 
 <template>
