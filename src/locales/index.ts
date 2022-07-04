@@ -3,7 +3,7 @@ import { useLocale } from '@/composables/locale';
 import en from './en';
 import es from './es';
 
-const { locale } = useLocale();
+const locale = useLocale();
 
 export const useTranslation = (prefix: string) => i18next.getFixedT(null, null, prefix);
 

@@ -1,4 +1,3 @@
-import i18next from 'i18next';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useNavigatorLanguage, useSessionStorage } from '@vueuse/core';
@@ -12,22 +11,23 @@ export type SupportedLocales = typeof SUPPORTED_LOCALES[number];
 
 const getDefaultLocale = () => {
   const { language } = useNavigatorLanguage();
-  const defaultLocale = computed<SupportedLocales>(() => {
+  return computed<SupportedLocales>(() => {
     const locale = (language.value || '').split('-')[0].toLowerCase();
     return includes(SUPPORTED_LOCALES, locale) ? locale : DEFAULT_LOCALE;
   });
-  return { defaultLocale };
 };
 
 export const useLocale = () => {
+  const defaultLocale = getDefaultLocale();
+  return useSessionStorage<SupportedLocales>(LOCALE_KEY, defaultLocale.value);
+};
+
+export const useLocaleChange = () => {
   const router = useRouter();
-  const { defaultLocale } = getDefaultLocale();
-  const locale = useSessionStorage<SupportedLocales>(LOCALE_KEY, defaultLocale.value);
-  const changeLocale = async (newLocale: SupportedLocales) => {
-    await i18next.changeLanguage(newLocale);
+  const locale = useLocale();
+
+  return (newLocale: SupportedLocales) => {
     locale.value = newLocale;
     router.go(0);
   };
-
-  return { locale, changeLocale };
 };

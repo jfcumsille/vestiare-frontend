@@ -3,15 +3,23 @@
 import { onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
-import { useLocale, SUPPORTED_LOCALES } from '@/composables/locale';
+import { useLocale, useLocaleChange, SUPPORTED_LOCALES } from '@/composables/locale';
 import { page } from '@/services/analytics';
+import { includes } from '@/utils/arrays';
 import { DASHBOARD_ORIGIN, PROFILE_VIEWED } from '@/constants/analyticsEvents';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 
 const $t = useTranslation('views.profile');
 const userStore = useUserStore();
 
-const { locale, changeLocale } = useLocale();
+const locale = useLocale();
+const changeLocale = useLocaleChange();
+
+const changeLanguage = (newLanguage: string) => {
+  if (includes(SUPPORTED_LOCALES, newLanguage)) {
+    changeLocale(newLanguage);
+  }
+};
 
 onMounted(() => {
   page(PROFILE_VIEWED, {
@@ -19,6 +27,7 @@ onMounted(() => {
   });
 });
 </script>
+
 <template>
   <div
     data-test="profile-view"
@@ -46,13 +55,13 @@ onMounted(() => {
             {{ userStore.user?.lastName }}
           </p>
 
-          <p class="font-medium">
-            Language
+          <p class="my-auto font-medium">
+            {{ $t('language') }}
           </p>
           <GenericDropDown
             :selected="locale"
-            :options="SUPPORTED_LOCALES"
-            @select="changeLocale"
+            :options="SUPPORTED_LOCALES as unknown as Array<string>"
+            @select="changeLanguage"
           />
 
           <p class="font-medium">
