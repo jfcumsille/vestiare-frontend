@@ -1,8 +1,11 @@
-export const formatDate = (dateString: string) => {
+import type { SupportedLocales } from '@/composables/locale';
+
+export const formatDate = (dateString: string, locale?: SupportedLocales) => {
   const date = new Date(dateString);
-  return date.toDateString();
+  return date.toLocaleDateString(locale, { dateStyle: 'medium' });
 };
-export const formatTime = (dateString: string) => {
+
+export const formatTime = (dateString: string, locale?: SupportedLocales) => {
   const date = new Date(dateString);
-  return date.toLocaleTimeString();
+  return date.toLocaleTimeString(locale);
 };
