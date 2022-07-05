@@ -24,11 +24,12 @@ export const convertRecordKeysToSnakeCase = (
   return snakeCaseKeyRecord;
 };
 
-export const identify = (user: User) => {
+export const identify = (user: User, organizationName: string | undefined = undefined) => {
   window.analytics.identify(user.id, {
     email: user.email,
     name: user.name,
     defaultOrganizationId: user.defaultOrganizationId,
+    company: organizationName,
   });
 };
 
