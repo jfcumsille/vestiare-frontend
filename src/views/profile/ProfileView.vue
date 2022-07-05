@@ -8,7 +8,7 @@ import {
   useLocaleChange,
   languageToLocale,
   localeToLanguage,
-  SUPPORTED_LANGUAGES,
+  SupportedLanguages,
 } from '@/composables/locale';
 import { page } from '@/services/analytics';
 import { includes } from '@/utils/arrays';
@@ -22,7 +22,7 @@ const locale = useLocale();
 const changeLocale = useLocaleChange();
 
 const changeLanguage = (newLanguage: string) => {
-  if (includes(SUPPORTED_LANGUAGES, newLanguage)) {
+  if (includes(Object.values(SupportedLanguages), newLanguage)) {
     changeLocale(languageToLocale(newLanguage));
   }
 };
@@ -84,7 +84,7 @@ onMounted(() => {
           <GenericDropDown
             :label="$t('language')"
             :selected="language"
-            :options="(SUPPORTED_LANGUAGES as unknown as Array<string>)"
+            :options="Object.values(SupportedLanguages)"
             full-width
             @select="changeLanguage"
           />
