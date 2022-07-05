@@ -14,7 +14,7 @@ export default <OrganizationViewLocale>{
     defaultCountryApiSubLabel: 'País por defecto si no se especifica otro.',
     apiVersion: 'Versión API',
     apiVersionSubLabel1: 'Aprende más sobre versiones →',
-    apiVersionSubLabel2: 'Tu versión será seteada cuando realices tu primera llamada a la API.',
+    apiVersionSubLabel2: 'Tu versión será establecida cuando realices tu primera llamada a la API.',
   },
   products: {
     title: 'Productos',
