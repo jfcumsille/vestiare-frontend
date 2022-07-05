@@ -5,20 +5,21 @@ import {
   onMounted,
   watch,
 } from 'vue';
+import { useConfigStore } from '@/stores/config';
 import { useFintocWidget } from '@/composables/fintocWidget';
 import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import {
-  Mode, CountryCode, Product, HolderType, APIModule, ButtonType,
+  Mode, CountryName, Product, HolderType, APIModule, ButtonType, SizeType,
 } from '@/interfaces/utilities/enums';
 import { Fintoc } from '@/interfaces/utilities/widget';
 import { useAPIKeysStore } from '@/stores/apiKeys';
+import { countryNames, getCountryId } from '@/utils/country';
+import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/urls';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
-import { DOCS_LINKS, DOCS_SANDBOX } from '@/constants/urls';
-import { useConfigStore } from '@/stores/config';
 
 const props = defineProps<{ widgetOpened: boolean }>();
 const emit = defineEmits<{
@@ -38,20 +39,9 @@ const title = computed(() => {
   return `${$t('create')} ${mode} Link`;
 });
 
-const selectedCountry = ref('Chile');
-const selectedCountryCode = ref(CountryCode.CL);
-const countries = [
-  { countryCode: CountryCode.CL, label: 'Chile' },
-  { countryCode: CountryCode.MX, label: 'México' },
-];
-const countryLabels = countries.map((item) => item.label);
+const selectedCountry = ref(CountryName.Chile);
 const selectCountry = (value: string) => {
   selectedCountry.value = value;
-  countries.forEach((country) => {
-    if (country.label === value) {
-      selectedCountryCode.value = country.countryCode;
-    }
-  });
 };
 
 const selectedAPIModule = ref<Nullable<APIModule>>(APIModule.Banking);
@@ -73,7 +63,7 @@ const selectAPIModule = (value: string) => {
 
 const selectedHolderType = ref<Nullable<HolderType>>(HolderType.Individual);
 const holderTypes = computed(() => {
-  const selectedMexico = selectedCountryCode.value === CountryCode.MX;
+  const selectedMexico = selectedCountry.value === CountryName.Mexico;
   if (selectedMexico && selectedAPIModule.value === APIModule.Fiscal) {
     return [HolderType.Business];
   }
@@ -99,7 +89,7 @@ const apiKey = computed(() => apiKeysStore.searchKey(true));
 const fintoc = ref<Nullable<Fintoc>>(null);
 
 const areAllParamsSelected = computed(() => (
-  selectedCountryCode.value && selectedProduct.value && selectedHolderType.value
+  selectedCountry.value && selectedProduct.value && selectedHolderType.value
 ));
 
 const disabledButton = computed(() => (
@@ -123,7 +113,7 @@ const openWidget = () => {
       holderType: selectedHolderType.value,
       product: selectedProduct.value,
       publicKey: apiKey.value.token,
-      country: selectedCountryCode.value,
+      country: getCountryId(selectedCountry.value),
       webhookUrl: 'https://fintoc.com',
       onSuccess,
       onExit,
@@ -146,7 +136,7 @@ onMounted(async () => {
     <div class="space-y-6 text-body-color">
       <div
         v-if="live"
-        class="text-left text-body-color font-normal"
+        class="text-left text-body-color font-normal max-w-sm"
       >
         {{ $t('subtitleLive') }}
         <a
@@ -160,7 +150,7 @@ onMounted(async () => {
       </div>
       <div
         v-else
-        class="text-left text-body-color font-normal"
+        class="text-left text-body-color font-normal max-w-sm"
       >
         {{ $t('subtitleTest') }}
         <a
@@ -175,13 +165,15 @@ onMounted(async () => {
       <div class="space-y-6">
         <GenericDropDown
           :label="$t('country')"
+          :size="SizeType.Large"
           :selected="selectedCountry ? selectedCountry : ''"
-          :options="countryLabels"
+          :options="countryNames"
           capitalize-options
           @select="selectCountry"
         />
         <GenericDropDown
           :label="$t('api')"
+          :size="SizeType.Large"
           :selected="selectedAPIModule ? selectedAPIModule : ''"
           :options="APIModules"
           capitalize-options
@@ -189,6 +181,7 @@ onMounted(async () => {
         />
         <GenericDropDown
           :label="$t('holderType')"
+          :size="SizeType.Large"
           :selected="selectedHolderType ? selectedHolderType : ''"
           :options="holderTypes"
           capitalize-options
