@@ -2,9 +2,12 @@
 import { ButtonType, JustifyType } from '@/interfaces/utilities/enums';
 import GenericButton from './GenericButton.vue';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   options: Array<{label: string, action: string, iconName?: string}>,
-}>();
+  alignRight: boolean,
+}>(), {
+  alignRight: false,
+});
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
 
@@ -19,6 +22,7 @@ const handleClick = (option: string) => {
       absolute mt-6 items-start
       bg-white rounded-lg drop-shadow-md flex flex-col
     "
+    :class="{'right-0': alignRight}"
   >
     <GenericButton
       v-for="option in props.options"
