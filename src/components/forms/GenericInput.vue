@@ -99,15 +99,15 @@ const hasRightLink = computed(() => props.rightText && props.rightHref);
 const sizeClasses = computed(() => {
   switch (props.size) {
     case SizeType.Small:
-      return 'max-w-50 w-50';
+      return 'max-w-50';
     case SizeType.Medium:
-      return 'max-w-80 w-80';
+      return 'max-w-80';
     case SizeType.Large:
-      return 'max-w-104 w-104';
+      return 'max-w-104';
     case SizeType.XLarge:
-      return 'max-w-158 w-158';
+      return 'max-w-158';
     default:
-      return 'max-w-80 w-80';
+      return 'max-w-80';
   }
 });
 

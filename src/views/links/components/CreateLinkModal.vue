@@ -41,7 +41,7 @@ const title = computed(() => {
 
 const selectedCountry = ref(CountryName.Chile);
 const selectCountry = (value: string) => {
-  selectedCountry.value = value;
+  selectedCountry.value = value as CountryName;
 };
 
 const selectedAPIModule = ref<Nullable<APIModule>>(APIModule.Banking);
@@ -63,11 +63,11 @@ const selectAPIModule = (value: string) => {
 
 const selectedHolderType = ref<Nullable<HolderType>>(HolderType.Individual);
 const holderTypes = computed(() => {
-  const selectedMexico = selectedCountry.value === CountryName.Mexico;
-  if (selectedMexico && selectedAPIModule.value === APIModule.Fiscal) {
+  const isMexicoSelected = selectedCountry.value === CountryName.Mexico;
+  if (isMexicoSelected && selectedAPIModule.value === APIModule.Fiscal) {
     return [HolderType.Business];
   }
-  if (selectedMexico && selectedAPIModule.value === APIModule.Banking) {
+  if (isMexicoSelected && selectedAPIModule.value === APIModule.Banking) {
     return [HolderType.Individual];
   }
   return [HolderType.Individual, HolderType.Business];

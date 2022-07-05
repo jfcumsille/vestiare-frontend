@@ -51,14 +51,18 @@ const billingEmail = ref('');
 const technicalEmail = ref('');
 
 const countryName = computed(() => (
-  organizationStore.organization ? getCountryName(organizationStore.organization?.countryCode) : '------'
+  organizationStore.organization ? getCountryName(organizationStore.organization.countryCode) : '------'
 ));
-const selectedCountry = ref(CountryName.Chile);
+const selectedCountry = ref<CountryName>(CountryName.Chile);
 const selectCountry = (value: string) => {
-  selectedCountry.value = value;
+  selectedCountry.value = value as CountryName;
 };
 watch(() => organizationStore.organization, () => {
-  selectedCountry.value = getCountryName(organizationStore.organization?.countryCode);
+  if (organizationStore.organization) {
+    selectedCountry.value = getCountryName(
+      organizationStore.organization.countryCode,
+    ) as CountryName;
+  }
 });
 
 const isEditing = ref(false);
@@ -66,20 +70,22 @@ const resetEditValues = () => {
   billingEmail.value = '';
   technicalEmail.value = '';
 };
-const saveSettings = () => {
+const saveSettings = async () => {
   const formIsValid = editFormRef.value?.valid;
   if (formIsValid) {
-    const updateData = {};
+    const updateData: Record<string, string> = {};
     if (billingEmail.value !== '') {
       updateData.billingMail = billingEmail.value;
     }
     if (technicalEmail.value !== '') {
       updateData.technicalEmail = technicalEmail.value;
     }
-    if (getCountryId(selectedCountry.value) !== organizationStore.organization?.countryCode) {
-      updateData.countryId = getCountryId(selectedCountry.value);
+    const countryId = getCountryId(selectedCountry.value);
+    if (organizationStore.organization && countryId !== undefined
+      && countryId !== (organizationStore.organization.countryCode || undefined)) {
+      updateData.countryId = countryId as string;
     }
-    organizationStore.updateOrganization(updateData);
+    await organizationStore.updateOrganization(updateData);
     isEditing.value = false;
     resetEditValues();
   }
@@ -87,7 +93,7 @@ const saveSettings = () => {
 const isSaveEnabled = computed(() => {
   const isBillingDif = organizationStore.organization?.billingMail !== billingEmail.value && billingEmail.value !== '';
   const isTechnicalDif = organizationStore.organization?.technicalEmail !== technicalEmail.value && technicalEmail.value !== '';
-  const isCountryDif = organizationStore.organization.countryCode
+  const isCountryDif = organizationStore.organization?.countryCode
     !== getCountryId(selectedCountry.value);
   return (isBillingDif || isTechnicalDif || isCountryDif);
 });

@@ -36,7 +36,7 @@ const lastName = ref('');
 const company = ref('');
 const selectedCountry = ref(CountryName.Chile);
 const selectCountry = (value: string) => {
-  selectedCountry.value = value;
+  selectedCountry.value = value as CountryName;
 };
 
 const email = ref('');

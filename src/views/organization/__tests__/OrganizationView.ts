@@ -26,6 +26,20 @@ const getWrapper = () => {
   return wrapper;
 };
 
+const dummyOrganization = {
+  id: 'org_id',
+  name: 'name',
+  countryCode: 'cl',
+  rut: '197413611',
+  billingMail: 'email@gmail.com',
+  technicalEmail: 'email@gmail.com',
+  freeTrialExpirationDate: '',
+  isPayingCustomer: false,
+  refreshPolicies: [],
+  organizationProducts: [],
+  apiVersion: null,
+};
+
 describe('OrganizationView', () => {
   beforeAll(() => {
     const { restore } = mockCrypto();
@@ -37,22 +51,6 @@ describe('OrganizationView', () => {
     setActivePinia(testingPinia);
     setupLocales();
     mockPageAndTrackAnalytics(analyticsPageMock, analyticsTrackMock);
-    const orgStore = useOrganizationStore();
-    const organization1 = {
-      id: 'org_id',
-      name: 'name',
-      countryCode: 'cl',
-      rut: '197413611',
-      billingMail: 'email@gmail.com',
-      technicalEmail: 'email@gmail.com',
-      freeTrialExpirationDate: '',
-      isPayingCustomer: false,
-      refreshPolicies: [],
-      organizationProducts: [],
-      apiVersion: null,
-    };
-    orgStore.organization = organization1;
-    orgStore.loading = false;
   });
 
   describe('when OrganizationView is mounted', () => {
@@ -66,6 +64,9 @@ describe('OrganizationView', () => {
 
   describe('when OrganizationView is not in edit mode', () => {
     it('only allow user to see org info', () => {
+      const orgStore = useOrganizationStore();
+      orgStore.organization = dummyOrganization;
+      orgStore.loading = false;
       const wrapper = getWrapper();
 
       const editButton = wrapper.find('[data-test="edit-button"]');
@@ -98,37 +99,35 @@ describe('OrganizationView', () => {
 
   describe('when OrganizationView is in edit mode', () => {
     it('only allow user to edit org info', async () => {
+      const orgStore = useOrganizationStore();
+      orgStore.organization = dummyOrganization;
+      orgStore.loading = false;
       const wrapper = getWrapper();
 
       const editButton = wrapper.find('[data-test="edit-button"]');
-      const cancelButton = wrapper.find('[data-test="cancel-button"]');
-
-      const requestChangeName = wrapper.find('[data-test="request-change-name"]');
-      const requestChangeRut = wrapper.find('[data-test="request-change-rut"]');
-
-      const billingLabel = wrapper.find('[data-test="billing-label"]');
-      const billingInput = wrapper.find('[data-test="billing-input"]');
-
-      const technicalLabel = wrapper.find('[data-test="technical-label"]');
-      const technicalInput = wrapper.find('[data-test="technical-input"]');
-
-      const countryLabel = wrapper.find('[data-test="country-label"]');
-      const countryDropdown = wrapper.find('[data-test="country-dropdown"]');
 
       expect(editButton.exists()).toBe(true);
       await editButton.trigger('click');
-      wrapper.vm.$nextTick().then(() => {
-        expect(editButton.exists()).toBe(false);
-        expect(cancelButton.exists()).toBe(true);
-        expect(requestChangeName.exists()).toBe(true);
-        expect(requestChangeRut.exists()).toBe(true);
-        expect(billingLabel.exists()).toBe(false);
-        expect(billingInput.exists()).toBe(true);
-        expect(technicalLabel.exists()).toBe(false);
-        expect(technicalInput.exists()).toBe(true);
-        expect(countryLabel.exists()).toBe(false);
-        expect(countryDropdown.exists()).toBe(true);
-      });
+      await wrapper.vm.$forceUpdate();
+
+      const cancelButton = wrapper.find('[data-test="cancel-button"]');
+      const requestChangeName = wrapper.find('[data-test="request-change-name"]');
+      const requestChangeRut = wrapper.find('[data-test="request-change-rut"]');
+      const billingLabel = wrapper.find('[data-test="billing-label"]');
+      const billingInput = wrapper.find('[data-test="billing-input"]');
+      const technicalLabel = wrapper.find('[data-test="technical-label"]');
+      const technicalInput = wrapper.find('[data-test="technical-input"]');
+      const countryLabel = wrapper.find('[data-test="country-label"]');
+      const countryDropdown = wrapper.find('[data-test="country-dropdown"]');
+      expect(cancelButton.exists()).toBe(true);
+      expect(requestChangeName.exists()).toBe(true);
+      expect(requestChangeRut.exists()).toBe(true);
+      expect(billingLabel.exists()).toBe(false);
+      expect(billingInput.exists()).toBe(true);
+      expect(technicalLabel.exists()).toBe(false);
+      expect(technicalInput.exists()).toBe(true);
+      expect(countryLabel.exists()).toBe(false);
+      expect(countryDropdown.exists()).toBe(true);
     });
   });
 });
