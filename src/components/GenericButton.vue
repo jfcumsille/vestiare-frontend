@@ -17,13 +17,13 @@ const props = withDefaults(defineProps<{
   iconPosition?: HorizontalPositionType,
   loading?: boolean,
   justify?: JustifyType
-  isWidthFull?: boolean,
+  fullWidth?: boolean,
 }>(), {
   loading: false,
   iconPosition: HorizontalPositionType.Left,
   justify: JustifyType.Center,
   size: SizeType.Medium,
-  isWidthFull: false,
+  fullWidth: false,
 });
 
 const emit = defineEmits<{(e: 'click'): void }>();
@@ -157,7 +157,7 @@ const sizeClasses = computed(() => {
 });
 
 const isJustifyBetween = computed(() => props.justify === JustifyType.Between);
-const width = computed(() => (props.isWidthFull ? 'w-full' : ''));
+const width = computed(() => (props.fullWidth ? 'w-full' : ''));
 </script>
 
 <template>

@@ -199,7 +199,8 @@ const passwordValidations = [(value: string) => validatePassword(value) || $tFor
                   :label="$tSignUp('country')"
                   :selected="country"
                   :options="countryOptions"
-                  :is-width-full="true"
+                  capitalize-options
+                  full-width
                   @select="selectCountryFilter"
                 />
               </div>
@@ -283,10 +284,10 @@ const passwordValidations = [(value: string) => validatePassword(value) || $tFor
               <GenericButton
                 data-test="sign-up-button"
                 :type="ButtonType.Primary"
-                :is-width-full="true"
                 :text="$tSignUp('signUp')"
                 :loading="loading"
                 :disabled="!isSignUpEnabled"
+                full-width
                 @click="signUp"
               />
             </div>

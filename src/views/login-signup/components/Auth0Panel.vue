@@ -27,7 +27,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       :text="`${buttonLabel} Google`"
       icon-name="auth-google"
       :icon-position="HorizontalPositionType.Left"
-      is-width-full
+      full-width
       @click="() => authenticateWithRedirect(Auth0Database.Google, mode)"
     />
     <GenericButton
@@ -36,7 +36,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       :text="`${buttonLabel} Github`"
       icon-name="auth-github"
       :icon-position="HorizontalPositionType.Left"
-      is-width-full
+      full-width
       @click="() => authenticateWithRedirect(Auth0Database.GitHub, mode)"
     />
     <GenericButton
@@ -46,7 +46,7 @@ const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logI
       :text="`${buttonLabel} Email`"
       icon-name="mail"
       :icon-position="HorizontalPositionType.Left"
-      is-width-full
+      full-width
       @click="() => authenticateWithRedirect(USERNAME_PASSWORD_CONNECTION, mode)"
     />
   </div>

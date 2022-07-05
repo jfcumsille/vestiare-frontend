@@ -60,6 +60,7 @@ const goToFirstPage = () => {
         :label="$t('show')"
         :selected="props.pageSize.toString()"
         :options="pageSizeOptions"
+        capitalize-options
         @select="selectPageSize"
       />
       <div

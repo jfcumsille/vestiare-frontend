@@ -3,16 +3,19 @@ import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
 import FintocLogo from '@/assets/svg/FintocLogo.vue';
 import FintocIso from '@/assets/svg/FintocIso.vue';
+import { HOME_ROUTE } from '@/constants/router';
 import { FINTOC_HOME } from '@/constants/urls';
 
 const userStore = useUserStore();
 const isLoggedIn = computed(() => (userStore.authenticated));
-
 </script>
 
 <template>
-  <a
+  <component
+    :is="isLoggedIn ? 'router-link' : 'a'"
     data-test="fintoc-logo"
+    class="cursor-pointer"
+    :to="isLoggedIn ? HOME_ROUTE : undefined"
     :href="isLoggedIn ? undefined : FINTOC_HOME"
   >
     <FintocLogo
@@ -30,5 +33,5 @@ const isLoggedIn = computed(() => (userStore.authenticated));
         {{ userStore.organizationName }}
       </p>
     </div>
-  </a>
+  </component>
 </template>

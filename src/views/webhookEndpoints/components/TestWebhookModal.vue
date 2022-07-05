@@ -59,11 +59,10 @@ const close = () => {
     >
       <GenericDropDown
         class="inline-block"
-        :is-width-full="true"
         :label="$t('event')"
         :options="props.webhookEndpoint.enabledEvents"
-        :is-capitalize-options="false"
         :selected="selectedEvent"
+        full-width
         @select="selectEvent"
       />
       <GenericButton

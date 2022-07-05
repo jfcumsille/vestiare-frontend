@@ -1,13 +1,33 @@
 <script setup lang="ts">
 /* eslint-disable vue/no-v-html */
-import { onMounted } from 'vue';
-import { page } from '@/services/analytics';
+import { computed, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useUserStore } from '@/stores/user';
+import {
+  useLocale,
+  useLocaleChange,
+  languageToLocale,
+  localeToLanguage,
+  SupportedLanguages,
+} from '@/composables/locale';
+import { page } from '@/services/analytics';
+import { includes } from '@/utils/arrays';
 import { DASHBOARD_ORIGIN, PROFILE_VIEWED } from '@/constants/analyticsEvents';
+import GenericDropDown from '@/components/GenericDropDown.vue';
 
 const $t = useTranslation('views.profile');
 const userStore = useUserStore();
+
+const locale = useLocale();
+const changeLocale = useLocaleChange();
+
+const changeLanguage = (newLanguage: string) => {
+  if (includes(Object.values(SupportedLanguages), newLanguage)) {
+    changeLocale(languageToLocale(newLanguage));
+  }
+};
+
+const language = computed(() => localeToLanguage(locale.value));
 
 onMounted(() => {
   page(PROFILE_VIEWED, {
@@ -15,6 +35,7 @@ onMounted(() => {
   });
 });
 </script>
+
 <template>
   <div
     data-test="profile-view"
@@ -29,32 +50,43 @@ onMounted(() => {
     <div class="flex flex-row w-full text-body-color">
       <div class="p-6 w-158 min-w-lg bg-white rounded-lg drop-shadow border">
         <div class="grid grid-cols-2 gap-14 gap-x-0 mt-4 justify-center">
-          <p class="font-medium">
+          <p class="my-auto font-medium">
             {{ $t('name') }}
           </p>
           <p class="text-sm">
             {{ userStore.user?.name }}
           </p>
-          <p class="font-medium">
+          <p class="my-auto font-medium">
             {{ $t('lastname') }}
           </p>
           <p class="text-sm">
             {{ userStore.user?.lastName }}
           </p>
 
-          <p class="font-medium">
+          <p class="my-auto font-medium">
             {{ $t('email') }}
           </p>
           <p class="text-sm">
             {{ userStore.user?.email }}
           </p>
 
-          <p class="font-medium">
+          <p class="my-auto font-medium">
             {{ $t('password') }}
           </p>
           <p
             class="text-sm"
             v-html="$t('changePassword')"
+          />
+
+          <p class="my-auto font-medium">
+            {{ $t('language') }}
+          </p>
+          <GenericDropDown
+            :label="$t('language')"
+            :selected="language"
+            :options="Object.values(SupportedLanguages)"
+            full-width
+            @select="changeLanguage"
           />
         </div>
       </div>
