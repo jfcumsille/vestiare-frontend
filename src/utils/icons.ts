@@ -6,6 +6,7 @@ import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 import CircleCheckIcon from '@/assets/svg/CircleCheckIcon.vue';
 import CircleCrossIcon from '@/assets/svg/CircleCrossIcon.vue';
 import CrossIcon from '@/assets/svg/CrossIcon.vue';
+import EditIcon from '@/assets/svg/EditIcon.vue';
 import EyeIcon from '@/assets/svg/EyeIcon.vue';
 import EyeClosedIcon from '@/assets/svg/EyeClosedIcon.vue';
 import FilterIcon from '@/assets/svg/FilterIcon.vue';
@@ -35,6 +36,7 @@ export const icons = {
   'auth-github': GithubLogo,
   'three-dots': ThreeDots,
   filter: FilterIcon,
+  edit: EditIcon,
   eye: EyeIcon,
   'eye-closed': EyeClosedIcon,
   add: AddIcon,

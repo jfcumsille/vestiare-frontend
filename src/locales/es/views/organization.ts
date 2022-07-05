@@ -6,6 +6,7 @@ export default <OrganizationViewLocale>{
     name: 'Nombre',
     nameSubLabel: 'El nombre que se mostrará en tu widget.',
     organizationRutRfc: 'RUT/RFC de la organización',
+    requestChange: 'Solicitar Cambio',
     billingEmail: 'Correo electrónico de facturas.',
     billingSubLabel: 'Para recibir facturas de Fintoc.',
     technicalEmail: 'Correo electrónico técnico',
@@ -15,6 +16,9 @@ export default <OrganizationViewLocale>{
     apiVersion: 'Versión API',
     apiVersionSubLabel1: 'Aprende más sobre versiones →',
     apiVersionSubLabel2: 'Tu versión será seteada cuando realices tu primera llamada a la API.',
+    validations: {
+      invalidEmail: 'Por favor ingresa un correo válido',
+    },
   },
   products: {
     title: 'Productos',

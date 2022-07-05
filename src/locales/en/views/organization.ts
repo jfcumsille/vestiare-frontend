@@ -6,6 +6,7 @@ export default <OrganizationViewLocale>{
     name: 'Name',
     nameSubLabel: 'As it will appear on your widget.',
     organizationRutRfc: 'Organization RUT/RFC',
+    requestChange: 'Request Change',
     billingEmail: 'Billing Email',
     billingSubLabel: 'For Fintoc receipts.',
     technicalEmail: 'Technical Email',
@@ -15,6 +16,9 @@ export default <OrganizationViewLocale>{
     apiVersion: 'API Version',
     apiVersionSubLabel1: 'Learn more about versions →',
     apiVersionSubLabel2: 'Your version will be set once you make your first API call.',
+    validations: {
+      invalidEmail: 'Please enter a valid email',
+    },
   },
   products: {
     title: 'Products',

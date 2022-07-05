@@ -4,6 +4,7 @@ export interface OrganizationViewLocale {
     name: string
     nameSubLabel: string,
     organizationRutRfc: string,
+    requestChange: string,
     billingEmail: string,
     billingSubLabel: string,
     technicalEmail: string,
@@ -13,6 +14,9 @@ export interface OrganizationViewLocale {
     apiVersion: string,
     apiVersionSubLabel1: string,
     apiVersionSubLabel2: string,
+    validations: {
+      invalidEmail: string,
+    },
   }
   products: {
     title: string,
