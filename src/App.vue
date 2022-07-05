@@ -5,6 +5,7 @@ import { useLocaleStore } from '@/stores/locale';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import { getAuth0Client } from '@/services/auth0';
 import { identify } from '@/services/analytics';
 import Hotjar from '@/assets/javascripts/hotjar';
 import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
@@ -26,21 +27,24 @@ const startHotjarSessionIfNeeded = () => {
   }
 };
 
-const loadUserData = () => {
+const loadUserData = async () => {
   if ($userStore.authenticated) {
     startHotjarSessionIfNeeded();
     $apiKeysStore.loadAPIKeys();
     $linksStore.loadLinks();
     $webhookEndpointsStore.loadWebhookEndpoints();
     if ($userStore.user) {
-      identify($userStore.user);
+      const metadataKey = `${window.location.origin}/user_metadata`;
+      const auth0 = await getAuth0Client();
+      const auth0User = await auth0.getUser();
+      identify($userStore.user, auth0User?.[metadataKey]?.company);
     }
   }
 };
 
-watch(() => $userStore.authenticated, () => {
+watch(() => $userStore.authenticated, async () => {
   if ($userStore.authenticated) {
-    loadUserData();
+    await loadUserData();
   }
 });
 
