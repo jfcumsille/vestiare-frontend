@@ -200,7 +200,6 @@ const passwordValidations = [(value: string) => validatePassword(value) || $tFor
                   :selected="country"
                   :options="countryOptions"
                   capitalize-options
-                  full-width
                   @select="selectCountryFilter"
                 />
               </div>

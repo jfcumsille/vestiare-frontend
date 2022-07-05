@@ -99,15 +99,15 @@ const hasRightLink = computed(() => props.rightText && props.rightHref);
 const sizeClasses = computed(() => {
   switch (props.size) {
     case SizeType.Small:
-      return 'max-w-50';
+      return 'max-w-50 w-50';
     case SizeType.Medium:
-      return 'max-w-80';
+      return 'max-w-80 w-80';
     case SizeType.Large:
-      return 'max-w-104';
+      return 'max-w-104 w-104';
     case SizeType.XLarge:
-      return 'max-w-158';
+      return 'max-w-158 w-158';
     default:
-      return 'max-w-80';
+      return 'max-w-80 w-80';
   }
 });
 
@@ -115,7 +115,7 @@ defineExpose({ valid, validating });
 </script>
 
 <template>
-  <div :class="`block h-full justify-center items-center ${sizeClasses}`">
+  <div :class="`block h-full justify-center items-center ${sizeClasses} min-w-50 w-full`">
     <div class="relative">
       <label
         v-if="props.label"
@@ -140,7 +140,7 @@ defineExpose({ valid, validating });
           :is="leftIconComponent"
           v-if="leftIconComponent"
           data-test="generic-input-icon-left"
-          class="mr-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5"
+          class="mr-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5 text-placeholder-color"
           @click="() => emit('click-left-icon')"
         />
         <input
@@ -160,7 +160,7 @@ defineExpose({ valid, validating });
           :is="rightIconComponent"
           v-if="rightIconComponent"
           data-test="generic-input-icon-right"
-          class="ml-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5 cursor-pointer"
+          class="ml-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5 cursor-pointer text-placeholder-color"
           @click="() => emit('click-right-icon')"
         />
       </div>

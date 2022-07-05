@@ -178,7 +178,6 @@ onMounted(async () => {
           :selected="selectedCountry ? selectedCountry : ''"
           :options="countryLabels"
           capitalize-options
-          full-width
           @select="selectCountry"
         />
         <GenericDropDown
@@ -186,7 +185,6 @@ onMounted(async () => {
           :selected="selectedAPIModule ? selectedAPIModule : ''"
           :options="APIModules"
           capitalize-options
-          full-width
           @select="selectAPIModule"
         />
         <GenericDropDown
@@ -194,7 +192,6 @@ onMounted(async () => {
           :selected="selectedHolderType ? selectedHolderType : ''"
           :options="holderTypes"
           capitalize-options
-          full-width
           @select="selectHolderType"
         />
       </div>

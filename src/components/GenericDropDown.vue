@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
+import { SizeType } from '@/interfaces/utilities/enums';
 import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 
 const props = withDefaults(defineProps<{
@@ -8,11 +9,11 @@ const props = withDefaults(defineProps<{
   selected: string,
   options: Array<string>,
   textPrefix?: string,
-  fullWidth?: boolean,
   capitalizeOptions?: boolean,
+  size?: SizeType
 }>(), {
-  fullWidth: false,
   capitalizeOptions: false,
+  size: SizeType.Hug,
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -43,21 +44,37 @@ const title = computed(() => {
   return '';
 });
 
-const width = computed(() => (props.fullWidth ? 'w-full' : ''));
 const capitalizeOptionsClass = computed(() => (props.capitalizeOptions ? 'capitalize' : ''));
+
+const sizeClasses = computed(() => {
+  switch (props.size) {
+    case SizeType.Hug:
+      return '';
+    case SizeType.Small:
+      return 'w-full max-w-50';
+    case SizeType.Medium:
+      return 'w-full max-w-80';
+    case SizeType.Large:
+      return 'w-full max-w-104';
+    case SizeType.XLarge:
+      return 'w-full max-w-158';
+    default:
+      return 'w-full max-w-80';
+  }
+});
 </script>
 
 <template>
   <div
     ref="dropDown"
-    class="relative h-12"
+    :class="`relative h-12 ${sizeClasses}`"
   >
     <label
       v-if="props.label"
       data-test="label"
       class="
-          absolute left-0 -mt-3 px-1 mx-2 pointer-events-none
-          text-sm text-placeholder-color bg-white capitalize
+          absolute left-0 -mt-3 px-1 mx-2 pointer-events-none whitespace-nowrap
+          text-sm text-placeholder-color bg-white capitalize min-w-fit
         "
     >
       {{ props.label }}
@@ -68,7 +85,7 @@ const capitalizeOptionsClass = computed(() => (props.capitalizeOptions ? 'capita
         flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
         disabled:bg-light-gray disabled:text-disabled-color
         border-1.5 border-border-color text-sm
-        text-body-color ${width} ${capitalizeOptionsClass}`
+        text-body-color ${sizeClasses} ${capitalizeOptionsClass}`
       "
       type="button"
       @click="toggle"
