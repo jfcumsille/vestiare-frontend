@@ -97,7 +97,7 @@ const subtitle2 = computed(() => {
         :label="$t('title')"
       />
       <div class="text-xs text-body-color break-normal space-y-2">
-        <p>
+        <p data-test="plan-subtitle1">
           {{ $t('currently') }} <span class="font-bold"> {{ planText }}</span>
           {{ subtitle }}
           <span
@@ -113,7 +113,9 @@ const subtitle2 = computed(() => {
             {{ totalEnabledProducts }} {{ $t('paidSubtitle2') }}
           </span>
         </p>
-        <p> {{ subtitle2 }} </p>
+        <p data-test="plan-subtitle2">
+          {{ subtitle2 }}
+        </p>
       </div>
     </div>
     <div class="flex justify-end">
