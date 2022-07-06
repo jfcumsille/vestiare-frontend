@@ -30,6 +30,7 @@ export const identify = (user: User, organizationName: string | undefined = unde
     name: user.name,
     defaultOrganizationId: user.defaultOrganizationId,
     company: organizationName,
+    customLauncherSelector: '#my_custom_link',
   });
 };
 

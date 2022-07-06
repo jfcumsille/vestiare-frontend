@@ -2,6 +2,7 @@
 import { computed, ref, onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
+import { useConfigStore } from '@/stores/config';
 import { Nullable } from '@/interfaces/common';
 import { Link, LinkFilter } from '@/interfaces/entities/links';
 import { Product, ButtonType } from '@/interfaces/utilities/enums';
@@ -18,7 +19,6 @@ import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinksTableHead from '@/views/links/components/LinksTableHead.vue';
 import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
-import { useConfigStore } from '@/stores/config';
 
 const $t = useTranslation('views.links');
 
@@ -129,7 +129,6 @@ onMounted(() => {
             :placeholder="$t('table.filters.searchBarPlaceholder')"
             left-icon-name="search"
             right-icon-name="circle-cross"
-            class="w-80"
             @key-enter="filterBySearch"
             @click-right-icon="clearSearchFilter"
           />

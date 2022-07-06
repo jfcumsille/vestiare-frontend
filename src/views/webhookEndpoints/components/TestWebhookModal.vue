@@ -62,7 +62,6 @@ const close = () => {
         :label="$t('event')"
         :options="props.webhookEndpoint.enabledEvents"
         :selected="selectedEvent"
-        full-width
         @select="selectEvent"
       />
       <GenericButton

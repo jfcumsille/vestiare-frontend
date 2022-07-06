@@ -11,10 +11,11 @@ import { DASHBOARD_ORIGIN, USER_SIGNED_UP, SIGN_UP_VIEWED } from '@/constants/an
 import { page, track } from '@/services/analytics';
 import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { Nullable } from '@/interfaces/common';
-import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { ButtonType, SizeType, CountryName } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { isValidEmail } from '@/utils/email';
 import GenericForm from '@/components/forms/GenericForm.vue';
+import { countryNames } from '@/utils/country';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
@@ -33,11 +34,11 @@ const $tSignUp = useTranslation('views.signUp');
 const name = ref('');
 const lastName = ref('');
 const company = ref('');
-const country = ref('Chile');
-const countryOptions = ['Chile', 'México'];
-const selectCountryFilter = (value: string) => {
-  country.value = value;
+const selectedCountry = ref(CountryName.Chile);
+const selectCountry = (value: string) => {
+  selectedCountry.value = value as CountryName;
 };
+
 const email = ref('');
 const password = ref('');
 const loading = ref(false);
@@ -74,7 +75,7 @@ const signUp = async () => {
         password: password.value,
         name: name.value,
         lastName: lastName.value,
-        country: country.value,
+        country: selectedCountry.value,
         company: company.value,
       });
       completed.value = true;
@@ -197,11 +198,11 @@ const passwordValidations = [(value: string) => validatePassword(value) || $tFor
                 <GenericDropDown
                   class="mb-4"
                   :label="$tSignUp('country')"
-                  :selected="country"
-                  :options="countryOptions"
+                  :size="SizeType.Large"
+                  :selected="selectedCountry"
+                  :options="countryNames"
                   capitalize-options
-                  full-width
-                  @select="selectCountryFilter"
+                  @select="selectCountry"
                 />
               </div>
             </div>
