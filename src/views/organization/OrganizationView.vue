@@ -24,6 +24,7 @@ import GenericLabel from '@/components/GenericLabel.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import ProductsSection from './components/ProductsSection.vue';
 import OrganizationUsers from './components/OrganizationUsers.vue';
+import PlanSection from './components/PlanSection.vue';
 
 const $t = useTranslation('views.organization');
 const organizationStore = useOrganizationStore();
@@ -284,14 +285,14 @@ onMounted(() => {
         <div class="flex space-x-8 h-12">
           <GenericLabel
             v-if="organizationStore.organization?.apiVersion"
-            class="w-62"
+            class="w-56"
             :label="$t('settings.apiVersion')"
             :sub-label="$t('settings.apiVersionSubLabel1')"
             :sub-label-href="DOCS_API_CHANGELOG"
           />
           <GenericLabel
             v-else
-            class="w-62"
+            class="w-56"
             :label="$t('settings.apiVersion')"
             :sub-label="$t('settings.apiVersionSubLabel2')"
           />
@@ -300,8 +301,13 @@ onMounted(() => {
           />
         </div>
       </div>
-      <div class="break-normal border p-5 bg-white rounded-lg drop-shadow min-w-sm min-h-md">
-        <ProductsSection />
+      <div class="break-normal flex flex-col space-y-6 min-h-md min-w-xs max-w-sm min-h-lg">
+        <div class="border p-5 bg-white rounded-lg drop-shadow h-full">
+          <PlanSection />
+        </div>
+        <div class="border p-5 bg-white rounded-lg drop-shadow h-full">
+          <ProductsSection />
+        </div>
       </div>
     </div>
 

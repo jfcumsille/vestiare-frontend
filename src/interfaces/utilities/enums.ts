@@ -25,6 +25,12 @@ export enum Product {
   Charges = 'CHARGES',
 }
 
+export enum Plan {
+  Trial = 'trial',
+  Free = 'free',
+  Paid = 'paid',
+}
+
 export enum HolderType {
   Individual = 'individual',
   Business = 'business',
@@ -83,3 +89,10 @@ export const Auth0Database = {
 };
 
 export type Auth0Database = Auth0SocialDatabase | Auth0EmailPasswordDatabase;
+
+export enum DateStyle {
+  Full = 'full',
+  Long = 'long',
+  Medium = 'medium',
+  Short = 'short',
+}

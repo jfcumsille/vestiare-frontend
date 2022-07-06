@@ -23,6 +23,20 @@ export interface OrganizationViewLocale {
       invalidEmail: string,
     },
   }
+  plan: {
+    title: string,
+    currently: string,
+    trial: string,
+    trialSubtitle1: string,
+    trialSubtitle2: string,
+    paid: string,
+    paidSubtitle1: string,
+    paidSubtitle2: string,
+    free: string,
+    freeSubtitle1: string,
+    freeSubtitle2: string,
+    callToAction: string,
+  },
   products: {
     title: string,
     subtitle: string,
