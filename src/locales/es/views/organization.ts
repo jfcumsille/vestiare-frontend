@@ -51,5 +51,7 @@ export default <OrganizationViewLocale>{
     name: 'Nombre',
     email: 'Email',
     memberSince: 'Miembro Desde',
+    searchPlaceholder: 'ej: Paula',
+    inviteMemberButton: 'Invitar miembro',
   },
 };

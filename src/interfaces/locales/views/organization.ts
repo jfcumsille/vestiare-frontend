@@ -49,5 +49,7 @@ export interface OrganizationViewLocale {
     name: string,
     email: string,
     memberSince: string,
+    searchPlaceholder: string,
+    inviteMemberButton: string,
   },
 }
