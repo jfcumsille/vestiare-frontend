@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router';
 import router from '@/router';
 import { useRouterStore } from '@/stores/router';
 import {
-  API_KEYS_ROUTE, LINKS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE, PROFILE_ROUTE, ORGANIZATION_ROUTE,
+  API_KEYS_ROUTE, LINKS_ROUTE, WEBHOOK_ENDPOINTS_ROUTE, PROFILE_ROUTE,
+  ORGANIZATION_ROUTE, HOME_ROUTE,
 } from '@/constants/router';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import NavBar from '@/components/layout/NavBar/NavBar.vue';
@@ -20,6 +21,11 @@ const shouldDisplaySidebar = computed(() => [
 const shouldDisplayBackButton = computed(
   () => [PROFILE_ROUTE, ORGANIZATION_ROUTE].includes(route.path),
 );
+
+const handleGoBack = () => {
+  const back = router.options.history.state.back;
+  return back ? router.go(-1) : router.push({ path: HOME_ROUTE });
+};
 </script>
 
 <template>
@@ -35,7 +41,7 @@ const shouldDisplayBackButton = computed(
           class="rotate-180"
           icon-name="chevron"
           :type="ButtonType.Secondary"
-          @click="router.go(-1)"
+          @click="handleGoBack"
         />
       </div>
 
