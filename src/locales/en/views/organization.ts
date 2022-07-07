@@ -53,5 +53,15 @@ export default <OrganizationViewLocale>{
     memberSince: 'Member Since',
     searchPlaceholder: 'ex: Paula',
     inviteMemberButton: 'Invite Member',
+    newMember: {
+      title: 'New member invitation',
+      subtitle: 'Add a member or admin to your Organization through an email invitation. They will add all other necessary information.',
+      emailLabel: 'Email',
+      emailPlaceholder: 'example@fintoc.com',
+      invalidEmail: 'Invalid Email',
+      roleLabel: 'Permissions Role',
+      cancel: 'Cancel',
+      sendInvitation: 'Send Invitation',
+    },
   },
 };

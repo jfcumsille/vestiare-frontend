@@ -53,5 +53,15 @@ export default <OrganizationViewLocale>{
     memberSince: 'Miembro Desde',
     searchPlaceholder: 'ej: Paula',
     inviteMemberButton: 'Invitar miembro',
+    newMember: {
+      title: 'Invitación a un nuevo miembro',
+      subtitle: 'Agrega a un miembro o admin a tu organización a través de un email de invitación. Ellos completarán otra información necesaria.',
+      emailLabel: 'Correo',
+      emailPlaceholder: 'ejemplo@fintoc.com',
+      invalidEmail: 'Correo inválido',
+      roleLabel: 'Permisos',
+      cancel: 'Cancelar',
+      sendInvitation: 'Enviar invitación',
+    },
   },
 };

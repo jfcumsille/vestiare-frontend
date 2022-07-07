@@ -51,5 +51,15 @@ export interface OrganizationViewLocale {
     memberSince: string,
     searchPlaceholder: string,
     inviteMemberButton: string,
+    newMember: {
+      title: string,
+      subtitle: string,
+      emailLabel: string,
+      emailPlaceholder: string,
+      invalidEmail: string,
+      roleLabel: string,
+      cancel: string,
+      sendInvitation: string,
+    },
   },
 }

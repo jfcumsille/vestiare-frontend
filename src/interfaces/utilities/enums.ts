@@ -96,3 +96,8 @@ export enum DateStyle {
   Medium = 'medium',
   Short = 'short',
 }
+
+export enum Role {
+  Admin = 'admin',
+  Member = 'member'
+}
