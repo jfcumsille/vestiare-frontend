@@ -183,6 +183,7 @@ onMounted(() => {
               data-test="request-change-name"
               class="text-primary-main hover:text-primary-hover text-sm py-2 px-3 whitespace-nowrap"
               href="mailto:soporte@fintoc.com"
+              target="_blank"
             > {{ $t('settings.requestChange') }} </a>
           </div>
         </div>
@@ -210,6 +211,7 @@ onMounted(() => {
               data-test="request-change-rut"
               class="text-primary-main hover:text-primary-hover text-sm py-2 px-3 whitespace-nowrap"
               href="mailto:soporte@fintoc.com"
+              target="_blank"
             > {{ $t('settings.requestChange') }} </a>
           </div>
         </div>
@@ -285,14 +287,14 @@ onMounted(() => {
         <div class="flex space-x-8 h-12">
           <GenericLabel
             v-if="organizationStore.organization?.apiVersion"
-            class="w-56"
+            class="w-62"
             :label="$t('settings.apiVersion')"
             :sub-label="$t('settings.apiVersionSubLabel1')"
             :sub-label-href="DOCS_API_CHANGELOG"
           />
           <GenericLabel
             v-else
-            class="w-56"
+            class="w-62"
             :label="$t('settings.apiVersion')"
             :sub-label="$t('settings.apiVersionSubLabel2')"
           />
