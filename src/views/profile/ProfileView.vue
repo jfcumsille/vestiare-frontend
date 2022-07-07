@@ -85,7 +85,6 @@ onMounted(() => {
             :label="$t('language')"
             :selected="language"
             :options="Object.values(SupportedLanguages)"
-            full-width
             @select="changeLanguage"
           />
         </div>

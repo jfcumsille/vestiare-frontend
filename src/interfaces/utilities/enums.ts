@@ -8,6 +8,11 @@ export enum CountryCode {
   MX = 'mx',
 }
 
+export enum CountryName {
+  Chile = 'Chile',
+  Mexico = 'Mexico',
+}
+
 export enum Product {
   Movements = 'MOVEMENTS',
   Invoices = 'INVOICES',
@@ -44,6 +49,7 @@ export enum SizeType {
   Medium = 'Medium',
   Large = 'Large',
   XLarge = 'XLarge',
+  Hug = 'Hug',
 }
 
 export enum HorizontalPositionType {

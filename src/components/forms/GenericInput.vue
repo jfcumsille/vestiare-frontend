@@ -115,7 +115,7 @@ defineExpose({ valid, validating });
 </script>
 
 <template>
-  <div :class="`block h-full justify-center items-center ${sizeClasses}`">
+  <div :class="`block h-full justify-center items-center ${sizeClasses} min-w-50 w-full`">
     <div class="relative">
       <label
         v-if="props.label"
@@ -140,7 +140,7 @@ defineExpose({ valid, validating });
           :is="leftIconComponent"
           v-if="leftIconComponent"
           data-test="generic-input-icon-left"
-          class="mr-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5"
+          class="mr-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5 text-placeholder-color"
           @click="() => emit('click-left-icon')"
         />
         <input
@@ -160,7 +160,7 @@ defineExpose({ valid, validating });
           :is="rightIconComponent"
           v-if="rightIconComponent"
           data-test="generic-input-icon-right"
-          class="ml-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5 cursor-pointer"
+          class="ml-1.5 w-4.5 h-4.5 min-w-4.5 min-h-4.5 cursor-pointer text-placeholder-color"
           @click="() => emit('click-right-icon')"
         />
       </div>
