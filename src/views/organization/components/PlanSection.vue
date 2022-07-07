@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { useOrganizationStore } from '@/stores/organization';
 import { useLocale } from '@/composables/locale';
-import { Plan, DateStyle } from '@/interfaces/utilities/enums';
+import { Plan, DateStyle, Product } from '@/interfaces/utilities/enums';
 import { formatDate } from '@/utils/date';
 import { EMAIL_ANDRES } from '@/constants/urls';
 import GenericLabel from '@/components/GenericLabel.vue';
@@ -22,7 +22,7 @@ const DAY_IN_MILLISECONDS = 86400000;
 const daysLeftTrial = computed(() => {
   if (freeTrialExpirationDate.value) {
     const currentDate = new Date();
-    const diffTime = freeTrialExpirationDate.value - currentDate;
+    const diffTime = Number(freeTrialExpirationDate.value) - Number(currentDate);
     return Math.ceil(diffTime / DAY_IN_MILLISECONDS);
   }
   return -1;
@@ -43,9 +43,19 @@ const plan = computed(() => {
 });
 
 const totalEnabledProducts = computed(() => {
-  organizationStore.organization?.organizationProducts.filter(
-    (product) => product.enabled === true,
-  ).length
+  let total = 0;
+  if (organizationStore.organization) {
+    total = organizationStore.organization.organizationProducts.filter(
+      (product) => product.enabled === true && product.product !== Product.Charges,
+    ).length;
+    if (organizationStore.isOnDemandAvailable) {
+      total += 1;
+    }
+    if (organizationStore.isChargesAvailable) {
+      total += 1;
+    }
+  }
+  return total;
 });
 
 const planText = computed(() => {
@@ -101,7 +111,7 @@ const subtitle2 = computed(() => {
           {{ $t('currently') }} <span class="font-bold"> {{ planText }}</span>
           {{ subtitle }}
           <span
-            v-if="plan === Plan.Trial"
+            v-if="plan === Plan.Trial && freeTrialExpirationDate"
             class="font-bold"
           >
             {{ formatDate(freeTrialExpirationDate.toString(), locale, DateStyle.Medium) }}.

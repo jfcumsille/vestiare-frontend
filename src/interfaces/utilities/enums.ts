@@ -14,15 +14,15 @@ export enum CountryName {
 }
 
 export enum Product {
-  Movements = 'MOVEMENTS',
-  Invoices = 'INVOICES',
-  Subscriptions = 'SUBSCRIPTION',
-  Payments = 'PAYMENTS',
-  Income = 'INCOME',
-  RefreshIntent = 'REFRESH_INTENT',
-  TaxStatements = 'TAX_STATEMENTS',
-  TaxReturns = 'TAX_RETURNS',
-  Charges = 'CHARGES',
+  Movements = 'movements',
+  Invoices = 'invoices',
+  Subscriptions = 'subscription',
+  Payments = 'payments',
+  Income = 'income',
+  RefreshIntent = 'refresh_intent',
+  TaxStatements = 'tax_statements',
+  TaxReturns = 'tax_returns',
+  Charges = 'charges',
 }
 
 export enum Plan {

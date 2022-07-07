@@ -8,29 +8,13 @@ import { EMAIL_ANDRES } from '@/constants/urls';
 import GenericLabel from '@/components/GenericLabel.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import { icons } from '@/utils/icons';
+import { isProductAvailable } from '@/utils/organization';
 
 const $t = useTranslation('views.organization.products');
 const organizationStore = useOrganizationStore();
 
 const bankingCodes = [Product.Movements, Product.Subscriptions, Product.Payments];
 const fiscalCodes = [Product.Invoices, Product.TaxReturns, Product.TaxStatements];
-
-const isProductAvailable = (code: Product, holderType: HolderType) => {
-  const products = organizationStore.organization?.organizationProducts;
-  if (!products) {
-    return false;
-  }
-  const product = products.find(
-    (prod) => prod.product === code.toLowerCase() && prod.holderType === holderType,
-  );
-  return !!product?.enabled;
-};
-
-const isOnDemandAvailable = () => organizationStore.organization?.refreshPolicies?.includes('on_demand');
-const isChargesAvailable = () => (
-  isProductAvailable(Product.Charges, HolderType.Individual)
-  || isProductAvailable(Product.Charges, HolderType.Business)
-);
 
 const isProductBlocked = (
   code: Product,
@@ -41,7 +25,11 @@ const iconComponent = (
   productCode: Product,
   holderType: HolderType,
 ): Nullable<ComponentPublicInstance> => {
-  if (isProductAvailable(productCode, holderType)) {
+  if (isProductAvailable(
+    productCode,
+    holderType,
+    organizationStore.organization?.organizationProducts,
+  )) {
     return icons.check;
   }
   if (isProductBlocked(productCode, holderType)) {
@@ -52,7 +40,11 @@ const iconComponent = (
 
 const iconClass = (productCode: Product, holderType: HolderType) => {
   const baseClass = 'h-4 w-4';
-  if (isProductAvailable(productCode, holderType)) {
+  if (isProductAvailable(
+    productCode,
+    holderType,
+    organizationStore.organization?.organizationProducts,
+  )) {
     return `${baseClass} text-primary-main`;
   }
   return `${baseClass} text-disabled-color`;
@@ -102,9 +94,10 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
             class="flex gap-2 text-xs"
           >
             <component
-              :is="isOnDemandAvailable() ? icons.check : icons.lock"
+              :is="organizationStore.isOnDemandAvailable ? icons.check : icons.lock"
               class="h-4 w-4"
-              :class="isOnDemandAvailable() ? 'text-primary-main' : 'text-disabled-color'"
+              :class="organizationStore.isOnDemandAvailable
+                ? 'text-primary-main' : 'text-disabled-color'"
             />
             Refresh on demand
           </span>
@@ -113,9 +106,10 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
             class="flex gap-2 text-xs"
           >
             <component
-              :is="isChargesAvailable() ? icons.check : icons.lock"
+              :is="organizationStore.isChargesAvailable ? icons.check : icons.lock"
               class="h-4 w-4"
-              :class="isChargesAvailable() ? 'text-primary-main' : 'text-disabled-color'"
+              :class="organizationStore.isChargesAvailable
+                ? 'text-primary-main' : 'text-disabled-color'"
             />
             Charges (Direct Debit)
           </span>

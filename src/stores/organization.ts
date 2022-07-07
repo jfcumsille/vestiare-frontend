@@ -2,8 +2,10 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
 import { Json } from '@/interfaces/utilities/json';
+import { HolderType, Product } from '@/interfaces/utilities/enums';
 import { OrganizationFull } from '@/interfaces/entities/organization';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
+import { isProductAvailable } from '@/utils/organization';
 
 export const useOrganizationStore = defineStore('organization', {
   state: () => ({
@@ -35,6 +37,22 @@ export const useOrganizationStore = defineStore('organization', {
           this.loading = false;
         }
       }
+    },
+  },
+  getters: {
+    isOnDemandAvailable: (state) => {
+      if (state.organization && state.organization.refreshPolicies) {
+        return state.organization?.refreshPolicies?.includes('on_demand');
+      }
+      return false;
+    },
+    isChargesAvailable: (state) => {
+      if (state.organization) {
+        const products = state.organization.organizationProducts;
+        return isProductAvailable(Product.Charges, HolderType.Individual, products)
+        || isProductAvailable(Product.Charges, HolderType.Business, products);
+      }
+      return false;
     },
   },
 });
