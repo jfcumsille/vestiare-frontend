@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useLocale } from '@/composables/locale';
 import { formatDate, formatTime } from '@/utils/date';
 import { Nullable } from '@/interfaces/common';
 import { useTranslation } from '@/locales';
@@ -8,16 +9,18 @@ const props = defineProps<{
 }>();
 
 const $t = useTranslation('date');
+
+const locale = useLocale();
 </script>
 
 <template>
   <div class="font-normal whitespace-nowrap">
     <template v-if="props.dateString">
       <div class="text-sm text-body-color">
-        {{ formatDate(props.dateString) }}
+        {{ formatDate(props.dateString, locale) }}
       </div>
       <div class="text-xs text-secondary-color">
-        {{ formatTime(props.dateString) }}
+        {{ formatTime(props.dateString, locale) }}
       </div>
     </template>
     <div
