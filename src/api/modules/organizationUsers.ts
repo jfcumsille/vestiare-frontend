@@ -15,3 +15,5 @@ export const create = async (
   const response = await client.post(BASE_PATH, requestBody);
   return response.data;
 };
+
+export const remove = async (organizationUserId: string) => client.delete(`${BASE_PATH}/${organizationUserId}`);

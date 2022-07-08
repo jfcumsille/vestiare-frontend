@@ -65,6 +65,7 @@ export default <OrganizationViewLocale>{
     invitationSent: 'Invitation Sent',
     admin: 'Admin',
     member: 'Member',
+    delete: 'Delete',
     newMember: {
       title: 'New member invitation',
       invitationSent: 'Invitation Sent',

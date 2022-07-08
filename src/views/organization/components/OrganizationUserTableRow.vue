@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { onClickOutside } from '@vueuse/core';
+import { useOrganizationStore } from '@/stores/organization';
 import { useTranslation } from '@/locales';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
 import { Status } from '@/interfaces/utilities/enums';
@@ -8,12 +10,14 @@ import TableData from '@/components/table/TableData.vue';
 import TableLabel from '@/components/table/utils/TableLabel.vue';
 import TableDate from '@/components/table/utils/TableDate.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
+import ThreeDots from '@/assets/svg/ThreeDots.vue';
 
 const props = defineProps<{
   member: OrganizationUser
 }>();
 
 const $t = useTranslation('views.organization.members');
+const organizationStore = useOrganizationStore();
 
 const name = computed(() => (props.member.name.includes('pending-name') ? '------' : props.member.name));
 const status = computed(() => {
@@ -41,6 +45,14 @@ const statusBadgeColor = computed(() => {
   }
 });
 
+const showUserOptions = ref(false);
+const toggleShowUserOptions = () => { showUserOptions.value = !showUserOptions.value; };
+const userOptions = ref(null);
+onClickOutside(userOptions, () => {
+  showUserOptions.value = false;
+});
+
+const handleDelete = () => organizationStore.deleteOrganizationUser(props.member);
 </script>
 <template>
   <TableRow>
@@ -75,6 +87,29 @@ const statusBadgeColor = computed(() => {
         :text="status"
         :color="statusBadgeColor"
       />
+    </TableData>
+    <TableData>
+      <div ref="userOptions">
+        <ThreeDots
+          class="cursor-pointer h-6 pr-1 w-6"
+          @click="toggleShowUserOptions"
+        />
+        <div
+          v-if="showUserOptions"
+          class="
+            absolute right-50 px-4 py-3
+            bg-white rounded-lg border border-light-gray drop-shadow-md
+          "
+        >
+          <button
+            data-test="delete-key-button"
+            class="text-primary-main hover:text-primary-hover"
+            @click="handleDelete"
+          >
+            {{ $t('delete') }}
+          </button>
+        </div>
+      </div>
     </TableData>
   </TableRow>
 </template>

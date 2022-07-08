@@ -63,6 +63,7 @@ export interface OrganizationViewLocale {
     invitationSent: string,
     admin: string,
     member: string,
+    delete: string,
     newMember: {
       title: string,
       invitationSent: string,

@@ -14,7 +14,7 @@ import OrganizationUserTableRow from './OrganizationUserTableRow.vue';
 
 const $t = useTranslation('views.organization.members');
 const organizationStore = useOrganizationStore();
-const headers = [$t('name'), $t('email'), $t('organizationRole'), $t('permissions'), $t('memberSince'), $t('status')];
+const headers = [$t('name'), $t('email'), $t('organizationRole'), $t('permissions'), $t('memberSince'), $t('status'), ''];
 
 const isInviteMemberOpened = ref(false);
 const setInviteMemberOpened = (value: boolean) => {

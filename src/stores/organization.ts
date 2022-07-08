@@ -43,6 +43,14 @@ export const useOrganizationStore = defineStore('organization', {
       const organizationUser = await api.organizationUsers.create(data);
       this.organizationUsers = [...this.organizationUsers, organizationUser];
     },
+    async deleteOrganizationUser(organizationUser: OrganizationUser) {
+      if (!this.organizationUsers.includes(organizationUser)) {
+        throw new Error('Invalid Organization User');
+      }
+      const index = this.organizationUsers.indexOf(organizationUser);
+      await api.organizationUsers.remove(organizationUser.id);
+      this.organizationUsers.splice(index, 1);
+    },
   },
   getters: {
     isOnDemandAvailable: (state) => {
