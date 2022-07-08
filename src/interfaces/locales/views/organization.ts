@@ -53,6 +53,7 @@ export interface OrganizationViewLocale {
     inviteMemberButton: string,
     newMember: {
       title: string,
+      invitationSent: string,
       subtitle: string,
       emailLabel: string,
       emailPlaceholder: string,
@@ -60,6 +61,11 @@ export interface OrganizationViewLocale {
       roleLabel: string,
       cancel: string,
       sendInvitation: string,
+      yourInvitationFor: string,
+      hasBeenSent: string,
+      inviteStatus: string,
+      backToTeam: string,
+      inviteAnother: string,
     },
   },
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useOrganizationStore } from '@/stores/organization';
 import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType, Role } from '@/interfaces/utilities/enums';
@@ -10,15 +11,19 @@ import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
+import InvitationSent from '@/assets/svg/InvitationSent.vue';
 
 const emit = defineEmits<{(e: 'close'): void}>();
 const $t = useTranslation('views.organization.members.newMember');
+const organizationStore = useOrganizationStore();
 
 const close = () => emit('close');
 
 const form = ref<Nullable<GenericFormPublicAPI>>(null);
 const email = ref('');
 const role = ref(Role.Member);
+const loading = ref(false);
+const invitationSent = ref(false);
 
 const roles = [Role.Admin, Role.Member];
 const selectRole = (value: string) => {
@@ -27,17 +32,29 @@ const selectRole = (value: string) => {
 
 const emailValidations = [(value: string) => isValidEmail(value) || $t('invalidEmail') as string];
 
-const inviteUser = () => {
+const inviteUser = async () => {
   if (form.value?.valid) {
-    console.log('inviting user. TODO: use store method')!;
+    loading.value = true;
+    try {
+      await organizationStore.inviteMember({ email: email.value, role: role.value });
+      invitationSent.value = true;
+    } finally {
+      loading.value = false;
+    }
   }
+};
+
+const inviteAnother = () => {
+  email.value = '';
+  role.value = Role.Member;
+  invitationSent.value = false;
 };
 
 </script>
 
 <template>
   <GenericModal
-    :title="$t('title')"
+    :title="invitationSent ? $t('invitationSent') : $t('title')"
     @close="close"
   >
     <div
@@ -88,11 +105,14 @@ const inviteUser = () => {
         <GenericButton
           :type="ButtonType.Text"
           :text="$t('cancel')"
+          :disabled="loading"
           @click="close"
         />
         <GenericButton
           :type="ButtonType.Primary"
           :text="$t('sendInvitation')"
+          :disabled="loading"
+          :loading="loading"
           @click="inviteUser"
         />
       </div>

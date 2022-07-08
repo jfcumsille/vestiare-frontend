@@ -55,6 +55,7 @@ export default <OrganizationViewLocale>{
     inviteMemberButton: 'Invitar miembro',
     newMember: {
       title: 'Invitación a un nuevo miembro',
+      invitationSent: 'Invitación enviada',
       subtitle: 'Agrega a un miembro o admin a tu organización a través de un email de invitación. Ellos completarán otra información necesaria.',
       emailLabel: 'Correo',
       emailPlaceholder: 'ejemplo@fintoc.com',
@@ -62,6 +63,11 @@ export default <OrganizationViewLocale>{
       roleLabel: 'Permisos',
       cancel: 'Cancelar',
       sendInvitation: 'Enviar invitación',
+      yourInvitationFor: 'Tu invitación a',
+      hasBeenSent: 'ha sido enviada',
+      inviteStatus: 'El estado de tu invitación se mostrará en la tabla de equipo.',
+      backToTeam: 'Volver a equipo',
+      inviteAnother: 'Invitar a otro',
     },
   },
 };
