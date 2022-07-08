@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useOrganizationStore } from '@/stores/organization';
+import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
 import { Status, Role, OrganizationRole } from '@/interfaces/utilities/enums';
@@ -19,6 +20,7 @@ const props = defineProps<{
 
 const $t = useTranslation('views.organization.members');
 const organizationStore = useOrganizationStore();
+const userStore = useUserStore();
 
 const name = computed(() => (props.member.name.includes('pending-name') ? '------' : props.member.name));
 const status = computed(() => {
@@ -74,6 +76,11 @@ onClickOutside(userOptions, () => {
   showUserOptions.value = false;
 });
 
+const memberIsTheOnlyAdmin = computed(() => organizationStore.adminsCount === 1 && props.member.role === 'admin');
+const memberIsCurrentUser = computed(() => props.member.email === userStore.user?.email || false);
+const deleteButtonDisabled = computed(() => (memberIsTheOnlyAdmin.value
+  || memberIsCurrentUser.value));
+
 const handleDelete = () => organizationStore.deleteOrganizationUser(props.member);
 </script>
 <template>
@@ -90,20 +97,32 @@ const handleDelete = () => organizationStore.deleteOrganizationUser(props.member
     </TableData>
     <TableData>
       <GenericDropDown
+        v-if="memberIsCurrentUser"
         :options="organizationRoleOptions"
         :selected="preselectedOrganizationRole"
         capitalize-options
         inline
         @select="selectOrganizationRole"
       />
+      <TableLabel
+        v-else
+        :label="preselectedOrganizationRole"
+        class="ml-3"
+      />
     </TableData>
     <TableData>
       <GenericDropDown
+        v-if="organizationStore.isCurrentUserAdmin"
         :options="roleOptions"
-        :selected="$t(props.member.role)"
+        :selected="props.member.role ? $t(props.member.role) : '------'"
         capitalize-options
         inline
+        :disabled="memberIsTheOnlyAdmin"
         @select="selectRole"
+      />
+      <TableLabel
+        v-else
+        :label="props.member.role ? $t(props.member.role) : '------'"
       />
     </TableData>
     <TableData>
@@ -119,7 +138,10 @@ const handleDelete = () => organizationStore.deleteOrganizationUser(props.member
       />
     </TableData>
     <TableData>
-      <div ref="userOptions">
+      <div
+        v-if="organizationStore.isCurrentUserAdmin"
+        ref="userOptions"
+      >
         <ThreeDots
           class="cursor-pointer h-6 pr-1 w-6"
           @click="toggleShowUserOptions"
@@ -132,8 +154,12 @@ const handleDelete = () => organizationStore.deleteOrganizationUser(props.member
           "
         >
           <button
+            :disabled="deleteButtonDisabled"
             data-test="delete-key-button"
-            class="text-primary-main hover:text-primary-hover"
+            class="
+              text-primary-main hover:text-primary-hover
+              disabled:text-disabled-color disabled:cursor-not-allowed
+            "
             @click="handleDelete"
           >
             {{ $t('delete') }}

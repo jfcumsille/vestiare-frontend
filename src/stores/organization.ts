@@ -2,11 +2,12 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
 import { Json } from '@/interfaces/utilities/json';
-import { HolderType, Product } from '@/interfaces/utilities/enums';
+import { HolderType, Product, Role } from '@/interfaces/utilities/enums';
 import { OrganizationFull } from '@/interfaces/entities/organization';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
 import { OrganizationUserCreationOptions } from '@/interfaces/options/organizationUser';
 import { isProductAvailable } from '@/utils/organization';
+import { useUserStore } from './user';
 
 export const useOrganizationStore = defineStore('organization', {
   state: () => ({
@@ -75,6 +76,15 @@ export const useOrganizationStore = defineStore('organization', {
       }
       return false;
     },
+    isCurrentUserAdmin: (state) => {
+      const userStore = useUserStore();
+      const userEmail = userStore.user?.email;
+      const organizationUser = state.organizationUsers.find(
+        (user: OrganizationUser) => user.email === userEmail,
+      );
+      return organizationUser?.role === Role.Admin;
+    },
+    adminsCount: (state) => state.organizationUsers.filter((organizationUser) => organizationUser.role === 'admin').length,
   },
 });
 

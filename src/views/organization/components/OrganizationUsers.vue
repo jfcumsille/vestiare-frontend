@@ -52,6 +52,7 @@ onMounted(() => {
       />
     </div>
     <GenericButton
+      v-if="organizationStore.isCurrentUserAdmin"
       icon-name="add"
       class="ml-4 capitalize"
       :type="ButtonType.Primary"

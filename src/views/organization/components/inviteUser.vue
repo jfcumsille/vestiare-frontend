@@ -84,6 +84,7 @@ const inviteAnother = () => {
       v-else
       ref="form"
       class="max-w-80 text-sm text-body-color space-y-6"
+      @submit.prevent="inviteUser"
     >
       <p> {{ $t('subtitle') }} </p>
       <GenericInput

@@ -4,6 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { SizeType } from '@/interfaces/utilities/enums';
 import { DropdownOption } from '@/interfaces/utilities/dropdownOption';
 import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
+import LockIcon from '@/assets/svg/LockIcon.vue';
 
 const props = withDefaults(defineProps<{
   label?: string,
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<{
   capitalizeOptions?: boolean,
   size?: SizeType,
   inline?: boolean,
+  disabled?: boolean
 }>(), {
   capitalizeOptions: false,
   size: SizeType.Hug,
@@ -89,6 +91,7 @@ const buttonStyle = computed(() => (props.inline ? 'border-none text-primary-mai
     </label>
     <button
       data-test="drop-down-button"
+      :disabled="props.disabled"
       :class="`
         flex items-center justify-between rounded-lg font-medium min-w-max p-3
         disabled:bg-light-gray disabled:text-disabled-color
@@ -100,7 +103,13 @@ const buttonStyle = computed(() => (props.inline ? 'border-none text-primary-mai
     >
       <div> {{ title }} </div>
       <ChevronIcon
+        v-if="!disabled"
         :class="`ml-1.5 w-4 h-4 rotate-90 ${colorClasses}`"
+      />
+      <LockIcon
+        v-else
+        class="ml-1.5 w-4 h-4 text-disabled-color"
+        data-test="drop-down-lock-icon"
       />
     </button>
     <div

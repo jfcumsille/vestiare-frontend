@@ -68,4 +68,19 @@ describe('GenericDropDown', () => {
     const textPrefix = wrapper.find('[data-test="drop-down-text-prefix"]');
     expect(textPrefix.exists()).toBe(false);
   });
+
+  it('disabled button when props.disabled is true', () => {
+    const wrapper = mount(GenericDropDown, {
+      props: {
+        selected: 'something',
+        options: ['something1', 'something2'],
+        disabled: true,
+      },
+    });
+
+    const dropdownButton = wrapper.find('[data-test="drop-down-button"]');
+    const dropdownLockIcon = wrapper.find('[data-test="drop-down-lock-icon"]');
+    expect(dropdownLockIcon.exists()).toBe(true);
+    expect(dropdownButton.classes()).toContain('disabled:bg-light-gray');
+  });
 });
