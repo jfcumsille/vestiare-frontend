@@ -5,6 +5,7 @@ import { Json } from '@/interfaces/utilities/json';
 import { HolderType, Product } from '@/interfaces/utilities/enums';
 import { OrganizationFull } from '@/interfaces/entities/organization';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
+import { OrganizationUserCreationOptions } from '@/interfaces/options/organizationUser';
 import { isProductAvailable } from '@/utils/organization';
 
 export const useOrganizationStore = defineStore('organization', {
@@ -37,6 +38,10 @@ export const useOrganizationStore = defineStore('organization', {
           this.loading = false;
         }
       }
+    },
+    async inviteMember(data: OrganizationUserCreationOptions) {
+      const organizationUser = await api.organizationUsers.create(data);
+      this.organizationUsers = [...this.organizationUsers, organizationUser];
     },
   },
   getters: {
