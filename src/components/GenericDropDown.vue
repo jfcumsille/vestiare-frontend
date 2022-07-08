@@ -11,7 +11,8 @@ const props = withDefaults(defineProps<{
   options: Array<string | DropdownOption>,
   textPrefix?: string,
   capitalizeOptions?: boolean,
-  size?: SizeType
+  size?: SizeType,
+  inline?: boolean,
 }>(), {
   capitalizeOptions: false,
   size: SizeType.Hug,
@@ -66,6 +67,9 @@ const sizeClasses = computed(() => {
 
 const optionValue = (option: string | DropdownOption) => (typeof option === 'string' ? option : option.value);
 const optionLabel = (option: string | DropdownOption) => (typeof option === 'string' ? option : option.label);
+
+const colorClasses = computed(() => (props.inline ? 'text-primary-main' : 'text-placeholder-color'));
+const buttonStyle = computed(() => (props.inline ? 'border-none text-primary-main' : 'bg-white text-body-color'));
 </script>
 
 <template>
@@ -86,17 +90,17 @@ const optionLabel = (option: string | DropdownOption) => (typeof option === 'str
     <button
       data-test="drop-down-button"
       :class="`
-        flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
+        flex items-center justify-between rounded-lg font-medium min-w-max p-3
         disabled:bg-light-gray disabled:text-disabled-color
         border-1.5 border-border-color text-sm
-        text-body-color ${sizeClasses} ${capitalizeOptionsClass}`
+        ${buttonStyle} ${sizeClasses} ${capitalizeOptionsClass}`
       "
       type="button"
       @click="toggle"
     >
       <div> {{ title }} </div>
       <ChevronIcon
-        class="ml-1.5 text-placeholder-color w-4 h-4 rotate-90"
+        :class="`ml-1.5 w-4 h-4 rotate-90 ${colorClasses}`"
       />
     </button>
     <div

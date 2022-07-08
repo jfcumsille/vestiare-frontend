@@ -4,13 +4,14 @@ import { onClickOutside } from '@vueuse/core';
 import { useOrganizationStore } from '@/stores/organization';
 import { useTranslation } from '@/locales';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
-import { Status } from '@/interfaces/utilities/enums';
+import { Status, Role } from '@/interfaces/utilities/enums';
 import TableRow from '@/components/table/TableRow.vue';
 import TableData from '@/components/table/TableData.vue';
 import TableLabel from '@/components/table/utils/TableLabel.vue';
 import TableDate from '@/components/table/utils/TableDate.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
+import GenericDropDown from '@/components/GenericDropDown.vue';
 
 const props = defineProps<{
   member: OrganizationUser
@@ -45,6 +46,12 @@ const statusBadgeColor = computed(() => {
   }
 });
 
+const roleOptions = [{ value: Role.Admin, label: $t('admin') }, { value: Role.Member, label: $t('member') }];
+const selectRole = (value: string) => {
+  const data = { role: value as Role };
+  organizationStore.updateOrganizationUser(props.member, data);
+};
+
 const showUserOptions = ref(false);
 const toggleShowUserOptions = () => { showUserOptions.value = !showUserOptions.value; };
 const userOptions = ref(null);
@@ -72,8 +79,12 @@ const handleDelete = () => organizationStore.deleteOrganizationUser(props.member
       />
     </TableData>
     <TableData>
-      <TableLabel
-        :sub-label="$t(props.member.role)"
+      <GenericDropDown
+        :options="roleOptions"
+        :selected="$t(props.member.role)"
+        capitalize-options
+        inline
+        @select="selectRole"
       />
     </TableData>
     <TableData>
