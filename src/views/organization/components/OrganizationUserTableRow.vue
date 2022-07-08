@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useOrganizationStore } from '@/stores/organization';
 import { useTranslation } from '@/locales';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
-import { Status, Role } from '@/interfaces/utilities/enums';
+import { Status, Role, OrganizationRole } from '@/interfaces/utilities/enums';
 import TableRow from '@/components/table/TableRow.vue';
 import TableData from '@/components/table/TableData.vue';
 import TableLabel from '@/components/table/utils/TableLabel.vue';
@@ -52,6 +52,21 @@ const selectRole = (value: string) => {
   organizationStore.updateOrganizationUser(props.member, data);
 };
 
+const organizationRoleOptions = [
+  { value: OrganizationRole.FinanceManagement, label: $t('financeManagement') },
+  { value: OrganizationRole.Developer, label: $t('developer') },
+  { value: OrganizationRole.Operations, label: $t('operations') },
+  { value: OrganizationRole.Other, label: $t('other') },
+];
+const selectOrganizationRole = (value: string) => {
+  const data = { organizationRole: value as OrganizationRole };
+  organizationStore.updateOrganizationUser(props.member, data);
+};
+const preselectedOrganizationRole = computed(() => {
+  const role = props.member.organizationRole;
+  return organizationRoleOptions.find((option) => option.value === role)?.label || '------';
+});
+
 const showUserOptions = ref(false);
 const toggleShowUserOptions = () => { showUserOptions.value = !showUserOptions.value; };
 const userOptions = ref(null);
@@ -74,8 +89,12 @@ const handleDelete = () => organizationStore.deleteOrganizationUser(props.member
       />
     </TableData>
     <TableData>
-      <TableLabel
-        :sub-label="props.member.organizationRole || '------'"
+      <GenericDropDown
+        :options="organizationRoleOptions"
+        :selected="preselectedOrganizationRole"
+        capitalize-options
+        inline
+        @select="selectOrganizationRole"
       />
     </TableData>
     <TableData>
