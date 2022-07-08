@@ -30,6 +30,20 @@ describe('GenericDropDown', () => {
     optionsText.forEach((option) => expect(list.text()).toContain(option));
   });
 
+  it('renders props.options when is DropdownOption', () => {
+    const options = [{ value: 'cl', label: 'Chile' }, { value: 'mx', label: 'México' }];
+    const wrapper = mount(GenericDropDown, {
+      props: {
+        options,
+        textPrefix: 'something',
+        selected: 'something',
+      },
+    });
+
+    const list = wrapper.find('[data-test="drop-down-list"]');
+    options.forEach((option) => expect(list.text()).toContain(option.label));
+  });
+
   it('renders props.textPrefix when passed', () => {
     const wrapper = mount(GenericDropDown, {
       props: {

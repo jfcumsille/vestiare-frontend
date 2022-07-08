@@ -2,12 +2,13 @@
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { SizeType } from '@/interfaces/utilities/enums';
+import { DropdownOption } from '@/interfaces/utilities/dropdownOption';
 import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 
 const props = withDefaults(defineProps<{
   label?: string,
   selected: string,
-  options: Array<string>,
+  options: Array<string | DropdownOption>,
   textPrefix?: string,
   capitalizeOptions?: boolean,
   size?: SizeType
@@ -62,6 +63,9 @@ const sizeClasses = computed(() => {
       return 'w-full max-w-80';
   }
 });
+
+const optionValue = (option: string | DropdownOption) => (typeof option === 'string' ? option : option.value);
+const optionLabel = (option: string | DropdownOption) => (typeof option === 'string' ? option : option.label);
 </script>
 
 <template>
@@ -106,7 +110,7 @@ const sizeClasses = computed(() => {
       <ul class="py-1">
         <li
           v-for="option in props.options"
-          :key="option"
+          :key="optionValue(option)"
         >
           <span
             :class="`
@@ -116,9 +120,9 @@ const sizeClasses = computed(() => {
               active:bg-primary-border active:text-primary-main
               ${capitalizeOptionsClass}`
             "
-            @click="() => select(option)"
+            @click="() => select(optionValue(option))"
           >
-            {{ option }}
+            {{ optionLabel(option) }}
           </span>
         </li>
       </ul>
