@@ -32,7 +32,7 @@ describe('GenericBadge', () => {
   };
 
   const colors = [
-    ['red', 'danger'], ['green', 'success'], ['yellow', 'yellow'],
+    ['red', 'danger'], ['green', 'success'], ['yellow', 'yellow'], ['orange', 'warning'],
   ];
 
   colors.forEach(([color, result]) => testColorRendering(color, result));
