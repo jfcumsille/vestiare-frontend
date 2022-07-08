@@ -6,18 +6,15 @@ import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericTable from '@/components/table/GenericTable.vue';
 import TableHead from '@/components/table/TableHead.vue';
 import TableHeader from '@/components/table/TableHeader.vue';
-import TableRow from '@/components/table/TableRow.vue';
-import TableData from '@/components/table/TableData.vue';
-import TableLabel from '@/components/table/utils/TableLabel.vue';
-import TableDate from '@/components/table/utils/TableDate.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import InviteUser from './inviteUser.vue';
+import OrganizationUserTableRow from './OrganizationUserTableRow.vue';
 
 const $t = useTranslation('views.organization.members');
 const organizationStore = useOrganizationStore();
-const headers = [$t('name'), $t('email'), $t('memberSince')];
+const headers = [$t('name'), $t('email'), $t('organizationRole'), $t('permissions'), $t('memberSince'), $t('status')];
 
 const isInviteMemberOpened = ref(false);
 const setInviteMemberOpened = (value: boolean) => {
@@ -77,26 +74,11 @@ onMounted(() => {
       </template>
 
       <template #content>
-        <TableRow
+        <OrganizationUserTableRow
           v-for="member in filteredMembers"
           :key="member.email"
-        >
-          <TableData class="max-w-xs">
-            <TableLabel
-              :label="member.name"
-            />
-          </TableData>
-          <TableData>
-            <TableLabel
-              :sub-label="member.email"
-            />
-          </TableData>
-          <TableData>
-            <TableDate
-              :date-string="member.createdAt"
-            />
-          </TableData>
-        </TableRow>
+          :member="member"
+        />
       </template>
     </GenericTable>
     <div
