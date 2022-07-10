@@ -10,4 +10,10 @@ export default <InvitationsViewLocale> {
     footer: 'Si no quieres una cuenta asociada a esta organización, puedes crear una nueva organización con otro email a través de',
     signUp: 'Registro',
   },
+  expired: {
+    title: 'Tu link ha expirado',
+    button: 'Pedir otro link',
+    footer: 'Si no quieres una cuenta asociada a esta organización, puedes crear una nueva organización con otro correo en',
+    signUp: 'Registrarse',
+  },
 };
