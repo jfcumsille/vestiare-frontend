@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+import * as api from '@/api';
 import { SIGNUP_ROUTE } from '@/constants/router';
 import { useTranslation } from '@/locales';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
@@ -8,10 +10,17 @@ import GenericButton from '@/components/GenericButton.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
+const route = useRoute();
+const token = route.params.token;
+
 const $t = useTranslation('views.invitations.login');
 const props = defineProps<{
   organizationUser: OrganizationUser
 }>();
+
+const declineInvitation = async () => {
+  await api.invitations.decline(token as string);
+};
 
 </script>
 <template>
@@ -57,6 +66,7 @@ const props = defineProps<{
         <GenericButton
           :type="ButtonType.Text"
           :text="$t('decline')"
+          @click="declineInvitation"
         />
         <p class="text-center text-body-color text-sm font-normal ">
           {{ $t('footer') }}
