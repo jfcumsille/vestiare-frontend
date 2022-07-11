@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
+import { AxiosError } from 'axios';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
 import { OrganizationUserInvitation } from '@/interfaces/entities/organizationUser';
-import { AxiosError } from 'axios';
 import { HOME_ROUTE } from '@/constants/router';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LoginView from './components/LoginView.vue';
 import ExpiredView from './components/ExpiredView.vue';
 
@@ -37,9 +38,12 @@ onMounted(async () => {
 });
 </script>
 <template>
-  <h1 v-if="loading">
-    You have been invited to this org with token {{ token }}
-  </h1>
+  <div
+    v-if="loading"
+    class="flex justify-center w-full h-96"
+  >
+    <LoadingSpinner class="mt-auto w-20 h-20" />
+  </div>
   <LoginView
     v-if="!loading && organizationUser"
     :organization-user="organizationUser"
