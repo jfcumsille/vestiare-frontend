@@ -26,5 +26,4 @@ export const update = async (
   });
   return response.data;
 };
-
 export const remove = async (organizationUserId: string) => client.delete(`${BASE_PATH}/${organizationUserId}`);
