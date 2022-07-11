@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
-import { OrganizationUser } from '@/interfaces/entities/organizationUser';
+import { OrganizationUserInvitation } from '@/interfaces/entities/organizationUser';
 import { AxiosError } from 'axios';
 import { HOME_ROUTE } from '@/constants/router';
 import LoginView from './components/LoginView.vue';
@@ -13,7 +13,7 @@ const router = useRouter();
 
 const route = useRoute();
 const token = route.params.token;
-const organizationUser = ref<Nullable<OrganizationUser>>(null);
+const organizationUser = ref<Nullable<OrganizationUserInvitation>>(null);
 const loading = ref(false);
 const expiredTokenError = ref(false);
 

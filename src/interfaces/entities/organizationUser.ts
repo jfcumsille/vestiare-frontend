@@ -9,3 +9,8 @@ export interface OrganizationUser {
   status: Status,
   createdAt: string
 }
+
+export interface OrganizationUserInvitation extends OrganizationUser {
+  organizationName: string,
+  adminName: string,
+}

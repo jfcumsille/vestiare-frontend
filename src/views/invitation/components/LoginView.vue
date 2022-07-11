@@ -1,26 +1,31 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import * as api from '@/api';
-import { SIGNUP_ROUTE } from '@/constants/router';
+import { SIGNUP_ROUTE, HOME_ROUTE } from '@/constants/router';
 import { useTranslation } from '@/locales';
-import { OrganizationUser } from '@/interfaces/entities/organizationUser';
+import { OrganizationUserInvitation } from '@/interfaces/entities/organizationUser';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import Auth0Panel from '@/views/login-signup/components/Auth0Panel.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
+const router = useRouter();
 const route = useRoute();
 const token = route.params.token;
 
 const $t = useTranslation('views.invitations.login');
 const props = defineProps<{
-  organizationUser: OrganizationUser
+  organizationUser: OrganizationUserInvitation
 }>();
 
 const declineInvitation = async () => {
   await api.invitations.decline(token as string);
+  router.push(HOME_ROUTE);
 };
+
+const adminName = computed(() => (props.organizationUser.adminName.includes('pending-name') ? '' : `Admin: ${props.organizationUser.adminName}`));
 
 </script>
 <template>
@@ -40,10 +45,10 @@ const declineInvitation = async () => {
         </div>
         <div class="flex flex-col space-y-2 text-center">
           <p class="text-body-color text-3xl font-bold">
-            {{ 'ServiEjemplo' }}
+            {{ organizationUser.organizationName }}
           </p>
           <p class="text-body-color text-sm">
-            {{ 'Admin: Nicolle Haz' }}
+            {{ adminName }}
           </p>
         </div>
         <p class="text-body-color text-sm">
