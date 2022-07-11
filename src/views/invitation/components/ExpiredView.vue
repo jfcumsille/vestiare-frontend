@@ -1,11 +1,20 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
+import * as api from '@/api';
 import { SIGNUP_ROUTE } from '@/constants/router';
 import { useTranslation } from '@/locales';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
+const route = useRoute();
+const token = route.params.token;
+
 const $t = useTranslation('views.invitations.expired');
+
+const resendInvitation = async () => {
+  await api.invitations.resend(token as string);
+};
 
 </script>
 <template>
@@ -26,6 +35,7 @@ const $t = useTranslation('views.invitations.expired');
           :type="ButtonType.Primary"
           :size="SizeType.Large"
           :text="$t('button')"
+          @click="resendInvitation"
         />
         <p class="text-center text-body-color text-sm font-normal ">
           {{ $t('footer') }}
