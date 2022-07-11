@@ -67,7 +67,7 @@ const adminName = computed(() => (props.organizationUser.adminName.includes('pen
             </p>
           </div>
         </div>
-        <Auth0Panel />
+        <Auth0Panel is-invitation />
         <GenericButton
           :type="ButtonType.Text"
           :text="$t('decline')"
