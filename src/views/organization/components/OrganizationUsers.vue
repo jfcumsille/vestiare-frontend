@@ -9,7 +9,7 @@ import TableHeader from '@/components/table/TableHeader.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericButton from '@/components/GenericButton.vue';
-import InviteUser from './InviteUser.vue';
+import InviteUser from './inviteUser.vue';
 import OrganizationUserTableRow from './OrganizationUserTableRow.vue';
 
 const $t = useTranslation('views.organization.members');
