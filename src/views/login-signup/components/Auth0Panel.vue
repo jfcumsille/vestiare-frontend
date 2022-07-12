@@ -16,17 +16,27 @@ const props = defineProps<{
   isSignup?: boolean,
   isInvitation?: boolean,
 }>();
+const emit = defineEmits<{(e: 'acceptInvitationWithEmail'): void }>();
 
 const mode = computed(() => (props.isSignup ? 'signup' : 'login'));
 
 const buttonLabel = computed(() => (props.isSignup ? $t('signUpWith') : $t('logInWith')));
 
+const showEmail = computed(() => (
+  !props.isSignup || (props.isSignup && props.isInvitation)
+));
+
 const authenticate = async (connection: Auth0Database) => {
-  if (props.isInvitation) {
+  const isEmail = connection === USERNAME_PASSWORD_CONNECTION;
+  if (props.isInvitation && !isEmail) {
     const token = route.params.token;
     await api.invitations.accept(token as string);
   }
-  authenticateWithRedirect(connection, mode.value);
+  if (props.isInvitation && isEmail) {
+    emit('acceptInvitationWithEmail');
+  } else {
+    authenticateWithRedirect(connection, mode.value);
+  }
 };
 </script>
 
@@ -51,7 +61,7 @@ const authenticate = async (connection: Auth0Database) => {
       @click="() => authenticate(Auth0Database.GitHub)"
     />
     <GenericButton
-      v-if="!props.isSignup"
+      v-if="showEmail"
       class="mt-5"
       :type="ButtonType.Outline"
       :text="`${buttonLabel} Email`"
