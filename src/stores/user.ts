@@ -1,7 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { getAuth0Client, manualSignup } from '@/services/auth0';
 import * as api from '@/api';
-import { isValidEmail } from '@/utils/email';
+import { isValidEmail } from '@/utils/validation';
 import { Nullable } from '@/interfaces/common';
 import { User } from '@/interfaces/entities/user';
 import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';

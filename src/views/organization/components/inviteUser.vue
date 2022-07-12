@@ -5,7 +5,7 @@ import { useTranslation } from '@/locales';
 import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType, Role } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
-import { isValidEmail } from '@/utils/email';
+import { isValidEmail } from '@/utils/validation';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
