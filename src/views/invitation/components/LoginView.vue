@@ -2,14 +2,16 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import * as api from '@/api';
-import { SIGNUP_ROUTE, HOME_ROUTE } from '@/constants/router';
+import { LOGIN_ROUTE, HOME_ROUTE } from '@/constants/router';
 import { useTranslation } from '@/locales';
 import { OrganizationUserInvitation } from '@/interfaces/entities/organizationUser';
-import { ButtonType } from '@/interfaces/utilities/enums';
+import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import Auth0Panel from '@/views/login-signup/components/Auth0Panel.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
+
+const emit = defineEmits<{(e: 'acceptInvitationWithEmail'): void }>();
 
 const router = useRouter();
 const route = useRoute();
@@ -27,6 +29,31 @@ const declineInvitation = async () => {
 
 const adminName = computed(() => (props.organizationUser.adminName.includes('pending-name') ? '' : `Admin: ${props.organizationUser.adminName}`));
 
+const goToLogIn = async () => {
+  await api.invitations.accept(token as string);
+  router.push(LOGIN_ROUTE);
+};
+const logOut = async () => {
+  await userStore.logOut();
+};
+
+const isOrgUserLoggedIn = ref(false);
+const isDifferentUserLoggedIn = ref(false);
+const isLoggedOut = computed(() => !isDifferentUserLoggedIn.value && !isOrgUserLoggedIn.value);
+
+const title = computed(() => (
+  isDifferentUserLoggedIn.value ? $t('titleNotInvited') : $t('title')
+));
+
+onMounted(() => {
+  if (userStore.authenticated && userStore.user) {
+    if (userStore.user.email === props.organizationUser.email) {
+      isOrgUserLoggedIn.value = true;
+    } else {
+      isDifferentUserLoggedIn.value = true;
+    }
+  }
+});
 </script>
 <template>
   <div
@@ -44,7 +71,7 @@ const adminName = computed(() => (props.organizationUser.adminName.includes('pen
           {{ $t('title') }}
         </div>
         <div class="flex flex-col space-y-2 text-center">
-          <p class="text-body-color text-3xl font-bold">
+          <p class="text-body-color text-xl font-bold">
             {{ organizationUser.organizationName }}
           </p>
           <p class="text-body-color text-sm">
@@ -67,21 +94,45 @@ const adminName = computed(() => (props.organizationUser.adminName.includes('pen
             </p>
           </div>
         </div>
-        <Auth0Panel is-invitation />
+        <p
+          v-if="isLoggedOut"
+          class="text-body-color text-sm"
+        >
+          {{ $t('pleaseLogin') }}
+          <strong>{{ props.organizationUser.email }}</strong>
+          {{ $t('throughAny') }}
+        </p>
+        <GenericButton
+          v-if="isOrgUserLoggedIn"
+          :type="ButtonType.Primary"
+          text="Accept Invitation"
+          @click="acceptInvitation"
+        />
+        <Auth0Panel
+          v-if="isLoggedOut"
+          is-signup
+          is-invitation
+          @accept-invitation-with-email="() => emit('acceptInvitationWithEmail')"
+        />
         <GenericButton
           :type="ButtonType.Text"
           :text="$t('decline')"
           @click="declineInvitation"
         />
-        <p class="text-center text-body-color text-sm font-normal ">
-          {{ $t('footer') }}
-          <a
-            :href="SIGNUP_ROUTE"
-            class="text-primary-main hover:text-primary-hover"
-          >
-            {{ $t('signUp') }}
-          </a>
-        </p>
+        <div
+          v-if="isLoggedOut"
+          class="flex flex-row justify-center items-center"
+        >
+          <p class="text-center text-body-color text-base font-normal mr-2">
+            {{ $t('footer') }}
+          </p>
+          <GenericButton
+            :type="ButtonType.Text"
+            :size="SizeType.Inline"
+            :text="$t('logIn')"
+            @click="goToLogIn"
+          />
+        </div>
       </div>
       <Circle
         class="w-56 absolute top-0 right-0 -mr-20 -mt-10 z-0"

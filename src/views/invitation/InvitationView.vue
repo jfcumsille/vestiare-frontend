@@ -9,9 +9,9 @@ import { HOME_ROUTE } from '@/constants/router';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import LoginView from './components/LoginView.vue';
 import ExpiredView from './components/ExpiredView.vue';
+import EmailSignup from './components/EmailSignup.vue';
 
 const router = useRouter();
-
 const route = useRoute();
 const token = route.params.token;
 const organizationUser = ref<Nullable<OrganizationUserInvitation>>(null);
@@ -26,6 +26,8 @@ const handleTokenError = (error: AxiosError) => {
   }
 };
 
+const showEmailSignUp = ref(false);
+
 onMounted(async () => {
   loading.value = true;
   try {
@@ -36,6 +38,7 @@ onMounted(async () => {
     loading.value = false;
   }
 });
+
 </script>
 <template>
   <div
@@ -45,10 +48,14 @@ onMounted(async () => {
     <LoadingSpinner class="mt-auto w-20 h-20" />
   </div>
   <LoginView
-    v-if="!loading && organizationUser"
+    v-if="!loading && organizationUser &&!showEmailSignUp"
     :organization-user="organizationUser"
+    @accept-invitation-with-email="() => showEmailSignUp = true"
   />
   <ExpiredView v-if="expiredTokenError" />
-  <!-- <ManualSignup v-if="status==='signup'" />
-  <OrgRole v-if="status==='orgRole'" /> -->
+  <EmailSignup
+    v-if="showEmailSignUp && !expiredTokenError && organizationUser"
+    :organization-user="organizationUser"
+  />
+  <!-- <OrgRole v-if="status==='orgRole'" /> -->
 </template>

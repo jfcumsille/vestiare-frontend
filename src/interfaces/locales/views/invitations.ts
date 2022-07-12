@@ -6,12 +6,15 @@ export interface InvitationsViewLocale {
     warning: string,
     decline: string,
     footer: string,
-    signUp: string,
+    logIn: string,
   },
   expired: {
     title: string,
     button: string,
     footer: string,
     signUp: string,
-  }
+  },
+  emailSignup: {
+    title: string,
+  },
 }
