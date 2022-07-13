@@ -11,7 +11,7 @@ import { page, track } from '@/services/analytics';
 import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType, CountryName } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
-import { isValidEmail, validatePassword } from '@/utils/validation';
+import { isValidEmail, isValidPassword } from '@/utils/validations';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import { countryNames } from '@/utils/country';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -96,9 +96,8 @@ const nameValidations = [(value:string) => !!value.trim() || $tForms('hints.name
 const lastNameValidations = [(value:string) => !!value.trim() || $tForms('hints.lastname') as string];
 const emailValidations = [(value: string) => isValidEmail(value) || $tForms('hints.email') as string];
 
-const isValidPassword = computed(() => validatePassword(password.value));
-const showPasswordRules = computed(() => !validatePassword(password.value) && password.value !== '');
-const passwordValidations = [(value: string) => validatePassword(value) || $tForms('hints.password') as string];
+const showPasswordRules = computed(() => !isValidPassword(password.value) && password.value !== '');
+const passwordValidations = [(value: string) => isValidPassword(value) || $tForms('hints.password') as string];
 </script>
 
 <template>
@@ -207,7 +206,7 @@ const passwordValidations = [(value: string) => validatePassword(value) || $tFor
                   :validations="passwordValidations"
                   bold-hint
                   :right-icon-name="showPassword ? 'eye-closed' : 'eye'"
-                  :hint="isValidPassword ? $tForms('hints.validPassword') : undefined"
+                  :hint="isValidPassword(password) ? $tForms('hints.validPassword') : undefined"
                   @click-right-icon="togglePassword"
                 />
                 <div

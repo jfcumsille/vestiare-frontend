@@ -3,7 +3,11 @@ import { InvitationsViewLocale } from '@/interfaces/locales/views/invitations';
 export default <InvitationsViewLocale> {
   login: {
     title: 'Welcome to this Organization',
-    pleaseLogin: 'Please Log In with',
+    titleNotInvited: 'Sorry, this invitation is not for you!',
+    thisInvitation: 'This invitation is for',
+    loggedInWith: 'and you are logged in with',
+    pleaseLogOut: 'Please log out and click on your email invitation again.',
+    pleaseLogin: 'Please log in with',
     throughAny: 'through any of these:',
     warning: 'You will lose access to other organizations connected to this email by accepting this invitation.',
     decline: 'Decline Invitation',

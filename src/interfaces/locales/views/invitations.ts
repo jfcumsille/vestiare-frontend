@@ -1,6 +1,10 @@
 export interface InvitationsViewLocale {
   login: {
     title: string,
+    titleNotInvited: string,
+    thisInvitation: string,
+    loggedInWith: string,
+    pleaseLogOut: string,
     pleaseLogin: string,
     throughAny: string,
     warning: string,

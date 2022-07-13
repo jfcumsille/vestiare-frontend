@@ -16,7 +16,7 @@ const props = defineProps<{
   isSignup?: boolean,
   isInvitation?: boolean,
 }>();
-const emit = defineEmits<{(e: 'acceptInvitationWithEmail'): void }>();
+const emit = defineEmits<{(e: 'accept-invitation-with-email'): void }>();
 
 const mode = computed(() => (props.isSignup ? 'signup' : 'login'));
 
@@ -33,7 +33,7 @@ const authenticate = async (connection: Auth0Database) => {
     await api.invitations.accept(token as string);
   }
   if (props.isInvitation && isEmail) {
-    emit('acceptInvitationWithEmail');
+    emit('accept-invitation-with-email');
   } else {
     authenticateWithRedirect(connection, mode.value);
   }
@@ -41,9 +41,8 @@ const authenticate = async (connection: Auth0Database) => {
 </script>
 
 <template>
-  <div>
+  <div class="space-y-5">
     <GenericButton
-      class="mt-5"
       :type="ButtonType.Outline"
       :text="`${buttonLabel} Google`"
       icon-name="auth-google"
@@ -52,7 +51,6 @@ const authenticate = async (connection: Auth0Database) => {
       @click="() => authenticate(Auth0Database.Google)"
     />
     <GenericButton
-      class="mt-5"
       :type="ButtonType.Outline"
       :text="`${buttonLabel} Github`"
       icon-name="auth-github"
@@ -62,7 +60,6 @@ const authenticate = async (connection: Auth0Database) => {
     />
     <GenericButton
       v-if="showEmail"
-      class="mt-5"
       :type="ButtonType.Outline"
       :text="`${buttonLabel} Email`"
       icon-name="mail"

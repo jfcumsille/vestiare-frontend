@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useUserStore } from '@/stores/user';
 import { useRoute, useRouter } from 'vue-router';
 import * as api from '@/api';
 import { LOGIN_ROUTE, HOME_ROUTE } from '@/constants/router';
@@ -11,7 +12,8 @@ import GenericButton from '@/components/GenericButton.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
-const emit = defineEmits<{(e: 'acceptInvitationWithEmail'): void }>();
+const userStore = useUserStore();
+const emit = defineEmits<{(e: 'accept-invitation-with-email'): void }>();
 
 const router = useRouter();
 const route = useRoute();
@@ -22,6 +24,10 @@ const props = defineProps<{
   organizationUser: OrganizationUserInvitation
 }>();
 
+const acceptInvitation = async () => {
+  await api.invitations.accept(token as string);
+  router.push(HOME_ROUTE);
+};
 const declineInvitation = async () => {
   await api.invitations.decline(token as string);
   router.push(HOME_ROUTE);
@@ -58,7 +64,7 @@ onMounted(() => {
 <template>
   <div
     data-test="login-view"
-    class="py-2 px-10 h-full w-full flex justify-center"
+    class="p-10 h-full w-full flex justify-center"
   >
     <div class="relative">
       <div
@@ -68,9 +74,33 @@ onMounted(() => {
       "
       >
         <div class="font-medium text-2xl text-heading-color text-center">
-          {{ $t('title') }}
+          {{ title }}
         </div>
-        <div class="flex flex-col space-y-2 text-center">
+        <div
+          v-if="isDifferentUserLoggedIn"
+          class="flex flex-col space-y-6"
+        >
+          <div class="space-y-2 text-body-color text-sm">
+            <p>
+              {{ $t('thisInvitation') }}
+              <strong>{{ props.organizationUser.email }}</strong>
+              {{ $t('loggedInWith') }}
+              <strong v-if="userStore.user">{{ userStore.user.email }}</strong>.
+            </p>
+            <p>
+              {{ $t('pleaseLogOut') }}
+            </p>
+          </div>
+          <GenericButton
+            :type="ButtonType.Primary"
+            text="Log Out"
+            @click="logOut"
+          />
+        </div>
+        <div
+          v-if="!isDifferentUserLoggedIn"
+          class="flex flex-col space-y-2 text-center"
+        >
           <p class="text-body-color text-xl font-bold">
             {{ organizationUser.organizationName }}
           </p>
@@ -78,12 +108,10 @@ onMounted(() => {
             {{ adminName }}
           </p>
         </div>
-        <p class="text-body-color text-sm">
-          {{ $t('pleaseLogin') }}
-          <strong>{{ props.organizationUser.email }}</strong>
-          {{ $t('throughAny') }}
-        </p>
-        <div class="flex flex-row bg-danger-surface p-2 rounded-lg">
+        <div
+          v-if="!isDifferentUserLoggedIn"
+          class="flex flex-row bg-danger-surface p-2 rounded-lg"
+        >
           <WarningIcon
             class="ml-1 text-danger-main"
             fill="currentColor"
@@ -112,9 +140,10 @@ onMounted(() => {
           v-if="isLoggedOut"
           is-signup
           is-invitation
-          @accept-invitation-with-email="() => emit('acceptInvitationWithEmail')"
+          @accept-invitation-with-email="() => emit('accept-invitation-with-email')"
         />
         <GenericButton
+          v-if="!isDifferentUserLoggedIn"
           :type="ButtonType.Text"
           :text="$t('decline')"
           @click="declineInvitation"

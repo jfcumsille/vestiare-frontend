@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { useRouter } from 'vue-router';
+import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { useTranslation } from '@/locales';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
@@ -13,7 +13,6 @@ const props = defineProps<{
 
 const router = useRouter();
 const $tSignUp = useTranslation('views.signUp');
-
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { AxiosError } from 'axios';
 import * as api from '@/api';
@@ -27,6 +27,17 @@ const handleTokenError = (error: AxiosError) => {
 };
 
 const showEmailSignUp = ref(false);
+const acceptInvitationWithEmail = () => {
+  showEmailSignUp.value = true;
+};
+
+const isLoginView = computed(() => (
+  !loading.value && !showEmailSignUp.value
+));
+
+const isEmailSignup = computed(() => (
+  showEmailSignUp.value && !expiredTokenError.value
+));
 
 onMounted(async () => {
   loading.value = true;
@@ -38,8 +49,8 @@ onMounted(async () => {
     loading.value = false;
   }
 });
-
 </script>
+
 <template>
   <div
     v-if="loading"
@@ -48,14 +59,13 @@ onMounted(async () => {
     <LoadingSpinner class="mt-auto w-20 h-20" />
   </div>
   <LoginView
-    v-if="!loading && organizationUser &&!showEmailSignUp"
+    v-if="isLoginView && organizationUser"
     :organization-user="organizationUser"
-    @accept-invitation-with-email="() => showEmailSignUp = true"
+    @accept-invitation-with-email="acceptInvitationWithEmail"
   />
   <ExpiredView v-if="expiredTokenError" />
   <EmailSignup
-    v-if="showEmailSignUp && !expiredTokenError && organizationUser"
+    v-if="isEmailSignup && organizationUser"
     :organization-user="organizationUser"
   />
-  <!-- <OrgRole v-if="status==='orgRole'" /> -->
 </template>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { useUserStore } from '@/stores/user';
-import { useTranslation } from '@/locales';
 import { useRoute, useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
+import { useUserStore } from '@/stores/user';
+import { useTranslation } from '@/locales';
 import * as api from '@/api';
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
 import { Nullable } from '@/interfaces/common';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
-import { validatePassword } from '@/utils/validation';
+import { isValidPassword } from '@/utils/validations';
 import { LOGIN_ROUTE } from '@/constants/router';
 import VerifyEmail from '@/views/login-signup/components/VerifyEmail.vue';
 import GenericForm from '@/components/forms/GenericForm.vue';
@@ -42,9 +42,8 @@ const form = ref<Nullable<GenericFormPublicAPI>>(null);
 const nameValidations = [(value:string) => !!value.trim() || $tForms('hints.name') as string];
 const lastNameValidations = [(value:string) => !!value.trim() || $tForms('hints.lastname') as string];
 
-const isValidPassword = computed(() => validatePassword(password.value));
-const showPasswordRules = computed(() => !validatePassword(password.value) && password.value !== '');
-const passwordValidations = [(value: string) => validatePassword(value) || $tForms('hints.password') as string];
+const showPasswordRules = computed(() => !isValidPassword(password.value) && password.value !== '');
+const passwordValidations = [(value: string) => isValidPassword(value) || $tForms('hints.password') as string];
 
 const loading = ref(false);
 const signUpCompleted = ref(false);
@@ -177,7 +176,7 @@ const goToLogIn = async () => {
               :validations="passwordValidations"
               bold-hint
               :right-icon-name="showPassword ? 'eye-closed' : 'eye'"
-              :hint="isValidPassword ? $tForms('hints.validPassword') : undefined"
+              :hint="isValidPassword(password) ? $tForms('hints.validPassword') : undefined"
               @click-right-icon="togglePassword"
             />
             <div
