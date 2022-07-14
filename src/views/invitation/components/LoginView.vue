@@ -26,11 +26,11 @@ const props = defineProps<{
 
 const acceptInvitation = async () => {
   await api.invitations.accept(token as string);
-  router.push(HOME_ROUTE);
+  await router.push(HOME_ROUTE);
 };
 const declineInvitation = async () => {
   await api.invitations.decline(token as string);
-  router.push(HOME_ROUTE);
+  await router.push(HOME_ROUTE);
 };
 
 const adminName = computed(() => (props.organizationUser.adminName.includes('pending-name') ? '' : `Admin: ${props.organizationUser.adminName}`));
