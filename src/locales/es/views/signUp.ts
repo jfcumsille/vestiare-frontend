@@ -8,7 +8,7 @@ export default <SignUpViewLocale>{
   and: 'y',
   privacyPolicy: 'Política de Privacidad',
   signUp: 'Crear cuenta',
-  alreadyHaveAccount: 'Ya tienes una cuenta?',
+  alreadyHaveAccount: '¿Ya tienes una cuenta?',
   logIn: 'Iniciar sesión',
   infoTitle: 'Comienza a construir con una cuenta gratis:',
   infoPoint1: 'Inmediatamente integra Fintoc con nuestros quickstarts para cualquier stack que tu equipo esté utilizando',

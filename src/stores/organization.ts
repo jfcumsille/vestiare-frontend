@@ -2,10 +2,12 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { Nullable } from '@/interfaces/common';
 import { Json } from '@/interfaces/utilities/json';
-import { HolderType, Product } from '@/interfaces/utilities/enums';
+import { HolderType, Product, Role } from '@/interfaces/utilities/enums';
 import { OrganizationFull } from '@/interfaces/entities/organization';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
+import { OrganizationUserCreationOptions } from '@/interfaces/options/organizationUser';
 import { isProductAvailable } from '@/utils/organization';
+import { useUserStore } from './user';
 
 export const useOrganizationStore = defineStore('organization', {
   state: () => ({
@@ -38,6 +40,26 @@ export const useOrganizationStore = defineStore('organization', {
         }
       }
     },
+    async inviteMember(data: OrganizationUserCreationOptions) {
+      const organizationUser = await api.organizationUsers.create(data);
+      this.organizationUsers = [...this.organizationUsers, organizationUser];
+    },
+    async updateOrganizationUser(organizationUser: OrganizationUser, data: Json) {
+      if (!this.organizationUsers.includes(organizationUser)) {
+        throw new Error('Invalid Organization User');
+      }
+      const index = this.organizationUsers.indexOf(organizationUser);
+      const updatedOrganizationUser = await api.organizationUsers.update(organizationUser.id, data);
+      this.organizationUsers[index] = updatedOrganizationUser;
+    },
+    async deleteOrganizationUser(organizationUser: OrganizationUser) {
+      if (!this.organizationUsers.includes(organizationUser)) {
+        throw new Error('Invalid Organization User');
+      }
+      const index = this.organizationUsers.indexOf(organizationUser);
+      await api.organizationUsers.remove(organizationUser.id);
+      this.organizationUsers.splice(index, 1);
+    },
   },
   getters: {
     isOnDemandAvailable: (state) => {
@@ -54,6 +76,15 @@ export const useOrganizationStore = defineStore('organization', {
       }
       return false;
     },
+    isCurrentUserAdmin: (state) => {
+      const userStore = useUserStore();
+      const userEmail = userStore.user?.email;
+      const organizationUser = state.organizationUsers.find(
+        (user: OrganizationUser) => user.email === userEmail,
+      );
+      return organizationUser?.role === Role.Admin;
+    },
+    adminsCount: (state) => state.organizationUsers.filter((organizationUser) => organizationUser.role === 'admin').length,
   },
 });
 

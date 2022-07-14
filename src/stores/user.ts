@@ -1,7 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import { getAuth0Client, manualSignup } from '@/services/auth0';
 import * as api from '@/api';
-import { isValidEmail } from '@/utils/email';
+import { isValidEmail } from '@/utils/validations';
 import { Nullable } from '@/interfaces/common';
 import { User } from '@/interfaces/entities/user';
 import { LogInOptions, SignUpOptions } from '@/interfaces/options/account';
@@ -66,10 +66,15 @@ export const useUserStore = defineStore('user', {
       }
       return {};
     },
-    organizationName(state) {
-      const name = state.user?.organizations[0].name;
+    defaultOrganization(state) {
+      return state.user?.organizations.find(
+        (organization) => organization.id === state.user?.defaultOrganizationId,
+      );
+    },
+    organizationName() {
+      const name = this.defaultOrganization?.name;
       if (name && !isValidEmail(name)) {
-        return state.user?.organizations[0].name;
+        return this.defaultOrganization?.name;
       }
       return null;
     },

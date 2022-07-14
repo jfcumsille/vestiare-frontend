@@ -96,3 +96,21 @@ export enum DateStyle {
   Medium = 'medium',
   Short = 'short',
 }
+
+export enum Role {
+  Admin = 'admin',
+  Member = 'member',
+}
+
+export enum OrganizationRole {
+  FinanceManagement = 'finance_management',
+  Developer = 'developer',
+  Operations = 'operations',
+  Other = 'other',
+}
+
+export enum Status {
+  Accepted = 'accepted',
+  Rejected = 'rejected',
+  InvitationSent = 'invitation_sent',
+}

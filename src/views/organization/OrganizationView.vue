@@ -15,7 +15,7 @@ import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm'
 import { DOCS_API_CHANGELOG } from '@/constants/urls';
 import { DASHBOARD_ORIGIN, ORGANIZATION_VIEWED } from '@/constants/analyticsEvents';
 import { countryNames, getCountryId, getCountryName } from '@/utils/country';
-import { isValidEmail } from '@/utils/email';
+import { isValidEmail } from '@/utils/validations';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';

@@ -3,7 +3,7 @@ import { computed } from 'vue';
 
 const props = defineProps<{
   text: string
-  color: 'red' | 'green' | 'yellow'
+  color: 'red' | 'green' | 'yellow' | 'orange'
 }>();
 
 const colorClasses = computed(() => {
@@ -16,12 +16,20 @@ const colorClasses = computed(() => {
   if (props.color === 'yellow') {
     return 'bg-yellow-100 text-yellow-800';
   }
+  if (props.color === 'orange') {
+    return 'bg-warning-surface text-warning-main';
+  }
   return '';
 });
 </script>
 
 <template>
-  <span :class="`select-none text-sm font-semibold mr-2 px-2.5 py-0.5 rounded ${colorClasses}`">
+  <span
+    :class="
+      `select-none text-sm font-medium mr-2 px-2.5 py-0.5
+      rounded-full whitespace-nowrap ${colorClasses}`
+    "
+  >
     {{ props.text }}
   </span>
 </template>

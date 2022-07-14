@@ -2,15 +2,19 @@
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { SizeType } from '@/interfaces/utilities/enums';
+import { DropdownOption } from '@/interfaces/utilities/dropdownOption';
 import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
+import LockIcon from '@/assets/svg/LockIcon.vue';
 
 const props = withDefaults(defineProps<{
   label?: string,
   selected: string,
-  options: Array<string>,
+  options: Array<string | DropdownOption>,
   textPrefix?: string,
   capitalizeOptions?: boolean,
-  size?: SizeType
+  size?: SizeType,
+  inline?: boolean,
+  disabled?: boolean
 }>(), {
   capitalizeOptions: false,
   size: SizeType.Hug,
@@ -62,6 +66,12 @@ const sizeClasses = computed(() => {
       return 'w-full max-w-80';
   }
 });
+
+const optionValue = (option: string | DropdownOption) => (typeof option === 'string' ? option : option.value);
+const optionLabel = (option: string | DropdownOption) => (typeof option === 'string' ? option : option.label);
+
+const colorClasses = computed(() => (props.inline ? 'text-primary-main' : 'text-placeholder-color'));
+const buttonStyle = computed(() => (props.inline ? 'border-none text-primary-main' : 'bg-white text-body-color'));
 </script>
 
 <template>
@@ -81,18 +91,25 @@ const sizeClasses = computed(() => {
     </label>
     <button
       data-test="drop-down-button"
+      :disabled="props.disabled"
       :class="`
-        flex items-center justify-between rounded-lg font-medium min-w-max p-3 bg-white
+        flex items-center justify-between rounded-lg font-medium min-w-max p-3
         disabled:bg-light-gray disabled:text-disabled-color
         border-1.5 border-border-color text-sm
-        text-body-color ${sizeClasses} ${capitalizeOptionsClass}`
+        ${buttonStyle} ${sizeClasses} ${capitalizeOptionsClass}`
       "
       type="button"
       @click="toggle"
     >
       <div> {{ title }} </div>
       <ChevronIcon
-        class="ml-1.5 text-placeholder-color w-4 h-4 rotate-90"
+        v-if="!disabled"
+        :class="`ml-1.5 w-4 h-4 rotate-90 ${colorClasses}`"
+      />
+      <LockIcon
+        v-else
+        class="ml-1.5 w-4 h-4 text-disabled-color"
+        data-test="drop-down-lock-icon"
       />
     </button>
     <div
@@ -106,7 +123,7 @@ const sizeClasses = computed(() => {
       <ul class="py-1">
         <li
           v-for="option in props.options"
-          :key="option"
+          :key="optionValue(option)"
         >
           <span
             :class="`
@@ -116,9 +133,9 @@ const sizeClasses = computed(() => {
               active:bg-primary-border active:text-primary-main
               ${capitalizeOptionsClass}`
             "
-            @click="() => select(option)"
+            @click="() => select(optionValue(option))"
           >
-            {{ option }}
+            {{ optionLabel(option) }}
           </span>
         </li>
       </ul>

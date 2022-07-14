@@ -9,6 +9,7 @@ import {
   PASSWORD_RESET_ROUTE,
   OAUTH_LOGIN_ROUTE,
   OAUTH_SIGNUP_ROUTE,
+  INVITATION_ROUTE_STARTS_WITH,
 } from '@/constants/router';
 
 export const removeTrailingSlash = (
@@ -47,7 +48,8 @@ export const loginRequired = (to: RouteLocationNormalized) => {
   if (
     to.path !== LOGIN_ROUTE && to.path !== SIGNUP_ROUTE
     && to.path !== OAUTH_LOGIN_ROUTE && to.path !== OAUTH_SIGNUP_ROUTE
-    && to.path !== PASSWORD_RESET_ROUTE && !userStore.authenticated
+    && to.path !== PASSWORD_RESET_ROUTE && !to.path.startsWith(INVITATION_ROUTE_STARTS_WITH)
+    && !userStore.authenticated
   ) {
     storeRedirection(to.path);
     return { path: LOGIN_ROUTE };

@@ -2,18 +2,16 @@
 import {
   ref, watch, onMounted, computed,
 } from 'vue';
-import { useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { LOGIN_ROUTE } from '@/constants/router';
 import { CONTACT, TERMS_AND_CONDITIONS, PRIVACY_POLICY } from '@/constants/urls';
 import { DASHBOARD_ORIGIN, USER_SIGNED_UP, SIGN_UP_VIEWED } from '@/constants/analyticsEvents';
 import { page, track } from '@/services/analytics';
-import { toStoredRedirectionOrHome } from '@/services/redirections';
 import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType, CountryName } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
-import { isValidEmail } from '@/utils/email';
+import { isValidEmail, isValidPassword } from '@/utils/validations';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import { countryNames } from '@/utils/country';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -24,8 +22,7 @@ import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 import { AxiosError } from 'axios';
 import Auth0Panel from './components/Auth0Panel.vue';
-
-const router = useRouter();
+import VerifyEmail from './components/VerifyEmail.vue';
 
 const userStore = useUserStore();
 const $tForms = useTranslation('forms.userData');
@@ -89,10 +86,6 @@ const signUp = async () => {
   }
 };
 
-const goToLogIn = () => {
-  toStoredRedirectionOrHome(router);
-};
-
 onMounted(() => {
   page(SIGN_UP_VIEWED, {
     origin: DASHBOARD_ORIGIN,
@@ -103,20 +96,8 @@ const nameValidations = [(value:string) => !!value.trim() || $tForms('hints.name
 const lastNameValidations = [(value:string) => !!value.trim() || $tForms('hints.lastname') as string];
 const emailValidations = [(value: string) => isValidEmail(value) || $tForms('hints.email') as string];
 
-const validatePassword = (val: string) => {
-  const value = val.trim();
-  const lengthValidation = value.length >= 8;
-  const lowerCase = Number(!!value.match(/[a-z]/g));
-  const upperCase = Number(!!value.match(/[A-Z]/g));
-  const number = Number(!!value.match(/[0-9]/g));
-  const speacialChar = Number(!!value.match(/[(!@#$%^&*).,:;]/g));
-  const chars = lowerCase + upperCase + number + speacialChar;
-  const validPassword = lengthValidation && (chars >= 3);
-  return validPassword;
-};
-const isValidPassword = computed(() => validatePassword(password.value));
-const showPasswordRules = computed(() => !validatePassword(password.value) && password.value !== '');
-const passwordValidations = [(value: string) => validatePassword(value) || $tForms('hints.password') as string];
+const showPasswordRules = computed(() => !isValidPassword(password.value) && password.value !== '');
+const passwordValidations = [(value: string) => isValidPassword(value) || $tForms('hints.password') as string];
 </script>
 
 <template>
@@ -225,7 +206,7 @@ const passwordValidations = [(value: string) => validatePassword(value) || $tFor
                   :validations="passwordValidations"
                   bold-hint
                   :right-icon-name="showPassword ? 'eye-closed' : 'eye'"
-                  :hint="isValidPassword ? $tForms('hints.validPassword') : undefined"
+                  :hint="isValidPassword(password) ? $tForms('hints.validPassword') : undefined"
                   @click-right-icon="togglePassword"
                 />
                 <div
@@ -358,46 +339,10 @@ const passwordValidations = [(value: string) => validatePassword(value) || $tFor
       v-if="completed"
       class="md:p-20 py-20 px-10 relative justify-center flex"
     >
-      <div class="relative">
-        <Circle
-          class="w-72 absolute top-0 left-0 -ml-28 -mt-8 z-0"
-          fill="#F2F4FF"
-          opacity="0.5"
-        />
-        <Circle
-          class="w-40 absolute top-0 left-0 -ml-5 -mt-14 z-0"
-          fill="#D7DDFF"
-          opacity="0.5"
-        />
-        <Circle
-          class="w-52 absolute bottom-0 right-0 -mr-16 -mb-16 z-0"
-          fill="#F2F4FF"
-          opacity="0.75"
-        />
-        <div
-          class="flex flex-col bg-white px-20 py-16 relative
-          rounded-lg border border-light-gray drop-shadow-md z-10 max-w-xl"
-        >
-          <div class="font-medium text-2xl text-heading-color">
-            {{ $tSignUp('verifyEmail') }}
-          </div>
-          <div class="mt-4 text-body-color font-normal">
-            {{ name }},
-            {{ $tSignUp('thankYou') }}
-            <span class="font-normal">
-              {{ email }}
-            </span>
-            {{ $tSignUp('verifyAccount') }}
-          </div>
-          <GenericButton
-            class="mt-8"
-            :type="ButtonType.Primary"
-            :text="$tSignUp('logIn')"
-            :disabled="loading"
-            @click="goToLogIn"
-          />
-        </div>
-      </div>
+      <VerifyEmail
+        :email="email"
+        :name="name"
+      />
     </div>
   </div>
 </template>

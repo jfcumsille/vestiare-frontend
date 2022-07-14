@@ -30,6 +30,20 @@ describe('GenericDropDown', () => {
     optionsText.forEach((option) => expect(list.text()).toContain(option));
   });
 
+  it('renders props.options when is DropdownOption', () => {
+    const options = [{ value: 'cl', label: 'Chile' }, { value: 'mx', label: 'México' }];
+    const wrapper = mount(GenericDropDown, {
+      props: {
+        options,
+        textPrefix: 'something',
+        selected: 'something',
+      },
+    });
+
+    const list = wrapper.find('[data-test="drop-down-list"]');
+    options.forEach((option) => expect(list.text()).toContain(option.label));
+  });
+
   it('renders props.textPrefix when passed', () => {
     const wrapper = mount(GenericDropDown, {
       props: {
@@ -53,5 +67,20 @@ describe('GenericDropDown', () => {
 
     const textPrefix = wrapper.find('[data-test="drop-down-text-prefix"]');
     expect(textPrefix.exists()).toBe(false);
+  });
+
+  it('disabled button when props.disabled is true', () => {
+    const wrapper = mount(GenericDropDown, {
+      props: {
+        selected: 'something',
+        options: ['something1', 'something2'],
+        disabled: true,
+      },
+    });
+
+    const dropdownButton = wrapper.find('[data-test="drop-down-button"]');
+    const dropdownLockIcon = wrapper.find('[data-test="drop-down-lock-icon"]');
+    expect(dropdownLockIcon.exists()).toBe(true);
+    expect(dropdownButton.classes()).toContain('disabled:bg-light-gray');
   });
 });

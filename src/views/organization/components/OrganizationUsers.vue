@@ -1,27 +1,64 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useOrganizationStore } from '@/stores/organization';
 import { useTranslation } from '@/locales';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericTable from '@/components/table/GenericTable.vue';
 import TableHead from '@/components/table/TableHead.vue';
 import TableHeader from '@/components/table/TableHeader.vue';
-import TableRow from '@/components/table/TableRow.vue';
-import TableData from '@/components/table/TableData.vue';
-import TableLabel from '@/components/table/utils/TableLabel.vue';
-import TableDate from '@/components/table/utils/TableDate.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import GenericInput from '@/components/forms/GenericInput.vue';
+import GenericButton from '@/components/GenericButton.vue';
+import InviteUser from './inviteUser.vue';
+import OrganizationUserTableRow from './OrganizationUserTableRow.vue';
 
 const $t = useTranslation('views.organization.members');
 const organizationStore = useOrganizationStore();
-const headers = [$t('name'), $t('email'), $t('memberSince')];
+const headers = [$t('name'), $t('email'), $t('organizationRole'), $t('permissions'), $t('memberSince'), $t('status'), ''];
+
+const isInviteMemberOpened = ref(false);
+const setInviteMemberOpened = (value: boolean) => {
+  isInviteMemberOpened.value = value;
+};
+
+const search = ref('');
+
+const filteredMembers = computed(() => {
+  const searchValue = search.value.toLowerCase();
+  return organizationStore.organizationUsers.filter(
+    (member) => member.email.toLowerCase().includes(searchValue)
+    || member.name.toLowerCase().includes(searchValue),
+  );
+});
 
 onMounted(() => {
   organizationStore.loadOrganizationUsers();
 });
 </script>
 <template>
+  <InviteUser
+    v-if="isInviteMemberOpened"
+    @close="() => setInviteMemberOpened(false)"
+  />
   <div class="font-medium text-2xl text-heading-color">
     {{ $t('title') }}
+  </div>
+  <div class="flex justify-between">
+    <div class="flex flex-row">
+      <GenericInput
+        v-model="search"
+        :placeholder="$t('searchPlaceholder')"
+        left-icon-name="search"
+      />
+    </div>
+    <GenericButton
+      v-if="organizationStore.isCurrentUserAdmin"
+      icon-name="add"
+      class="ml-4 capitalize"
+      :type="ButtonType.Primary"
+      :text="$t('inviteMemberButton')"
+      @click="() => setInviteMemberOpened(true)"
+    />
   </div>
   <div>
     <GenericTable>
@@ -38,26 +75,11 @@ onMounted(() => {
       </template>
 
       <template #content>
-        <TableRow
-          v-for="member in organizationStore.organizationUsers"
+        <OrganizationUserTableRow
+          v-for="member in filteredMembers"
           :key="member.email"
-        >
-          <TableData class="max-w-xs">
-            <TableLabel
-              :label="member.name"
-            />
-          </TableData>
-          <TableData>
-            <TableLabel
-              :sub-label="member.email"
-            />
-          </TableData>
-          <TableData>
-            <TableDate
-              :date-string="member.createdAt"
-            />
-          </TableData>
-        </TableRow>
+          :member="member"
+        />
       </template>
     </GenericTable>
     <div
