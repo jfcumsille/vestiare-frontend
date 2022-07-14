@@ -12,17 +12,19 @@ import GenericButton from '@/components/GenericButton.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Circle from '@/assets/svg/CircleBackground.vue';
 
-const userStore = useUserStore();
+const props = defineProps<{
+  organizationUser: OrganizationUserInvitation
+}>();
+
 const emit = defineEmits<{(e: 'accept-invitation-with-email'): void }>();
+
+const userStore = useUserStore();
 
 const router = useRouter();
 const route = useRoute();
 const token = route.params.token;
 
 const $t = useTranslation('views.invitations.login');
-const props = defineProps<{
-  organizationUser: OrganizationUserInvitation
-}>();
 
 const acceptInvitation = async () => {
   await api.invitations.accept(token as string);

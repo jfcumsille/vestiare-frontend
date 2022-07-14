@@ -7,7 +7,7 @@ import { Nullable } from '@/interfaces/common';
 import { OrganizationUserInvitation } from '@/interfaces/entities/organizationUser';
 import { HOME_ROUTE } from '@/constants/router';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import LoginView from './components/LoginView.vue';
+import AcceptInviteView from './components/AcceptInviteView.vue';
 import ExpiredView from './components/ExpiredView.vue';
 import EmailSignup from './components/EmailSignup.vue';
 
@@ -58,7 +58,7 @@ onMounted(async () => {
   >
     <LoadingSpinner class="mt-auto w-20 h-20" />
   </div>
-  <LoginView
+  <AcceptInviteView
     v-if="isLoginView && organizationUser"
     :organization-user="organizationUser"
     @accept-invitation-with-email="acceptInvitationWithEmail"
