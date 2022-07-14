@@ -66,10 +66,15 @@ export const useUserStore = defineStore('user', {
       }
       return {};
     },
-    organizationName(state) {
-      const name = state.user?.organizations[0].name;
+    defaultOrganization(state) {
+      return state.user?.organizations.find(
+        (organization) => organization.id === state.user?.defaultOrganizationId,
+      );
+    },
+    organizationName() {
+      const name = this.defaultOrganization?.name;
       if (name && !isValidEmail(name)) {
-        return state.user?.organizations[0].name;
+        return this.defaultOrganization?.name;
       }
       return null;
     },
