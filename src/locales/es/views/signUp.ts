@@ -10,6 +10,7 @@ export default <SignUpViewLocale>{
   signUp: 'Crear cuenta',
   alreadyHaveAccount: '¿Ya tienes una cuenta?',
   logIn: 'Iniciar sesión',
+  acceptInvitationAndlogIn: 'Aceptar invitación e iniciar sesión',
   infoTitle: 'Comienza a construir con una cuenta gratis:',
   infoPoint1: 'Inmediatamente integra Fintoc con nuestros quickstarts para cualquier stack que tu equipo esté utilizando',
   infoPoint2: 'Conecta una cantidad ilimitada de cuentas con credenciales test para Links bancarios o fiscales',

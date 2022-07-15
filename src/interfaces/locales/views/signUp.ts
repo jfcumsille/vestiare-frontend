@@ -7,6 +7,7 @@ export interface SignUpViewLocale {
   signUp: string,
   alreadyHaveAccount: string,
   logIn: string,
+  acceptInvitationAndlogIn: string,
   infoTitle: string,
   infoPoint1: string,
   infoPoint2: string,

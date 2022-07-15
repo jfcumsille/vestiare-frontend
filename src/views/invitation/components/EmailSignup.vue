@@ -201,14 +201,14 @@ const goToLogIn = async () => {
           full-width
           @click="signUp"
         />
-        <div class="flex flex-row justify-center items-center">
-          <p class="text-center text-body-color text-base font-normal mr-2">
+        <div class="flex flex-col justify-center items-center">
+          <p class="text-center text-body-color text-base font-normal">
             {{ $tSignUp('alreadyHaveAccount') }}
           </p>
           <GenericButton
             :type="ButtonType.Text"
             :size="SizeType.Inline"
-            :text="$tSignUp('logIn')"
+            :text="$tSignUp('acceptInvitationAndlogIn')"
             @click="goToLogIn"
           />
         </div>
