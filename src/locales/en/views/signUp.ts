@@ -10,6 +10,7 @@ export default <SignUpViewLocale>{
   signUp: 'Sign up',
   alreadyHaveAccount: 'Already have an account?',
   logIn: 'Log in',
+  acceptInvitationAndlogIn: 'Accept invitation and log in',
   infoTitle: 'Start building with a free account:',
   infoPoint1: 'Immediately begin integrating Fintoc with our quickstarts for any stack you are building with',
   infoPoint2: 'Connect an unlimited amount of test credentials for Bank or Fiscal Links',
