@@ -12,7 +12,7 @@ export default <InvitationsViewLocale> {
     warning: 'Si aceptas la invitación, perderás acceso a otras organizaciones conectadas a esta email',
     decline: 'Rechazar invitación',
     footer: '¿Ya tienes una cuenta?',
-    logIn: 'Iniciar sesión',
+    logIn: 'Aceptar invitación e iniciar sesión',
   },
   expired: {
     title: 'Tu link ha expirado',

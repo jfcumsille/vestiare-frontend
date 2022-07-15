@@ -12,7 +12,7 @@ export default <InvitationsViewLocale> {
     warning: 'You will lose access to other organizations connected to this email by accepting this invitation.',
     decline: 'Decline Invitation',
     footer: 'Already have an account?',
-    logIn: 'Log In',
+    logIn: 'Accept invitation and log in',
   },
   expired: {
     title: 'Your link has expired',

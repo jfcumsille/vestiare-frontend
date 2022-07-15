@@ -152,9 +152,9 @@ onMounted(() => {
         />
         <div
           v-if="isLoggedOut"
-          class="flex flex-row justify-center items-center"
+          class="flex flex-col justify-center items-center"
         >
-          <p class="text-center text-body-color text-base font-normal mr-2">
+          <p class="text-center text-body-color text-base font-normal">
             {{ $t('footer') }}
           </p>
           <GenericButton
