@@ -12,6 +12,8 @@ import {
   ButtonType,
   SizeType,
 } from '@/interfaces/utilities/enums';
+import { USER_REMOVED_ORG } from '@/constants/analyticsEvents';
+import { trackModal, trackId } from '@/services/analytics';
 import TableRow from '@/components/table/TableRow.vue';
 import TableData from '@/components/table/TableData.vue';
 import TableLabel from '@/components/table/utils/TableLabel.vue';
@@ -20,6 +22,7 @@ import GenericBadge from '@/components/GenericBadge.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
 import GenericButton from '@/components/GenericButton.vue';
+import AlertModal from '@/components/AlertModal.vue';
 
 const props = defineProps<{
   member: OrganizationUser
@@ -88,9 +91,33 @@ const memberIsCurrentUser = computed(() => props.member.email === userStore.user
 const deleteButtonDisabled = computed(() => (memberIsTheOnlyAdmin.value
   || memberIsCurrentUser.value));
 
-const handleDelete = () => organizationStore.deleteOrganizationUser(props.member);
+const deleteModalOpened = ref(false);
+const setDeleteModalOpened = (value: boolean) => {
+  deleteModalOpened.value = value;
+  trackModal(value, 'orgUser', 'delete');
+};
+
+const remove = async () => {
+  await organizationStore.deleteOrganizationUser(props.member);
+  setDeleteModalOpened(false);
+  trackId(USER_REMOVED_ORG, props.member.email);
+};
+
+const subtitle = computed(() => (
+  `${$t('deleteMember.text1')} ${props.member.email} ${$t('deleteMember.text2')}`
+));
 </script>
 <template>
+  <AlertModal
+    v-if="deleteModalOpened"
+    data-test="remove-user"
+    :title="$t('deleteMember.title')"
+    :warning="$t('deleteMember.warning')"
+    :subtitle="subtitle"
+    :confirmation="$t('deleteMember.confirmation')"
+    @close="() => setDeleteModalOpened(false)"
+    @confirm="remove"
+  />
   <TableRow>
     <TableData class="max-w-xs">
       <TableLabel
@@ -167,7 +194,7 @@ const handleDelete = () => organizationStore.deleteOrganizationUser(props.member
             :type="ButtonType.Text"
             :size="SizeType.Inline"
             :disabled="deleteButtonDisabled"
-            @click="handleDelete"
+            @click="() => setDeleteModalOpened(true)"
           />
         </div>
       </div>

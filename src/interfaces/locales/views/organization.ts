@@ -80,5 +80,12 @@ export interface OrganizationViewLocale {
       backToTeam: string,
       inviteAnother: string,
     },
+    deleteMember: {
+      title: string,
+      confirmation: string,
+      warning: string,
+      text1: string,
+      text2: string,
+    },
   },
 }

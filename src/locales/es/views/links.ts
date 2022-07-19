@@ -29,7 +29,7 @@ export default <LinksViewLocale>{
     confirmation: 'Eliminar Link',
     warning: 'Esta acción no se puede deshacer.',
     text: `
-      ¿Estás seguro que quieres borrar este Link? El usuario tendrá que ingresar sus credenciales
+      ¿Estás seguro de que quieres borrar este Link? El usuario tendrá que ingresar sus credenciales
       de la institución financiera para conectar su cuenta nuevamente.
     `,
   },

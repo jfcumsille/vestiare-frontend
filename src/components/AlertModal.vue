@@ -5,14 +5,12 @@ import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   title: string,
   warning: string,
   subtitle: string,
   confirmation: string,
-}>(), {
-  loading: false,
-});
+}>();
 
 const emit = defineEmits<{
   (e: 'close'): void,
@@ -24,6 +22,7 @@ const loading = ref(false);
 const confirm = () => {
   loading.value = true;
   emit('confirm');
+  loading.value = false;
 };
 
 </script>
