@@ -14,12 +14,11 @@ import TableDate from '@/components/table/utils/TableDate.vue';
 import GenericToggle from '@/components/GenericToggle.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import InstitutionLogo from '@/components/InstitutionLogo.vue';
-import DeleteLinkModal from './DeleteLinkModal.vue';
-import ResumeLinkRefreshingModal from './ResumeLinkRefreshingModal.vue';
+import AlertModal from '@/components/AlertModal.vue';
 
 const props = defineProps<{ link: Link }>();
 
-const $t = useTranslation('views.links.table');
+const $t = useTranslation('views.links');
 
 const $linksStore = useLinksStore();
 
@@ -42,7 +41,7 @@ const formattedHolderId = computed(() => {
 });
 
 const passwordBadgeText = computed(() => (
-  props.link.preventRefresh ? $t('badges.invalidPassword') : $t('badges.validPassword')
+  props.link.preventRefresh ? $t('table.badges.invalidPassword') : $t('table.badges.validPassword')
 ));
 const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : 'green'));
 
@@ -89,16 +88,24 @@ const remove = async () => {
 </script>
 
 <template>
-  <DeleteLinkModal
+  <AlertModal
     v-if="deleteModalOpened"
     data-test="remove-link"
+    :title="$t('deleteLinkModal.title')"
+    :warning="$t('deleteLinkModal.warning')"
+    :subtitle="$t('deleteLinkModal.text')"
+    :confirmation="$t('deleteLinkModal.confirmation')"
     @close="() => setDeleteModalOpened(false)"
-    @remove="remove"
+    @confirm="remove"
   />
-  <ResumeLinkRefreshingModal
+  <AlertModal
     v-if="refreshModalOpened"
+    :title="$t('refreshWarningModal.title')"
+    :warning="$t('refreshWarningModal.warning')"
+    :subtitle="$t('refreshWarningModal.text')"
+    :confirmation="$t('refreshWarningModal.confirmation')"
     @close="() => setRefreshModalOpened(false)"
-    @refresh="refresh"
+    @confirm="refresh"
   />
   <TableRow>
     <TableData class="flex space-x-3 items-center">
@@ -165,7 +172,7 @@ const remove = async () => {
           text-sm font-medium text-right whitespace-nowrap
           text-danger-main cursor-pointer hover:underline"
         @click="() => setDeleteModalOpened(true)"
-      >{{ $t('buttons.remove') }}</a>
+      >{{ $t('table.buttons.remove') }}</a>
     </TableData>
   </TableRow>
 </template>
