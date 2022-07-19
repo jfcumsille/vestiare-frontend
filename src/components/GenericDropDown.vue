@@ -72,6 +72,7 @@ const optionLabel = (option: string | DropdownOption) => (typeof option === 'str
 
 const colorClasses = computed(() => (props.inline ? 'text-primary-main' : 'text-placeholder-color'));
 const buttonStyle = computed(() => (props.inline ? 'border-none text-primary-main' : 'bg-white text-body-color'));
+const hidden = computed(() => (opened.value ? '' : 'hidden'));
 </script>
 
 <template>
@@ -114,11 +115,10 @@ const buttonStyle = computed(() => (props.inline ? 'border-none text-primary-mai
     </button>
     <div
       data-test="drop-down-list"
-      class="
-        absolute z-10 text-base list-none bg-white cursor-pointer mt-1 w-full
-        divide-y divide-divider-color shadow-lg rounded-lg
-      "
-      :class="{ 'hidden': !opened }"
+      :class="`
+        absolute z-10 text-base list-none bg-white cursor-pointer mt-1 ${sizeClasses}
+        divide-y divide-divider-color shadow-lg rounded-lg ${hidden}
+      `"
     >
       <ul class="py-1">
         <li
