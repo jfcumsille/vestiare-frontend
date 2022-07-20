@@ -10,6 +10,7 @@ import {
   localeToLanguage,
   SupportedLanguages,
 } from '@/composables/locale';
+import { SizeType } from '@/interfaces/utilities/enums';
 import { page } from '@/services/analytics';
 import { includes } from '@/utils/arrays';
 import { DASHBOARD_ORIGIN, PROFILE_VIEWED } from '@/constants/analyticsEvents';
@@ -83,6 +84,7 @@ onMounted(() => {
           </p>
           <GenericDropDown
             :label="$t('language')"
+            :size="SizeType.Medium"
             :selected="language"
             :options="Object.values(SupportedLanguages)"
             @select="changeLanguage"

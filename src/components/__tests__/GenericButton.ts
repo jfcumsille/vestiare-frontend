@@ -75,6 +75,7 @@ describe('GenericButton', () => {
       'focus:ring-primary-focus',
       'active:bg-primary-pressed',
       'active:ring-0',
+      'disabled:bg-light-gray',
     ],
     secondary: [
       'bg-primary-surface',
@@ -84,6 +85,7 @@ describe('GenericButton', () => {
       'focus:ring-primary-focus',
       'focus:text-primary-hover',
       'active:text-primary-pressed',
+      'disabled:bg-light-gray',
     ],
     outline: [
       'bg-transparent',
@@ -96,6 +98,7 @@ describe('GenericButton', () => {
       'focus:text-primary-hover',
       'active:text-primary-pressed',
       'active:ring-0',
+      'disabled:bg-light-gray',
     ],
     text: [
       'bg-transparent',
@@ -106,6 +109,7 @@ describe('GenericButton', () => {
       'focus:text-primary-hover',
       'active:text-primary-pressed',
       'active:ring-0',
+      'disabled:bg-transparent',
     ],
     danger: [
       'bg-danger-main',
@@ -116,6 +120,7 @@ describe('GenericButton', () => {
       'focus:ring-danger-focus',
       'active:bg-danger-pressed',
       'active:ring-0',
+      'disabled:bg-light-gray',
     ],
   } as Record<string, string[]>;
 
@@ -123,7 +128,6 @@ describe('GenericButton', () => {
     inline: [
       'text-base',
       'inline-block',
-      'disabled:bg-transparent',
     ],
     small: [
       'flex',
@@ -152,7 +156,6 @@ describe('GenericButton', () => {
     inline: [
       'text-base',
       'inline-block',
-      'disabled:bg-transparent',
     ],
     small: [
       'flex',

@@ -7,7 +7,7 @@ export default <InvitationsViewLocale> {
     thisInvitation: 'Esta invitación es para',
     loggedInWith: 'y tu has iniciado sesión con',
     pleaseLogOut: 'Por favor, cierra la sesión y haz click en la invitación por correo nuevamente.',
-    pleaseLogin: 'Por favor ingresa con',
+    pleaseSignUp: 'Por favor regístrate con',
     throughAny: 'mediante cualquiera de estas opciones:',
     warning: 'Si aceptas la invitación, perderás acceso a otras organizaciones conectadas a esta email',
     decline: 'Rechazar invitación',

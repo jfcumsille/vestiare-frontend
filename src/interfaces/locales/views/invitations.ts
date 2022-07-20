@@ -5,7 +5,7 @@ export interface InvitationsViewLocale {
     thisInvitation: string,
     loggedInWith: string,
     pleaseLogOut: string,
-    pleaseLogin: string,
+    pleaseSignUp: string,
     throughAny: string,
     warning: string,
     decline: string,

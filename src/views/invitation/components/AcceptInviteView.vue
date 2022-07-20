@@ -128,7 +128,7 @@ onMounted(() => {
           v-if="isLoggedOut"
           class="text-body-color text-sm"
         >
-          {{ $t('pleaseLogin') }}
+          {{ $t('pleaseSignUp') }}
           <strong>{{ props.organizationUser.email }}</strong>
           {{ $t('throughAny') }}
         </p>
