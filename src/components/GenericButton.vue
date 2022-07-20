@@ -135,7 +135,7 @@ const iconSizeClasses = computed(() => {
 const sizeClasses = computed(() => {
   switch (props.size) {
     case SizeType.Inline:
-      return 'text-base inline-block disabled:bg-transparent';
+      return 'text-base inline-block disabled:bg-white';
     case SizeType.Small:
       if (showOnlyIcon.value) {
         return 'flex py-2 px-3 h-7.5 w-7.5';

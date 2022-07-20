@@ -5,7 +5,13 @@ import { useOrganizationStore } from '@/stores/organization';
 import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
-import { Status, Role, OrganizationRole } from '@/interfaces/utilities/enums';
+import {
+  Status,
+  Role,
+  OrganizationRole,
+  ButtonType,
+  SizeType,
+} from '@/interfaces/utilities/enums';
 import TableRow from '@/components/table/TableRow.vue';
 import TableData from '@/components/table/TableData.vue';
 import TableLabel from '@/components/table/utils/TableLabel.vue';
@@ -13,6 +19,7 @@ import TableDate from '@/components/table/utils/TableDate.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import ThreeDots from '@/assets/svg/ThreeDots.vue';
 import GenericDropDown from '@/components/GenericDropDown.vue';
+import GenericButton from '@/components/GenericButton.vue';
 
 const props = defineProps<{
   member: OrganizationUser
@@ -153,17 +160,15 @@ const handleDelete = () => organizationStore.deleteOrganizationUser(props.member
             bg-white rounded-lg border border-light-gray drop-shadow-md
           "
         >
-          <button
-            :disabled="deleteButtonDisabled"
+          <GenericButton
             data-test="delete-key-button"
-            class="
-              text-primary-main hover:text-primary-hover
-              disabled:text-disabled-color disabled:cursor-not-allowed
-            "
+            icon-name="trash"
+            :text="$t('delete')"
+            :type="ButtonType.Text"
+            :size="SizeType.Inline"
+            :disabled="deleteButtonDisabled"
             @click="handleDelete"
-          >
-            {{ $t('delete') }}
-          </button>
+          />
         </div>
       </div>
     </TableData>
