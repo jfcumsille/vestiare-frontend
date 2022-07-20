@@ -28,6 +28,7 @@ const $t = useTranslation('views.invitations.login');
 
 const acceptInvitation = async () => {
   await api.invitations.accept(token as string);
+  await userStore.loadUser();
   await router.push(HOME_ROUTE);
 };
 const declineInvitation = async () => {
