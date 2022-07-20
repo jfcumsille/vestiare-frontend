@@ -170,7 +170,7 @@ const width = computed(() => (props.fullWidth ? 'w-full' : ''));
     data-test="generic-button"
     :class="`
       flex items-center ${props.justify} rounded-lg font-medium min-w-max
-      disabled:text-disabled-color
+      disabled:text-disabled-color disabled:cursor-not-allowed
       ${colorClasses} ${sizeClasses} ${width}`
     "
     type="button"
