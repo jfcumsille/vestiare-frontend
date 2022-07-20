@@ -44,7 +44,8 @@ const colorClasses = computed(() => {
         bg-primary-main text-white
         hover:bg-primary-hover
         focus:ring focus:ring-primary-focus
-        active:bg-primary-pressed active:ring-0`;
+        active:bg-primary-pressed active:ring-0
+        disabled:bg-light-gray`;
     case ButtonType.Secondary:
       if (props.loading) {
         return 'bg-primary-surface text-primary-main';
@@ -53,7 +54,8 @@ const colorClasses = computed(() => {
         bg-primary-surface text-primary-main
         hover:text-primary-hover
         focus:ring focus:ring-primary-focus focus:text-primary-hover
-        active:text-primary-pressed`;
+        active:text-primary-pressed
+        disabled:bg-light-gray`;
     case ButtonType.Outline:
       if (props.loading) {
         return 'bg-transparent border-border-color border-1 text-primary-main';
@@ -62,7 +64,8 @@ const colorClasses = computed(() => {
         bg-transparent border-border-color border-1 text-primary-main
         hover:text-primary-hover
         focus:ring focus:ring-primary-focus focus:text-primary-hover
-        active:text-primary-pressed active:ring-0`;
+        active:text-primary-pressed active:ring-0
+        disabled:bg-light-gray`;
     case ButtonType.Text:
       if (props.loading) {
         return 'bg-transparent text-primary-main';
@@ -71,7 +74,8 @@ const colorClasses = computed(() => {
         bg-transparent text-primary-main
         hover:text-primary-hover
         focus:ring focus:ring-primary-focus focus:text-primary-hover
-        active:text-primary-pressed active:ring-0`;
+        active:text-primary-pressed active:ring-0
+        disabled:bg-transparent`;
     case ButtonType.Danger:
       if (props.loading) {
         return 'bg-danger-surface text-danger-main';
@@ -80,7 +84,8 @@ const colorClasses = computed(() => {
         bg-danger-main text-white
         hover:bg-danger-hover
         focus:bg-danger-main focus:ring focus:ring-danger-focus
-        active:bg-danger-pressed active:ring-0`;
+        active:bg-danger-pressed active:ring-0
+        disabled:bg-light-gray`;
     default:
       return '';
   }
@@ -135,7 +140,7 @@ const iconSizeClasses = computed(() => {
 const sizeClasses = computed(() => {
   switch (props.size) {
     case SizeType.Inline:
-      return 'text-base inline-block disabled:bg-white';
+      return 'text-base inline-block';
     case SizeType.Small:
       if (showOnlyIcon.value) {
         return 'flex py-2 px-3 h-7.5 w-7.5';
@@ -165,7 +170,7 @@ const width = computed(() => (props.fullWidth ? 'w-full' : ''));
     data-test="generic-button"
     :class="`
       flex items-center ${props.justify} rounded-lg font-medium min-w-max
-      disabled:bg-light-gray disabled:text-disabled-color
+      disabled:text-disabled-color
       ${colorClasses} ${sizeClasses} ${width}`
     "
     type="button"
