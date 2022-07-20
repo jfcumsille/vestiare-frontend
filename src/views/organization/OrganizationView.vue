@@ -118,7 +118,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="flex flex-row w-full space-x-6 mt-5">
+    <div class="flex flex-row w-full space-x-4 mt-5">
       <div
         v-if="organizationStore.loading"
         class="flex justify-center items-center border bg-white
@@ -128,7 +128,7 @@ onMounted(() => {
       </div>
       <div
         v-else
-        class="p-5 space-y-10 bg-white rounded-lg drop-shadow border max-w-186 w-full"
+        class="p-5 space-y-8 bg-white rounded-lg drop-shadow border max-w-186 w-full min-w-fit"
       >
         <div class="flex justify-between space-x-8">
           <GenericLabel
@@ -164,7 +164,7 @@ onMounted(() => {
         </div>
         <div class="flex justify-between space-x-8">
           <GenericLabel
-            class="min-w-62 w-62"
+            class="min-w-62 w-62 py-3"
             :label="$t('settings.name')"
             :sub-label="$t('settings.nameSubLabel')"
           />
@@ -189,7 +189,7 @@ onMounted(() => {
         </div>
         <div class="flex justify-between space-x-8">
           <GenericLabel
-            class="min-w-62 w-62 h-12"
+            class="min-w-62 w-62 py-3"
             :label="$t('settings.organizationRutRfc')"
           />
           <div class="flex flex-row space-x-3 items-center w-full justify-between">
@@ -217,11 +217,11 @@ onMounted(() => {
         </div>
         <GenericForm
           ref="editFormRef"
-          class="space-y-10"
+          class="space-y-8"
         >
-          <div class="flex space-x-8 h-12">
+          <div class="flex space-x-8">
             <GenericLabel
-              class="w-62 min-w-62"
+              class="w-62 min-w-62 py-3"
               :label="$t('settings.billingEmail')"
               :sub-label="$t('settings.billingSubLabel')"
             />
@@ -240,9 +240,9 @@ onMounted(() => {
               :sub-label="organizationStore.organization?.billingMail || '------'"
             />
           </div>
-          <div class="flex space-x-8 h-12">
+          <div class="flex space-x-8">
             <GenericLabel
-              class="w-62 min-w-62"
+              class="w-62 min-w-62 py-3"
               :label="$t('settings.technicalEmail')"
               :sub-label="$t('settings.technicalSubLabel')"
             />
@@ -263,9 +263,9 @@ onMounted(() => {
             />
           </div>
         </GenericForm>
-        <div class="flex space-x-8 h-12">
+        <div class="flex space-x-8">
           <GenericLabel
-            class="w-62 min-w-62"
+            class="w-62 min-w-62 py-3"
             :label="$t('settings.defaultCountryApi')"
             :sub-label="$t('settings.defaultCountryApiSubLabel')"
           />
@@ -284,17 +284,17 @@ onMounted(() => {
             :sub-label="countryName"
           />
         </div>
-        <div class="flex space-x-8 h-12">
+        <div class="flex space-x-8">
           <GenericLabel
             v-if="organizationStore.organization?.apiVersion"
-            class="w-62"
+            class="w-62 py-3"
             :label="$t('settings.apiVersion')"
             :sub-label="$t('settings.apiVersionSubLabel1')"
             :sub-label-href="DOCS_API_CHANGELOG"
           />
           <GenericLabel
             v-else
-            class="w-62"
+            class="w-62 py-3"
             :label="$t('settings.apiVersion')"
             :sub-label="$t('settings.apiVersionSubLabel2')"
           />
@@ -303,7 +303,7 @@ onMounted(() => {
           />
         </div>
       </div>
-      <div class="break-normal flex flex-col space-y-6 min-h-md min-w-xs max-w-sm min-h-lg">
+      <div class="break-normal flex flex-col space-y-4 min-h-md min-w-xs max-w-sm min-h-lg">
         <div class="border p-5 bg-white rounded-lg drop-shadow h-full">
           <PlanSection />
         </div>
