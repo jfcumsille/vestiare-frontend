@@ -11,6 +11,7 @@ import {
   OrganizationRole,
   ButtonType,
   SizeType,
+  PositionType,
 } from '@/interfaces/utilities/enums';
 import { USER_REMOVED_ORG } from '@/constants/analyticsEvents';
 import { trackModal, trackId } from '@/services/analytics';
@@ -132,6 +133,8 @@ const subtitle = computed(() => (
     <TableData>
       <GenericDropDown
         v-if="memberIsCurrentUser"
+        class="-mt-5"
+        :position="PositionType.Absolute"
         :options="organizationRoleOptions"
         :selected="preselectedOrganizationRole"
         capitalize-options
@@ -147,6 +150,8 @@ const subtitle = computed(() => (
     <TableData>
       <GenericDropDown
         v-if="organizationStore.isCurrentUserAdmin"
+        class="-mt-5"
+        :position="PositionType.Absolute"
         :options="roleOptions"
         :selected="props.member.role ? $t(props.member.role) : '------'"
         capitalize-options

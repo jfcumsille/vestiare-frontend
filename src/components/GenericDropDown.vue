@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
-import { SizeType } from '@/interfaces/utilities/enums';
+import { SizeType, PositionType } from '@/interfaces/utilities/enums';
 import { DropdownOption } from '@/interfaces/utilities/dropdownOption';
 import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 import LockIcon from '@/assets/svg/LockIcon.vue';
@@ -14,10 +14,12 @@ const props = withDefaults(defineProps<{
   capitalizeOptions?: boolean,
   size?: SizeType,
   inline?: boolean,
-  disabled?: boolean
+  disabled?: boolean,
+  position?: PositionType
 }>(), {
   capitalizeOptions: false,
   size: SizeType.Hug,
+  position: PositionType.Relative,
 });
 
 const emit = defineEmits<{(e: 'select', selected: string): void }>();
@@ -78,7 +80,7 @@ const hidden = computed(() => (opened.value ? '' : 'hidden'));
 <template>
   <div
     ref="dropDown"
-    :class="`relative h-12 ${sizeClasses}`"
+    :class="`${props.position} h-12 ${sizeClasses}`"
   >
     <label
       v-if="props.label"
