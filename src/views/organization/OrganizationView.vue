@@ -313,7 +313,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="mt-10 w-full space-y-6 max-w-6xl">
+    <div class="mt-10 w-full max-w-6xl">
       <OrganizationUsers />
     </div>
   </div>

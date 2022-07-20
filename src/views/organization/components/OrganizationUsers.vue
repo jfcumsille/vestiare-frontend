@@ -40,53 +40,55 @@ onMounted(() => {
     v-if="isInviteMemberOpened"
     @close="() => setInviteMemberOpened(false)"
   />
-  <div class="font-medium text-2xl text-heading-color">
-    {{ $t('title') }}
-  </div>
-  <div class="flex justify-between">
-    <div class="flex flex-row">
-      <GenericInput
-        v-model="search"
-        :placeholder="$t('searchPlaceholder')"
-        left-icon-name="search"
+  <div class="space-y-3">
+    <div class="font-medium text-2xl text-heading-color">
+      {{ $t('title') }}
+    </div>
+    <div class="flex justify-between">
+      <div class="flex flex-row">
+        <GenericInput
+          v-model="search"
+          :placeholder="$t('searchPlaceholder')"
+          left-icon-name="search"
+        />
+      </div>
+      <GenericButton
+        v-if="organizationStore.isCurrentUserAdmin"
+        icon-name="add"
+        class="ml-4 capitalize"
+        :type="ButtonType.Primary"
+        :text="$t('inviteMemberButton')"
+        @click="() => setInviteMemberOpened(true)"
       />
     </div>
-    <GenericButton
-      v-if="organizationStore.isCurrentUserAdmin"
-      icon-name="add"
-      class="ml-4 capitalize"
-      :type="ButtonType.Primary"
-      :text="$t('inviteMemberButton')"
-      @click="() => setInviteMemberOpened(true)"
-    />
-  </div>
-  <div>
-    <GenericTable>
-      <template #head>
-        <TableHead>
-          <TableHeader
-            v-for="header in headers"
-            :key="header"
-            :header="header"
-          >
-            <div> {{ header }} </div>
-          </TableHeader>
-        </TableHead>
-      </template>
+    <div>
+      <GenericTable>
+        <template #head>
+          <TableHead>
+            <TableHeader
+              v-for="header in headers"
+              :key="header"
+              :header="header"
+            >
+              <div> {{ header }} </div>
+            </TableHeader>
+          </TableHead>
+        </template>
 
-      <template #content>
-        <OrganizationUserTableRow
-          v-for="member in filteredMembers"
-          :key="member.email"
-          :member="member"
-        />
-      </template>
-    </GenericTable>
-    <div
-      v-if="organizationStore.loadingUsers"
-      class="flex justify-center w-full pt-4"
-    >
-      <LoadingSpinner />
+        <template #content>
+          <OrganizationUserTableRow
+            v-for="member in filteredMembers"
+            :key="member.email"
+            :member="member"
+          />
+        </template>
+      </GenericTable>
+      <div
+        v-if="organizationStore.loadingUsers"
+        class="flex justify-center w-full pt-4"
+      >
+        <LoadingSpinner />
+      </div>
     </div>
   </div>
 </template>
