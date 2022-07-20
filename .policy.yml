@@ -1,24 +1,15 @@
 
 policy:
   approval:
-    - someone from fintoc has approved
-    - the dashboard team has approved
+    - the fintoc team has approved
 
 
 approval_rules:
-  - name: someone from fintoc has approved
+  - name: the fintoc team has approved
     options:
       request_review:
         enabled: true
         mode: random-users
     requires:
-      count: 1
+      count: 2
       teams: ["fintoc-com/core-team"]
-  - name: the dashboard team has approved
-    options:
-      request_review:
-        enabled: true
-        mode: random-users
-    requires:
-      count: 1
-      users: ["paulamardones", "daleal", "parayab"]
