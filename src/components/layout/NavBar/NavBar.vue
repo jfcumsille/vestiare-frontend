@@ -5,7 +5,12 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { widthType } from '@/services/window';
 import { ButtonType } from '@/interfaces/utilities/enums';
-import { LOGIN_ROUTE, SIGNUP_ROUTE, ORGANIZATION_ROUTE } from '@/constants/router';
+import {
+  LOGIN_ROUTE,
+  SIGNUP_ROUTE,
+  ORGANIZATION_ROUTE,
+  INVITATION_ROUTE_STARTS_WITH,
+} from '@/constants/router';
 import { DOCS } from '@/constants/urls';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
@@ -34,8 +39,10 @@ const navBarLoggedInLinks = [
   },
 ];
 
+const isInvitationView = computed(() => route.path.includes(INVITATION_ROUTE_STARTS_WITH));
 const isLogInView = computed(() => route.path.includes(LOGIN_ROUTE));
 const isSignUpView = computed(() => route.path.includes(SIGNUP_ROUTE));
+const showSignUpButton = computed(() => !(isSignUpView.value || isInvitationView.value));
 
 const logIn = () => {
   router.push({ path: LOGIN_ROUTE });
@@ -72,7 +79,7 @@ const signUp = () => {
           @click="logIn"
         />
         <GenericButton
-          v-if="!isSignUpView"
+          v-if="showSignUpButton"
           :type="ButtonType.Secondary"
           :text="$t('signUp')"
           @click="signUp"
@@ -152,7 +159,7 @@ const signUp = () => {
           {{ $t('logIn') }}
         </a>
         <a
-          v-if="!isSignUpView"
+          v-if="showSignUpButton"
           class="
             mx-2 mt-1 px-3 py-3 text-sm font-medium text-left rounded shadow-sm vertical-center
             text-white bg-primary-main hover:bg-primary-hover justify-center"
