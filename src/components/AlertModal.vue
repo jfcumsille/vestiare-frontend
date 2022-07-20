@@ -1,50 +1,55 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useTranslation } from '@/locales';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 
-const emit = defineEmits<{
-  (e: 'close'): void,
-  (e: 'refresh'): void,
+const props = defineProps<{
+  title: string,
+  warning: string,
+  subtitle: string,
+  confirmation: string,
 }>();
 
-const $t = useTranslation('views.links.refreshWarningModal');
+const emit = defineEmits<{
+  (e: 'close'): void,
+  (e: 'confirm'): void,
+}>();
 
 const loading = ref(false);
 
-const refresh = () => {
+const confirm = () => {
   loading.value = true;
-  emit('refresh');
+  emit('confirm');
+  loading.value = false;
 };
-</script>
 
+</script>
 <template>
   <GenericModal
-    :title="$t('title')"
+    :title="props.title"
     @close="emit('close')"
   >
-    <div class="flex flex-row bg-danger-surface p-2 rounded-lg mb-2">
+    <div class="flex flex-row bg-danger-surface p-2 rounded-lg mb-2 max-w-lg">
       <WarningIcon
         class="mt-1 ml-1 text-danger-main"
         fill="currentColor"
       />
       <div class="ml-2 text-body-color font-normal">
-        {{ $t('warning') }}
+        {{ props.warning }}
       </div>
     </div>
-    <p class="text-body-color font-normal">
-      {{ $t('text') }}
+    <p class="text-body-color font-normal max-w-lg">
+      {{ props.subtitle }}
     </p>
     <div class="w-full flex justify-end">
       <GenericButton
-        class="mt-5"
+        class="mt-4"
         :type="ButtonType.Danger"
-        :text="$t('confirmation')"
+        :text="props.confirmation"
         :disabled="loading"
-        @click="refresh"
+        @click="confirm"
       />
     </div>
   </GenericModal>

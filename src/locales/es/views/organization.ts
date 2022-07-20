@@ -82,5 +82,12 @@ export default <OrganizationViewLocale>{
       backToTeam: 'Volver a equipo',
       inviteAnother: 'Invitar a otro',
     },
+    deleteMember: {
+      title: 'Eliminar usuario de tu organización',
+      confirmation: 'Eliminar usuario',
+      warning: 'Si eliminas un usuario, deberás invitarlo nuevamente.',
+      text1: '¿Estás seguro de que quieres eliminar',
+      text2: 'de tu organización?',
+    },
   },
 };

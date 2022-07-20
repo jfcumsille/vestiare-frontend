@@ -18,8 +18,7 @@ import {
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
 import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
-import DeleteLinkModal from '@/views/links/components/DeleteLinkModal.vue';
-import ResumeLinkRefreshingModal from '@/views/links/components/ResumeLinkRefreshingModal.vue';
+import AlertModal from '@/components/AlertModal.vue';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
@@ -75,8 +74,8 @@ describe('LinksTableRow', () => {
       expect(removeLinkButton.exists()).toBe(true);
       await removeLinkButton.trigger('click');
 
-      const createModal = wrapper.findComponent(DeleteLinkModal);
-      expect(createModal.exists()).toBe(true);
+      const deleteLinkModal = wrapper.findComponent(AlertModal);
+      expect(deleteLinkModal.exists()).toBe(true);
 
       const properties = { action: 'delete', location: 'links' };
       expectToTrackWithAnalytics(analyticsTrackMock, MODAL_VIEWED, properties);
@@ -91,9 +90,9 @@ describe('LinksTableRow', () => {
       expect(removeLinkButton.exists()).toBe(true);
       await removeLinkButton.trigger('click');
 
-      const createModal = wrapper.findComponent(DeleteLinkModal);
-      expect(createModal.exists()).toBe(true);
-      createModal.vm.$emit('close');
+      const deleteLinkModal = wrapper.findComponent(AlertModal);
+      expect(deleteLinkModal.exists()).toBe(true);
+      deleteLinkModal.vm.$emit('close');
 
       const properties = { action: 'delete', location: 'links' };
       expectToTrackWithAnalytics(analyticsTrackMock, MODAL_CLOSED, properties);
@@ -108,9 +107,9 @@ describe('LinksTableRow', () => {
       expect(removeLinkButton.exists()).toBe(true);
       await removeLinkButton.trigger('click');
 
-      const createModal = wrapper.findComponent(DeleteLinkModal);
-      expect(createModal.exists()).toBe(true);
-      createModal.vm.$emit('remove');
+      const deleteLinkModal = wrapper.findComponent(AlertModal);
+      expect(deleteLinkModal.exists()).toBe(true);
+      wrapper.vm.remove();
       await wrapper.vm.$forceUpdate();
 
       const properties = { id: 'id', origin: 'dashboard' };
@@ -139,7 +138,7 @@ describe('LinksTableRow', () => {
       expect(badge.exists()).toBe(true);
       await badge.trigger('click');
 
-      const refreshLinkModal = wrapper.findComponent(ResumeLinkRefreshingModal);
+      const refreshLinkModal = wrapper.findComponent(AlertModal);
       expect(refreshLinkModal.exists()).toBe(true);
 
       const properties = { action: 'refresh', location: 'links' };
@@ -155,7 +154,7 @@ describe('LinksTableRow', () => {
       expect(badge.exists()).toBe(true);
       await badge.trigger('click');
 
-      const refreshLinkModal = wrapper.findComponent(ResumeLinkRefreshingModal);
+      const refreshLinkModal = wrapper.findComponent(AlertModal);
       expect(refreshLinkModal.exists()).toBe(true);
       refreshLinkModal.vm.$emit('close');
       await wrapper.vm.$forceUpdate();
@@ -173,9 +172,9 @@ describe('LinksTableRow', () => {
       expect(badge.exists()).toBe(true);
       await badge.trigger('click');
 
-      const refreshLinkModal = wrapper.findComponent(ResumeLinkRefreshingModal);
+      const refreshLinkModal = wrapper.findComponent(AlertModal);
       expect(refreshLinkModal.exists()).toBe(true);
-      refreshLinkModal.vm.refresh();
+      wrapper.vm.refresh();
       await wrapper.vm.$forceUpdate();
 
       const properties = { id: 'id', origin: 'dashboard' };
