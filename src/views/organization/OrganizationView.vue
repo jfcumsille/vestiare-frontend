@@ -113,7 +113,7 @@ onMounted(() => {
     class="flex flex-col p-10 items-left"
   >
     <div class="flex flex-col w-full">
-      <div class="font-semibold text-2xl text-heading-color self-start">
+      <div class="font-semibold text-3xl text-heading-color self-start">
         {{ $t('title') }}
       </div>
     </div>
