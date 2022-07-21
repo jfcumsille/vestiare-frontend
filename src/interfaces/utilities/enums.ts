@@ -58,6 +58,11 @@ export enum SizeType {
   Hug = 'Hug',
 }
 
+export enum PositionType {
+  Absolute = 'absolute',
+  Relative = 'relative',
+}
+
 export enum HorizontalPositionType {
   Left = 'Left',
   Right = 'Right',
