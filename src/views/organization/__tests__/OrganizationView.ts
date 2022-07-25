@@ -5,7 +5,7 @@ import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
-import { ORGANIZATION_VIEWED } from '@/constants/analyticsEvents';
+import { ORGANIZATION_VIEWED, ORG_SETTINGS_CHANGE_REQUESTED, ORG_SETTINGS_EDITED } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
 import OrganizationView from '@/views/organization/OrganizationView.vue';
@@ -128,6 +128,68 @@ describe('OrganizationView', () => {
       expect(technicalInput.exists()).toBe(true);
       expect(countryLabel.exists()).toBe(false);
       expect(countryDropdown.exists()).toBe(true);
+    });
+  });
+
+  describe('when request change for name is clicked', () => {
+    it('tracks \'Org Settings Change Requested\' with analytics, key: name', async () => {
+      const orgStore = useOrganizationStore();
+      orgStore.organization = dummyOrganization;
+      orgStore.loading = false;
+      const wrapper = getWrapper();
+
+      const editButton = wrapper.find('[data-test="edit-button"]');
+
+      expect(editButton.exists()).toBe(true);
+      await editButton.trigger('click');
+      await wrapper.vm.$forceUpdate();
+
+      const requestChangeName = wrapper.find('[data-test="request-change-name"]');
+      expect(requestChangeName.exists()).toBe(true);
+      await requestChangeName.trigger('click');
+      expectToTrackWithAnalytics(analyticsTrackMock, ORG_SETTINGS_CHANGE_REQUESTED, { key: 'name' });
+    });
+  });
+
+  describe('when request change for rut is clicked', () => {
+    it('tracks \'Org Settings Change Requested\' with analytics, key: rut', async () => {
+      const orgStore = useOrganizationStore();
+      orgStore.organization = dummyOrganization;
+      orgStore.loading = false;
+      const wrapper = getWrapper();
+
+      const editButton = wrapper.find('[data-test="edit-button"]');
+      expect(editButton.exists()).toBe(true);
+      await editButton.trigger('click');
+      await wrapper.vm.$forceUpdate();
+
+      const requestChangeRut = wrapper.find('[data-test="request-change-rut"]');
+      expect(requestChangeRut.exists()).toBe(true);
+      await requestChangeRut.trigger('click');
+      expectToTrackWithAnalytics(analyticsTrackMock, ORG_SETTINGS_CHANGE_REQUESTED, { key: 'rut' });
+    });
+  });
+
+  describe('when user saves edit organization settings', () => {
+    it('tracks \'Org Settings Edited\' with analytics', async () => {
+      const orgStore = useOrganizationStore();
+      orgStore.organization = dummyOrganization;
+      orgStore.loading = false;
+      const wrapper = getWrapper();
+
+      const editButton = wrapper.find('[data-test="edit-button"]');
+      expect(editButton.exists()).toBe(true);
+      await editButton.trigger('click');
+      await wrapper.vm.$forceUpdate();
+
+      wrapper.vm.billingEmail = 'billing@gmail.com';
+      await wrapper.vm.$forceUpdate();
+
+      const saveButton = wrapper.find('[data-test="save-button"]');
+      expect(saveButton.exists()).toBe(true);
+      await saveButton.trigger('click');
+      await wrapper.vm.$forceUpdate();
+      expectToTrackWithAnalytics(analyticsTrackMock, ORG_SETTINGS_EDITED);
     });
   });
 });
