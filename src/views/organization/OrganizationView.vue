@@ -5,7 +5,7 @@ import {
   computed,
   watch,
 } from 'vue';
-import { page } from '@/services/analytics';
+import { page, track } from '@/services/analytics';
 import { useTranslation } from '@/locales';
 import { useOrganizationStore } from '@/stores/organization';
 import { useUserStore } from '@/stores/user';
@@ -13,7 +13,12 @@ import { ButtonType, SizeType, CountryName } from '@/interfaces/utilities/enums'
 import { Nullable } from '@/interfaces/common';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { DOCS_API_CHANGELOG } from '@/constants/urls';
-import { DASHBOARD_ORIGIN, ORGANIZATION_VIEWED } from '@/constants/analyticsEvents';
+import {
+  DASHBOARD_ORIGIN,
+  ORGANIZATION_VIEWED,
+  ORG_SETTINGS_EDITED,
+  ORG_SETTINGS_CHANGE_REQUESTED,
+} from '@/constants/analyticsEvents';
 import { countryNames, getCountryId, getCountryName } from '@/utils/country';
 import { isValidEmail } from '@/utils/validations';
 import GenericButton from '@/components/GenericButton.vue';
@@ -87,6 +92,7 @@ const saveSettings = async () => {
       updateData.countryId = countryId as string;
     }
     await organizationStore.updateOrganization(updateData);
+    track(ORG_SETTINGS_EDITED);
     isEditing.value = false;
     resetEditValues();
   }
@@ -98,6 +104,10 @@ const isSaveEnabled = computed(() => {
     !== getCountryId(selectedCountry.value);
   return (isBillingDif || isTechnicalDif || isCountryDif);
 });
+
+const trackRequest = (value: string) => {
+  track(ORG_SETTINGS_CHANGE_REQUESTED, { key: value });
+};
 
 onMounted(() => {
   organizationStore.loadOrganization();
@@ -147,6 +157,7 @@ onMounted(() => {
               @click="() => isEditing = false"
             />
             <GenericButton
+              data-test="save-button"
               :type="ButtonType.Primary"
               :disabled="!isSaveEnabled"
               text="Save"
@@ -184,6 +195,7 @@ onMounted(() => {
               class="text-primary-main hover:text-primary-hover text-sm py-2 px-3 whitespace-nowrap"
               href="mailto:soporte@fintoc.com"
               target="_blank"
+              @click="trackRequest('name')"
             > {{ $t('settings.requestChange') }} </a>
           </div>
         </div>
@@ -212,6 +224,7 @@ onMounted(() => {
               class="text-primary-main hover:text-primary-hover text-sm py-2 px-3 whitespace-nowrap"
               href="mailto:soporte@fintoc.com"
               target="_blank"
+              @click="trackRequest('rut')"
             > {{ $t('settings.requestChange') }} </a>
           </div>
         </div>
