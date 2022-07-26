@@ -24,6 +24,9 @@ export const LINK_ACTIVE_CHANGED = 'Link Active Changed';
 export const WEBHOOK_ENDPOINT_CREATED = 'Webhook Endpoint Created';
 export const WEBHOOK_ENDPOINT_DELETED = 'Webhook Endpoint Deleted';
 
+export const ORG_SETTINGS_EDITED = 'Org Settings Edited';
+export const ORG_SETTINGS_CHANGE_REQUESTED = 'Org Settings Change Requested';
+
 export const ENVIRONMENT_CHANGED = 'Environment Changed';
 export const MODAL_VIEWED = 'Modal Viewed';
 export const MODAL_CLOSED = 'Modal Closed';

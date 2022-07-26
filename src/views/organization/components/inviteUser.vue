@@ -6,6 +6,7 @@ import { Nullable } from '@/interfaces/common';
 import { ButtonType, SizeType, Role } from '@/interfaces/utilities/enums';
 import { GenericFormPublicAPI } from '@/interfaces/components/forms/GenericForm';
 import { isValidEmail } from '@/utils/validations';
+import { trackModal } from '@/services/analytics';
 import GenericForm from '@/components/forms/GenericForm.vue';
 import GenericModal from '@/components/GenericModal.vue';
 import GenericButton from '@/components/GenericButton.vue';
@@ -48,6 +49,7 @@ const inviteAnother = () => {
   email.value = '';
   role.value = Role.Member;
   invitationSent.value = false;
+  trackModal(true, 'members', 'add-another');
 };
 
 </script>

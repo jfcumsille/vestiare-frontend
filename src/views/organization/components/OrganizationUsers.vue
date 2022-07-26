@@ -3,6 +3,7 @@ import { computed, ref, onMounted } from 'vue';
 import { useOrganizationStore } from '@/stores/organization';
 import { useTranslation } from '@/locales';
 import { ButtonType } from '@/interfaces/utilities/enums';
+import { trackModal } from '@/services/analytics';
 import GenericTable from '@/components/table/GenericTable.vue';
 import TableHead from '@/components/table/TableHead.vue';
 import TableHeader from '@/components/table/TableHeader.vue';
@@ -19,6 +20,7 @@ const headers = [$t('name'), $t('email'), $t('organizationRole'), $t('permission
 const isInviteMemberOpened = ref(false);
 const setInviteMemberOpened = (value: boolean) => {
   isInviteMemberOpened.value = value;
+  trackModal(value, 'members', 'add');
 };
 
 const search = ref('');
