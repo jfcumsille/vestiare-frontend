@@ -2,14 +2,26 @@
 policy:
   approval:
     - the fintoc team has approved
+    - a dashboard maintainer has approved
 
 
 approval_rules:
-  - name: the fintoc team has approved
-    options:
-      request_review:
-        enabled: true
-        mode: random-users
-    requires:
-      count: 2
-      teams: ["fintoc-com/core-team"]
+- name: the fintoc team has approved
+  options:
+    request_review:
+      enabled: true
+      mode: random-users
+  requires:
+    count: 1
+    teams: ["fintoc-com/core-team"]
+- name: a dashboard maintainer has approved
+  if:
+    has_not_labels:
+      - "tank"
+  options:
+    request_review:
+      enabled: true
+      mode: random-users
+  requires:
+    count: 1
+    users: ["paulamardones", "parayab", "daleal"]
