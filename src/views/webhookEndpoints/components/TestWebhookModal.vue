@@ -51,6 +51,7 @@ const close = () => {
 <template>
   <GenericModal
     :title="$t('modalTitle')"
+    :allow-overflow="!requestSent"
     @close="close"
   >
     <div
