@@ -15,7 +15,7 @@ const close = () => {
   <div class="fixed left-0 top-0 z-50 w-screen h-screen">
     <div
       class="
-        flex overflow-y-auto overflow-x-hidden justify-center items-center
+        flex overflow-y-hidden overflow-x-hidden justify-center items-center
         h-full bg-black/30
       "
     >
@@ -35,7 +35,7 @@ const close = () => {
               @click="close"
             />
           </div>
-          <div class="p-5">
+          <div class="p-5 overflow-y-auto max-h-[85vh]">
             <slot />
           </div>
         </div>
