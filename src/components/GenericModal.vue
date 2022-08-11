@@ -2,7 +2,12 @@
 import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 
-const props = defineProps<{ title: string }>();
+const props = withDefaults(defineProps<{
+  title: string,
+  allowOverflow?: boolean,
+}>(), {
+  allowOverflow: false,
+});
 
 const emit = defineEmits<{(e: 'close'): void}>();
 
@@ -35,7 +40,10 @@ const close = () => {
               @click="close"
             />
           </div>
-          <div class="p-5 overflow-y-auto max-h-[85vh]">
+          <div
+            class="p-5 max-h-[85vh]"
+            :class="{ 'overflow-y-auto': !props.allowOverflow }"
+          >
             <slot />
           </div>
         </div>
