@@ -1,10 +1,11 @@
 <script setup lang="ts">
 /* eslint-disable vue/no-v-html */
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useTranslation } from '@/locales';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import { Nullable } from '@/interfaces/common';
 import { DOCS_LINK_TOKEN } from '@/constants/urls';
+import DangerIcon from '@/assets/svg/DangerIcon.vue';
 import LoadingIcon from '@/assets/svg/LoadingIcon.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import GenericButton from '@/components/GenericButton.vue';
@@ -15,6 +16,7 @@ const $tButtons = useTranslation('buttons');
 
 const props = defineProps<{
   loading: boolean,
+  error: boolean,
   linkToken: Nullable<string>,
 }>();
 
@@ -25,6 +27,8 @@ const BUTTON_CHANGE_TIMEOUT_SECONDS = 3;
 const buttonText = ref($tButtons('copy'));
 const buttonType = ref(ButtonType.Primary);
 let buttonTimeoutId = null as Nullable<ReturnType<typeof setTimeout>>;
+
+const copyButtonDisabled = computed(() => props.loading || props.error);
 
 const close = () => {
   emit('close');
@@ -61,7 +65,7 @@ const copyKey = () => {
     @close="close"
   >
     <div class="space-y-3">
-      <div class="text-left">
+      <div class="flex justify-between">
         <p class="inline-block pr-4 font-light text-body-color">
           {{ $t('subtitle') }}
         </p>
@@ -74,7 +78,10 @@ const copyKey = () => {
           {{ $t('learnMore') }}
         </a>
       </div>
-      <div class="flex flex-row bg-warning-surface p-2 rounded-lg">
+      <div
+        v-if="!props.error"
+        class="flex flex-row bg-warning-surface p-2 rounded-lg"
+      >
         <WarningIcon class="mt-1 ml-1 min-w-16px max-w-16px" />
         <div
           class="ml-2 text-body-color font-normal text-sm"
@@ -82,6 +89,16 @@ const copyKey = () => {
         />
       </div>
       <div
+        v-else
+        class="flex flex-row bg-danger-surface p-2 rounded-lg"
+      >
+        <DangerIcon class="my-auto ml-1 text-danger-main min-w-16px max-w-16px" />
+        <div class="ml-2 text-danger-main font-normal">
+          {{ $t('danger') }}
+        </div>
+      </div>
+      <div
+        v-if="!props.error"
         class="
           flex flex-row bg-primary-surface rounded-lg px-4 py-3
           font-normal
@@ -111,8 +128,15 @@ const copyKey = () => {
         <GenericButton
           class="ml-2"
           icon-name="copy"
-          :disabled="props.loading"
+          :disabled="copyButtonDisabled"
           :text="buttonText"
+          :type="buttonType"
+          @click="copyKey"
+        />
+        <GenericButton
+          v-if="props.error"
+          class="ml-2"
+          text="Request"
           :type="buttonType"
           @click="copyKey"
         />

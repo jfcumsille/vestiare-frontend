@@ -20,6 +20,7 @@ export default <LinksViewLocale>{
   newLinkModal: {
     title: 'Link creado exitosamente!',
     warning: 'Este Link Token será mostrado <b>solamente una vez</b>, por lo que debes asegurarte de copiarlo y guardarlo.',
+    danger: 'Algo salió mal. Por favor solicita un nuevo Link Token abajo, sin necesidad de volver a empezar el proceso.',
     subtitle: 'Puedes usar este Link Token para realizar requests a la API de Fintoc.',
     learnMore: 'Aprende más →',
     loading: 'Cargando link token...',
