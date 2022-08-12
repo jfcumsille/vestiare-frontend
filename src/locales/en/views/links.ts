@@ -22,7 +22,7 @@ export default <LinksViewLocale>{
     warning: 'This Link Token will <b>only be showed once</b>, so make sure to copy and save it.',
     subtitle: 'You can use this Link Token to make requests to the Fintoc API.',
     learnMore: 'Learn more →',
-    loading: 'loading Link Token...',
+    loading: 'Loading link token...',
   },
   deleteLinkModal: {
     title: 'Delete Link',

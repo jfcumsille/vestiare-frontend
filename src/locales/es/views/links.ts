@@ -22,7 +22,7 @@ export default <LinksViewLocale>{
     warning: 'Este Link Token será mostrado <b>solamente una vez</b>, por lo que debes asegurarte de copiarlo y guardarlo.',
     subtitle: 'Puedes usar este Link Token para realizar requests a la API de Fintoc.',
     learnMore: 'Aprende más →',
-    loading: 'cargando Link Token...',
+    loading: 'Cargando link token...',
   },
   deleteLinkModal: {
     title: 'Eliminar link',

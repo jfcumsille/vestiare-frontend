@@ -5,6 +5,7 @@ import { useTranslation } from '@/locales';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import { Nullable } from '@/interfaces/common';
 import { DOCS_LINK_TOKEN } from '@/constants/urls';
+import LoadingIcon from '@/assets/svg/LoadingIcon.vue';
 import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import GenericModal from '@/components/GenericModal.vue';
@@ -80,14 +81,30 @@ const copyKey = () => {
           v-html="$t('warning')"
         />
       </div>
-      <div class="flex flex-row bg-primary-surface rounded-lg px-4 py-2">
-        <div class="font-light text-body-color">
-          <code v-if="!props.loading">
-            {{ props.linkToken }}
-          </code>
-          <code v-else>
+      <div
+        class="
+          flex flex-row bg-primary-surface rounded-lg px-4 py-3
+          font-normal
+        "
+      >
+        <div
+          v-if="!props.loading"
+          class="text-body-color"
+        >
+          {{ props.linkToken }}
+        </div>
+        <div
+          v-else
+          class="flex text-primary-main"
+        >
+          <LoadingIcon
+            class="my-auto animate-spin"
+            width="16"
+            height="16"
+          />
+          <p class="ml-2">
             {{ $t('loading') }}
-          </code>
+          </p>
         </div>
       </div>
       <div class="flex flex-row justify-end">
