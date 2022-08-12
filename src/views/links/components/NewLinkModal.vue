@@ -20,7 +20,7 @@ const props = defineProps<{
   linkToken: Nullable<string>,
 }>();
 
-const emit = defineEmits<{(e: 'close'): void}>();
+const emit = defineEmits<{(e: 'close'): void, (e: 'retry'): void}>();
 
 const BUTTON_CHANGE_TIMEOUT_SECONDS = 3;
 
@@ -32,6 +32,10 @@ const copyButtonDisabled = computed(() => props.loading || props.error);
 
 const close = () => {
   emit('close');
+};
+
+const retry = () => {
+  emit('retry');
 };
 
 const setButtonStateToCopy = () => {
@@ -138,7 +142,7 @@ const copyKey = () => {
           class="ml-2"
           text="Request"
           :type="buttonType"
-          @click="copyKey"
+          @click="retry"
         />
       </div>
     </div>

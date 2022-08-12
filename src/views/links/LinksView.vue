@@ -41,18 +41,44 @@ const setWidgetOpenStatus = (value: boolean) => {
   }
 };
 
-const loading = ref(false);
+const loadingLinkToken = ref(false);
+const errorCreatingLinkToken = ref(false);
 const createdLink = ref<Nullable<Link>>(null);
 const createdLinkToken = ref<Nullable<string>>(null);
+
+const attemptToCreateLinkToken = async (linkId: string) => {
+  const TRIES = 3;
+  for (let trying = 0; trying < TRIES; trying += 1) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      const regeneratedLink = await api.links.regenerate(linkId);
+      return regeneratedLink.linkToken;
+    } catch { } // eslint-disable-line no-empty
+  }
+  return null;
+};
+
+const setLinkToken = async () => {
+  errorCreatingLinkToken.value = false;
+  if (createdLink.value) {
+    loadingLinkToken.value = true;
+    const regeneratedLinkToken = await attemptToCreateLinkToken(createdLink.value.id);
+    if (regeneratedLinkToken) {
+      createdLinkToken.value = regeneratedLinkToken;
+    } else {
+      errorCreatingLinkToken.value = true;
+    }
+    loadingLinkToken.value = false;
+  }
+};
+
 const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
-  loading.value = true;
   trackLinkCreated(link, product);
   linksStore.reloadLinks();
-  const regeneratedLink = await api.links.regenerate(link.id);
-  createdLinkToken.value = regeneratedLink.linkToken;
-  loading.value = false;
+  setLinkToken();
 };
+
 const stopShowingLink = () => {
   createdLink.value = null;
   createdLinkToken.value = null;
@@ -103,8 +129,10 @@ onMounted(() => {
     />
     <NewLinkModal
       v-if="createdLink"
-      :loading="loading"
+      :loading="loadingLinkToken"
+      :error="errorCreatingLinkToken"
       :link-token="createdLinkToken"
+      @retry="setLinkToken"
       @close="stopShowingLink"
     />
     <div class="flex flex-col w-full">
