@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import { page } from '@/services/analytics';
 import { useTranslation } from '@/locales';
 import { DASHBOARD_ORIGIN, LOG_IN_VIEWED } from '@/constants/analyticsEvents';
 import { SIGNUP_ROUTE } from '@/constants/router';
 import Circle from '@/assets/svg/CircleBackground.vue';
+import WarningIcon from '@/assets/svg/WarningIcon.vue';
 import Auth0Panel from './components/Auth0Panel.vue';
 
+const route = useRoute();
+
 const $tLogIn = useTranslation('views.logIn');
+
+const showVerifyEmailError = computed(() => /verify your email before logging in/i.test(route.query?.error_description as string));
 
 onMounted(() => {
   page(LOG_IN_VIEWED, {
@@ -40,6 +46,24 @@ onMounted(() => {
       <div class="bg-white relative p-11.5 rounded-lg border border-light-gray drop-shadow-md z-10">
         <div class="mb-5 font-medium text-2xl text-heading-color">
           {{ $tLogIn('title') }}
+        </div>
+        <div
+          v-if="showVerifyEmailError"
+          data-test="verify-email-warning"
+          class="flex flex-row bg-danger-surface p-2 rounded-lg mb-2"
+        >
+          <WarningIcon
+            class="mt-1 ml-1 text-danger-main"
+            fill="currentColor"
+          />
+          <div class="ml-2 text-body-color text-sm">
+            <p class="font-bold">
+              {{ $tLogIn('verifyYourAccount.title') }}
+            </p>
+            <p>
+              {{ $tLogIn('verifyYourAccount.description') }}
+            </p>
+          </div>
         </div>
         <Auth0Panel />
         <div class="mt-6 text-center text-body-color text-sm font-normal ">
