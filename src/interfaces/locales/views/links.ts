@@ -18,6 +18,7 @@ export interface LinksViewLocale {
   newLinkModal: {
     title: string,
     warning: string,
+    danger: string,
     subtitle: string,
     learnMore: string,
     loading: string,

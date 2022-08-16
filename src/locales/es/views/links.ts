@@ -19,10 +19,11 @@ export default <LinksViewLocale>{
   },
   newLinkModal: {
     title: 'Link creado exitosamente!',
-    warning: 'Este Link Token será mostrado solamente una vez, por lo que debes asegurarte de copiarlo y guardarlo.',
+    warning: 'Este Link Token será mostrado <b>solamente una vez</b>, por lo que debes asegurarte de copiarlo y guardarlo.',
+    danger: 'Algo salió mal. Por favor solicita un nuevo Link Token abajo, sin necesidad de volver a empezar el proceso.',
     subtitle: 'Puedes usar este Link Token para realizar requests a la API de Fintoc.',
-    learnMore: 'Aprende más sobre requests que puedes realizar →',
-    loading: 'cargando Link Token...',
+    learnMore: 'Aprende más →',
+    loading: 'Cargando link token...',
   },
   deleteLinkModal: {
     title: 'Eliminar link',

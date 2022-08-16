@@ -56,13 +56,13 @@ export const useLinksStore = defineStore('links', {
       this.currentPage = 1;
       this.backendPage = 1;
     },
-    reloadLinks() {
+    async reloadLinks() {
       this.removeLinks();
-      this.loadLinks();
+      await this.loadLinks();
     },
-    updateFilters(filters: LinkFilter) {
+    async updateFilters(filters: LinkFilter) {
       this.allFilters = filters;
-      this.reloadLinks();
+      await this.reloadLinks();
     },
     updateRemainingLinks() {
       const resultsSeen = this.links.length < this.total
