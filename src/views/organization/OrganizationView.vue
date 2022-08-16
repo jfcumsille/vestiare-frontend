@@ -196,7 +196,9 @@ onMounted(() => {
               href="mailto:soporte@fintoc.com"
               target="_blank"
               @click="trackRequest('name')"
-            > {{ $t('settings.requestChange') }} </a>
+            > {{ organizationStore.organization?.isPayingCustomer
+              ? $t('settings.requestChange') : $t('settings.upgradeToRequestChange') }}
+            </a>
           </div>
         </div>
         <div class="flex justify-between space-x-8">
@@ -225,7 +227,10 @@ onMounted(() => {
               href="mailto:soporte@fintoc.com"
               target="_blank"
               @click="trackRequest('rut')"
-            > {{ $t('settings.requestChange') }} </a>
+            >
+              {{ organizationStore.organization?.isPayingCustomer
+                ? $t('settings.requestChange') : $t('settings.upgradeToRequestChange') }}
+            </a>
           </div>
         </div>
         <GenericForm

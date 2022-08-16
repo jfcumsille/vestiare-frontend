@@ -9,6 +9,7 @@ export default <OrganizationViewLocale>{
     nameSubLabel: 'El nombre que se mostrará en tu widget.',
     organizationRutRfc: 'RUT/RFC de la organización',
     requestChange: 'Solicitar Cambio',
+    upgradeToRequestChange: 'Actualizar plan para cambiar',
     billingEmail: 'Correo electrónico de facturas.',
     billingSubLabel: 'Para recibir facturas de Fintoc.',
     billingPlaceholder: 'Agrega un correo para facturas',

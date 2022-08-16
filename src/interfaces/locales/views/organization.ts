@@ -7,6 +7,7 @@ export interface OrganizationViewLocale {
     nameSubLabel: string,
     organizationRutRfc: string,
     requestChange: string,
+    upgradeToRequestChange: string,
     billingEmail: string,
     billingSubLabel: string,
     billingPlaceholder: string,
