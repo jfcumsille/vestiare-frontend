@@ -22,6 +22,7 @@ export interface LinksViewLocale {
     subtitle: string,
     learnMore: string,
     loading: string,
+    retryButton: string,
   },
   deleteLinkModal: {
     title: string,

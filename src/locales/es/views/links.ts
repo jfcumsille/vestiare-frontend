@@ -24,6 +24,7 @@ export default <LinksViewLocale>{
     subtitle: 'Puedes usar este Link Token para realizar requests a la API de Fintoc.',
     learnMore: 'Aprende más →',
     loading: 'Cargando link token...',
+    retryButton: 'Solicitar',
   },
   deleteLinkModal: {
     title: 'Eliminar link',
