@@ -22,9 +22,7 @@ export const update = async (
   return response.data;
 };
 
-export const remove = async (linkId: string) => {
-  client.delete(`${BASE_PATH}/${linkId}`);
-};
+export const remove = async (linkId: string) => client.delete(`${BASE_PATH}/${linkId}`);
 
 export const regenerate = async (linkId: string): Promise<CompleteLink> => {
   const response = await client.post(`${BASE_PATH}/${linkId}/regenerate_link_token`);
