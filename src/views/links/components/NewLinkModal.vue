@@ -140,7 +140,7 @@ const copyKey = () => {
         <GenericButton
           v-if="props.error"
           class="ml-2"
-          text="Request"
+          :text="$t('retryButton')"
           :type="buttonType"
           @click="retry"
         />
