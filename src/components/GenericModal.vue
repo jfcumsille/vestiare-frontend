@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 
 const props = withDefaults(defineProps<{
@@ -26,7 +26,7 @@ const close = () => {
     >
       <div class="px-4 w-full min-w-fit max-w-fit h-auto mx-auto">
         <div class="relative bg-white rounded-lg shadow">
-          <div class="flex justify-between items-start p-4 rounded-t border-b">
+          <div class="flex justify-between items-center p-4 rounded-t border-b">
             <h3
               data-test="modal-title"
               class="text-xl font-semibold text-heading-color"
@@ -35,7 +35,6 @@ const close = () => {
             </h3>
             <GenericButton
               :type="ButtonType.Text"
-              :size="SizeType.Small"
               icon-name="cross"
               @click="close"
             />
