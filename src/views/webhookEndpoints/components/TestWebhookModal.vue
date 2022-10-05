@@ -56,7 +56,7 @@ const close = () => {
   >
     <div
       v-if="!requestSent"
-      class="flex flex-col sm:flex-row"
+      class="flex flex-col sm:flex-row items-end"
     >
       <GenericDropDown
         class="inline-block"

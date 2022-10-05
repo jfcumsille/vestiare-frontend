@@ -80,7 +80,7 @@ const hidden = computed(() => (opened.value ? '' : 'hidden'));
 <template>
   <div
     ref="dropDown"
-    :class="`${props.position} h-12 ${sizeClasses}`"
+    :class="`${props.position} ${sizeClasses} pt-3`"
   >
     <label
       v-if="props.label"
@@ -98,7 +98,7 @@ const hidden = computed(() => (opened.value ? '' : 'hidden'));
       :class="`
         flex items-center justify-between rounded-lg font-medium min-w-max p-3
         disabled:bg-light-gray disabled:text-disabled-color
-        border-1.5 border-border-color text-sm
+        border-1.5 border-border-color text-sm h-12
         ${buttonStyle} ${sizeClasses} ${capitalizeOptionsClass}`
       "
       type="button"

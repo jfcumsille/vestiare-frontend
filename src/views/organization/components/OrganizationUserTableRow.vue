@@ -133,7 +133,7 @@ const subtitle = computed(() => (
     <TableData>
       <GenericDropDown
         v-if="memberIsCurrentUser"
-        class="-mt-5"
+        class="-mt-9"
         :position="PositionType.Absolute"
         :options="organizationRoleOptions"
         :selected="preselectedOrganizationRole"
@@ -150,7 +150,7 @@ const subtitle = computed(() => (
     <TableData>
       <GenericDropDown
         v-if="organizationStore.isCurrentUserAdmin"
-        class="-mt-5"
+        class="-mt-9"
         :position="PositionType.Absolute"
         :options="roleOptions"
         :selected="props.member.role ? $t(props.member.role) : '------'"
