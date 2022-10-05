@@ -32,13 +32,13 @@ export default <WebhookEndpointsViewLocale>{
     event: 'Event',
   },
   creation: {
-    modalTitle: 'Create Webhook Endpoint',
+    modalTitle: 'Create your',
     events: 'Events',
-    buttonText: 'Add',
+    buttonText: 'Create',
     form: {
       url: {
         label: 'Webhook Endpoint URL',
-        placeholder: 'https://your.backend/webhook',
+        placeholder: 'Paste https URL of your backend here',
         hint: 'If you don´t have a server URL yet, try out this tool:',
       },
       description: {
@@ -47,7 +47,7 @@ export default <WebhookEndpointsViewLocale>{
       },
       name: {
         label: 'Name',
-        placeholder: 'Name',
+        placeholder: 'Webhooks to Server 1',
       },
     },
     validations: {
@@ -60,6 +60,33 @@ export default <WebhookEndpointsViewLocale>{
       },
       name: {
         required: 'Required',
+      },
+    },
+    checkBox: {
+      viewEvents: 'View Events by Resource type',
+      learnMore: 'learn more about events here →',
+      checkAll: 'Check all events you would like to be notified about:',
+      selectAll: 'Select all events',
+      chosenEvents: 'Chosen events:',
+      onlyAvailable: 'Only available in',
+      descriptions: {
+        'link.credentials_changed': 'Triggers when the credentials corresponding to a Link change and the Link needs to be reconnected. Sent for the following products: movements, subscriptions and invoices.',
+        'link.refresh_intent.succeeded': 'Triggers when a Link has been completely updated. For now, it is only triggered for electronic invoices.',
+        'link.refresh_intent.failed': 'Triggers when we weren\'t able to update all of the movements of a Link. For now, it is only triggered for electronic invoices.',
+        'subscription_intent.succeeded': 'Triggers when a subscription intent is validated as successful. The subscription_intent includes the resulting subscription object.',
+        'subscription_intent.failed': 'Triggers when a subscription intent fails due to a problem with the bank or Fintoc.',
+        'subscription_intent.rejected': 'Triggers when a subscription intent is rejected by the user. This may happen when the user rejects the MFA step or if it is entered incorrectly.',
+        'subscription.activated': 'Triggers when the bank has confirmed that the subscription is ready to accept charges.',
+        'subscription.canceled': 'Triggers when the bank informs Fintoc that the subscription has been canceled.',
+        'charge.succeeded': 'Triggers when a charge is validated as successful.',
+        'charge.failed': 'Triggers when a charge fails due to insufficient funds, the charged amount being higher than the authorized amount, or the user disabling the authorization.',
+        'payment_intent.succeeded': 'Triggers when a transfer finishes successfully.',
+        'payment_intent.failed': 'Triggers when a transfer fails.',
+        'payment_intent.rejected': 'Triggers when a transfer fails due to the bank rejecting it.',
+        'account.refresh_intent.succeeded': 'Triggers when an Account is updated with the latest available movements from the bank.',
+        'account.refresh_intent.failed': 'Triggers when an update of the movements of a specific Account fails.',
+        'account.refresh_intent.rejected': 'Triggers when an update of the movements of a specific Account fails because the Link credentials are invalid.',
+        'account.refresh_intent.movements_removed': 'Triggers when the Link\'s bank removes movements from the bank statement.',
       },
     },
   },

@@ -86,6 +86,7 @@ module.exports = {
         3: '3',
         4: '4',
         5: '5',
+        60: '60',
       },
       borderWidth: {
         1: '1px',
@@ -114,6 +115,30 @@ module.exports = {
       },
       boxShadow: {
         t: '0 -1px 3px 0 rgba(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+      },
+      keyframes: {
+        'fade-in': {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 100 },
+        },
+        'fade-out': {
+          '0%': { opacity: 100 },
+          '100%': { opacity: 0 },
+        },
+        'slide-in': {
+          from: { transform: 'translateX(100%)' },
+          to: { transform: 'translateX(0%)' },
+        },
+        'slide-out': {
+          from: { transform: 'translateX(0%)' },
+          to: { transform: 'translateX(100%)' },
+        },
+      },
+      animation: {
+        'fade-in': 'fade-in 0.5s forwards',
+        'fade-out': 'fade-out 0.5s forwards',
+        'slide-in': 'slide-in 0.5s forwards',
+        'slide-out': 'slide-out 0.5s forwards',
       },
     },
   },

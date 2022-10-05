@@ -21,7 +21,7 @@ const close = () => {
     <div
       class="
         flex overflow-y-hidden overflow-x-hidden justify-center items-center
-        h-full bg-black/30
+        h-full bg-body-color/20
       "
     >
       <div class="px-4 w-full min-w-fit max-w-fit h-auto mx-auto">

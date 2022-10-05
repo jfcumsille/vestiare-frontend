@@ -13,7 +13,7 @@ const toggle = ($event: Event) => {
 </script>
 
 <template>
-  <div class="flex space-x-7 items-start">
+  <div class="flex space-x-3 items-start">
     <input
       type="checkbox"
       class="

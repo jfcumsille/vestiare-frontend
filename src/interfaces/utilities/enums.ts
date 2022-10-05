@@ -17,6 +17,7 @@ export enum Product {
   Movements = 'movements',
   Invoices = 'invoices',
   Subscriptions = 'subscription',
+  SubscriptionIntents = 'subscriptions',
   Payments = 'payments',
   Income = 'income',
   RefreshIntent = 'refresh_intent',

@@ -10,3 +10,8 @@ export interface WebhookEndpoint {
   status: string
   url: string
 }
+
+export interface WebhookEvent {
+  name: string
+  checked: boolean
+}
