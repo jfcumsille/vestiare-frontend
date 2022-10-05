@@ -60,11 +60,13 @@ module.exports = {
       },
       minWidth: {
         2.5: '0.625rem',
+        4: '1rem',
         4.5: '1.1125rem',
         '16px': '16px',
         50: '12.5rem',
         56: '14rem',
         62: '15.5rem',
+        xxs: '16rem',
         xs: '20rem',
         sm: '24rem',
         md: '28rem',
@@ -74,6 +76,7 @@ module.exports = {
       },
       minHeight: {
         2.5: '0.625rem',
+        4: '1rem',
         4.5: '1.1125rem',
         lg: '34rem',
       },
@@ -108,6 +111,9 @@ module.exports = {
       },
       padding: {
         11.5: '46px',
+      },
+      boxShadow: {
+        t: '0 -1px 3px 0 rgba(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
       },
     },
   },
