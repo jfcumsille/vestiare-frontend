@@ -69,6 +69,7 @@ const signUp = () => {
           "
           :href="DOCS"
           target="_blank"
+          rel="noopener noreferrer"
         >
           {{ $t('docs') }}
         </a>
@@ -111,6 +112,7 @@ const signUp = () => {
             class="cursor-pointer text-primary-main hover:text-primary-hover"
             :href="link.href"
             target="_blank"
+            rel="noopener noreferrer"
           >
             {{ link.text }}
           </a>
@@ -146,6 +148,7 @@ const signUp = () => {
           "
           :href="DOCS"
           target="_blank"
+          rel="noopener noreferrer"
         >
           {{ $t('docs') }}
         </a>

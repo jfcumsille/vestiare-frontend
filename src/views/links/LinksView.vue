@@ -145,6 +145,7 @@ onMounted(() => {
             class="text-primary-main text-sm"
             :href="DOCS_LINKS"
             target="_blank"
+            rel="noopener noreferrer"
           >
             {{ $t('learnMore') }}
           </a>

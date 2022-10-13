@@ -90,6 +90,7 @@ onMounted(() => {
           class="text-primary-main hover:text-primary-hover"
           :href="DOCS_WEBHOOKS"
           target="_blank"
+          rel="noopener noreferrer"
         >
           {{ $t('whatisAWebhookEndpoint') }}
         </a>
@@ -97,6 +98,7 @@ onMounted(() => {
           class="text-primary-main hover:text-primary-hover"
           :href="DOCS_WEBHOOKS"
           target="_blank"
+          rel="noopener noreferrer"
         >
           {{ $t('learnMore') }}
         </a>

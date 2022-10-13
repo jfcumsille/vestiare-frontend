@@ -195,6 +195,7 @@ onMounted(() => {
               class="text-primary-main hover:text-primary-hover text-sm py-2 px-3 whitespace-nowrap"
               href="mailto:soporte@fintoc.com"
               target="_blank"
+              rel="noopener noreferrer"
               @click="trackRequest('name')"
             > {{ organizationStore.organization?.isPayingCustomer
               ? $t('settings.requestChange') : $t('settings.upgradeToRequestChange') }}
@@ -226,6 +227,7 @@ onMounted(() => {
               class="text-primary-main hover:text-primary-hover text-sm py-2 px-3 whitespace-nowrap"
               href="mailto:soporte@fintoc.com"
               target="_blank"
+              rel="noopener noreferrer"
               @click="trackRequest('rut')"
             >
               {{ organizationStore.organization?.isPayingCustomer
