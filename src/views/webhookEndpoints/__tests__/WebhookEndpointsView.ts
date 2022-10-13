@@ -10,7 +10,7 @@ import { MODAL_VIEWED, MODAL_CLOSED, WEBHOOK_ENDPOINTS_VIEWED } from '@/constant
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
 import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
-import WebhookEndpointCreationModal from '@/views/webhookEndpoints/components/WebhookEndpointCreationModal.vue';
+import WebhookEndpointCreationDrawer from '@/views/webhookEndpoints/components/WebhookEndpointCreationDrawer.vue';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
@@ -68,7 +68,7 @@ describe('WebhookEndpointsView', () => {
       expect(createButton.exists()).toBe(true);
       await createButton.trigger('click');
 
-      const createModal = wrapper.findComponent(WebhookEndpointCreationModal);
+      const createModal = wrapper.findComponent(WebhookEndpointCreationDrawer);
       expect(createModal.exists()).toBe(true);
       createModal.vm.$emit('close');
 

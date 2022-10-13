@@ -77,6 +77,7 @@ onMounted(() => {
             class="text-primary-main text-sm"
             :href="DOCS_API_KEYS"
             target="_blank"
+            rel="noopener noreferrer"
           >
             {{ $t('learnMore') }}
           </a>

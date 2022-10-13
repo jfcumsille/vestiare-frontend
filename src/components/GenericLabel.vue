@@ -34,6 +34,7 @@ const subLabelFontSizeClass = computed(() => {
       :class="`text-primary-main font-normal ${subLabelFontSizeClass}`"
       :href="props.subLabelHref"
       target="_blank"
+      rel="noopener noreferrer"
     >
       {{ subLabel }}
     </a>

@@ -32,13 +32,13 @@ export default <WebhookEndpointsViewLocale>{
     event: 'Evento',
   },
   creation: {
-    modalTitle: 'Crear Webhook Endpoint',
+    modalTitle: 'Crear tu',
     events: 'Eventos',
-    buttonText: 'Agregar',
+    buttonText: 'Crear',
     form: {
       url: {
         label: 'URL del Webhook Endpoint',
-        placeholder: 'https://tu.backend/webhook',
+        placeholder: 'Pega la URL https de tu backend aquí',
         hint: 'Si aún no tienes un URL de tu servidor, revisa esta herramienta:',
       },
       description: {
@@ -47,7 +47,7 @@ export default <WebhookEndpointsViewLocale>{
       },
       name: {
         label: 'Nombre',
-        placeholder: 'Nombre',
+        placeholder: 'Webhooks para Servidor 1',
       },
     },
     validations: {
@@ -60,6 +60,33 @@ export default <WebhookEndpointsViewLocale>{
       },
       name: {
         required: 'Obligatorio',
+      },
+    },
+    checkBox: {
+      viewEvents: 'Ver Eventos por Tipo de Recurso',
+      learnMore: 'aprende más sobre eventos acá →',
+      checkAll: 'Selecciona los eventos por los que te gustaría ser notificado:',
+      selectAll: 'Seleccionar todos los eventos',
+      chosenEvents: 'Eventos elegidos:',
+      onlyAvailable: 'Solo disponible en',
+      descriptions: {
+        'link.credentials_changed': 'Se envía cuando las credenciales correspondientes del Link cambian y el Link necesita ser conectado nuevamente. Se envía para el producto de Movements, Subscriptions e Invoices.',
+        'link.refresh_intent.succeeded': 'Se envía cuando un Link ha sido actualizado completamente. Por ahora, solo se envía para el producto de invoices.',
+        'link.refresh_intent.failed': 'Se envía cuando no pudimos actualizar todos los movimientos de un Link. Por ahora, solo se envía para el producto de invoices.',
+        'subscription_intent.succeeded': 'Se envía cuando un subscription intent es validado como existoso. El subscription_intent incluye el objeto de subscription resultante.',
+        'subscription_intent.failed': 'Se envía cuando un subscription intent falla debido a un problema con el banco o Fintoc.',
+        'subscription_intent.rejected': 'Se envía cuando un subscription intent es rechazado por el usuario. Esto puede ocurrir cuando el usuario rechaza un paso de autenticación segundo factor o si es ingresado incorrectamente.',
+        'subscription.activated': 'Se envía cuando el banco ha confirmado que la suscripción está lista para aceptar cobros.',
+        'subscription.canceled': 'Se envía cuando el banco le informa a Fintoc que la suscripción ha sido cancelada.',
+        'charge.succeeded': 'Se envía cuando un cobro es validado como exitoso.',
+        'charge.failed': 'Se envía cuando un cobro falla debido a fondos insuficientes, la cantidad cobrada es mayor al monto autorizado, o el usuario ha deshabilitado la autorización.',
+        'payment_intent.succeeded': 'Se envía cuando la transferencia finaliza exitosamente.',
+        'payment_intent.failed': 'Se envía cuando la transferencia falla.',
+        'payment_intent.rejected': 'Se envía cuando la transferencia falla debido al banco rechazándola.',
+        'account.refresh_intent.succeeded': 'Se envía cuando un Account es actualizado con los últimos movimientos dipsonibles del banco.',
+        'account.refresh_intent.failed': 'Se envía cuando una actualización de los movimientos de un Account específico falla.',
+        'account.refresh_intent.rejected': 'Se envía cuando una actualización de los movimientos de un Account falla porque las credenciales del Link son inválidas.',
+        'account.refresh_intent.movements_removed': 'Se envía cuando el banco del Link elimina movimientos de la cartola.',
       },
     },
   },
