@@ -1,0 +1,14 @@
+name: "Label PR Size"
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited, ready_for_review]
+
+jobs:
+  size-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: pr_size_label
+        uses: "pascalgn/size-label-action@v0.4.2"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
