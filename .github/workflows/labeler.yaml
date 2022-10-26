@@ -1,4 +1,4 @@
-name: "Label PR Size"
+name: Label PR Size
 
 on:
   pull_request:
@@ -9,6 +9,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: pr_size_label
-        uses: "pascalgn/size-label-action@v0.4.2"
+        uses: pascalgn/size-label-action@v0.4.3
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          sizes: >
+            {
+              "0": "XS",
+              "15": "S",
+              "75": "M",
+              "150": "L",
+              "500": "XL",
+              "1000": "XXL"
+            }
