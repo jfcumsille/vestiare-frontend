@@ -31,6 +31,7 @@ export const identify = (user: User, organizationName: string | undefined = unde
     defaultOrganizationId: user.defaultOrganizationId,
     company: organizationName,
     customLauncherSelector: '#my_custom_link',
+    alignment: 'left',
   });
 };
 
