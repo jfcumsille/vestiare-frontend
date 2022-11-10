@@ -35,7 +35,7 @@ import {
   skipSignUpIfAlreadyLoggedIn,
   skipResetPasswordIfAlreadyLoggedIn,
   removeTrailingSlash,
-  skipPaymentsIfUnauthorizedOrg,
+  paymentsAuthorizedOrgRequired,
 } from './guards';
 import { handleAuth0RedirectCallback } from './handlers';
 
@@ -71,7 +71,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: PAYMENTS_ROUTE,
     component: PaymentsView,
-    beforeEnter: skipPaymentsIfUnauthorizedOrg,
+    beforeEnter: paymentsAuthorizedOrgRequired,
   },
   { path: API_KEYS_ROUTE, component: ApiKeysView },
   { path: LINKS_ROUTE, component: LinksView },
