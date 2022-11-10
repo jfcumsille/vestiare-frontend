@@ -1,5 +1,6 @@
 import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+import { useOrganizationStore } from '@/stores/organization';
 import { getAuth0Client } from '@/services/auth0';
 import { storeRedirection } from '@/services/redirections';
 import {
@@ -76,6 +77,15 @@ export const skipSignUpIfAlreadyLoggedIn = (to: RouteLocationNormalized) => {
 export const skipResetPasswordIfAlreadyLoggedIn = (to: RouteLocationNormalized) => {
   const userStore = useUserStore();
   if (to.path === PASSWORD_RESET_ROUTE && userStore.authenticated) {
+    return { path: HOME_ROUTE };
+  }
+};
+
+// eslint-disable-next-line consistent-return
+export const skipPaymentsIfUnauthorizedOrg = async () => {
+  const organizationStore = useOrganizationStore();
+  await organizationStore.loadOrganization();
+  if (!organizationStore.showPaymentsTab) {
     return { path: HOME_ROUTE };
   }
 };

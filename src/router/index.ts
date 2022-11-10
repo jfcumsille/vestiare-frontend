@@ -13,6 +13,7 @@ import {
   PROFILE_ROUTE,
   ORGANIZATION_ROUTE,
   INVITATION_ROUTE,
+  PAYMENTS_ROUTE,
 } from '@/constants/router';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
@@ -24,6 +25,7 @@ import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhoo
 import ProfileView from '@/views/profile/ProfileView.vue';
 import OrganizationView from '@/views/organization/OrganizationView.vue';
 import InvitationView from '@/views/invitation/InvitationView.vue';
+import PaymentsView from '@/views/payments/PaymentsView.vue';
 
 import { enableLoader, disableLoader } from './loader';
 import {
@@ -33,6 +35,7 @@ import {
   skipSignUpIfAlreadyLoggedIn,
   skipResetPasswordIfAlreadyLoggedIn,
   removeTrailingSlash,
+  skipPaymentsIfUnauthorizedOrg,
 } from './guards';
 import { handleAuth0RedirectCallback } from './handlers';
 
@@ -64,6 +67,11 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: [
       skipResetPasswordIfAlreadyLoggedIn,
     ],
+  },
+  {
+    path: PAYMENTS_ROUTE,
+    component: PaymentsView,
+    beforeEnter: skipPaymentsIfUnauthorizedOrg,
   },
   { path: API_KEYS_ROUTE, component: ApiKeysView },
   { path: LINKS_ROUTE, component: LinksView },
