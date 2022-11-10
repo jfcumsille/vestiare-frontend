@@ -8,6 +8,7 @@ export const PROFILE_ROUTE = '/profile';
 export const ORGANIZATION_ROUTE = '/organization';
 export const INVITATION_ROUTE = '/invitation/:token';
 export const INVITATION_ROUTE_STARTS_WITH = '/invitation/';
+export const PAYMENTS_ROUTE = '/payments';
 
 // Authentication
 export const LOGIN_ROUTE = '/login';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { onMounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { useOrganizationStore } from '@/stores/organization';
 import {
@@ -16,8 +16,6 @@ import ModeDropdown from './ModeDropdown.vue';
 
 const $t = useTranslation('sideBar');
 const organizationStore = useOrganizationStore();
-
-const showPaymentsTab = computed(() => organizationStore.showPaymentsTab);
 
 onMounted(() => {
   organizationStore.loadOrganization();
@@ -68,8 +66,8 @@ onMounted(() => {
           <span class="mx-4 font-medium">{{ $t('webhooks') }}</span>
         </router-link>
         <router-link
-          v-if="showPaymentsTab"
-          data-test="links-link"
+          v-if="organizationStore.showPaymentsTab"
+          data-test="payments-link"
           class="
             flex items-center px-4 py-3 text-primary-main
             rounded-md hover:text-primary-hover w-40
