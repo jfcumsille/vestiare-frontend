@@ -1,6 +1,9 @@
 export interface PaymentsViewLocale {
   title_one: string,
   title_other: string,
+  urls: {
+    whatAre: string,
+  },
   table: {
     headers: {
       fintocId: string,

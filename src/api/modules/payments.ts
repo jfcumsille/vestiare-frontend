@@ -2,7 +2,7 @@ import client from '@/api/client';
 import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { Json } from '@/interfaces/utilities/json';
 
-export const BASE_PATH = '/internal/v1/dashboard/payments';
+export const BASE_PATH = '/internal/v1/dashboard/payment_intents';
 
 export const list = async (
   params: Json = {},

@@ -1,6 +1,6 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { PaymentIntent, PaymentIntentFilter } from '@/interfaces/entities/paymentIntents';
+import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 
 export const usePaymentsStore = defineStore('payments', {
@@ -12,7 +12,6 @@ export const usePaymentsStore = defineStore('payments', {
     currentPage: 1,
     backendPage: 1,
     loading: true,
-    allFilters: <PaymentIntentFilter>{},
   }),
   actions: {
     async loadPaymentIntents() {
