@@ -9,10 +9,9 @@ export default <PaymentsViewLocale>{
   table: {
     headers: {
       fintocId: 'ID Fintoc',
-      bankId: 'ID Banco',
       creationDate: 'Fecha creación',
-      sender: 'Emisor',
-      senderAccount: 'Cuenta Emisor',
+      sender: 'Origen',
+      senderAccount: 'Cuenta Origen',
       amount: 'Monto',
       status: 'Status',
     },

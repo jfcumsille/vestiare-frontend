@@ -7,7 +7,6 @@ export interface PaymentsViewLocale {
   table: {
     headers: {
       fintocId: string,
-      bankId: string,
       creationDate: string,
       sender: string,
       senderAccount: string,

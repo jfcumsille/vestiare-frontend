@@ -15,6 +15,7 @@ export const usePaymentsStore = defineStore('payments', {
   }),
   actions: {
     async loadPaymentIntents() {
+      this.removePaymentIntents();
       this.loading = true;
       const page = this.backendPage;
       const perPage = 100;
@@ -30,10 +31,6 @@ export const usePaymentsStore = defineStore('payments', {
       this.total = 0;
       this.currentPage = 1;
       this.backendPage = 1;
-    },
-    async reloadPaymentIntents() {
-      this.removePaymentIntents();
-      await this.loadPaymentIntents();
     },
     updateRemainingPaymentIntents() {
       const resultsSeen = this.paymentIntents.length < this.total

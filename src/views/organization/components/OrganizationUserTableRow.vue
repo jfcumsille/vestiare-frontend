@@ -12,6 +12,7 @@ import {
   ButtonType,
   SizeType,
   PositionType,
+  BadgeStatus,
 } from '@/interfaces/utilities/enums';
 import { USER_REMOVED_ORG } from '@/constants/analyticsEvents';
 import { trackModal, trackId } from '@/services/analytics';
@@ -49,13 +50,13 @@ const status = computed(() => {
 const statusBadgeColor = computed(() => {
   switch (props.member.status) {
     case Status.Accepted:
-      return 'green';
+      return BadgeStatus.Success;
     case Status.InvitationSent:
-      return 'orange';
+      return BadgeStatus.Warning;
     case Status.Rejected:
-      return 'red';
+      return BadgeStatus.Danger;
     default:
-      return 'red';
+      return BadgeStatus.Danger;
   }
 });
 
@@ -173,7 +174,7 @@ const subtitle = computed(() => (
     <TableData>
       <GenericBadge
         :text="status"
-        :color="statusBadgeColor"
+        :status="statusBadgeColor"
       />
     </TableData>
     <TableData>

@@ -1,22 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { BadgeStatus } from '@/interfaces/utilities/enums';
 
 const props = defineProps<{
   text: string
-  color: 'red' | 'green' | 'yellow' | 'orange'
+  status: BadgeStatus
 }>();
 
 const colorClasses = computed(() => {
-  if (props.color === 'red') {
+  if (props.status === BadgeStatus.Danger) {
     return 'bg-danger-surface text-danger-main';
   }
-  if (props.color === 'green') {
+  if (props.status === BadgeStatus.Success) {
     return 'bg-success-surface text-success-main';
   }
-  if (props.color === 'yellow') {
-    return 'bg-yellow-100 text-yellow-800';
-  }
-  if (props.color === 'orange') {
+  if (props.status === BadgeStatus.Warning) {
     return 'bg-warning-surface text-warning-main';
   }
   return '';
