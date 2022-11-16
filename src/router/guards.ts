@@ -82,7 +82,7 @@ export const skipResetPasswordIfAlreadyLoggedIn = (to: RouteLocationNormalized) 
 };
 
 // eslint-disable-next-line consistent-return
-export const skipPaymentsIfUnauthorizedOrg = async () => {
+export const paymentsAuthorizedOrgRequired = async () => {
   const organizationStore = useOrganizationStore();
   await organizationStore.loadOrganization();
   if (!organizationStore.showPaymentsTab) {

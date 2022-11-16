@@ -6,8 +6,10 @@ import * as webhookEndpoints from './modules/webhookEndpoints';
 import * as organization from './modules/organization';
 import * as organizationUsers from './modules/organizationUsers';
 import * as invitations from './modules/invitations';
+import * as payments from './modules/payments';
 
 export {
   apiKeys, links, sessions, user, webhookEndpoints,
   organization, organizationUsers, invitations,
+  payments,
 };

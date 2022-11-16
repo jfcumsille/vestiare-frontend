@@ -4,7 +4,7 @@ import { useTranslation } from '@/locales';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
 import { Nullable } from '@/interfaces/common';
 import type { WebhookEndpoint } from '@/interfaces/entities/webhookEndpoints';
-import { Mode } from '@/interfaces/utilities/enums';
+import { BadgeStatus } from '@/interfaces/utilities/enums';
 import TableRow from '@/components/table/TableRow.vue';
 import TableData from '@/components/table/TableData.vue';
 import TableLabel from '@/components/table/utils/TableLabel.vue';
@@ -50,10 +50,9 @@ const revealWebhookEndpointSecret = async () => {
       />
     </TableData>
     <TableData>
-      <GenericBadge
-        :text="props.webhookEndpoint.mode"
+      <TableLabel
         class="capitalize"
-        :color="props.webhookEndpoint.mode === Mode.Live ? 'green' : 'yellow'"
+        :label="props.webhookEndpoint.mode"
       />
     </TableData>
   </TableRow>
@@ -67,7 +66,8 @@ const revealWebhookEndpointSecret = async () => {
       <GenericBadge
         :text="props.webhookEndpoint.status === 'enabled' ? 'active' : 'inactive'"
         class="capitalize"
-        :color="props.webhookEndpoint.status === 'enabled' ? 'green' : 'red'"
+        :status="props.webhookEndpoint.status === 'enabled'
+          ? BadgeStatus.Success : BadgeStatus.Danger"
       />
     </TableData>
   </TableRow>

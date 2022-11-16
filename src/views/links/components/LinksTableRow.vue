@@ -4,7 +4,7 @@ import { rutFormat } from 'rut-helpers';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { Link } from '@/interfaces/entities/links';
-import { CountryCode, HolderType } from '@/interfaces/utilities/enums';
+import { CountryCode, HolderType, BadgeStatus } from '@/interfaces/utilities/enums';
 import { LINK_DELETED, LINK_REFRESHED } from '@/constants/analyticsEvents';
 import { trackLinkStatus, trackModal, trackId } from '@/services/analytics';
 import TableRow from '@/components/table/TableRow.vue';
@@ -43,7 +43,9 @@ const formattedHolderId = computed(() => {
 const passwordBadgeText = computed(() => (
   props.link.preventRefresh ? $t('table.badges.invalidPassword') : $t('table.badges.validPassword')
 ));
-const passwordBadgeColor = computed(() => (props.link.preventRefresh ? 'red' : 'green'));
+const passwordBadgeColor = computed(() => (
+  props.link.preventRefresh ? BadgeStatus.Danger : BadgeStatus.Success
+));
 
 const setDeleteModalOpened = (value: boolean) => {
   deleteModalOpened.value = value;
@@ -153,7 +155,7 @@ const remove = async () => {
         data-test="credentials-validity-badge"
         :class="{'cursor-pointer': props.link.preventRefresh}"
         :text="passwordBadgeText"
-        :color="passwordBadgeColor"
+        :status="passwordBadgeColor"
         @click="openRefreshModal"
       />
     </TableData>

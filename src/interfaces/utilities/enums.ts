@@ -120,3 +120,16 @@ export enum Status {
   Rejected = 'rejected',
   InvitationSent = 'invitation_sent',
 }
+
+export enum BadgeStatus {
+  Danger = 'danger',
+  Warning = 'rejected',
+  Success = 'success',
+}
+
+export enum PaymentStatus {
+  Succeeded = 'succeeded',
+  Rejected = 'rejected',
+  Failed = 'failed',
+  InProgress = 'in_progress',
+}
