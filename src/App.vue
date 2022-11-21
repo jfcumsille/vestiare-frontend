@@ -5,6 +5,8 @@ import { useUserStore } from '@/stores/user';
 import { useAPIKeysStore } from '@/stores/apiKeys';
 import { useLinksStore } from '@/stores/links';
 import { useWebhookEndpointsStore } from '@/stores/webhookEndpoints';
+import { useOrganizationStore } from '@/stores/organization';
+import { usePaymentsStore } from '@/stores/payments';
 import { getAuth0Client } from '@/services/auth0';
 import { identify } from '@/services/analytics';
 import { HOTJAR_ORGANIZATION_IDS } from '@/constants/api';
@@ -17,6 +19,8 @@ const userStore = useUserStore();
 const apiKeysStore = useAPIKeysStore();
 const linksStore = useLinksStore();
 const webhookEndpointsStore = useWebhookEndpointsStore();
+const paymentsStore = usePaymentsStore();
+const organizationStore = useOrganizationStore();
 
 const startHotjarSessionIfNeeded = () => {
   const organizationId = userStore.user?.defaultOrganizationId;
@@ -31,6 +35,9 @@ const loadUserData = async () => {
     apiKeysStore.loadAPIKeys();
     linksStore.loadLinks();
     webhookEndpointsStore.loadWebhookEndpoints();
+    if (organizationStore.paymentsProductAvailable) {
+      paymentsStore.loadPaymentIntents();
+    }
     if (userStore.user) {
       const metadataKey = `${window.location.origin}/user_metadata`;
       const auth0 = await getAuth0Client();
@@ -50,6 +57,9 @@ const configStore = useConfigStore();
 watch(() => configStore.mode, () => {
   if (userStore.authenticated) {
     linksStore.reloadLinks();
+    if (organizationStore.paymentsProductAvailable) {
+      paymentsStore.loadPaymentIntents();
+    }
   }
 });
 </script>

@@ -85,7 +85,7 @@ export const useOrganizationStore = defineStore('organization', {
       return organizationUser?.role === Role.Admin;
     },
     adminsCount: (state) => state.organizationUsers.filter((organizationUser) => organizationUser.role === 'admin').length,
-    isPaymentsAvailable: (state) => {
+    paymentsProductAvailable: (state) => {
       if (state.organization) {
         const products = state.organization.organizationProducts;
         return state.organization.isPayingCustomer
