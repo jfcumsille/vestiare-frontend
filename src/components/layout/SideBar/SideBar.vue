@@ -66,7 +66,7 @@ onMounted(() => {
           <span class="mx-4 font-medium">{{ $t('webhooks') }}</span>
         </router-link>
         <router-link
-          v-if="organizationStore.showPaymentsTab"
+          v-if="organizationStore.isPaymentsAvailable"
           data-test="payments-link"
           class="
             flex items-center px-4 py-3 text-primary-main

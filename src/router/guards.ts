@@ -85,7 +85,7 @@ export const skipResetPasswordIfAlreadyLoggedIn = (to: RouteLocationNormalized) 
 export const paymentsAuthorizedOrgRequired = async () => {
   const organizationStore = useOrganizationStore();
   await organizationStore.loadOrganization();
-  if (!organizationStore.showPaymentsTab) {
+  if (!organizationStore.isPaymentsAvailable) {
     return { path: HOME_ROUTE };
   }
 };
