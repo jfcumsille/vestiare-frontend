@@ -1,28 +1,15 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { usePaymentsStore } from '@/stores/payments';
 import { DOCS_PAYMENTS } from '@/constants/urls';
-import { PaymentStatus } from '@/interfaces/utilities/enums';
 import GenericTable from '@/components/table/GenericTable.vue';
 import TablePagination from '@/components/table/TablePagination.vue';
 import PaymentsTableHead from '@/views/payments/components/PaymentsTableHead.vue';
 import PaymentsTableRow from '@/views/payments/components/PaymentsTableRow.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const $t = useTranslation('views.payments');
 const paymentsStore = usePaymentsStore();
-
-const showableStatus = [PaymentStatus.Succeeded, PaymentStatus.Failed, PaymentStatus.Rejected];
-
-const showablePaymentIntents = computed(() => (
-  paymentsStore.paginatedPaymentIntents.filter((paymentIntent) => (
-    paymentIntent.senderAccount && showableStatus.includes(paymentIntent.status)
-  ))
-));
-
-onMounted(() => {
-  paymentsStore.loadPaymentIntents();
-});
 </script>
 
 <template>
@@ -30,7 +17,7 @@ onMounted(() => {
     data-test="payments-view"
     class="flex items-center p-10"
   >
-    <div>
+    <div class="w-full">
       <div class="font-medium text-2xl text-heading-color self-start">
         {{ $t('title_other') }}
       </div>
@@ -44,14 +31,23 @@ onMounted(() => {
           {{ $t('urls.whatAre') }}
         </a>
       </div>
-      <GenericTable class="mt-6">
+      <div
+        v-if="paymentsStore.loading"
+        class="flex justify-center w-full py-20"
+      >
+        <LoadingSpinner />
+      </div>
+      <GenericTable
+        v-else
+        class="mt-6"
+      >
         <template #head>
           <PaymentsTableHead />
         </template>
 
         <template #content>
           <PaymentsTableRow
-            v-for="paymentIntent in showablePaymentIntents"
+            v-for="paymentIntent in paymentsStore.paginatedPaymentIntents"
             :key="paymentIntent.id"
             :payment-intent="paymentIntent"
           />

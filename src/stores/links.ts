@@ -1,6 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
-import { Link, LinkFilter } from '@/interfaces/entities/links';
+import { Link } from '@/interfaces/entities/links';
+import { LinkFilter } from '@/interfaces/utilities/table';
 import { Json } from '@/interfaces/utilities/json';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { useConfigStore } from './config';
@@ -25,7 +26,7 @@ export const useLinksStore = defineStore('links', {
       const perPage = 100;
 
       const result = await api.links.list({
-        ...this.allFilters, page, mode, perPage,
+        ...this.allFilters as Json, page, mode, perPage,
       });
       this.links = [...this.links, ...result.links];
       this.total = result.total;

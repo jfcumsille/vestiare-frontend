@@ -85,17 +85,11 @@ export const useOrganizationStore = defineStore('organization', {
       return organizationUser?.role === Role.Admin;
     },
     adminsCount: (state) => state.organizationUsers.filter((organizationUser) => organizationUser.role === 'admin').length,
-    showPaymentsTab: (state) => {
-      const localhostPopiOrganization = 'org_9w5NjMqpFpZ7BdYK';
-      const stagingFintocOrganization = 'org_90BVpMQ2FYOvno8J';
-      const productionFintocOrganization = '2WgKNkOmFw1MamyV';
-      const allowedOrgs = [
-        localhostPopiOrganization,
-        stagingFintocOrganization,
-        productionFintocOrganization,
-      ];
+    paymentsProductAvailable: (state) => {
       if (state.organization) {
-        return allowedOrgs.includes(state.organization.id);
+        const products = state.organization.organizationProducts;
+        return state.organization.isPayingCustomer
+          && isProductAvailable(Product.Payments, HolderType.Individual, products);
       }
       return false;
     },

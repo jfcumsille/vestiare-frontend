@@ -4,7 +4,8 @@ import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { useConfigStore } from '@/stores/config';
 import { Nullable } from '@/interfaces/common';
-import { Link, LinkFilter } from '@/interfaces/entities/links';
+import { Link } from '@/interfaces/entities/links';
+import { LinkFilter } from '@/interfaces/utilities/table';
 import { Product, ButtonType } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import { DASHBOARD_ORIGIN, LINKS_VIEWED } from '@/constants/analyticsEvents';
@@ -100,7 +101,7 @@ const clearSearchFilter = () => {
   }
 };
 
-const updateHeaderFilterValues = (filters: Record<string, unknown>) => {
+const updateHeaderFilterValues = (filters: Record<string, Array<boolean>>) => {
   const allFilters: LinkFilter = filters;
   if (formattedSearch.value !== '') {
     allFilters.rut = formattedSearch.value;
