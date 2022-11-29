@@ -1,4 +1,4 @@
-import type { FilterOption, AppliedFilter } from '@/interfaces/utilities/table';
+import type { FilterOption, Filter } from '@/interfaces/utilities/table';
 
 export const getFilterValues = <FilterValueType>(
   filters: Array<FilterOption<FilterValueType>>,
@@ -8,13 +8,13 @@ export const getFilterValues = <FilterValueType>(
 
 export const getIndex = <FilterOptionType>(
   label: string,
-  array: Array<AppliedFilter<FilterOptionType>>,
+  array: Array<Filter<FilterOptionType>>,
 ) => (array.map((value) => value.label).indexOf(label));
 
 export const addFilter = <FilterOptionType>(
   index: number,
-  item: AppliedFilter<FilterOptionType>,
-  array: Array<AppliedFilter<FilterOptionType>>,
+  item: Filter<FilterOptionType>,
+  array: Array<Filter<FilterOptionType>>,
 ) => {
   if (index !== -1) {
     array.splice(index, 0, item);
@@ -25,7 +25,7 @@ export const addFilter = <FilterOptionType>(
 
 export const removeFilter = <FilterOptionType>(
   index: number,
-  array: Array<AppliedFilter<FilterOptionType>>,
+  array: Array<Filter<FilterOptionType>>,
 ) => {
   if (index > -1) {
     array.splice(index, 1);

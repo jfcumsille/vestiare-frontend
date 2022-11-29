@@ -2,30 +2,25 @@
 import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import AppliedFilter from '@/components/table/utils/AppliedFilter.vue';
+import { Filter } from '@/interfaces/utilities/table';
 
 const $t = useTranslation('table.filters');
 
 const props = defineProps<{
-  appliedFilters: unknown,
+  appliedFilters: Array<Filter<unknown>>,
 }>();
 const emit = defineEmits<{
-  (e: 'toggle'): void,
+  (e: 'toggle', label: string, open: boolean): void,
   (e: 'apply'): void,
-  (e: 'delete'): void,
+  (e: 'delete', label: string): void,
 }>();
 
 const openFilter = (label: string) => {
-  emit('toggle', {
-    label,
-    open: true,
-  });
+  emit('toggle', label, true);
 };
 
 const closeFilter = (label: string) => {
-  emit('toggle', {
-    label,
-    open: false,
-  });
+  emit('toggle', label, false);
 };
 
 const applyFilter = () => {
@@ -53,10 +48,9 @@ const showFilteredBy = computed(() => props.appliedFilters.length > 0);
         :key="filters.label"
       >
         <AppliedFilter
-          :label="filters.label"
+          :label="(filters.label as string)"
           :filters="filters.values"
           :opened="filters.open"
-          :show="filters.show"
           @apply="applyFilter()"
           @close="closeFilter(filters.label)"
           @delete="deleteFilter(filters.label)"

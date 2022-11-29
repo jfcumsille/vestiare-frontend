@@ -7,7 +7,7 @@ export interface FilterOption<T> {
   checked: boolean,
 }
 
-export interface AppliedFilter<T> {
+export interface Filter<T> {
   label: string,
   values: Array<FilterOption<T>>,
   open: boolean,

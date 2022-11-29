@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { useTranslation } from '@/locales';
+import { LinkFilterType } from '@/interfaces/utilities/enums';
 import TableHead from '@/components/table/TableHead.vue';
 import TableHeader from '@/components/table/TableHeader.vue';
 import TableFilter from '@/components/table/utils/TableFilter.vue';
 
 const $t = useTranslation('views.links.table');
 
-const emit = defineEmits<{(e: 'open'): void }>();
+const emit = defineEmits<{(e: 'open', label: LinkFilterType, open: boolean): void }>();
 
-const openFilter = (value: string) => {
-  emit('open', value);
+const openFilter = (label: LinkFilterType) => {
+  emit('open', label, true);
 };
 </script>
 
@@ -22,13 +23,13 @@ const openFilter = (value: string) => {
     <TableHeader>
       <TableFilter
         :label="$t('headers.password')"
-        @toggle="openFilter('password')"
+        @toggle="openFilter(LinkFilterType.Password)"
       />
     </TableHeader>
     <TableHeader>
       <TableFilter
         :label="$t('headers.active')"
-        @toggle="openFilter('active')"
+        @toggle="openFilter(LinkFilterType.Active)"
       />
     </TableHeader>
     <TableHeader><div /></TableHeader>
