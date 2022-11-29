@@ -47,7 +47,7 @@ const truncate = (string: string, maxLen: number) => string.substring(0, maxLen)
   <button
     ref="dropdownMenu"
     data-test="nav-bar-profile-settings-link"
-    class="relative cursor-pointer text-primary-main hover:text-primary-hover flex"
+    class="relative cursor-pointer text-primary-main hover:text-primary-hover flex z-50"
     @click="pressUserMenu"
   >
     <PersonIcon class="mr-2 mt-1" />
