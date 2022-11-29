@@ -1,10 +1,16 @@
 import { PaymentStatus } from '@/interfaces/utilities/enums';
 import { Account } from '../entities/account';
 
-export interface Filter<T> {
+export interface FilterOption<T> {
   name: string,
   value: T,
   checked: boolean,
+}
+
+export interface AppliedFilter<T> {
+  label: string,
+  values: Array<FilterOption<T>>,
+  open: boolean,
 }
 export interface PaymentIntentFilter {
   status?: Array<PaymentStatus>,
