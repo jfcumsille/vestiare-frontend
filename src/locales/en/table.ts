@@ -5,4 +5,7 @@ export default <TableLocale>{
     of: 'of',
     show: 'Show',
   },
+  filters: {
+    filteredBy: 'Filtered by',
+  },
 };
