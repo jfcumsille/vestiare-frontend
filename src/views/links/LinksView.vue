@@ -5,16 +5,24 @@ import { useLinksStore } from '@/stores/links';
 import { useConfigStore } from '@/stores/config';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
-import { LinkFilter } from '@/interfaces/utilities/table';
-import { Product, ButtonType } from '@/interfaces/utilities/enums';
+import { FilterOption, LinkFilter } from '@/interfaces/utilities/table';
+import { Product, ButtonType, LinkFilterType } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import { DASHBOARD_ORIGIN, LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_LINKS } from '@/constants/urls';
 import { page, trackModal, trackLinkCreated } from '@/services/analytics';
+import {
+  addFilter,
+  removeFilter,
+  getIndex,
+  getFilterValues,
+  resetFilters,
+} from '@/utils/table';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
 import TablePagination from '@/components/table/TablePagination.vue';
+import TableAppliedFilters from '@/components/table/TableAppliedFilters.vue';
 import GenericButton from '@/components/GenericButton.vue';
 import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
@@ -76,7 +84,7 @@ const setLinkToken = async () => {
 const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
   trackLinkCreated(link, product);
-  linksStore.reloadLinks();
+  await linksStore.reloadLinks();
   setLinkToken();
 };
 
@@ -101,12 +109,87 @@ const clearSearchFilter = () => {
   }
 };
 
-const updateHeaderFilterValues = (filters: Record<string, Array<boolean>>) => {
-  const allFilters: LinkFilter = filters;
+const openedPassword = ref(false);
+const openedActive = ref(false);
+
+const filters = ref([]);
+
+const passwordFilters = ref<Array<FilterOption<boolean>>>([
+  { name: $t('table.filters.password.options.valid'), value: false, checked: false },
+  { name: $t('table.filters.password.options.invalid'), value: true, checked: false },
+]);
+const passwordFilterSelectedValues = computed(() => getFilterValues(passwordFilters.value));
+
+const activeFilters = ref<Array<FilterOption<boolean>>>([
+  { name: $t('table.filters.active.options.valid'), value: true, checked: false },
+  { name: $t('table.filters.active.options.invalid'), value: false, checked: false },
+]);
+const activeFilterSelectedValues = computed(() => getFilterValues(activeFilters.value));
+
+const applyFilter = async () => {
+  const allFilters: LinkFilter = {
+    active: activeFilterSelectedValues.value,
+    preventRefresh: passwordFilterSelectedValues.value,
+  };
   if (formattedSearch.value !== '') {
-    allFilters.rut = formattedSearch.value;
+    allFilters.push({ rut: formattedSearch.value });
   }
-  linksStore.updateFilters(allFilters);
+  await linksStore.updateFilters(allFilters);
+};
+
+const activeAppliedFilter = computed(() => (
+  {
+    label: LinkFilterType.Active,
+    values: activeFilters.value,
+    open: openedActive.value,
+  }
+));
+const passwordAppliedFilter = computed(() => (
+  {
+    label: LinkFilterType.Password,
+    values: passwordFilters.value,
+    open: openedPassword.value,
+  }
+));
+
+const openFilter = (label: string) => {
+  const index = getIndex(label, filters.value);
+  removeFilter(index, filters.value);
+  if (label === 'active') {
+    openedActive.value = true;
+    addFilter(index, activeAppliedFilter.value, filters.value);
+  }
+  if (label === 'password') {
+    openedPassword.value = true;
+    addFilter(index, passwordAppliedFilter.value, filters.value);
+  }
+};
+
+const toggleFilter = ({ label, open }) => {
+  const index = getIndex(label, filters.value);
+  removeFilter(index, filters.value);
+  if (label === 'active') {
+    openedActive.value = open;
+    addFilter(index, activeAppliedFilter.value, filters.value);
+  }
+  if (label === 'password') {
+    openedPassword.value = open;
+    addFilter(index, passwordAppliedFilter.value, filters.value);
+  }
+};
+
+const deleteFilter = async (label: string) => {
+  const index = getIndex(label, filters.value);
+  removeFilter(index, filters.value);
+  if (label === 'active') {
+    openedActive.value = false;
+    activeFilters.value = resetFilters(activeFilters.value);
+  }
+  if (label === 'password') {
+    openedPassword.value = false;
+    passwordFilters.value = resetFilters(passwordFilters.value);
+  }
+  await applyFilter();
 };
 
 onMounted(() => {
@@ -180,9 +263,18 @@ onMounted(() => {
         />
       </div>
       <GenericTable class="mt-6">
+        <template #top-section>
+          <TableAppliedFilters
+            :applied-filters="filters"
+            @toggle="toggleFilter"
+            @delete="deleteFilter"
+            @apply="applyFilter"
+          />
+        </template>
+
         <template #head>
           <LinksTableHead
-            @update="updateHeaderFilterValues"
+            @open="openFilter"
           />
         </template>
 

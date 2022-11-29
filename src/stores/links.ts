@@ -58,6 +58,7 @@ export const useLinksStore = defineStore('links', {
       this.backendPage = 1;
     },
     async reloadLinks() {
+      this.loading = true;
       this.removeLinks();
       await this.loadLinks();
     },

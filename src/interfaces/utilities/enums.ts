@@ -133,3 +133,8 @@ export enum PaymentStatus {
   Failed = 'failed',
   InProgress = 'in_progress',
 }
+
+export enum LinkFilterType {
+  Active = 'active',
+  Password = 'password',
+}
