@@ -78,6 +78,7 @@ module.exports = {
         2.5: '0.625rem',
         4: '1rem',
         4.5: '1.1125rem',
+        12: '3rem',
         lg: '34rem',
       },
       zIndex: {
