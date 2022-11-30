@@ -6,7 +6,7 @@ import { useConfigStore } from '@/stores/config';
 import { Nullable } from '@/interfaces/common';
 import { Link } from '@/interfaces/entities/links';
 import { LinkFilter } from '@/interfaces/utilities/table';
-import { Product, ButtonType, LinkFilterType } from '@/interfaces/utilities/enums';
+import { Product, ButtonType } from '@/interfaces/utilities/enums';
 import * as api from '@/api';
 import { DASHBOARD_ORIGIN, LINKS_VIEWED } from '@/constants/analyticsEvents';
 import { DOCS_LINKS } from '@/constants/urls';
@@ -89,10 +89,10 @@ const stopShowingLink = () => {
 const search = ref(linksStore.allFilters.rut || '');
 const formattedSearch = computed(() => search.value.replace(/[.-\s]/g, ''));
 
-const filterBySearch = () => {
+const filterBySearch = async () => {
   const allFilters: LinkFilter = linksStore.allFilters;
   allFilters.rut = formattedSearch.value;
-  linksStore.updateFilters(allFilters);
+  await linksStore.updateFilters(allFilters);
 };
 
 const clearSearchFilter = () => {
@@ -102,24 +102,12 @@ const clearSearchFilter = () => {
   }
 };
 
-const openedPassword = ref(false);
-const openedActive = ref(false);
-
 const applyFilter = async (filters: Record<string, Array<boolean>>) => {
   const allFilters: LinkFilter = filters;
   if (formattedSearch.value !== '') {
     allFilters.rut = formattedSearch.value;
   }
   await linksStore.updateFilters(allFilters);
-};
-
-const changeOpenValue = (label: LinkFilterType, open: boolean) => {
-  if (label === LinkFilterType.Active) {
-    openedActive.value = open;
-  }
-  if (label === LinkFilterType.Password) {
-    openedPassword.value = open;
-  }
 };
 
 onMounted(() => {
@@ -195,17 +183,12 @@ onMounted(() => {
       <GenericTable class="mt-6">
         <template #top-section>
           <LinksTableAppliedFilters
-            :opened-password="openedPassword"
-            :opened-active="openedActive"
             @apply="applyFilter"
-            @reset="changeOpenValue"
           />
         </template>
 
         <template #head>
-          <LinksTableHead
-            @open="changeOpenValue"
-          />
+          <LinksTableHead />
         </template>
 
         <template #content>

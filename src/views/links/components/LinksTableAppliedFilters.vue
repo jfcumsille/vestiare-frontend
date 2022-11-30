@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import {
+  computed, ref, watch, onMounted,
+} from 'vue';
 import { useTranslation } from '@/locales';
+import { useLinksStore } from '@/stores/links';
 import { FilterOption } from '@/interfaces/utilities/table';
 import { LinkFilterType } from '@/interfaces/utilities/enums';
 import {
@@ -9,18 +12,10 @@ import {
 import TableAppliedFilters from '@/components/table/TableAppliedFilters.vue';
 
 const $t = useTranslation('views.links');
+const linksStore = useLinksStore();
 const emit = defineEmits<{
   (e: 'apply', filters: Record<string, Array<boolean>>): void,
-  (e: 'reset', label: LinkFilterType, open: boolean): void,
 }>();
-
-const props = defineProps<{
-  openedPassword: boolean,
-  openedActive: boolean,
-}>();
-
-const openedPassword = ref(props.openedPassword);
-const openedActive = ref(props.openedActive);
 
 const filters = ref([]);
 
@@ -40,14 +35,14 @@ const activeAppliedFilter = computed(() => (
   {
     label: LinkFilterType.Active,
     values: activeFilters.value,
-    open: openedActive.value,
+    open: linksStore.openedActive,
   }
 ));
 const passwordAppliedFilter = computed(() => (
   {
     label: LinkFilterType.Password,
     values: passwordFilters.value,
-    open: openedPassword.value,
+    open: linksStore.openedPassword,
   }
 ));
 
@@ -55,11 +50,11 @@ const toggleFilter = (label: string, open: boolean) => {
   const index = getIndex(label, filters.value);
   removeFilter(index, filters.value);
   if (label === LinkFilterType.Active) {
-    openedActive.value = open;
+    linksStore.openedActive = open;
     addFilter(index, activeAppliedFilter.value, filters.value);
   }
   if (label === LinkFilterType.Password) {
-    openedPassword.value = open;
+    linksStore.openedPassword = open;
     addFilter(index, passwordAppliedFilter.value, filters.value);
   }
 };
@@ -76,34 +71,35 @@ const deleteFilter = async (label: string) => {
   const index = getIndex(label, filters.value);
   removeFilter(index, filters.value);
   if (label === LinkFilterType.Active) {
-    openedActive.value = false;
+    linksStore.openedActive = false;
     activeFilters.value = resetFilters(activeFilters.value);
   }
   if (label === LinkFilterType.Password) {
-    openedPassword.value = false;
+    linksStore.openedPassword = false;
     passwordFilters.value = resetFilters(passwordFilters.value);
   }
 
   applyFilter();
 };
 
-watch(() => props.openedActive, () => {
-  openedActive.value = props.openedActive;
-  emit('reset', LinkFilterType.Active, false);
-  if (openedActive.value) {
+watch(() => linksStore.openedActive, () => {
+  if (linksStore.openedActive) {
     const index = getIndex(LinkFilterType.Active as string, filters.value);
     removeFilter(index, filters.value);
     addFilter(index, activeAppliedFilter.value, filters.value);
   }
 });
-watch(() => props.openedPassword, () => {
-  openedPassword.value = props.openedPassword;
-  emit('reset', LinkFilterType.Password, false);
-  if (openedPassword.value) {
+
+watch(() => linksStore.openedPassword, () => {
+  if (linksStore.openedPassword) {
     const index = getIndex(LinkFilterType.Password as string, filters.value);
     removeFilter(index, filters.value);
     addFilter(index, passwordAppliedFilter.value, filters.value);
   }
+});
+
+onMounted(async () => {
+  await linksStore.updateFilters({});
 });
 </script>
 
