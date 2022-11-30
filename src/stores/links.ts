@@ -16,6 +16,8 @@ export const useLinksStore = defineStore('links', {
     backendPage: 1,
     loading: true,
     allFilters: <LinkFilter>{},
+    openedPassword: false,
+    openedActive: false,
   }),
   actions: {
     async loadLinks() {
@@ -58,6 +60,7 @@ export const useLinksStore = defineStore('links', {
       this.backendPage = 1;
     },
     async reloadLinks() {
+      this.loading = true;
       this.removeLinks();
       await this.loadLinks();
     },

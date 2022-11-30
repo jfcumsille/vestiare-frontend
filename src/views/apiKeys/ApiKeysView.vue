@@ -67,7 +67,7 @@ onMounted(() => {
       </div>
       <div
         v-if="!apiKeysStore.loading"
-        class="bg-white relative p-10 z-10 min-w-max"
+        class="bg-white relative p-10 min-w-max"
       >
         <div class="font-medium text-2xl text-heading-color">
           {{ $t('title') }}

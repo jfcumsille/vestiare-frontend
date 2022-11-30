@@ -1,33 +1,21 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { useTranslation } from '@/locales';
+import { useLinksStore } from '@/stores/links';
+import { LinkFilterType } from '@/interfaces/utilities/enums';
 import TableHead from '@/components/table/TableHead.vue';
 import TableHeader from '@/components/table/TableHeader.vue';
 import TableFilter from '@/components/table/utils/TableFilter.vue';
-import { Filter } from '@/interfaces/utilities/table';
-import { getFilterValues } from '@/utils/table';
 
 const $t = useTranslation('views.links.table');
+const linksStore = useLinksStore();
 
-const emit = defineEmits<{(e: 'update', filterValues: Record<string, Array<boolean>>): void }>();
-
-const activeFilters = ref<Array<Filter<boolean>>>([
-  { name: $t('filters.active.options.valid'), value: true, checked: true },
-  { name: $t('filters.active.options.invalid'), value: false, checked: true },
-]);
-const activeFilterSelectedValues = computed(() => getFilterValues(activeFilters.value));
-
-const passwordFilters = ref<Array<Filter<boolean>>>([
-  { name: $t('filters.password.options.valid'), value: false, checked: true },
-  { name: $t('filters.password.options.invalid'), value: true, checked: true },
-]);
-const passwordFilterSelectedValues = computed(() => getFilterValues(passwordFilters.value));
-
-const applyFilter = () => {
-  emit('update', {
-    active: activeFilterSelectedValues.value,
-    preventRefresh: passwordFilterSelectedValues.value,
-  });
+const openFilter = (label: LinkFilterType) => {
+  if (label === LinkFilterType.Active) {
+    linksStore.openedActive = true;
+  }
+  if (label === LinkFilterType.Password) {
+    linksStore.openedPassword = true;
+  }
 };
 </script>
 
@@ -40,15 +28,13 @@ const applyFilter = () => {
     <TableHeader>
       <TableFilter
         :label="$t('headers.password')"
-        :filters="passwordFilters"
-        @apply="applyFilter"
+        @toggle="openFilter(LinkFilterType.Password)"
       />
     </TableHeader>
     <TableHeader>
       <TableFilter
         :label="$t('headers.active')"
-        :filters="activeFilters"
-        @apply="applyFilter"
+        @toggle="openFilter(LinkFilterType.Active)"
       />
     </TableHeader>
     <TableHeader><div /></TableHeader>

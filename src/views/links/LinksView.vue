@@ -20,6 +20,7 @@ import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinksTableHead from '@/views/links/components/LinksTableHead.vue';
 import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
+import LinksTableAppliedFilters from '@/views/links/components/LinksTableAppliedFilters.vue';
 
 const $t = useTranslation('views.links');
 
@@ -76,7 +77,7 @@ const setLinkToken = async () => {
 const setLink = async (link: Link, product: Product) => {
   createdLink.value = link;
   trackLinkCreated(link, product);
-  linksStore.reloadLinks();
+  await linksStore.reloadLinks();
   setLinkToken();
 };
 
@@ -88,10 +89,10 @@ const stopShowingLink = () => {
 const search = ref(linksStore.allFilters.rut || '');
 const formattedSearch = computed(() => search.value.replace(/[.-\s]/g, ''));
 
-const filterBySearch = () => {
+const filterBySearch = async () => {
   const allFilters: LinkFilter = linksStore.allFilters;
   allFilters.rut = formattedSearch.value;
-  linksStore.updateFilters(allFilters);
+  await linksStore.updateFilters(allFilters);
 };
 
 const clearSearchFilter = () => {
@@ -101,12 +102,12 @@ const clearSearchFilter = () => {
   }
 };
 
-const updateHeaderFilterValues = (filters: Record<string, Array<boolean>>) => {
+const applyFilter = async (filters: Record<string, Array<boolean>>) => {
   const allFilters: LinkFilter = filters;
   if (formattedSearch.value !== '') {
     allFilters.rut = formattedSearch.value;
   }
-  linksStore.updateFilters(allFilters);
+  await linksStore.updateFilters(allFilters);
 };
 
 onMounted(() => {
@@ -180,10 +181,14 @@ onMounted(() => {
         />
       </div>
       <GenericTable class="mt-6">
-        <template #head>
-          <LinksTableHead
-            @update="updateHeaderFilterValues"
+        <template #top-section>
+          <LinksTableAppliedFilters
+            @apply="applyFilter"
           />
+        </template>
+
+        <template #head>
+          <LinksTableHead />
         </template>
 
         <template #content>

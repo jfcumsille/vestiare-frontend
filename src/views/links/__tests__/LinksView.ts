@@ -9,10 +9,7 @@ import router from '@/router/index';
 import { Link } from '@/interfaces/entities/links';
 import { CountryCode, Mode } from '@/interfaces/utilities/enums';
 import {
-  MODAL_VIEWED,
-  MODAL_CLOSED,
-  LINK_CREATED,
-  LINKS_VIEWED,
+  MODAL_VIEWED, MODAL_CLOSED, LINK_CREATED, LINKS_VIEWED,
 } from '@/constants/analyticsEvents';
 import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/tests/analytics';
 import { mockCrypto } from '@/utils/tests/crypto';
