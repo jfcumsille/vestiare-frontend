@@ -1,6 +1,7 @@
 import apiKeys from './apiKeys';
 import links from './links';
 import webhookEndpoints from './webhookEndpoints';
+import payments from './payments';
 import logIn from './logIn';
 import signUp from './signUp';
 import resetPassword from './resetPassword';
@@ -12,6 +13,7 @@ export {
   apiKeys,
   links,
   webhookEndpoints,
+  payments,
   logIn,
   signUp,
   resetPassword,
