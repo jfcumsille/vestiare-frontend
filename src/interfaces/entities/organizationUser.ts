@@ -1,5 +1,5 @@
 import { Nullable } from '@/interfaces/common';
-import { OrganizationRole, Role, Status } from '@/interfaces/utilities/enums';
+import { OrganizationRole, Role, InvitationStatus } from '@/interfaces/utilities/enums';
 
 export interface OrganizationUser {
   id: string,
@@ -8,7 +8,7 @@ export interface OrganizationUser {
   email: string,
   organizationRole: Nullable<OrganizationRole>,
   role: Role,
-  status: Status,
+  status: InvitationStatus,
   createdAt: string
 }
 

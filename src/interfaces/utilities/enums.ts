@@ -115,7 +115,7 @@ export enum OrganizationRole {
   Other = 'other',
 }
 
-export enum Status {
+export enum InvitationStatus {
   Accepted = 'accepted',
   Rejected = 'rejected',
   InvitationSent = 'invitation_sent',
@@ -137,4 +137,8 @@ export enum PaymentStatus {
 export enum LinkFilterType {
   Active = 'active',
   Password = 'password',
+}
+
+export enum PaymentIntentFilterType {
+  Status = 'status',
 }
