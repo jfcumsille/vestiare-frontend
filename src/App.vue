@@ -15,6 +15,7 @@ import Hotjar from '@/assets/javascripts/hotjar';
 
 import '@/assets/javascripts/segment';
 
+const configStore = useConfigStore();
 const userStore = useUserStore();
 const apiKeysStore = useAPIKeysStore();
 const linksStore = useLinksStore();
@@ -35,9 +36,6 @@ const loadUserData = async () => {
     apiKeysStore.loadAPIKeys();
     linksStore.loadLinks();
     webhookEndpointsStore.loadWebhookEndpoints();
-    if (organizationStore.paymentsProductAvailable) {
-      paymentsStore.loadPaymentIntents();
-    }
     if (userStore.user) {
       const metadataKey = `${window.location.origin}/user_metadata`;
       const auth0 = await getAuth0Client();
@@ -53,7 +51,12 @@ watch(() => userStore.authenticated, async () => {
   }
 });
 
-const configStore = useConfigStore();
+watch(() => organizationStore.paymentsProductAvailable, async () => {
+  if (userStore.authenticated && organizationStore.paymentsProductAvailable) {
+    await paymentsStore.loadPaymentIntents();
+  }
+});
+
 watch(() => configStore.mode, () => {
   if (userStore.authenticated) {
     linksStore.reloadLinks();
