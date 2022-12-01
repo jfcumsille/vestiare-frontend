@@ -1,10 +1,19 @@
 export interface PaymentsViewLocale {
   title_one: string,
   title_other: string,
+  subtitle: string,
   urls: {
     whatAre: string,
   },
   table: {
+    empty: {
+      title: {
+        test: string,
+        live: string,
+      },
+      learnHow: string,
+      learnMore: string,
+    },
     headers: {
       fintocId: string,
       creationDate: string,
@@ -12,6 +21,17 @@ export interface PaymentsViewLocale {
       senderAccount: string,
       amount: string,
       status: string,
+    },
+    filters: {
+      title: string,
+      status: {
+        label: string,
+        options: {
+          succeeded: string,
+          rejected: string,
+          failed: string,
+        },
+      },
     },
   },
 }

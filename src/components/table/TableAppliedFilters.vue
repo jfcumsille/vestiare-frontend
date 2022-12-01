@@ -35,7 +35,7 @@ const showFilteredBy = computed(() => props.appliedFilters.length > 0);
 </script>
 
 <template>
-  <div class="flex flex-row space-x-4">
+  <div class="flex flex-row space-x-4 min-h-12">
     <div
       v-if="showFilteredBy"
       class="min-w-max text-body-color pt-1"

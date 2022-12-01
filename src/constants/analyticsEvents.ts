@@ -4,6 +4,7 @@ export const RESET_PASSWORD_VIEWED = 'Reset Password';
 export const API_KEYS_VIEWED = 'API Keys';
 export const LINKS_VIEWED = 'Links';
 export const WEBHOOK_ENDPOINTS_VIEWED = 'Webhook Endpoints';
+export const PAYMENTS_VIEWED = 'Payments';
 export const ORGANIZATION_VIEWED = 'Organization';
 export const PROFILE_VIEWED = 'Profile';
 export const DASHBOARD_ORIGIN = 'dashboard';

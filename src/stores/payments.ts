@@ -3,7 +3,6 @@ import * as api from '@/api';
 import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { PaymentIntentFilter } from '@/interfaces/utilities/table';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
-import { PaymentStatus } from '@/interfaces/utilities/enums';
 import { Json } from '@/interfaces/utilities/json';
 import { useConfigStore } from './config';
 
@@ -17,10 +16,10 @@ export const usePaymentsStore = defineStore('payments', {
     backendPage: 1,
     loading: true,
     allFilters: <PaymentIntentFilter>{},
+    openedStatus: false,
   }),
   actions: {
     async loadPaymentIntents() {
-      this.removePaymentIntents();
       this.loading = true;
       const configStore = useConfigStore();
       const mode = configStore.mode;
@@ -40,10 +39,15 @@ export const usePaymentsStore = defineStore('payments', {
       this.total = 0;
       this.currentPage = 1;
       this.backendPage = 1;
-      const filters = {
-        status: [PaymentStatus.Succeeded, PaymentStatus.Rejected, PaymentStatus.Failed],
-      };
+    },
+    async reloadPaymentIntents() {
+      this.loading = true;
+      this.removePaymentIntents();
+      await this.loadPaymentIntents();
+    },
+    async updateFilters(filters: PaymentIntentFilter) {
       this.allFilters = filters;
+      await this.reloadPaymentIntents();
     },
     updateRemainingPaymentIntents() {
       const resultsSeen = this.paymentIntents.length < this.total
