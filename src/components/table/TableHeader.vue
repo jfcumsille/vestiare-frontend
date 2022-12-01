@@ -13,7 +13,7 @@ const configStore = useConfigStore();
       font-medium capitalize min-w-max whitespace-nowrap
     "
     :class="configStore.mode === Mode.Live
-      ? 'bg-primary-main text-white'
+      ? 'bg-primary-pressed text-white'
       : 'bg-light-blue text-heading-color'"
   >
     <slot />
