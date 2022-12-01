@@ -12,6 +12,7 @@
               <slot name="content" />
             </tbody>
           </table>
+          <slot name="empty-table" />
         </div>
       </div>
     </div>
