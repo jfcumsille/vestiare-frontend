@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import {
-  computed, ref, watch, onMounted,
-} from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { FilterOption } from '@/interfaces/utilities/table';
@@ -96,10 +94,6 @@ watch(() => linksStore.openedPassword, () => {
     removeFilter(index, filters.value);
     addFilter(index, passwordAppliedFilter.value, filters.value);
   }
-});
-
-onMounted(async () => {
-  await linksStore.updateFilters({});
 });
 </script>
 
