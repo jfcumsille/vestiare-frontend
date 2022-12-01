@@ -12,6 +12,7 @@ const props = defineProps<{
   label: string,
   filters: Array<FilterOption<unknown>>,
   opened: boolean,
+  optionsTitle?: string,
 }>();
 
 const emit = defineEmits<{
@@ -71,15 +72,21 @@ onClickOutside(tableFilter, () => {
       "
       :class="{ 'hidden': !props.opened }"
     >
+      <div
+        v-if="props.optionsTitle"
+        class="py-3 px-4 text-body-color font-semibold text-base"
+      >
+        {{ props.optionsTitle }}
+      </div>
       <GenericCheckbox
         v-for="filter in props.filters"
         :key="filter.name"
         v-model="filter.checked"
-        class="p-4"
+        class="py-3 px-4"
         :text="filter.name"
         @click="() => filter.checked = !filter.checked"
       />
-      <div class="m-1.5">
+      <div class="mx-1.5 mb-1.5">
         <GenericButton
           class="box-border w-full"
           :type="ButtonType.Primary"

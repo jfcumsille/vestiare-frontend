@@ -8,6 +8,7 @@ const $t = useTranslation('table.filters');
 
 const props = defineProps<{
   appliedFilters: Array<Filter<unknown>>,
+  optionsTitle?: string,
 }>();
 const emit = defineEmits<{
   (e: 'toggle', label: string, open: boolean): void,
@@ -51,6 +52,7 @@ const showFilteredBy = computed(() => props.appliedFilters.length > 0);
           :label="(filters.label as string)"
           :filters="filters.values"
           :opened="filters.open"
+          :options-title="props.optionsTitle"
           @apply="applyFilter()"
           @close="closeFilter(filters.label)"
           @delete="deleteFilter(filters.label)"
