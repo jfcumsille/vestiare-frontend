@@ -8,6 +8,7 @@ export interface PaymentsViewLocale {
   table: {
     empty: {
       title: {
+        hasFilters: string,
         test: string,
         live: string,
       },

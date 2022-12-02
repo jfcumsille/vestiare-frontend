@@ -10,6 +10,7 @@ export default <PaymentsViewLocale>{
   table: {
     empty: {
       title: {
+        hasFilters: 'You have no Payment Intents that fit this filtering criteria. Please try other filters in order to see data here.',
         test: 'Our transfer API allows your users to transfer or cash in funds between bank accounts from within your application. This will be done with a payment_intent which you will be able to visualize here.',
         live: 'In order to see data here please make your first Payment Intent.',
       },

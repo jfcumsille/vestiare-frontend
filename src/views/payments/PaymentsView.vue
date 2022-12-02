@@ -10,6 +10,7 @@ import {
   Mode, PaymentStatus, CountryCode,
 } from '@/interfaces/utilities/enums';
 import { PaymentIntentFilter } from '@/interfaces/utilities/table';
+import { hasFilters } from '@/utils/table';
 import { page } from '@/services/analytics';
 import { DASHBOARD_ORIGIN, PAYMENTS_VIEWED } from '@/constants/analyticsEvents';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -92,7 +93,7 @@ onMounted(async () => {
         </div>
       </div>
       <a
-        class="text-primary-main font-thin"
+        class="text-primary-main"
         :href="DOCS_PAYMENTS"
         target="_blank"
         rel="noopener noreferrer"
@@ -100,11 +101,11 @@ onMounted(async () => {
         {{ $t('urls.whatAre') }}
       </a>
       <div class="flex flex-row justify-between space-x-4">
-        <div class="mt-2 mb-6 text-body-color font-thin max-w-2xl">
+        <div class="mt-2 mb-6 text-body-color max-w-2xl">
           {{ $t('subtitle') }}
         </div>
         <a
-          class="text-primary-main font-thin min-w-fit"
+          class="text-primary-main min-w-fit"
           :href="DOCS_PAYMENTS"
           target="_blank"
           rel="noopener noreferrer"
@@ -132,7 +133,7 @@ onMounted(async () => {
             :payment-intent="paymentIntent"
           />
           <PaymentsTableRow
-            v-if="isTableEmpty && !paymentsStore.loading && !isLive"
+            v-if="showFakePaymentIntent"
             :key="fakePaymentIntent.id"
             :payment-intent="fakePaymentIntent"
           />
@@ -148,6 +149,7 @@ onMounted(async () => {
               {{ emptyTableSubtitle }}
             </div>
             <a
+              v-if="!hasAppliedFilters"
               class="text-primary-main font-thin"
               :href="DOCS_PAYMENTS"
               target="_blank"
