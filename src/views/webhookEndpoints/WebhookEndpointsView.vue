@@ -65,7 +65,7 @@ onMounted(() => {
     </Teleport>
     <div class="w-full">
       <div class="flex justify-between">
-        <div class="font-medium text-2xl text-heading-color self-start">
+        <div class="font-semibold text-3xl text-heading-color self-start">
           {{ $t('title_other') }}
         </div>
         <GenericButton
@@ -78,10 +78,10 @@ onMounted(() => {
           @click="() => setDrawerOpened(true)"
         />
       </div>
-      <div class="flex justify-between mt-2">
+      <div class="flex justify-between mt-2 space-x-4">
         <div
           v-if="!webhookEndpoints.length && !webhookEndpointsStore.loading"
-          class="text-body-color font-normal max-w-3xl"
+          class="text-body-color font-normal max-w-2xl"
         >
           {{ $t('subtitle') }}
         </div>
@@ -95,7 +95,7 @@ onMounted(() => {
           {{ $t('whatisAWebhookEndpoint') }}
         </a>
         <a
-          class="text-primary-main hover:text-primary-hover"
+          class="text-primary-main hover:text-primary-hover min-w-fit"
           :href="DOCS_WEBHOOKS"
           target="_blank"
           rel="noopener noreferrer"

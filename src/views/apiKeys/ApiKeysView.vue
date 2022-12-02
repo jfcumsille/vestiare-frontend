@@ -69,12 +69,12 @@ onMounted(() => {
         v-if="!apiKeysStore.loading"
         class="bg-white relative p-10 min-w-max"
       >
-        <div class="font-medium text-2xl text-heading-color">
+        <div class="font-semibold text-3xl text-heading-color">
           {{ $t('title') }}
         </div>
         <div class="flex flex-row justify-between items-center py-2">
           <a
-            class="text-primary-main text-sm"
+            class="text-primary-main"
             :href="DOCS_API_KEYS"
             target="_blank"
             rel="noopener noreferrer"

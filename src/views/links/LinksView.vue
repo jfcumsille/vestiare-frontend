@@ -140,12 +140,12 @@ onMounted(async () => {
     />
     <div class="flex flex-col w-full">
       <div>
-        <div class="font-medium text-2xl text-heading-color self-start">
+        <div class="font-semibold text-3xl text-heading-color self-start">
           {{ $t('title_other') }}
         </div>
         <div class="flex flex-row justify-between items-center py-2 self-start">
           <a
-            class="text-primary-main text-sm"
+            class="text-primary-main"
             :href="DOCS_LINKS"
             target="_blank"
             rel="noopener noreferrer"
