@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
+import { Nullable } from '@/interfaces/common';
 import { FilterOption } from '@/interfaces/utilities/table';
 import { LinkFilterType } from '@/interfaces/utilities/enums';
 import {
@@ -57,11 +58,14 @@ const toggleFilter = (label: string, open: boolean) => {
   }
 };
 
-const applyFilter = () => {
+const applyFilter = (label: Nullable<string>) => {
   const filterValues = {
     active: activeFilterSelectedValues.value,
     preventRefresh: passwordFilterSelectedValues.value,
   };
+  if (label) {
+    toggleFilter(label, false);
+  }
   emit('apply', filterValues);
 };
 
@@ -77,7 +81,7 @@ const deleteFilter = async (label: string) => {
     passwordFilters.value = resetFilters(passwordFilters.value);
   }
 
-  applyFilter();
+  applyFilter(null);
 };
 
 watch(() => linksStore.openedActive, () => {

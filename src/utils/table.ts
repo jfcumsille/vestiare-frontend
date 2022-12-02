@@ -41,3 +41,13 @@ export const resetFilters = <FilterValueType>(
       return item;
     })
   );
+
+export const hasFilters = (filters: Record<string, Array<unknown>>) => {
+  let hasFiltersApplied = false;
+  Object.keys(filters).forEach((key) => {
+    if (filters[key].length !== 0) {
+      hasFiltersApplied = true;
+    }
+  });
+  return hasFiltersApplied;
+};

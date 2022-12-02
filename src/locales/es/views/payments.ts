@@ -10,6 +10,7 @@ export default <PaymentsViewLocale>{
   table: {
     empty: {
       title: {
+        hasFilters: 'No tiene Payment Intents que se ajustan a este criterio de filtrado. Prueba otros filtros para ver datos aquí.',
         test: 'Nuestra API de transferencias permite que tus usuarios puedan transferir o hacer cash-in entre cuentas bancarias desde tu aplicación. Esto será realizado con un Payment Intent que podrás visualizar acá.',
         live: 'Para ver datos en esta tabla por favor realiza tu primer Payment Intent.',
       },
