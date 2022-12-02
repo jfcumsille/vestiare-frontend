@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { usePaymentsStore } from '@/stores/payments';
+import { Nullable } from '@/interfaces/common';
 import { FilterOption } from '@/interfaces/utilities/table';
 import { PaymentStatus, PaymentIntentFilterType } from '@/interfaces/utilities/enums';
 import {
@@ -43,10 +44,13 @@ const toggleFilter = (label: string, open: boolean) => {
   }
 };
 
-const applyFilter = () => {
+const applyFilter = (label: Nullable<string>) => {
   const filterValues = {
     status: statusFilterSelectedValues.value,
   };
+  if (label) {
+    toggleFilter(label, false);
+  }
   emit('apply', filterValues);
 };
 
@@ -57,7 +61,7 @@ const deleteFilter = async (label: string) => {
     paymentsStore.openedStatus = false;
     statusFilters.value = resetFilters(statusFilters.value);
   }
-  applyFilter();
+  applyFilter(null);
 };
 
 watch(() => paymentsStore.openedStatus, () => {

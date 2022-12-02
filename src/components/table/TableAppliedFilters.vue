@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits<{
   (e: 'toggle', label: string, open: boolean): void,
-  (e: 'apply'): void,
+  (e: 'apply', label: string): void,
   (e: 'delete', label: string): void,
 }>();
 
@@ -24,8 +24,8 @@ const closeFilter = (label: string) => {
   emit('toggle', label, false);
 };
 
-const applyFilter = () => {
-  emit('apply');
+const applyFilter = (label: string) => {
+  emit('apply', label);
 };
 
 const deleteFilter = (label: string) => {
@@ -45,18 +45,18 @@ const showFilteredBy = computed(() => props.appliedFilters.length > 0);
     </div>
     <div class="flex flex-wrap w-full gap-2">
       <div
-        v-for="filters in props.appliedFilters"
-        :key="filters.label"
+        v-for="filter in props.appliedFilters"
+        :key="filter.label"
       >
         <AppliedFilter
-          :label="(filters.label as string)"
-          :filters="filters.values"
-          :opened="filters.open"
+          :label="(filter.label as string)"
+          :filters="filter.values"
+          :opened="filter.open"
           :options-title="props.optionsTitle"
-          @apply="applyFilter()"
-          @close="closeFilter(filters.label)"
-          @delete="deleteFilter(filters.label)"
-          @click="openFilter(filters.label)"
+          @apply="applyFilter(filter.label)"
+          @open="openFilter(filter.label)"
+          @close="closeFilter(filter.label)"
+          @delete="deleteFilter(filter.label)"
         />
       </div>
     </div>

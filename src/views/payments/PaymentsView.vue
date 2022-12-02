@@ -33,8 +33,21 @@ const isTableEmpty = computed(() => (
   paymentsStore.paginatedPaymentIntents.length === 0
 ));
 
-const emptyTableSubtitle = computed(() => (
-  isLive.value ? $t('table.empty.title.live') : $t('table.empty.title.test')
+const hasAppliedFilters = computed(() => (
+  hasFilters(paymentsStore.allFilters as Record<string, Array<string>>)
+));
+const emptyTableSubtitle = computed(() => {
+  if (hasAppliedFilters.value) {
+    return $t('table.empty.title.hasFilters');
+  }
+  if (isLive.value) {
+    return $t('table.empty.title.live');
+  }
+  return $t('table.empty.title.test');
+});
+
+const showFakePaymentIntent = computed(() => (
+  isTableEmpty.value && !paymentsStore.loading && !isLive.value && !hasAppliedFilters.value
 ));
 
 const fakeAccount: Account = {

@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import { useLinksStore } from '@/stores/links';
+import { usePaymentsStore } from '@/stores/payments';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import { FilterOption } from '@/interfaces/utilities/table';
 import GenericCheckbox from '@/components/GenericCheckbox.vue';
@@ -17,11 +18,13 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'apply'): void,
+  (e: 'open'): void,
   (e: 'close'): void,
   (e: 'delete'): void,
 }>();
 
 const linksStore = useLinksStore();
+const paymentsStore = usePaymentsStore();
 
 const appliedFilters = computed(() => props.filters.filter((filter) => filter.checked));
 
@@ -36,12 +39,16 @@ const filterInfo = computed(() => {
   return '';
 });
 
+const openFilter = () => {
+  emit('open');
+};
+
 const applyFilter = () => {
   emit('apply');
 };
 
 const deleteFilter = () => {
-  if (!linksStore.loading) {
+  if (!linksStore.loading || !paymentsStore.loading) {
     emit('delete');
   }
 };
@@ -58,6 +65,7 @@ onClickOutside(tableFilter, () => {
       class="text-primary-main whitespace-nowrap bg-primary-surface disabled:text-disabled-color
       rounded-full flex flex-row items-center space-x-1 pl-2 pr-1 py-1 capitalize"
       :disabled="linksStore.loading"
+      @click="openFilter()"
     >
       <div> {{ props.label }} | {{ filterInfo }} </div>
       <CrossIcon
