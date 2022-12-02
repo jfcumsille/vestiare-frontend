@@ -61,7 +61,7 @@ watch(() => configStore.mode, () => {
   if (userStore.authenticated) {
     linksStore.reloadLinks();
     if (organizationStore.paymentsProductAvailable) {
-      paymentsStore.loadPaymentIntents();
+      paymentsStore.reloadPaymentIntents();
     }
   }
 });

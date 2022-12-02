@@ -6,7 +6,7 @@ import { useUserStore } from '@/stores/user';
 import { useTranslation } from '@/locales';
 import { OrganizationUser } from '@/interfaces/entities/organizationUser';
 import {
-  Status,
+  InvitationStatus,
   Role,
   OrganizationRole,
   ButtonType,
@@ -37,11 +37,11 @@ const userStore = useUserStore();
 const name = computed(() => (props.member.name.includes('pending-name') ? '------' : props.member.name));
 const status = computed(() => {
   switch (props.member.status) {
-    case Status.Accepted:
+    case InvitationStatus.Accepted:
       return $t('accepted');
-    case Status.InvitationSent:
+    case InvitationStatus.InvitationSent:
       return $t('invitationSent');
-    case Status.Rejected:
+    case InvitationStatus.Rejected:
       return $t('rejected');
     default:
       return $t('rejected');
@@ -49,11 +49,11 @@ const status = computed(() => {
 });
 const statusBadgeColor = computed(() => {
   switch (props.member.status) {
-    case Status.Accepted:
+    case InvitationStatus.Accepted:
       return BadgeStatus.Success;
-    case Status.InvitationSent:
+    case InvitationStatus.InvitationSent:
       return BadgeStatus.Warning;
-    case Status.Rejected:
+    case InvitationStatus.Rejected:
       return BadgeStatus.Danger;
     default:
       return BadgeStatus.Danger;

@@ -28,7 +28,7 @@ const formattedAmount = computed(() => (
 
 const statusBadgeText = computed(() => {
   const texts = {
-    succeeded: 'Succeded',
+    succeeded: 'Succeeded',
     rejected: 'Rejected',
     failed: 'Failed',
   } as Record<string, string>;
@@ -47,6 +47,7 @@ const statusBadgeColor = computed(() => {
 
 <template>
   <TableRow>
+    <TableData />
     <TableData>
       <TableLabel
         :label="formattedPaymentIntentId"

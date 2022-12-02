@@ -20,7 +20,7 @@ const selectMode = (mode: string) => {
 
 const modeDropdown = ref(null);
 const liveModeClass = `
-        bg-gradient-to-r from-primary-main to-primary-gradient text-white
+        bg-gradient-to-r from-primary-pressed to-primary-hover text-white
         hover:bg-primary-hover
         focus:ring focus:ring-primary-focus
         active:bg-primary-pressed active:ring-0

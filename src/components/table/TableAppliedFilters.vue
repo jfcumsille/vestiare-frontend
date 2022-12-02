@@ -8,6 +8,7 @@ const $t = useTranslation('table.filters');
 
 const props = defineProps<{
   appliedFilters: Array<Filter<unknown>>,
+  optionsTitle?: string,
 }>();
 const emit = defineEmits<{
   (e: 'toggle', label: string, open: boolean): void,
@@ -35,7 +36,7 @@ const showFilteredBy = computed(() => props.appliedFilters.length > 0);
 </script>
 
 <template>
-  <div class="flex flex-row space-x-4">
+  <div class="flex flex-row space-x-4 min-h-12">
     <div
       v-if="showFilteredBy"
       class="min-w-max text-body-color pt-1"
@@ -51,6 +52,7 @@ const showFilteredBy = computed(() => props.appliedFilters.length > 0);
           :label="(filters.label as string)"
           :filters="filters.values"
           :opened="filters.open"
+          :options-title="props.optionsTitle"
           @apply="applyFilter()"
           @close="closeFilter(filters.label)"
           @delete="deleteFilter(filters.label)"

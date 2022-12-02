@@ -110,10 +110,11 @@ const applyFilter = async (filters: Record<string, Array<boolean>>) => {
   await linksStore.updateFilters(allFilters);
 };
 
-onMounted(() => {
+onMounted(async () => {
   page(LINKS_VIEWED, {
     origin: DASHBOARD_ORIGIN,
   });
+  await linksStore.updateFilters({});
 });
 </script>
 

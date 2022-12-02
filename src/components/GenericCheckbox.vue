@@ -17,8 +17,7 @@ const toggle = ($event: Event) => {
     <input
       type="checkbox"
       class="
-        w-4 h-4 min-w-4 min-h-4 text-primary-main bg-primary-surface rounded hover:cursor-pointer
-        border-primary-border focus:ring-primary-main
+        w-4 h-4 shrink-0 hover:cursor-pointer accent-primary-main
       "
       :checked="props.modelValue"
       @change="toggle"
@@ -26,7 +25,7 @@ const toggle = ($event: Event) => {
     <div class="flex flex-col space-y-2 -mt-1">
       <label
         for="checkbox-1"
-        class="text-sm font-medium text-body-color"
+        class="text-sm font-medium text-body-color mt-0.5"
       >{{ props.text }}</label>
       <div
         v-if="props.description"
