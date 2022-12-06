@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useLocale } from '@/composables/locale';
 import { formatDate, formatTime } from '@/utils/date';
+import { DateStyle } from '@/interfaces/utilities/enums';
 import { Nullable } from '@/interfaces/common';
 import { useTranslation } from '@/locales';
 
@@ -17,7 +18,7 @@ const locale = useLocale();
   <div class="font-normal whitespace-nowrap">
     <template v-if="props.dateString">
       <div class="text-sm text-body-color">
-        {{ formatDate(props.dateString, locale) }}
+        {{ formatDate(props.dateString, DateStyle.Medium, locale) }}
       </div>
       <div class="text-xs text-secondary-color">
         {{ formatTime(props.dateString, locale) }}
