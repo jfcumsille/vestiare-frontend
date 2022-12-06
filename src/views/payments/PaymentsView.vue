@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import { useTranslation } from '@/locales';
 import { usePaymentsStore } from '@/stores/payments';
 import { useConfigStore } from '@/stores/config';
@@ -10,7 +10,6 @@ import {
   Mode, PaymentStatus, CountryCode,
 } from '@/interfaces/utilities/enums';
 import { PaymentIntentFilter } from '@/interfaces/utilities/table';
-import { hasFilters } from '@/utils/table';
 import { page } from '@/services/analytics';
 import { DASHBOARD_ORIGIN, PAYMENTS_VIEWED } from '@/constants/analyticsEvents';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
@@ -34,11 +33,8 @@ const isTableEmpty = computed(() => (
   paymentsStore.paginatedPaymentIntents.length === 0
 ));
 
-const hasAppliedFilters = computed(() => (
-  hasFilters(paymentsStore.allFilters as Record<string, Array<string>>)
-));
 const emptyTableSubtitle = computed(() => {
-  if (hasAppliedFilters.value) {
+  if (paymentsStore.hasAppliedFilters) {
     return $t('table.empty.title.hasFilters');
   }
   if (isLive.value) {
@@ -48,7 +44,7 @@ const emptyTableSubtitle = computed(() => {
 });
 
 const showFakePaymentIntent = computed(() => (
-  isTableEmpty.value && !paymentsStore.loading && !isLive.value && !hasAppliedFilters.value
+  isTableEmpty.value && !paymentsStore.loading && !isLive.value && !paymentsStore.hasAppliedFilters
 ));
 
 const fakeAccount: Account = {
@@ -78,6 +74,10 @@ onMounted(async () => {
     origin: DASHBOARD_ORIGIN,
   });
   await paymentsStore.updateFilters({});
+});
+onUnmounted(async () => {
+  paymentsStore.showCreationDate = false;
+  paymentsStore.openedCreationDate = false;
 });
 </script>
 
@@ -149,7 +149,7 @@ onMounted(async () => {
               {{ emptyTableSubtitle }}
             </div>
             <a
-              v-if="!hasAppliedFilters"
+              v-if="!paymentsStore.hasAppliedFilters"
               class="text-primary-main font-thin"
               :href="DOCS_PAYMENTS"
               target="_blank"

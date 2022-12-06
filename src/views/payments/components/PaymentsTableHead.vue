@@ -11,12 +11,16 @@ const $t = useTranslation('views.payments.table.headers');
 const paymentsStore = usePaymentsStore();
 
 const isTableEmpty = computed(() => (
-  paymentsStore.paginatedPaymentIntents.length === 0
+  paymentsStore.paginatedPaymentIntents.length === 0 && !paymentsStore.hasAppliedFilters
 ));
 
 const openFilter = (label: PaymentIntentFilterType) => {
   if (label === PaymentIntentFilterType.Status) {
     paymentsStore.openedStatus = true;
+  }
+  if (label === PaymentIntentFilterType.CreationDate) {
+    paymentsStore.openedCreationDate = true;
+    paymentsStore.showCreationDate = true;
   }
 };
 </script>
@@ -25,7 +29,16 @@ const openFilter = (label: PaymentIntentFilterType) => {
   <TableHead>
     <TableHeader />
     <TableHeader><div> {{ $t('fintocId') }} </div></TableHeader>
-    <TableHeader><div> {{ $t('creationDate') }} </div></TableHeader>
+    <TableHeader>
+      <div v-if="isTableEmpty">
+        {{ $t('creationDate') }}
+      </div>
+      <TableFilter
+        v-else
+        :label="$t('creationDate')"
+        @toggle="openFilter(PaymentIntentFilterType.CreationDate)"
+      />
+    </TableHeader>
     <TableHeader><div> {{ $t('sender') }} </div></TableHeader>
     <TableHeader><div> {{ $t('senderAccount') }} </div></TableHeader>
     <TableHeader><div> {{ $t('amount') }} </div></TableHeader>

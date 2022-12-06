@@ -2,6 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { PaymentIntentFilter } from '@/interfaces/utilities/table';
+import { hasFilters } from '@/utils/table';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { Json } from '@/interfaces/utilities/json';
 import { useConfigStore } from './config';
@@ -17,6 +18,8 @@ export const usePaymentsStore = defineStore('payments', {
     loading: true,
     allFilters: <PaymentIntentFilter>{},
     openedStatus: false,
+    showCreationDate: false,
+    openedCreationDate: false,
   }),
   actions: {
     async loadPaymentIntents() {
@@ -77,6 +80,9 @@ export const usePaymentsStore = defineStore('payments', {
       const end = state.currentPage * state.pageSize;
       return state.paymentIntents.slice(start, end);
     },
+    hasAppliedFilters: (state) => (
+      hasFilters(state.allFilters as Record<string, Array<string>>)
+    ),
   },
 });
 
