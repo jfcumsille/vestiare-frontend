@@ -34,7 +34,6 @@ const loadUserData = async () => {
   if (userStore.authenticated) {
     startHotjarSessionIfNeeded();
     apiKeysStore.loadAPIKeys();
-    linksStore.loadLinks();
     webhookEndpointsStore.loadWebhookEndpoints();
     if (userStore.user) {
       const metadataKey = `${window.location.origin}/user_metadata`;
