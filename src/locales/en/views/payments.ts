@@ -26,14 +26,19 @@ export default <PaymentsViewLocale>{
       status: 'Status',
     },
     filters: {
-      title: 'Status includes:',
       status: {
+        title: 'Status includes:',
         label: 'Status',
         options: {
           succeeded: 'Succeeded',
           rejected: 'Rejected',
           failed: 'Failed',
         },
+      },
+      creationDate: {
+        title: 'Date is between:',
+        subtitle: '*Date and time is in your local timezone.',
+        label: 'Date',
       },
     },
   },

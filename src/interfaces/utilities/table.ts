@@ -15,6 +15,8 @@ export interface Filter<T> {
 export interface PaymentIntentFilter {
   status?: Array<PaymentStatus>,
   senderAccount?: Account,
+  since?: string,
+  until?: string,
 }
 
 export interface LinkFilter {

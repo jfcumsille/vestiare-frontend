@@ -24,9 +24,8 @@ const paymentsStore = usePaymentsStore();
 const configStore = useConfigStore();
 const isLive = computed(() => configStore.mode === Mode.Live);
 
-const applyFilter = async (filters: Record<string, Array<PaymentStatus>>) => {
-  const allFilters: PaymentIntentFilter = filters;
-  await paymentsStore.updateFilters(allFilters);
+const applyFilter = async (filters: PaymentIntentFilter) => {
+  await paymentsStore.updateFilters(filters);
 };
 
 const isTableEmpty = computed(() => (
