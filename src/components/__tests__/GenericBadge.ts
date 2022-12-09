@@ -36,6 +36,7 @@ describe('GenericBadge', () => {
     [BadgeStatus.Danger, 'danger'],
     [BadgeStatus.Success, 'success'],
     [BadgeStatus.Warning, 'warning'],
+    [BadgeStatus.Main, 'primary'],
   ];
 
   statusClassNames.forEach(([status, result]) => testStatusClassRendering(status, result));

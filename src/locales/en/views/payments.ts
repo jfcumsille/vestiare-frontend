@@ -7,6 +7,28 @@ export default <PaymentsViewLocale>{
   urls: {
     whatAre: 'What are Payment Intents?',
   },
+  detailDrawer: {
+    title: 'Payment Intent - Detail',
+    fintocID: 'Fintoc ID',
+    senderBankID: 'Sender Bank Payment ID',
+    creationDate: 'Creation Date',
+    creationTime: 'Creation Time',
+    timezone: 'Time Zone',
+    utcTimestamp: 'UTC Timestamp',
+    senderName: 'Sender Name',
+    senderRut: 'Sender RUT',
+    senderHolderId: 'Sender Holder ID',
+    senderBank: 'Sender Bank',
+    senderAccount: 'Sender Account',
+    recipientName: 'Recipient Name',
+    recipientRut: 'Recipient RUT',
+    recipientBank: 'Recipient Bank',
+    recipientAccount: 'Recipient Account',
+    accountType: 'Account Type',
+    amount: 'Amount',
+    currency: 'Currency',
+    status: 'Status',
+  },
   table: {
     empty: {
       title: {
