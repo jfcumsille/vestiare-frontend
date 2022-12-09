@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue';
+import {
+  ref, computed, onMounted, onUnmounted,
+} from 'vue';
 import { useTranslation } from '@/locales';
 import { usePaymentsStore } from '@/stores/payments';
 import { useConfigStore } from '@/stores/config';
 import { Account } from '@/interfaces/entities/account';
 import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
-import { DOCS_PAYMENTS } from '@/constants/urls';
+import { Nullable } from '@/interfaces/common';
+import { DOCS_PAYMENTS, DOCS_PAYMENTS_LEARN_MORE, DOCS_PAYMENTS_LEARN_HOW } from '@/constants/urls';
 import {
   Mode, PaymentStatus, CountryCode,
 } from '@/interfaces/utilities/enums';
@@ -18,6 +21,7 @@ import TablePagination from '@/components/table/TablePagination.vue';
 import PaymentsTableHead from '@/views/payments/components/PaymentsTableHead.vue';
 import PaymentsTableRow from '@/views/payments/components/PaymentsTableRow.vue';
 import PaymentsTableAppliedFilters from '@/views/payments/components/PaymentsTableAppliedFilters.vue';
+import PaymentIntentDetailDrawer from '@/views/payments/components/PaymentIntentDetailDrawer.vue';
 
 const $t = useTranslation('views.payments');
 const paymentsStore = usePaymentsStore();
@@ -68,9 +72,20 @@ const fakePaymentIntent: PaymentIntent = {
   status: PaymentStatus.Succeeded,
 };
 
+const drawerOpened = ref(false);
+const setDrawerOpened = (value: boolean) => {
+  drawerOpened.value = value;
+};
+const currentPaymentIntent = ref<Nullable<PaymentIntent>>(null);
+const openDetailedView = (paymentIntent: PaymentIntent) => {
+  currentPaymentIntent.value = paymentIntent;
+  setDrawerOpened(true);
+};
+
 onMounted(async () => {
   page(PAYMENTS_VIEWED, {
     origin: DASHBOARD_ORIGIN,
+    mode: configStore.mode,
   });
   await paymentsStore.updateFilters({});
 });
@@ -85,6 +100,14 @@ onUnmounted(async () => {
     data-test="payments-view"
     class="flex items-center p-10"
   >
+    <Teleport to="body">
+      <PaymentIntentDetailDrawer
+        v-if="currentPaymentIntent"
+        :open="drawerOpened"
+        :payment-intent="currentPaymentIntent"
+        @close="() => setDrawerOpened(false)"
+      />
+    </Teleport>
     <div class="w-full">
       <div class="flex flex-row justify-between">
         <div class="text-3xl text-heading-color self-start mb-6 font-semibold">
@@ -105,7 +128,7 @@ onUnmounted(async () => {
         </div>
         <a
           class="text-primary-main min-w-fit"
-          :href="DOCS_PAYMENTS"
+          :href="DOCS_PAYMENTS_LEARN_MORE"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -128,8 +151,10 @@ onUnmounted(async () => {
         <template #content>
           <PaymentsTableRow
             v-for="paymentIntent in paymentsStore.paginatedPaymentIntents"
+            class="cursor-pointer"
             :key="paymentIntent.id"
             :payment-intent="paymentIntent"
+            @click="openDetailedView(paymentIntent)"
           />
           <PaymentsTableRow
             v-if="showFakePaymentIntent"
@@ -150,7 +175,7 @@ onUnmounted(async () => {
             <a
               v-if="!paymentsStore.hasAppliedFilters"
               class="text-primary-main font-thin"
-              :href="DOCS_PAYMENTS"
+              :href="DOCS_PAYMENTS_LEARN_HOW"
               target="_blank"
               rel="noopener noreferrer"
             >
