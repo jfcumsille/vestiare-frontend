@@ -5,7 +5,7 @@ import GenericButton from '@/components/GenericButton.vue';
 const props = defineProps<{
   open: boolean,
   title: string,
-  buttonTitle: string,
+  buttonTitle?: string,
 }>();
 
 const emit = defineEmits<{
@@ -66,7 +66,10 @@ const done = () => {
               <slot />
             </div>
           </div>
-          <div class="sticky bottom-0 flex flex-row justify-end bg-white p-4 shadow-t">
+          <div
+            v-if="props.buttonTitle"
+            class="sticky bottom-0 flex flex-row justify-end bg-white p-4 shadow-t"
+          >
             <GenericButton
               :type="ButtonType.Text"
               text="Cancel"
