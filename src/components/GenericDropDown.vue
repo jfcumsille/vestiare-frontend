@@ -119,7 +119,7 @@ const hidden = computed(() => (opened.value ? '' : 'hidden'));
       data-test="drop-down-list"
       :class="`
         absolute z-10 text-base list-none bg-white cursor-pointer mt-1 ${sizeClasses}
-        divide-y divide-divider-color shadow-lg rounded-lg ${hidden}
+        divide-y divide-divider-color shadow-lg rounded-lg ${hidden} max-h-72 overflow-y-auto
       `"
     >
       <ul class="py-1">

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import AppliedFilter from '@/components/table/utils/AppliedFilter.vue';
 import { Filter } from '@/interfaces/utilities/table';
@@ -7,6 +6,7 @@ import { Filter } from '@/interfaces/utilities/table';
 const $t = useTranslation('table.filters');
 
 const props = defineProps<{
+  show: boolean,
   appliedFilters: Array<Filter<unknown>>,
   optionsTitle?: string,
 }>();
@@ -31,14 +31,12 @@ const applyFilter = (label: string) => {
 const deleteFilter = (label: string) => {
   emit('delete', label);
 };
-
-const showFilteredBy = computed(() => props.appliedFilters.length > 0);
 </script>
 
 <template>
   <div class="flex flex-row space-x-4 min-h-12">
     <div
-      v-if="showFilteredBy"
+      v-if="props.show"
       class="min-w-max text-body-color pt-1"
     >
       {{ $t('filteredBy') }}
@@ -59,6 +57,7 @@ const showFilteredBy = computed(() => props.appliedFilters.length > 0);
           @delete="deleteFilter(filter.label)"
         />
       </div>
+      <slot />
     </div>
   </div>
 </template>

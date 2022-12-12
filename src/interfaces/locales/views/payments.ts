@@ -24,14 +24,19 @@ export interface PaymentsViewLocale {
       status: string,
     },
     filters: {
-      title: string,
       status: {
+        title: string,
         label: string,
         options: {
           succeeded: string,
           rejected: string,
           failed: string,
         },
+      },
+      creationDate: {
+        title: string,
+        subtitle: string,
+        label: string,
       },
     },
   },

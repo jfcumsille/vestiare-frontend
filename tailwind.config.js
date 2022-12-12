@@ -81,6 +81,9 @@ module.exports = {
         12: '3rem',
         lg: '34rem',
       },
+      maxHeight: {
+        72: '18rem',
+      },
       zIndex: {
         1: '1',
         2: '2',
@@ -94,6 +97,7 @@ module.exports = {
         1.5: '1.5px',
       },
       height: {
+        '1.5px': '1.5px',
         4.5: '18px',
         7.5: '30px',
         12.5: '50px',

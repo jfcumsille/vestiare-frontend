@@ -50,12 +50,6 @@ watch(() => userStore.authenticated, async () => {
   }
 });
 
-watch(() => organizationStore.paymentsProductAvailable, async () => {
-  if (userStore.authenticated && organizationStore.paymentsProductAvailable) {
-    await paymentsStore.loadPaymentIntents();
-  }
-});
-
 watch(() => configStore.mode, () => {
   if (userStore.authenticated) {
     linksStore.reloadLinks();

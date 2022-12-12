@@ -103,6 +103,7 @@ watch(() => linksStore.openedPassword, () => {
 
 <template>
   <TableAppliedFilters
+    :show="filters.length > 0"
     :applied-filters="filters"
     @toggle="toggleFilter"
     @delete="deleteFilter"

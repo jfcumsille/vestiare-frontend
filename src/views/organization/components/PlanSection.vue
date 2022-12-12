@@ -114,7 +114,7 @@ const subtitle2 = computed(() => {
             v-if="plan === Plan.Trial && freeTrialExpirationDate"
             class="font-bold"
           >
-            {{ formatDate(freeTrialExpirationDate.toString(), locale, DateStyle.Medium) }}.
+            {{ formatDate(freeTrialExpirationDate.toString(), DateStyle.Medium, locale) }}.
           </span>
           <span
             v-if="plan === Plan.Paid"

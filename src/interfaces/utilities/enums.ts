@@ -141,4 +141,5 @@ export enum LinkFilterType {
 
 export enum PaymentIntentFilterType {
   Status = 'status',
+  CreationDate = 'creation date'
 }

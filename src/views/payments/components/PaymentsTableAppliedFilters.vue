@@ -3,18 +3,19 @@ import { computed, ref, watch } from 'vue';
 import { useTranslation } from '@/locales';
 import { usePaymentsStore } from '@/stores/payments';
 import { Nullable } from '@/interfaces/common';
-import { FilterOption } from '@/interfaces/utilities/table';
+import { FilterOption, PaymentIntentFilter } from '@/interfaces/utilities/table';
 import { PaymentStatus, PaymentIntentFilterType } from '@/interfaces/utilities/enums';
 import {
   addFilter, removeFilter, getIndex, getFilterValues, resetFilters,
 } from '@/utils/table';
 import TableAppliedFilters from '@/components/table/TableAppliedFilters.vue';
+import DateFilter from '@/components/table/utils/DateFilter.vue';
 
 const $t = useTranslation('views.payments.table.filters');
 const paymentsStore = usePaymentsStore();
 
 const emit = defineEmits<{
-  (e: 'apply', filters: Record<string, Array<PaymentStatus>>): void,
+  (e: 'apply', filters: PaymentIntentFilter): void,
   (e: 'reset', label: PaymentIntentFilterType, open: boolean): void,
 }>();
 
@@ -36,6 +37,10 @@ const statusAppliedFilter = computed(() => (
 ));
 
 const toggleFilter = (label: string, open: boolean) => {
+  if (label === PaymentIntentFilterType.CreationDate) {
+    paymentsStore.openedCreationDate = open;
+    return;
+  }
   const index = getIndex(label, filters.value);
   removeFilter(index, filters.value);
   if (label === PaymentIntentFilterType.Status) {
@@ -44,10 +49,17 @@ const toggleFilter = (label: string, open: boolean) => {
   }
 };
 
+const sinceDatestring = ref<Nullable<string>>(null);
+const untilDatestring = ref<Nullable<string>>(null);
+
 const applyFilter = (label: Nullable<string>) => {
-  const filterValues = {
+  const filterValues: PaymentIntentFilter = {
     status: statusFilterSelectedValues.value,
   };
+  if (sinceDatestring.value && untilDatestring.value) {
+    filterValues.since = sinceDatestring.value;
+    filterValues.until = untilDatestring.value;
+  }
   if (label) {
     toggleFilter(label, false);
   }
@@ -64,6 +76,24 @@ const deleteFilter = async (label: string) => {
   applyFilter(null);
 };
 
+const applyDateFilter = (since: string, until: string) => {
+  sinceDatestring.value = since;
+  untilDatestring.value = until;
+  applyFilter(PaymentIntentFilterType.CreationDate);
+};
+
+const changeOpenDate = (value: boolean) => {
+  paymentsStore.openedCreationDate = value;
+};
+
+const deleteDateFilter = async () => {
+  paymentsStore.openedCreationDate = false;
+  paymentsStore.showCreationDate = false;
+  sinceDatestring.value = null;
+  untilDatestring.value = null;
+  applyFilter(null);
+};
+
 watch(() => paymentsStore.openedStatus, () => {
   if (paymentsStore.openedStatus) {
     const index = getIndex(PaymentIntentFilterType.Status as string, filters.value);
@@ -74,11 +104,26 @@ watch(() => paymentsStore.openedStatus, () => {
 </script>
 
 <template>
-  <TableAppliedFilters
-    :applied-filters="filters"
-    :options-title="$t('title')"
-    @toggle="toggleFilter"
-    @delete="deleteFilter"
-    @apply="applyFilter"
-  />
+  <div>
+    <TableAppliedFilters
+      :show="filters.length > 0 || paymentsStore.showCreationDate"
+      :applied-filters="filters"
+      :options-title="$t('status.title')"
+      @apply="applyFilter"
+      @delete="deleteFilter"
+      @toggle="toggleFilter"
+    >
+      <DateFilter
+        v-if="paymentsStore.showCreationDate"
+        :label="$t('creationDate.label')"
+        :opened="paymentsStore.openedCreationDate"
+        :options-title="$t('creationDate.title')"
+        :options-subtitle="$t('creationDate.subtitle')"
+        @apply="applyDateFilter"
+        @open="changeOpenDate(true)"
+        @close="changeOpenDate(false)"
+        @delete="deleteDateFilter"
+      />
+    </TableAppliedFilters>
+  </div>
 </template>
