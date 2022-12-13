@@ -123,8 +123,9 @@ export enum InvitationStatus {
 
 export enum BadgeStatus {
   Danger = 'danger',
-  Warning = 'rejected',
+  Warning = 'warning',
   Success = 'success',
+  Main = 'main',
 }
 
 export enum PaymentStatus {

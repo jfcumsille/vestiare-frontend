@@ -50,6 +50,8 @@ module.exports = {
       },
       maxWidth: {
         2.5: '0.625rem',
+        28: '7rem',
+        36: '9rem',
         50: '12.5rem',
         62: '15.5rem',
         80: '20rem',
@@ -62,6 +64,7 @@ module.exports = {
         2.5: '0.625rem',
         4: '1rem',
         4.5: '1.1125rem',
+        36: '9rem',
         '16px': '16px',
         50: '12.5rem',
         56: '14rem',

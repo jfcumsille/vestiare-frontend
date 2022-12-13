@@ -5,6 +5,28 @@ export interface PaymentsViewLocale {
   urls: {
     whatAre: string,
   },
+  detailDrawer: {
+    title: string,
+    fintocID: string,
+    senderBankID: string,
+    creationDate: string,
+    creationTime: string,
+    timezone: string,
+    utcTimestamp: string,
+    senderName: string,
+    senderRut: string,
+    senderHolderId: string,
+    senderBank: string,
+    senderAccount: string,
+    recipientName: string,
+    recipientRut: string,
+    recipientBank: string,
+    recipientAccount: string,
+    accountType: string,
+    amount: string,
+    currency: string,
+    status: string,
+  },
   table: {
     empty: {
       title: {

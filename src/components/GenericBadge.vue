@@ -17,6 +17,9 @@ const colorClasses = computed(() => {
   if (props.status === BadgeStatus.Warning) {
     return 'bg-warning-surface text-warning-main';
   }
+  if (props.status === BadgeStatus.Main) {
+    return 'bg-primary-surface text-primary-main';
+  }
   return '';
 });
 </script>

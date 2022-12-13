@@ -25,6 +25,11 @@ export const getIsoDateString = (datestring: string) => {
   return '';
 };
 
+export const formatTimezone = (country: string, locale: SupportedLocales, dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString(`${locale}-${country}`, { day: '2-digit', timeZoneName: 'short' }).slice(4);
+};
+
 export const isLeapYear = (year: number) => (
   (year % 4 === 0) && ((year % 100 !== 0) || (year % 400 === 0))
 );
