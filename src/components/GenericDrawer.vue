@@ -1,12 +1,20 @@
 <script setup lang="ts">
+import { useTranslation } from '@/locales';
 import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   open: boolean,
   title: string,
   buttonTitle?: string,
-}>();
+  disabledButton?: boolean,
+  loadingButton?: boolean,
+}>(), {
+  disabledButton: false,
+  loadingButton: false,
+});
+
+const $t = useTranslation('buttons');
 
 const emit = defineEmits<{
   (e: 'close'): void,
@@ -72,13 +80,15 @@ const done = () => {
           >
             <GenericButton
               :type="ButtonType.Text"
-              text="Cancel"
+              :text="$t('cancel')"
               @click="close"
             />
             <GenericButton
               data-test="drawer-done-button"
               :type="ButtonType.Primary"
               :text="props.buttonTitle"
+              :disabled="props.disabledButton"
+              :loading="props.loadingButton"
               @click="done"
             />
           </div>
