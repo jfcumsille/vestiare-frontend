@@ -6,6 +6,7 @@ import ChevronIcon from '@/assets/svg/ChevronIcon.vue';
 import CircleCheckIcon from '@/assets/svg/CircleCheckIcon.vue';
 import CircleCrossIcon from '@/assets/svg/CircleCrossIcon.vue';
 import CrossIcon from '@/assets/svg/CrossIcon.vue';
+import DownloadIcon from '@/assets/svg/DownloadIcon.vue';
 import EditIcon from '@/assets/svg/EditIcon.vue';
 import EyeIcon from '@/assets/svg/EyeIcon.vue';
 import EyeClosedIcon from '@/assets/svg/EyeClosedIcon.vue';
@@ -30,6 +31,7 @@ export const icons = {
   'circle-check': CircleCheckIcon,
   'circle-cross': CircleCrossIcon,
   cross: CrossIcon,
+  download: DownloadIcon,
   mail: MailIcon,
   menu: MenuIcon,
   'auth-google': GoogleLogo,
