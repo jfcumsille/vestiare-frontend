@@ -27,6 +27,25 @@ export interface PaymentsViewLocale {
     currency: string,
     status: string,
   },
+  exportDrawer: {
+    title: string,
+    format: string,
+    download: string,
+    downloadBegun: string,
+    transactions: string,
+    selectFormat: string,
+    filters: string,
+    dateBetween: string,
+    noDateFilter: string,
+    timesIn: string,
+    and: string,
+    statusIncludes: string,
+    noStatusFilter: string,
+    columns: string,
+    default: string,
+    exportReady: string,
+    downloadAgain: string,
+  },
   table: {
     empty: {
       title: {

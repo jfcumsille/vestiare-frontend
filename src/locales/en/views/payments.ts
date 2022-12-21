@@ -29,6 +29,25 @@ export default <PaymentsViewLocale>{
     currency: 'Currency',
     status: 'Status',
   },
+  exportDrawer: {
+    title: 'Export',
+    format: 'Format',
+    download: 'Download',
+    downloadBegun: 'Your download has begun.',
+    transactions: 'transactions',
+    selectFormat: 'Select a format:',
+    filters: 'With existing filters:',
+    dateBetween: 'Date is between:',
+    noDateFilter: 'No date filter applied',
+    timesIn: '*Times are in',
+    and: 'and',
+    statusIncludes: 'Status includes:',
+    noStatusFilter: 'No status filter applied',
+    columns: 'Including columns:',
+    default: 'Default:',
+    exportReady: 'Your export is ready.',
+    downloadAgain: 'If you don\'t see your file you can try downloading it again.',
+  },
   table: {
     empty: {
       title: {
