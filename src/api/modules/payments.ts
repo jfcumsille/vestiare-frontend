@@ -11,3 +11,8 @@ export const list = async (
   const total = response.headers['x-total-count'];
   return { total: total ? Number(total) : 0, paymentIntents: response.data };
 };
+
+export const exportPaymentIntents = async (params: Json = {}) => {
+  const response = await client.get(`${BASE_PATH}/export_csv_url`, { params });
+  return response.data;
+};
