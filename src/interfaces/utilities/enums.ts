@@ -144,3 +144,8 @@ export enum PaymentIntentFilterType {
   Status = 'status',
   CreationDate = 'creation date'
 }
+
+export enum FileFormat {
+  Csv = '.csv',
+  Excel = '.xls'
+}

@@ -29,6 +29,25 @@ export default <PaymentsViewLocale>{
     currency: 'Moneda',
     status: 'Monto',
   },
+  exportDrawer: {
+    title: 'Exportar',
+    format: 'Formato',
+    download: 'Descargar',
+    downloadBegun: 'Tu descarga ha comenzado.',
+    transactions: 'transacciones',
+    selectFormat: 'En formato .csv',
+    filters: 'Con los filtros existentes:',
+    dateBetween: 'Fecha entre:',
+    noDateFilter: 'No se ha aplicado filtrado por fecha',
+    timesIn: '*Tiempo está en',
+    and: 'y',
+    statusIncludes: 'Status incluye:',
+    noStatusFilter: 'No se ha aplicado filtrado por status',
+    columns: 'Incluyendo las columnas:',
+    default: 'Por defecto:',
+    exportReady: 'Tu archivo está listo.',
+    downloadAgain: 'Si no puedes ver tu archivo puedes intentar descargarlo de nuevo.',
+  },
   table: {
     empty: {
       title: {

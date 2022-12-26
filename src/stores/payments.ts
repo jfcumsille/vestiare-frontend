@@ -5,6 +5,7 @@ import { PaymentIntentFilter } from '@/interfaces/utilities/table';
 import { hasFilters } from '@/utils/table';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { Json } from '@/interfaces/utilities/json';
+import { FileFormat } from '@/interfaces/utilities/enums';
 import { useConfigStore } from './config';
 
 export const usePaymentsStore = defineStore('payments', {
@@ -20,6 +21,7 @@ export const usePaymentsStore = defineStore('payments', {
     openedStatus: false,
     showCreationDate: false,
     openedCreationDate: false,
+    exportReady: false,
   }),
   actions: {
     async loadPaymentIntents() {
@@ -34,6 +36,18 @@ export const usePaymentsStore = defineStore('payments', {
       });
       this.paymentIntents = [...this.paymentIntents, ...result.paymentIntents];
       this.total = result.total;
+      this.loading = false;
+    },
+    async exportPaymentIntents(fileFormat: FileFormat) {
+      this.loading = true;
+      this.exportReady = false;
+      const configStore = useConfigStore();
+      const mode = configStore.mode;
+      const result = await api.payments.exportPaymentIntents({
+        ...this.allFilters as Json, mode, fileFormat,
+      });
+      window.open(result.url, 'Download');
+      this.exportReady = true;
       this.loading = false;
     },
     removePaymentIntents() {

@@ -10,18 +10,20 @@ import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { Nullable } from '@/interfaces/common';
 import { DOCS_PAYMENTS, DOCS_PAYMENTS_LEARN_MORE, DOCS_PAYMENTS_LEARN_HOW } from '@/constants/urls';
 import {
-  Mode, PaymentStatus, CountryCode,
+  Mode, PaymentStatus, CountryCode, ButtonType,
 } from '@/interfaces/utilities/enums';
 import { PaymentIntentFilter } from '@/interfaces/utilities/table';
 import { page } from '@/services/analytics';
 import { DASHBOARD_ORIGIN, PAYMENTS_VIEWED } from '@/constants/analyticsEvents';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import GenericTable from '@/components/table/GenericTable.vue';
+import GenericButton from '@/components/GenericButton.vue';
 import TablePagination from '@/components/table/TablePagination.vue';
 import PaymentsTableHead from '@/views/payments/components/PaymentsTableHead.vue';
 import PaymentsTableRow from '@/views/payments/components/PaymentsTableRow.vue';
 import PaymentsTableAppliedFilters from '@/views/payments/components/PaymentsTableAppliedFilters.vue';
 import PaymentIntentDetailDrawer from '@/views/payments/components/PaymentIntentDetailDrawer.vue';
+import PaymentsExportDrawer from '@/views/payments/components/PaymentsExportDrawer.vue';
 
 const $t = useTranslation('views.payments');
 const paymentsStore = usePaymentsStore();
@@ -72,14 +74,24 @@ const fakePaymentIntent: PaymentIntent = {
   status: PaymentStatus.Succeeded,
 };
 
-const drawerOpened = ref(false);
-const setDrawerOpened = (value: boolean) => {
-  drawerOpened.value = value;
+const detailDrawerOpened = ref(false);
+const exportDrawerOpened = ref(false);
+const setDetailDrawerOpened = (value: boolean) => {
+  detailDrawerOpened.value = value;
 };
+const setExportDrawerOpened = (value: boolean) => {
+  exportDrawerOpened.value = value;
+};
+
 const currentPaymentIntent = ref<Nullable<PaymentIntent>>(null);
 const openDetailedView = (paymentIntent: PaymentIntent) => {
   currentPaymentIntent.value = paymentIntent;
-  setDrawerOpened(true);
+  setDetailDrawerOpened(true);
+  setExportDrawerOpened(false);
+};
+const openExportDrawer = () => {
+  setExportDrawerOpened(true);
+  setDetailDrawerOpened(false);
 };
 
 onMounted(async () => {
@@ -103,9 +115,13 @@ onUnmounted(async () => {
     <Teleport to="body">
       <PaymentIntentDetailDrawer
         v-if="currentPaymentIntent"
-        :open="drawerOpened"
+        :open="detailDrawerOpened"
         :payment-intent="currentPaymentIntent"
-        @close="() => setDrawerOpened(false)"
+        @close="() => setDetailDrawerOpened(false)"
+      />
+      <PaymentsExportDrawer
+        :open="exportDrawerOpened"
+        @close="() => setExportDrawerOpened(false)"
       />
     </Teleport>
     <div class="w-full">
@@ -141,6 +157,14 @@ onUnmounted(async () => {
             <PaymentsTableAppliedFilters
               @apply="applyFilter"
             />
+            <GenericButton
+              class="ml-4 capitalize"
+              :disabled="paymentsStore.total < 1"
+              :type="ButtonType.Primary"
+              icon-name="download"
+              :text="$t('exportDrawer.title')"
+              @click="openExportDrawer"
+            />
           </div>
         </template>
 
@@ -151,8 +175,8 @@ onUnmounted(async () => {
         <template #content>
           <PaymentsTableRow
             v-for="paymentIntent in paymentsStore.paginatedPaymentIntents"
-            class="cursor-pointer"
             :key="paymentIntent.id"
+            class="cursor-pointer"
             :payment-intent="paymentIntent"
             @click="openDetailedView(paymentIntent)"
           />
