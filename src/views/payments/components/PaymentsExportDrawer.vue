@@ -68,7 +68,7 @@ const exportPaymentIntents = async () => {
   <GenericDrawer
     :title="$t('title')"
     :button-title="$t('download')"
-    :loading="paymentsStore.loading"
+    :loading-button="paymentsStore.loading"
     :open="props.open"
     class="text-body-color"
     @done="exportPaymentIntents"

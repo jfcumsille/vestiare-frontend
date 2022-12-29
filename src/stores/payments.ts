@@ -30,25 +30,30 @@ export const usePaymentsStore = defineStore('payments', {
       const mode = configStore.mode;
       const page = this.backendPage;
       const perPage = 100;
-
-      const result = await api.payments.list({
-        ...this.allFilters as Json, mode, page, perPage,
-      });
-      this.paymentIntents = [...this.paymentIntents, ...result.paymentIntents];
-      this.total = result.total;
-      this.loading = false;
+      try {
+        const result = await api.payments.list({
+          ...this.allFilters as Json, mode, page, perPage,
+        });
+        this.paymentIntents = [...this.paymentIntents, ...result.paymentIntents];
+        this.total = result.total;
+      } finally {
+        this.loading = false;
+      }
     },
     async exportPaymentIntents(fileFormat: FileFormat) {
       this.loading = true;
       this.exportReady = false;
       const configStore = useConfigStore();
       const mode = configStore.mode;
-      const result = await api.payments.exportPaymentIntents({
-        ...this.allFilters as Json, mode, fileFormat,
-      });
-      window.open(result.url, 'Download');
-      this.exportReady = true;
-      this.loading = false;
+      try {
+        const result = await api.payments.exportPaymentIntents({
+          ...this.allFilters as Json, mode, fileFormat,
+        });
+        window.open(result.url, 'Download');
+        this.exportReady = true;
+      } finally {
+        this.loading = false;
+      }
     },
     removePaymentIntents() {
       this.paymentIntents = [];
