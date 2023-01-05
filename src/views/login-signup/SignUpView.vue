@@ -177,7 +177,7 @@ const passwordValidations = [(value: string) => isValidPassword(value) || $tForm
               />
               <div class="w-full">
                 <GenericDropDown
-                  class="mb-4"
+                  class="mb-4 -mt-3"
                   :label="$tSignUp('country')"
                   :size="SizeType.Large"
                   :selected="selectedCountry"
