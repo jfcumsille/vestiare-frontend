@@ -9,7 +9,7 @@ jobs:
     steps:
     - uses: deepakputhraya/action-pr-title@master
       with:
-        regex: '[((EXP)|(BUG)|(DD)|(PAY)|(INT)|(UX)|(INF)|(MOV))-[1-9]+].*' # Regex the title should match.
+        regex: '[((EXP)|(BUG)|(DD)|(PAY)|(INT)|(UX)|(INF)|(MOV)|(PLT))-[1-9]+].*' # Regex the title should match.
         allowed_prefixes: '' # title should start with the given prefix
         disallowed_prefixes: '' # title should not start with the given prefix
         prefix_case_sensitive: false # title prefix are case insensitive
