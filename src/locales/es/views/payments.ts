@@ -27,7 +27,7 @@ export default <PaymentsViewLocale>{
     accountType: 'Tipo de Cuenta',
     amount: 'Monto',
     currency: 'Moneda',
-    status: 'Monto',
+    status: 'Status',
   },
   exportDrawer: {
     title: 'Exportar',
