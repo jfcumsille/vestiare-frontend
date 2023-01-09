@@ -11,4 +11,5 @@ export interface PaymentIntent {
   referenceId: string
   senderAccount: Nullable<Account>
   status: PaymentStatus
+  fintocErrorReason: Nullable<string>
 }

@@ -288,16 +288,25 @@ const copyToClipboard = (text: string) => {
         </div>
       </div>
       <div class="h-px bg-divider-color" />
-      <div class="flex flex-row w-full items-center p-3 space-x-4">
+      <div class="flex flex-row w-full items-start p-3 space-x-4">
         <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
           <div class="text-sm font-medium">
             {{ $t('status') }}
           </div>
         </div>
-        <GenericBadge
-          :text="statusBadgeText"
-          :status="statusBadgeColor"
-        />
+        <div class="space-y-2">
+          <GenericBadge
+            :text="statusBadgeText"
+            :status="statusBadgeColor"
+          />
+          <p
+            v-if="props.paymentIntent.fintocErrorReason"
+            class="text-xs"
+            data-test="fintoc-error-reason"
+          >
+            {{ props.paymentIntent.fintocErrorReason }}
+          </p>
+        </div>
       </div>
     </div>
   </GenericDrawer>
