@@ -6,6 +6,7 @@ import { useTranslation } from '@/locales';
 import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { BadgeStatus, DateStyle, CountryCode } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime, formatTimezone } from '@/utils/date';
+import { DOCS_PAYMENTS_ERROR_REASONS } from '@/constants/urls';
 import GenericDrawer from '@/components/GenericDrawer.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
@@ -299,13 +300,18 @@ const copyToClipboard = (text: string) => {
             :text="statusBadgeText"
             :status="statusBadgeColor"
           />
-          <p
+          <div
             v-if="props.paymentIntent.fintocErrorReason"
-            class="text-xs"
             data-test="fintoc-error-reason"
           >
-            {{ props.paymentIntent.fintocErrorReason }}
-          </p>
+            <a
+              :href="DOCS_PAYMENTS_ERROR_REASONS"
+              target="_blank"
+              class="text-primary-main text-sm"
+            >
+              {{ props.paymentIntent.fintocErrorReason }} →
+            </a>
+          </div>
         </div>
       </div>
     </div>
