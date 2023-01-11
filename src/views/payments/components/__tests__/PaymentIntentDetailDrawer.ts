@@ -10,6 +10,7 @@ import { CountryCode, PaymentStatus } from '@/interfaces/utilities/enums';
 import router from '@/router';
 import { mockCrypto } from '@/utils/tests/crypto';
 import { setupLocales } from '@/locales';
+import { DOCS_PAYMENTS_ERROR_REASONS } from '@/constants/urls';
 import PaymentIntentDetailDrawer from '../PaymentIntentDetailDrawer.vue';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
@@ -68,12 +69,13 @@ describe('PaymentIntentDetailDrawer', () => {
   });
   describe('when fintoc error reason is set', () => {
     it('shows reason div', async () => {
-      const fintocErrorReason = 'fintoc-error-reason';
+      const fintocErrorReason = 'fintoc_error_reason';
       fakePaymentIntent.fintocErrorReason = fintocErrorReason;
       const wrapper = getWrapper(fakePaymentIntent);
-      const errorReason = wrapper.find('[data-test="fintoc-error-reason"]');
+      const errorReason = wrapper.find('[data-test="fintoc-error-reason"] a');
       expect(errorReason.exists()).toBe(true);
-      expect(errorReason.text()).toEqual(fintocErrorReason);
+      expect(errorReason.text()).toEqual(`${fintocErrorReason} →`);
+      expect(errorReason.attributes('href')).toEqual(DOCS_PAYMENTS_ERROR_REASONS);
     });
   });
 });
