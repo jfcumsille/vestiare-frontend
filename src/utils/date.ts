@@ -60,8 +60,10 @@ export const daysOfMonth = (month: string) => {
   return stringArrayOfNums(1, 31, true);
 };
 
+const currentYear = new Date().getFullYear();
+const rangeYears = currentYear - 2021 + 1;
+export const years = stringArrayOfNums(2021, rangeYears, false);
 export const months = stringArrayOfNums(1, 12, true);
-export const years = stringArrayOfNums(2021, 2, false);
 export const hours = stringArrayOfNums(0, 24, true).map((hour) => `${hour}:00`);
 
 export const addDays = (date: Date, days: number) => {
