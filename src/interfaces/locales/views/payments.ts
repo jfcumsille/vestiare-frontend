@@ -26,6 +26,7 @@ export interface PaymentsViewLocale {
     amount: string,
     currency: string,
     status: string,
+    metadata: string,
   },
   exportDrawer: {
     title: string,

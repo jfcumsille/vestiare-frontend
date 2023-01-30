@@ -6,6 +6,7 @@ import { useTranslation } from '@/locales';
 import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { BadgeStatus, DateStyle, CountryCode } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime, formatTimezone } from '@/utils/date';
+import { camelToTitleCase } from '@/utils/strings';
 import { DOCS_PAYMENTS_ERROR_REASONS } from '@/constants/urls';
 import GenericDrawer from '@/components/GenericDrawer.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
@@ -75,6 +76,8 @@ const statusBadgeColor = computed(() => {
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
 };
+
+const showMetadata = computed(() => Object.keys(props.paymentIntent.metadata).length > 0);
 </script>
 <template>
   <GenericDrawer
@@ -83,11 +86,11 @@ const copyToClipboard = (text: string) => {
     @close="emit('close')"
   >
     <div class="flex flex-col w-full h-full min-w-sm text-body-color">
-      <div class="flex flex-row w-full items-center p-3 space-x-4">
+      <div class="flex w-full items-center p-3 space-x-4">
         <div class="text-sm min-w-36 max-w-36 font-medium">
           {{ $t('fintocID') }}
         </div>
-        <div class="flex flex-row items-center justify-between w-full">
+        <div class="flex items-center justify-between w-full">
           <div class="text-sm font-normal">
             {{ props.paymentIntent.id }}
           </div>
@@ -101,7 +104,7 @@ const copyToClipboard = (text: string) => {
       <div class="h-px bg-divider-color" />
       <div
         v-if="props.paymentIntent.referenceId"
-        class="flex flex-row w-full items-center p-3 space-x-4"
+        class="flex w-full items-center p-3 space-x-4"
       >
         <div class="text-sm min-w-36 max-w-36 font-medium flex flex-col space-y-1">
           <div class="max-w-28">
@@ -111,7 +114,7 @@ const copyToClipboard = (text: string) => {
             (reference_id)
           </div>
         </div>
-        <div class="flex flex-row w-full justify-between">
+        <div class="flex w-full justify-between">
           <div class="text-sm">
             {{ props.paymentIntent.referenceId }}
           </div>
@@ -123,7 +126,7 @@ const copyToClipboard = (text: string) => {
         </div>
       </div>
       <div class="h-px bg-divider-color" />
-      <div class="flex flex-row w-full items-center p-3 space-x-4">
+      <div class="flex w-full items-center p-3 space-x-4">
         <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
           <div class="text-sm font-medium">
             {{ $t('creationDate') }}
@@ -148,7 +151,7 @@ const copyToClipboard = (text: string) => {
           <div class="text-xs">
             {{ formatTimezone(paymentCountryCode, locale, props.paymentIntent.createdAt) }}
           </div>
-          <div class="flex flex-row w-full justify-between">
+          <div class="flex w-full justify-between">
             <div class="text-xs">
               {{ props.paymentIntent.createdAt }}
             </div>
@@ -162,7 +165,7 @@ const copyToClipboard = (text: string) => {
       </div>
       <div class="h-px bg-divider-color" />
       <div v-if="props.paymentIntent.senderAccount">
-        <div class="flex flex-row w-full items-center p-3 space-x-4">
+        <div class="flex w-full items-center p-3 space-x-4">
           <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
             <div class="text-sm font-medium">
               {{ $t('senderName') }}
@@ -175,7 +178,7 @@ const copyToClipboard = (text: string) => {
             <div class="text-sm">
               {{ props.paymentIntent.senderAccount.holderName }}
             </div>
-            <div class="flex flex-row w-full justify-between">
+            <div class="flex w-full justify-between">
               <div class="text-xs">
                 {{ formattedSenderHolderId }}
               </div>
@@ -187,7 +190,7 @@ const copyToClipboard = (text: string) => {
             </div>
           </div>
         </div>
-        <div class="flex flex-row w-full items-center p-3 space-x-4">
+        <div class="flex w-full items-center p-3 space-x-4">
           <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
             <div class="text-sm font-medium">
               {{ $t('senderBank') }}
@@ -206,7 +209,7 @@ const copyToClipboard = (text: string) => {
             <div class="text-xs">
               {{ formattedAccountType(props.paymentIntent.senderAccount.type) }}
             </div>
-            <div class="flex flex-row w-full justify-between">
+            <div class="flex w-full justify-between">
               <div class="text-xs">
                 {{ props.paymentIntent.senderAccount.number }}
               </div>
@@ -220,7 +223,7 @@ const copyToClipboard = (text: string) => {
         </div>
         <div class="h-px bg-divider-color" />
       </div>
-      <div class="flex flex-row w-full items-center p-3 space-x-4">
+      <div class="flex w-full items-center p-3 space-x-4">
         <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
           <div class="text-sm font-medium">
             {{ $t('recipientName') }}
@@ -238,7 +241,7 @@ const copyToClipboard = (text: string) => {
           </div>
         </div>
       </div>
-      <div class="flex flex-row w-full items-center p-3 space-x-4">
+      <div class="flex w-full items-center p-3 space-x-4">
         <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
           <div class="text-sm font-medium">
             {{ $t('recipientBank') }}
@@ -263,7 +266,7 @@ const copyToClipboard = (text: string) => {
         </div>
       </div>
       <div class="h-px bg-divider-color" />
-      <div class="flex flex-row w-full items-center p-3 space-x-4">
+      <div class="flex w-full items-center p-3 space-x-4">
         <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
           <div class="text-sm font-medium">
             {{ $t('amount') }}
@@ -273,7 +276,7 @@ const copyToClipboard = (text: string) => {
           </div>
         </div>
         <div class="flex flex-col w-full space-y-1.5">
-          <div class="flex flex-row items-center justify-between w-full">
+          <div class="flex items-center justify-between w-full">
             <div class="text-sm">
               {{ formattedAmount }}
             </div>
@@ -289,7 +292,7 @@ const copyToClipboard = (text: string) => {
         </div>
       </div>
       <div class="h-px bg-divider-color" />
-      <div class="flex flex-row w-full items-start p-3 space-x-4">
+      <div class="flex w-full items-start p-3 space-x-4">
         <div class="flex flex-col min-w-36 max-w-36 space-y-1.5">
           <div class="text-sm font-medium">
             {{ $t('status') }}
@@ -311,6 +314,29 @@ const copyToClipboard = (text: string) => {
             >
               {{ props.paymentIntent.fintocErrorReason }} →
             </a>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="showMetadata"
+        data-test="metadata"
+      >
+        <div class="h-px bg-divider-color" />
+        <div class="flex flex-col w-full space-y-1.5 p-3">
+          <div class="text-sm font-medium">
+            {{ $t('metadata') }}
+          </div>
+          <div
+            v-for="(value, key) in props.paymentIntent.metadata"
+            :key="key"
+            class="text-xs flex justify-between space-x-4 break-words"
+          >
+            <div class="min-w-36 max-w-36">
+              {{ camelToTitleCase(key) }}
+            </div>
+            <div class="w-full max-w-xs">
+              {{ value }}
+            </div>
           </div>
         </div>
       </div>

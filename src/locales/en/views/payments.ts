@@ -28,6 +28,7 @@ export default <PaymentsViewLocale>{
     amount: 'Amount',
     currency: 'Currency',
     status: 'Status',
+    metadata: 'Metadata',
   },
   exportDrawer: {
     title: 'Export',
