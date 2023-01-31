@@ -73,6 +73,7 @@ const fakePaymentIntent: PaymentIntent = {
   senderAccount: fakeAccount,
   status: PaymentStatus.Succeeded,
   fintocErrorReason: null,
+  metadata: {},
 };
 
 const detailDrawerOpened = ref(false);

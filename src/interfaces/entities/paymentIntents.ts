@@ -12,4 +12,5 @@ export interface PaymentIntent {
   senderAccount: Nullable<Account>
   status: PaymentStatus
   fintocErrorReason: Nullable<string>
+  metadata: Record<string, string | number | boolean>,
 }

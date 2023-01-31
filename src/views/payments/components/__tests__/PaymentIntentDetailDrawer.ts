@@ -36,6 +36,7 @@ const fakePaymentIntent: PaymentIntent = {
   senderAccount: fakeAccount,
   status: PaymentStatus.Succeeded,
   fintocErrorReason: null,
+  metadata: {},
 };
 
 const getWrapper = (paymentIntent: PaymentIntent) => {
@@ -76,6 +77,29 @@ describe('PaymentIntentDetailDrawer', () => {
       expect(errorReason.exists()).toBe(true);
       expect(errorReason.text()).toEqual(`${fintocErrorReason} →`);
       expect(errorReason.attributes('href')).toEqual(DOCS_PAYMENTS_ERROR_REASONS);
+    });
+  });
+
+  describe('when metadata object is empty', () => {
+    it('shouldn\'t show metadata section', async () => {
+      fakePaymentIntent.metadata = {};
+      const wrapper = getWrapper(fakePaymentIntent);
+      const metadataDiv = wrapper.find('[data-test="metadata"]');
+      expect(metadataDiv.exists()).toBe(false);
+    });
+  });
+
+  describe('when metadata object is not empty', () => {
+    it('should show metadata section', async () => {
+      const metadata = {
+        key1: 'value1',
+        key2: 1234,
+        key3: true,
+      };
+      fakePaymentIntent.metadata = metadata;
+      const wrapper = getWrapper(fakePaymentIntent);
+      const metadataDiv = wrapper.find('[data-test="metadata"]');
+      expect(metadataDiv.exists()).toBe(true);
     });
   });
 });

@@ -70,7 +70,7 @@ const done = () => {
                 @click="close"
               />
             </div>
-            <div class="px-12 pt-12 z-5">
+            <div class="px-12 py-6 z-5">
               <slot />
             </div>
           </div>
