@@ -22,6 +22,7 @@ export default <PaymentsViewLocale>{
     senderAccount: 'Sender Account',
     recipientName: 'Recipient Name',
     recipientRut: 'Recipient RUT',
+    recipientHolderId: 'Recipient Holder ID',
     recipientBank: 'Recipient Bank',
     recipientAccount: 'Recipient Account',
     accountType: 'Account Type',
@@ -29,6 +30,8 @@ export default <PaymentsViewLocale>{
     currency: 'Currency',
     status: 'Status',
     metadata: 'Metadata',
+    noMetadata: 'No associated data',
+    howToUse: 'how to use this field →',
   },
   exportDrawer: {
     title: 'Export',
