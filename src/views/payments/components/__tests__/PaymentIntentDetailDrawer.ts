@@ -10,7 +10,7 @@ import { CountryCode, PaymentStatus } from '@/interfaces/utilities/enums';
 import router from '@/router';
 import { mockCrypto } from '@/utils/tests/crypto';
 import { setupLocales } from '@/locales';
-import { DOCS_PAYMENTS_ERROR_REASONS } from '@/constants/urls';
+import { DOCS_PAYMENTS_ERROR_REASONS, DOCS_METADATA } from '@/constants/urls';
 import PaymentIntentDetailDrawer from '../PaymentIntentDetailDrawer.vue';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
@@ -86,6 +86,11 @@ describe('PaymentIntentDetailDrawer', () => {
       const wrapper = getWrapper(fakePaymentIntent);
       const metadataDiv = wrapper.find('[data-test="metadata"]');
       expect(metadataDiv.exists()).toBe(false);
+      const noMetadataText = wrapper.find('[data-test="no-metadata"]');
+      expect(noMetadataText.exists()).toBe(true);
+      const howToUseLink = wrapper.find('[data-test="how-to-use-metadata"]');
+      expect(howToUseLink.exists()).toBe(true);
+      expect(howToUseLink.attributes('href')).toEqual(DOCS_METADATA);
     });
   });
 
@@ -100,6 +105,10 @@ describe('PaymentIntentDetailDrawer', () => {
       const wrapper = getWrapper(fakePaymentIntent);
       const metadataDiv = wrapper.find('[data-test="metadata"]');
       expect(metadataDiv.exists()).toBe(true);
+      const noMetadataText = wrapper.find('[data-test="no-metadata"]');
+      expect(noMetadataText.exists()).toBe(false);
+      const howToUseLink = wrapper.find('[data-test="how-to-use-metadata"]');
+      expect(howToUseLink.exists()).toBe(false);
     });
   });
 });

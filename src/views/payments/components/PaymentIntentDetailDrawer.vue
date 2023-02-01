@@ -7,7 +7,7 @@ import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { BadgeStatus, DateStyle, CountryCode } from '@/interfaces/utilities/enums';
 import { formatDate, formatTime, formatTimezone } from '@/utils/date';
 import { camelToTitleCase } from '@/utils/strings';
-import { DOCS_PAYMENTS_ERROR_REASONS } from '@/constants/urls';
+import { DOCS_PAYMENTS_ERROR_REASONS, DOCS_METADATA } from '@/constants/urls';
 import GenericDrawer from '@/components/GenericDrawer.vue';
 import GenericBadge from '@/components/GenericBadge.vue';
 import CopyIcon from '@/assets/svg/CopyIcon.vue';
@@ -25,6 +25,10 @@ const formattedAmount = computed(() => (
 
 const senderHolderId = computed(() => (
   paymentCountryCode.value === CountryCode.CL ? $t('senderRut') : $t('senderHolderId')
+));
+
+const recipientHolderId = computed(() => (
+  paymentCountryCode.value === CountryCode.CL ? $t('recipientRut') : $t('recipientHolderId')
 ));
 
 const formattedSenderHolderId = computed(() => {
@@ -77,7 +81,7 @@ const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
 };
 
-const showMetadata = computed(() => Object.keys(props.paymentIntent.metadata).length > 0);
+const hasMetadata = computed(() => Object.keys(props.paymentIntent.metadata).length > 0);
 </script>
 <template>
   <GenericDrawer
@@ -229,7 +233,7 @@ const showMetadata = computed(() => Object.keys(props.paymentIntent.metadata).le
             {{ $t('recipientName') }}
           </div>
           <div class="text-xs">
-            {{ $t('recipientRut') }}
+            {{ recipientHolderId }}
           </div>
         </div>
         <div class="flex flex-col w-full space-y-1.5">
@@ -317,26 +321,41 @@ const showMetadata = computed(() => Object.keys(props.paymentIntent.metadata).le
           </div>
         </div>
       </div>
-      <div
-        v-if="showMetadata"
-        data-test="metadata"
-      >
-        <div class="h-px bg-divider-color" />
-        <div class="flex flex-col w-full space-y-1.5 p-3">
-          <div class="text-sm font-medium">
+      <div class="h-px bg-divider-color" />
+      <div class="flex flex-col w-full space-y-1.5 p-3 break-words">
+        <div class="flex justify-between space-x-4">
+          <div class="text-sm font-medium min-w-36 max-w-36">
             {{ $t('metadata') }}
           </div>
           <div
-            v-for="(value, key) in props.paymentIntent.metadata"
-            :key="key"
-            class="text-xs flex justify-between space-x-4 break-words"
+            v-if="!hasMetadata"
+            data-test="no-metadata"
+            class="text-sm text-disabled-color w-full max-w-sm"
           >
-            <div class="min-w-36 max-w-36">
-              {{ camelToTitleCase(key) }}
-            </div>
-            <div class="w-full max-w-xs">
-              {{ value }}
-            </div>
+            {{ $t('noMetadata') }}
+          </div>
+        </div>
+        <a
+          v-if="!hasMetadata"
+          data-test="how-to-use-metadata"
+          class="text-primary-main text-xs"
+          :href="DOCS_METADATA"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ $t('howToUse') }}
+        </a>
+        <div
+          v-for="(value, key) in props.paymentIntent.metadata"
+          :key="key"
+          data-test="metadata"
+          class="text-xs flex justify-between space-x-4"
+        >
+          <div class="min-w-36 max-w-36">
+            {{ camelToTitleCase(key) }}
+          </div>
+          <div class="w-full max-w-xxs">
+            {{ value }}
           </div>
         </div>
       </div>

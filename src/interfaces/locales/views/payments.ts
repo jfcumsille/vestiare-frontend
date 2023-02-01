@@ -20,6 +20,7 @@ export interface PaymentsViewLocale {
     senderAccount: string,
     recipientName: string,
     recipientRut: string,
+    recipientHolderId: string,
     recipientBank: string,
     recipientAccount: string,
     accountType: string,
@@ -27,6 +28,8 @@ export interface PaymentsViewLocale {
     currency: string,
     status: string,
     metadata: string,
+    noMetadata: string,
+    howToUse: string,
   },
   exportDrawer: {
     title: string,
