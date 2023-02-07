@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { LinkFilterType } from '@/interfaces/utilities/enums';
@@ -9,13 +10,13 @@ import TableFilter from '@/components/table/utils/TableFilter.vue';
 const $t = useTranslation('views.links.table');
 const linksStore = useLinksStore();
 
-const openFilter = (label: LinkFilterType) => {
-  if (label === LinkFilterType.Active) {
-    linksStore.openedActive = true;
-  }
-  if (label === LinkFilterType.Password) {
-    linksStore.openedPassword = true;
-  }
+const isTableEmpty = computed(() => (
+  linksStore.paginatedlinks.length === 0 && !linksStore.hasAppliedFilters
+));
+
+const showAndOpenFilter = (label: LinkFilterType) => {
+  linksStore.filtersShown.add(label);
+  linksStore.filtersOpened.add(label);
 };
 </script>
 
@@ -26,15 +27,23 @@ const openFilter = (label: LinkFilterType) => {
     <TableHeader><div> {{ $t('headers.business') }} </div></TableHeader>
     <TableHeader><div> {{ $t('headers.lastRefreshed') }} </div></TableHeader>
     <TableHeader>
+      <div v-if="isTableEmpty">
+        {{ $t('headers.password') }}
+      </div>
       <TableFilter
+        v-else
         :label="$t('headers.password')"
-        @toggle="openFilter(LinkFilterType.Password)"
+        @toggle="showAndOpenFilter(LinkFilterType.Password)"
       />
     </TableHeader>
     <TableHeader>
+      <div v-if="isTableEmpty">
+        {{ $t('headers.active') }}
+      </div>
       <TableFilter
+        v-else
         :label="$t('headers.active')"
-        @toggle="openFilter(LinkFilterType.Active)"
+        @toggle="showAndOpenFilter(LinkFilterType.Active)"
       />
     </TableHeader>
     <TableHeader><div /></TableHeader>

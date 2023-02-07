@@ -2,6 +2,8 @@ import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
 import { Link } from '@/interfaces/entities/links';
 import { LinkFilter } from '@/interfaces/utilities/table';
+import { LinkFilterType } from '@/interfaces/utilities/enums';
+import { hasFilters } from '@/utils/table';
 import { Json } from '@/interfaces/utilities/json';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { useConfigStore } from './config';
@@ -16,8 +18,8 @@ export const useLinksStore = defineStore('links', {
     backendPage: 1,
     loading: true,
     allFilters: <LinkFilter>{},
-    openedPassword: false,
-    openedActive: false,
+    filtersShown: new Set<LinkFilterType>(),
+    filtersOpened: new Set<LinkFilterType>(),
   }),
   actions: {
     async loadLinks() {
@@ -96,6 +98,9 @@ export const useLinksStore = defineStore('links', {
       const end = state.currentPage * state.pageSize;
       return state.links.slice(start, end);
     },
+    hasAppliedFilters: (state) => (
+      hasFilters(state.allFilters as Record<string, Array<string>>)
+    ),
   },
 });
 
