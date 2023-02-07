@@ -7,5 +7,6 @@ export default <TableLocale>{
   },
   filters: {
     filteredBy: 'Filtered by',
+    search: 'Search',
   },
 };
