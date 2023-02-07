@@ -20,7 +20,7 @@ import CreateLinkModal from '@/views/links/components/CreateLinkModal.vue';
 import NewLinkModal from '@/views/links/components/NewLinkModal.vue';
 import LinksTableHead from '@/views/links/components/LinksTableHead.vue';
 import LinksTableRow from '@/views/links/components/LinksTableRow.vue';
-import LinksTableAppliedFilters from '@/views/links/components/LinksTableAppliedFilters.vue';
+import LinksTableFilters from '@/views/links/components/LinksTableFilters.vue';
 
 const $t = useTranslation('views.links');
 
@@ -102,8 +102,8 @@ const clearSearchFilter = () => {
   }
 };
 
-const applyFilter = async (filters: Record<string, Array<boolean>>) => {
-  const allFilters: LinkFilter = filters;
+const applyFilter = async (filters: LinkFilter) => {
+  const allFilters = filters;
   if (formattedSearch.value !== '') {
     allFilters.rut = formattedSearch.value;
   }
@@ -183,7 +183,7 @@ onMounted(async () => {
       </div>
       <GenericTable class="mt-6">
         <template #top-section>
-          <LinksTableAppliedFilters
+          <LinksTableFilters
             @apply="applyFilter"
           />
         </template>

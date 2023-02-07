@@ -47,6 +47,7 @@ export default <LinksViewLocale>{
       searchBarPlaceholder: 'Search for a user ID',
       active: {
         label: 'Active',
+        labelType: 'Types',
         options: {
           valid: 'Active',
           invalid: 'Inactive',
@@ -54,6 +55,7 @@ export default <LinksViewLocale>{
       },
       password: {
         label: 'Password',
+        labelType: 'Types',
         options: {
           valid: 'Valid',
           invalid: 'Invalid',

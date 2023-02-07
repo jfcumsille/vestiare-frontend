@@ -43,6 +43,7 @@ export interface LinksViewLocale {
       searchBarPlaceholder: string,
       active: {
         label: string,
+        labelType: string,
         options: {
           valid: string,
           invalid: string
@@ -50,6 +51,7 @@ export interface LinksViewLocale {
       },
       password: {
         label: string,
+        labelType: string,
         options: {
           valid: string,
           invalid: string
