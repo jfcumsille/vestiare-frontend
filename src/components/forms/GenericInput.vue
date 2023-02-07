@@ -115,7 +115,7 @@ defineExpose({ valid, validating });
 </script>
 
 <template>
-  <div :class="`block h-full justify-center items-center ${sizeClasses} min-w-50 w-full`">
+  <div :class="`block h-full justify-center items-center ${sizeClasses} min-w-50 w-full pt-3 pb-2`">
     <div class="relative">
       <label
         v-if="props.label"
