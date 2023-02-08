@@ -72,6 +72,7 @@ export interface PaymentsViewLocale {
       status: {
         title: string,
         label: string,
+        labelType: string,
         options: {
           succeeded: string,
           rejected: string,
@@ -82,6 +83,11 @@ export interface PaymentsViewLocale {
         title: string,
         subtitle: string,
         label: string,
+      },
+      fintocID: {
+        title: string,
+        label: string,
+        hint: string,
       },
     },
   },
