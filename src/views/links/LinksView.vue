@@ -165,7 +165,7 @@ onMounted(async () => {
             @click-right-icon="clearSearchFilter"
           />
           <GenericButton
-            class="ml-4 capitalize"
+            class="ml-4 mt-3 capitalize"
             :type="ButtonType.Secondary"
             :disabled="formattedSearch === ''"
             icon-name="search"

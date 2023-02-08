@@ -172,7 +172,7 @@ defineExpose({ valid, validating });
         :class="`flex flex-row items-start ${warningIconColor} ${hintStyle}`"
       >
         <WarningIcon
-          class="mt-0.5 w-2.5 h-2.5 min-w-2.5 min-h-2.5"
+          class="mt-0.5 w-2.5 h-2.5 shrink-0"
           fill="currentColor"
         />
         <div class="ml-1 text-xs text-body-color">

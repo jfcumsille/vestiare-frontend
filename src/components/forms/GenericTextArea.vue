@@ -70,7 +70,7 @@ defineExpose({ valid });
 </script>
 
 <template>
-  <div :class="`block h-full justify-center items-center ${sizeClasses}`">
+  <div :class="`block h-full justify-center items-center ${sizeClasses} pt-3 pb-2`">
     <div class="relative">
       <label
         v-if="props.label"
@@ -102,16 +102,18 @@ defineExpose({ valid });
         />
       </div>
     </div>
-    <div
-      v-if="!internalValid"
-      class="flex flex-row items-center text-danger-main my-1"
-    >
-      <WarningIcon
-        class="mx-1 w-2.5 h-2.5"
-        fill="currentColor"
-      />
-      <div class="text-sm">
-        {{ error }}
+    <div class="my-1 ml-3.5 h-2">
+      <div
+        v-if="!internalValid"
+        class="flex flex-row items-center text-danger-main my-1"
+      >
+        <WarningIcon
+          class="mt-0.5 w-2.5 h-2.5 shrink-0"
+          fill="currentColor"
+        />
+        <div class="text-sm">
+          {{ error }}
+        </div>
       </div>
     </div>
   </div>

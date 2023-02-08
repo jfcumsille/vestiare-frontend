@@ -186,31 +186,29 @@ const handleSelectAllEvents = () => {
     <GenericForm
       ref="formRef"
     >
-      <div class="space-y-6">
-        <GenericInput
-          v-model="webhookEndpointName"
-          :size="SizeType.XLarge"
-          :label="$t('form.name.label')"
-          :placeholder="$t('form.name.placeholder')"
-          :validations="nameValidations"
-        />
-        <GenericTextArea
-          v-model="description"
-          :size="SizeType.XLarge"
-          :label="$t('form.description.label')"
-          :placeholder="$t('form.description.placeholder')"
-        />
-        <GenericInput
-          v-model="url"
-          :size="SizeType.XLarge"
-          :label="$t('form.url.label')"
-          :placeholder="$t('form.url.placeholder')"
-          :hint="$t('form.url.hint')"
-          right-text="webhook.site →"
-          right-href="https://webhook.site/"
-          :validations="urlValidations"
-        />
-      </div>
+      <GenericInput
+        v-model="webhookEndpointName"
+        :size="SizeType.XLarge"
+        :label="$t('form.name.label')"
+        :placeholder="$t('form.name.placeholder')"
+        :validations="nameValidations"
+      />
+      <GenericTextArea
+        v-model="description"
+        :size="SizeType.XLarge"
+        :label="$t('form.description.label')"
+        :placeholder="$t('form.description.placeholder')"
+      />
+      <GenericInput
+        v-model="url"
+        :size="SizeType.XLarge"
+        :label="$t('form.url.label')"
+        :placeholder="$t('form.url.placeholder')"
+        :hint="$t('form.url.hint')"
+        right-text="webhook.site →"
+        right-href="https://webhook.site/"
+        :validations="urlValidations"
+      />
       <div class="flex flex-row justify-between mt-16">
         <div class="text-sm font-medium text-body-color">
           {{ $t('checkBox.checkAll') }}

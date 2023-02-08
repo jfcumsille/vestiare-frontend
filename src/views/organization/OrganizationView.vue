@@ -237,11 +237,11 @@ onMounted(() => {
         </div>
         <GenericForm
           ref="editFormRef"
-          class="space-y-8"
+          class="space-y-7"
         >
           <div class="flex space-x-8">
             <GenericLabel
-              class="w-62 min-w-62 py-3"
+              class="w-62 min-w-62 py-5"
               :label="$t('settings.billingEmail')"
               :sub-label="$t('settings.billingSubLabel')"
             />
@@ -262,7 +262,7 @@ onMounted(() => {
           </div>
           <div class="flex space-x-8">
             <GenericLabel
-              class="w-62 min-w-62 py-3"
+              class="w-62 min-w-62 py-5"
               :label="$t('settings.technicalEmail')"
               :sub-label="$t('settings.technicalSubLabel')"
             />
