@@ -48,6 +48,7 @@ export default <LinksViewLocale>{
       searchBarPlaceholder: 'Buscar por ID de usuario',
       active: {
         label: 'Activo',
+        labelType: 'Tipos',
         options: {
           valid: 'Activo',
           invalid: 'Inactivo',
@@ -55,6 +56,7 @@ export default <LinksViewLocale>{
       },
       password: {
         label: 'Contraseña',
+        labelType: 'Tipos',
         options: {
           valid: 'Válido',
           invalid: 'Inválido',

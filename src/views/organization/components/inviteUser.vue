@@ -85,10 +85,12 @@ const inviteAnother = () => {
     <GenericForm
       v-else
       ref="form"
-      class="max-w-80 text-sm text-body-color space-y-6"
+      class="max-w-80 text-sm text-body-color"
       @submit.prevent="inviteUser"
     >
-      <p> {{ $t('subtitle') }} </p>
+      <p class="mb-5">
+        {{ $t('subtitle') }}
+      </p>
       <GenericInput
         v-model="email"
         :size="SizeType.Large"
@@ -104,7 +106,7 @@ const inviteAnother = () => {
         capitalize-options
         @select="selectRole"
       />
-      <div class="w-full flex justify-end gap-2">
+      <div class="w-full flex justify-end gap-2 mt-5">
         <GenericButton
           :type="ButtonType.Text"
           :text="$t('cancel')"

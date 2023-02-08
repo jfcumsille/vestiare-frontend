@@ -134,7 +134,7 @@ const passwordValidations = [(value: string) => isValidPassword(value) || $tForm
 
           <GenericForm
             ref="form"
-            class="grow flex flex-col justify-center space-y-5"
+            class="grow flex flex-col justify-center"
           >
             <div
               v-if="!!warningTitle"
@@ -151,7 +151,7 @@ const passwordValidations = [(value: string) => isValidPassword(value) || $tForm
                 <p>{{ $tSignUp('warningSubtitle') }}</p>
               </div>
             </div>
-            <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
+            <div class="flex flex-col lg:flex-row lg:space-x-2">
               <GenericInput
                 v-model="name"
                 :size="SizeType.Large"
@@ -167,7 +167,7 @@ const passwordValidations = [(value: string) => isValidPassword(value) || $tForm
                 :validations="lastNameValidations"
               />
             </div>
-            <div class="flex flex-col lg:flex-row lg:space-x-2 space-y-5 lg:space-y-0">
+            <div class="flex flex-col lg:flex-row lg:space-x-2">
               <GenericInput
                 v-model="company"
                 :size="SizeType.Large"
@@ -177,7 +177,7 @@ const passwordValidations = [(value: string) => isValidPassword(value) || $tForm
               />
               <div class="w-full">
                 <GenericDropDown
-                  class="mb-4 -mt-3"
+                  class="mb-4"
                   :label="$tSignUp('country')"
                   :size="SizeType.Large"
                   :selected="selectedCountry"
@@ -187,103 +187,101 @@ const passwordValidations = [(value: string) => isValidPassword(value) || $tForm
                 />
               </div>
             </div>
-            <div class="space-y-5">
-              <GenericInput
-                v-model="email"
-                :size="SizeType.Large"
-                :label="$tForms('labels.email')"
-                :placeholder="$tForms('placeholders.email')"
-                :validations="emailValidations"
-              />
-              <div class="space-y-2">
-                <GenericInput
-                  v-model="password"
-                  :size="SizeType.Large"
-                  :type="showPassword ? '': 'password'"
-                  :label="$tForms('labels.password')"
-                  :placeholder="$tForms('placeholders.password')"
-                  autocomplete="off"
-                  :validations="passwordValidations"
-                  bold-hint
-                  :right-icon-name="showPassword ? 'eye-closed' : 'eye'"
-                  :hint="isValidPassword(password) ? $tForms('hints.validPassword') : undefined"
-                  @click-right-icon="togglePassword"
-                />
-                <div
-                  v-if="showPasswordRules"
-                  class="ml-1 text-xs text-body-color pl-6 max-w-80"
-                >
-                  {{ $tSignUp('passwordHintLength') }}
-                  <ul class="pl-4 list-disc">
-                    <li>{{ $tSignUp('passwordHintLowerCase') }}</li>
-                    <li>{{ $tSignUp('passwordHintUpperCase') }}</li>
-                    <li>{{ $tSignUp('passwordHintNumber') }}</li>
-                    <li>{{ $tSignUp('passwordHintSpecialChar') }}</li>
-                  </ul>
+            <GenericInput
+              v-model="email"
+              :size="SizeType.Large"
+              :label="$tForms('labels.email')"
+              :placeholder="$tForms('placeholders.email')"
+              :validations="emailValidations"
+            />
+            <GenericInput
+              v-model="password"
+              :size="SizeType.Large"
+              :type="showPassword ? '': 'password'"
+              :label="$tForms('labels.password')"
+              :placeholder="$tForms('placeholders.password')"
+              autocomplete="off"
+              :validations="passwordValidations"
+              bold-hint
+              :right-icon-name="showPassword ? 'eye-closed' : 'eye'"
+              :hint="isValidPassword(password) ? $tForms('hints.validPassword') : undefined"
+              @click-right-icon="togglePassword"
+            />
+            <div
+              v-if="showPasswordRules"
+              class="ml-1 text-xs text-body-color pl-6 max-w-80"
+            >
+              {{ $tSignUp('passwordHintLength') }}
+              <ul class="pl-4 list-disc">
+                <li>{{ $tSignUp('passwordHintLowerCase') }}</li>
+                <li>{{ $tSignUp('passwordHintUpperCase') }}</li>
+                <li>{{ $tSignUp('passwordHintNumber') }}</li>
+                <li>{{ $tSignUp('passwordHintSpecialChar') }}</li>
+              </ul>
+            </div>
+            <div class="space-y-5 mt-4">
+              <div class="block">
+                <div>
+                  <label class="inline-flex items-center">
+                    <input
+                      v-model="isChecked"
+                      data-test="terms-checkbox"
+                      type="checkbox"
+                      class="w-4 h-4 accent-primary-main hover:accent-primary-main"
+                    >
+                    <label
+                      class="
+                        ml-2 form-check-label inline-block
+                        text-body-color text-sm font-normal
+                      "
+                      for="flexCheckDefault"
+                    >
+                      {{ $tSignUp('accept') }}
+                      <a
+                        class="text-primary-main"
+                        :href="TERMS_AND_CONDITIONS"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {{ $tSignUp('terms') }}
+                      </a>
+                      {{ $tSignUp('and') }}
+                      <a
+                        class="text-primary-main"
+                        :href="PRIVACY_POLICY"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {{ $tSignUp('privacyPolicy') }}
+                      </a>
+                    </label>
+                  </label>
                 </div>
               </div>
-            </div>
-            <div class="block">
+
               <div>
-                <label class="inline-flex items-center">
-                  <input
-                    v-model="isChecked"
-                    data-test="terms-checkbox"
-                    type="checkbox"
-                    class="w-4 h-4 accent-primary-main hover:accent-primary-main"
-                  >
-                  <label
-                    class="
-                      ml-2 form-check-label inline-block
-                      text-body-color text-sm font-normal
-                    "
-                    for="flexCheckDefault"
-                  >
-                    {{ $tSignUp('accept') }}
-                    <a
-                      class="text-primary-main"
-                      :href="TERMS_AND_CONDITIONS"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {{ $tSignUp('terms') }}
-                    </a>
-                    {{ $tSignUp('and') }}
-                    <a
-                      class="text-primary-main"
-                      :href="PRIVACY_POLICY"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {{ $tSignUp('privacyPolicy') }}
-                    </a>
-                  </label>
-                </label>
+                <GenericButton
+                  data-test="sign-up-button"
+                  :type="ButtonType.Primary"
+                  :text="$tSignUp('signUp')"
+                  :loading="loading"
+                  :disabled="!isSignUpEnabled"
+                  full-width
+                  @click="signUp"
+                />
               </div>
-            </div>
 
-            <div>
-              <GenericButton
-                data-test="sign-up-button"
-                :type="ButtonType.Primary"
-                :text="$tSignUp('signUp')"
-                :loading="loading"
-                :disabled="!isSignUpEnabled"
-                full-width
-                @click="signUp"
-              />
-            </div>
-
-            <div
-              class="mt-6 text-center text-body-color text-sm font-normal"
-            >
-              {{ $tSignUp('alreadyHaveAccount') }}
-              <a
-                :href="LOGIN_ROUTE"
-                class="text-primary-main font-medium"
+              <div
+                class="mt-6 text-center text-body-color text-sm font-normal"
               >
-                {{ $tSignUp('logIn') }}
-              </a>
+                {{ $tSignUp('alreadyHaveAccount') }}
+                <a
+                  :href="LOGIN_ROUTE"
+                  class="text-primary-main font-medium"
+                >
+                  {{ $tSignUp('logIn') }}
+                </a>
+              </div>
             </div>
           </GenericForm>
         </div>
