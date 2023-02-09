@@ -89,6 +89,10 @@ export interface PaymentsViewLocale {
         label: string,
         hint: string,
       },
+      senderHolderID: {
+        title: string,
+        label: string,
+      },
     },
   },
 }

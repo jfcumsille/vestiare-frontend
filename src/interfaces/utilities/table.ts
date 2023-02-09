@@ -18,6 +18,7 @@ export interface PaymentIntentFilter {
   since?: string,
   until?: string,
   id?: string,
+  senderHolderId?: string,
 }
 
 export interface LinkFilter {

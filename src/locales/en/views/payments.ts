@@ -91,6 +91,10 @@ export default <PaymentsViewLocale>{
         label: 'Fintoc ID',
         hint: 'Has to be the exact ID',
       },
+      senderHolderID: {
+        title: 'Sender Holder ID includes',
+        label: 'Sender Holder ID',
+      },
     },
   },
 };

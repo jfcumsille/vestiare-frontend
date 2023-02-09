@@ -91,6 +91,10 @@ export default <PaymentsViewLocale>{
         label: 'Fintoc ID',
         hint: 'Tiene que ser el ID exacto',
       },
+      senderHolderID: {
+        title: 'ID Titular Cuenta Origen incluye',
+        label: 'ID Titular Cuenta Origen',
+      },
     },
   },
 };
