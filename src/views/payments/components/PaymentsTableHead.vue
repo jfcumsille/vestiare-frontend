@@ -43,7 +43,16 @@ const showAndOpenFilter = (label: PaymentIntentFilterType) => {
         @toggle="showAndOpenFilter(PaymentIntentFilterType.CreationDate)"
       />
     </TableHeader>
-    <TableHeader><div> {{ $t('sender') }} </div></TableHeader>
+    <TableHeader>
+      <div v-if="isTableEmpty">
+        {{ $t('sender') }}
+      </div>
+      <TableFilter
+        v-else
+        :label="$t('sender')"
+        @toggle="showAndOpenFilter(PaymentIntentFilterType.SenderHolderID)"
+      />
+    </TableHeader>
     <TableHeader><div> {{ $t('senderAccount') }} </div></TableHeader>
     <TableHeader><div> {{ $t('amount') }} </div></TableHeader>
     <TableHeader>
