@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  ref, computed, onMounted, onUnmounted,
+  ref, computed, onMounted,
 } from 'vue';
 import { useTranslation } from '@/locales';
 import { usePaymentsStore } from '@/stores/payments';
@@ -21,7 +21,7 @@ import GenericButton from '@/components/GenericButton.vue';
 import TablePagination from '@/components/table/TablePagination.vue';
 import PaymentsTableHead from '@/views/payments/components/PaymentsTableHead.vue';
 import PaymentsTableRow from '@/views/payments/components/PaymentsTableRow.vue';
-import PaymentsTableAppliedFilters from '@/views/payments/components/PaymentsTableAppliedFilters.vue';
+import PaymentsTableFilters from '@/views/payments/components/PaymentsTableFilters.vue';
 import PaymentIntentDetailDrawer from '@/views/payments/components/PaymentIntentDetailDrawer.vue';
 import PaymentsExportDrawer from '@/views/payments/components/PaymentsExportDrawer.vue';
 
@@ -103,10 +103,6 @@ onMounted(async () => {
   });
   await paymentsStore.updateFilters({});
 });
-onUnmounted(async () => {
-  paymentsStore.showCreationDate = false;
-  paymentsStore.openedCreationDate = false;
-});
 </script>
 
 <template>
@@ -156,7 +152,7 @@ onUnmounted(async () => {
       <GenericTable>
         <template #top-section>
           <div class="flex flex-row justify-between items-start space-x-4 w-full mb-6">
-            <PaymentsTableAppliedFilters
+            <PaymentsTableFilters
               @apply="applyFilter"
             />
             <GenericButton

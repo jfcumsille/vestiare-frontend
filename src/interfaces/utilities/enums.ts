@@ -142,7 +142,8 @@ export enum LinkFilterType {
 
 export enum PaymentIntentFilterType {
   Status = 'status',
-  CreationDate = 'creation date'
+  CreationDate = 'creation date',
+  FintocID = 'fintoc id'
 }
 
 export enum FileFormat {

@@ -5,7 +5,7 @@ import { PaymentIntentFilter } from '@/interfaces/utilities/table';
 import { hasFilters } from '@/utils/table';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { Json } from '@/interfaces/utilities/json';
-import { FileFormat } from '@/interfaces/utilities/enums';
+import { FileFormat, PaymentIntentFilterType } from '@/interfaces/utilities/enums';
 import { useConfigStore } from './config';
 
 export const usePaymentsStore = defineStore('payments', {
@@ -18,9 +18,8 @@ export const usePaymentsStore = defineStore('payments', {
     backendPage: 1,
     loading: true,
     allFilters: <PaymentIntentFilter>{},
-    openedStatus: false,
-    showCreationDate: false,
-    openedCreationDate: false,
+    filtersShown: new Set<PaymentIntentFilterType>(),
+    filtersOpened: new Set<PaymentIntentFilterType>(),
     exportReady: false,
   }),
   actions: {

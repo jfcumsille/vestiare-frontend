@@ -5,5 +5,6 @@ export interface TableLocale {
   },
   filters: {
     filteredBy: string,
+    search: string,
   },
 }

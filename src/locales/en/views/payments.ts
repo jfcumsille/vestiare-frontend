@@ -74,6 +74,7 @@ export default <PaymentsViewLocale>{
       status: {
         title: 'Status includes:',
         label: 'Status',
+        labelType: 'Types',
         options: {
           succeeded: 'Succeeded',
           rejected: 'Rejected',
@@ -84,6 +85,11 @@ export default <PaymentsViewLocale>{
         title: 'Date is between:',
         subtitle: '*Date and time is in your local timezone.',
         label: 'Date',
+      },
+      fintocID: {
+        title: 'Fintoc ID is',
+        label: 'Fintoc ID',
+        hint: 'Has to be the exact ID',
       },
     },
   },

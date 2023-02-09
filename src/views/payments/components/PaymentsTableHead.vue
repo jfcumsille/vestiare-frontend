@@ -14,21 +14,25 @@ const isTableEmpty = computed(() => (
   paymentsStore.paginatedPaymentIntents.length === 0 && !paymentsStore.hasAppliedFilters
 ));
 
-const openFilter = (label: PaymentIntentFilterType) => {
-  if (label === PaymentIntentFilterType.Status) {
-    paymentsStore.openedStatus = true;
-  }
-  if (label === PaymentIntentFilterType.CreationDate) {
-    paymentsStore.openedCreationDate = true;
-    paymentsStore.showCreationDate = true;
-  }
+const showAndOpenFilter = (label: PaymentIntentFilterType) => {
+  paymentsStore.filtersShown.add(label);
+  paymentsStore.filtersOpened.add(label);
 };
 </script>
 
 <template>
   <TableHead>
     <TableHeader />
-    <TableHeader><div> {{ $t('fintocId') }} </div></TableHeader>
+    <TableHeader>
+      <div v-if="isTableEmpty">
+        {{ $t('fintocId') }}
+      </div>
+      <TableFilter
+        v-else
+        :label="$t('fintocId')"
+        @toggle="showAndOpenFilter(PaymentIntentFilterType.FintocID)"
+      />
+    </TableHeader>
     <TableHeader>
       <div v-if="isTableEmpty">
         {{ $t('creationDate') }}
@@ -36,7 +40,7 @@ const openFilter = (label: PaymentIntentFilterType) => {
       <TableFilter
         v-else
         :label="$t('creationDate')"
-        @toggle="openFilter(PaymentIntentFilterType.CreationDate)"
+        @toggle="showAndOpenFilter(PaymentIntentFilterType.CreationDate)"
       />
     </TableHeader>
     <TableHeader><div> {{ $t('sender') }} </div></TableHeader>
@@ -49,7 +53,7 @@ const openFilter = (label: PaymentIntentFilterType) => {
       <TableFilter
         v-else
         :label="$t('status')"
-        @toggle="openFilter(PaymentIntentFilterType.Status)"
+        @toggle="showAndOpenFilter(PaymentIntentFilterType.Status)"
       />
     </TableHeader>
   </TableHead>
