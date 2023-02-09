@@ -86,7 +86,7 @@ onClickOutside(searchFilter, () => {
       <GenericInput
         v-model="searchInput"
         class="px-2"
-        :size="SizeType.Small"
+        :size="SizeType.Hug"
         :label="props.label"
         :placeholder="props.placeholder"
         :hint="props.hint"
