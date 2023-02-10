@@ -28,7 +28,8 @@ const statusFilters = ref<Array<FilterOption<PaymentStatus>>>([
 const statusFilterSelectedValues = computed(() => getFilterValues(statusFilters.value));
 const sinceDatestring = ref<Nullable<string>>(null);
 const untilDatestring = ref<Nullable<string>>(null);
-const searchString = ref<Nullable<string>>(null);
+const fintocIDSearchString = ref<Nullable<string>>(null);
+const senderHolderIDSearchString = ref<Nullable<string>>(null);
 
 const addFilter = (filterType: PaymentIntentFilterType) => {
   paymentsStore.filtersShown.add(filterType);
@@ -51,8 +52,11 @@ const updateFilters = (filterType: Nullable<PaymentIntentFilterType>) => {
     filterValues.since = sinceDatestring.value;
     filterValues.until = untilDatestring.value;
   }
-  if (searchString.value) {
-    filterValues.id = searchString.value;
+  if (fintocIDSearchString.value) {
+    filterValues.id = fintocIDSearchString.value;
+  }
+  if (senderHolderIDSearchString.value) {
+    filterValues.senderHolderId = senderHolderIDSearchString.value;
   }
   if (filterType) {
     changeOpen(filterType, false);
@@ -66,9 +70,14 @@ const applyDateFilter = (since: string, until: string) => {
   updateFilters(PaymentIntentFilterType.CreationDate);
 };
 
-const search = (value: string) => {
-  searchString.value = value;
+const searchFintocID = (value: string) => {
+  fintocIDSearchString.value = value;
   updateFilters(PaymentIntentFilterType.FintocID);
+};
+
+const searchSenderHolderID = (value: string) => {
+  senderHolderIDSearchString.value = value;
+  updateFilters(PaymentIntentFilterType.SenderHolderID);
 };
 
 const deleteDateFilter = () => {
@@ -77,7 +86,11 @@ const deleteDateFilter = () => {
 };
 
 const deleteFintocIDSearch = async () => {
-  searchString.value = null;
+  fintocIDSearchString.value = null;
+};
+
+const deleteSenderHolderIDSearch = async () => {
+  senderHolderIDSearchString.value = null;
 };
 
 const deleteStatusFilter = async () => {
@@ -95,6 +108,9 @@ const deleteFilter = (filterType: PaymentIntentFilterType) => {
   }
   if (filterType === PaymentIntentFilterType.FintocID) {
     deleteFintocIDSearch();
+  }
+  if (filterType === PaymentIntentFilterType.SenderHolderID) {
+    deleteSenderHolderIDSearch();
   }
   updateFilters(null);
 };
@@ -135,6 +151,17 @@ const deleteFilter = (filterType: PaymentIntentFilterType) => {
         @delete="deleteFilter(PaymentIntentFilterType.CreationDate)"
       />
       <SearchFilter
+        v-if="paymentsStore.filtersShown.has(PaymentIntentFilterType.SenderHolderID)"
+        :class="getOrder(PaymentIntentFilterType.SenderHolderID, paymentsStore.filtersShown)"
+        :title="$t('senderHolderID.title')"
+        :label="$t('senderHolderID.label')"
+        :opened="paymentsStore.filtersOpened.has(PaymentIntentFilterType.SenderHolderID)"
+        @search="searchSenderHolderID"
+        @open="changeOpen(PaymentIntentFilterType.SenderHolderID, true)"
+        @close="changeOpen(PaymentIntentFilterType.SenderHolderID, false)"
+        @delete="deleteFilter(PaymentIntentFilterType.SenderHolderID)"
+      />
+      <SearchFilter
         v-if="paymentsStore.filtersShown.has(PaymentIntentFilterType.FintocID)"
         :class="getOrder(PaymentIntentFilterType.FintocID, paymentsStore.filtersShown)"
         :title="$t('fintocID.title')"
@@ -142,8 +169,9 @@ const deleteFilter = (filterType: PaymentIntentFilterType) => {
         :hint="$t('fintocID.hint')"
         :opened="paymentsStore.filtersOpened.has(PaymentIntentFilterType.FintocID)"
         :disabled="paymentsStore.loading"
+        class="min-w-48"
         placeholder="pi_..."
-        @search="search"
+        @search="searchFintocID"
         @open="changeOpen(PaymentIntentFilterType.FintocID, true)"
         @close="changeOpen(PaymentIntentFilterType.FintocID, false)"
         @delete="deleteFilter(PaymentIntentFilterType.FintocID)"
