@@ -169,6 +169,7 @@ const deleteFilter = (filterType: PaymentIntentFilterType) => {
         :hint="$t('fintocID.hint')"
         :opened="paymentsStore.filtersOpened.has(PaymentIntentFilterType.FintocID)"
         :disabled="paymentsStore.loading"
+        class="min-w-48"
         placeholder="pi_..."
         @search="searchFintocID"
         @open="changeOpen(PaymentIntentFilterType.FintocID, true)"

@@ -4,7 +4,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useTranslation } from '@/locales';
 import { useLinksStore } from '@/stores/links';
 import { usePaymentsStore } from '@/stores/payments';
-import { ButtonType, SizeType } from '@/interfaces/utilities/enums';
+import { ButtonType } from '@/interfaces/utilities/enums';
 import GenericButton from '@/components/GenericButton.vue';
 import CrossIcon from '@/assets/svg/CrossIcon.vue';
 import GenericInput from '@/components/forms/GenericInput.vue';
@@ -60,7 +60,7 @@ onClickOutside(searchFilter, () => {
   <div ref="searchFilter">
     <div
       class="text-primary-main whitespace-nowrap bg-primary-surface disabled:text-disabled-color
-      rounded-full flex flex-row items-center space-x-1 pl-2 pr-1 py-1 capitalize"
+      rounded-full flex flex-row items-center space-x-1 pl-2 pr-1 py-1 capitalize max-w-fit"
       :disabled="props.disabled"
       @click="openSearch()"
     >
@@ -86,7 +86,7 @@ onClickOutside(searchFilter, () => {
       <GenericInput
         v-model="searchInput"
         class="px-2"
-        :size="SizeType.Hug"
+        v-bind="$attrs"
         :label="props.label"
         :placeholder="props.placeholder"
         :hint="props.hint"
