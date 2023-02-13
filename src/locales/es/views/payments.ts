@@ -39,7 +39,7 @@ export default <PaymentsViewLocale>{
     download: 'Descargar',
     downloadBegun: 'Tu descarga ha comenzado.',
     transactions: 'transacciones',
-    selectFormat: 'En formato .csv',
+    selectFormat: 'Elige un formato:',
     filters: 'Con los filtros existentes:',
     dateBetween: 'Fecha entre:',
     noDateFilter: 'No se ha aplicado filtrado por fecha',
@@ -50,7 +50,10 @@ export default <PaymentsViewLocale>{
     columns: 'Incluyendo las columnas:',
     default: 'Por defecto:',
     exportReady: 'Tu archivo está listo.',
-    downloadAgain: 'Si no puedes ver tu archivo puedes intentar descargarlo de nuevo.',
+    exportReadySubtitle: 'Si no puedes ver tu archivo puedes intentar descargarlo de nuevo.',
+    exportTimeout: 'Tu descarga está siendo enviada a tu correo electrónico.',
+    exportTimeoutSubtitle: 'Por favor permite de 5 a 10 minutos para que el correo electrónico te llegue.',
+    exportTimeoutSubtitle2: 'Si no has recibido nada después de 20 minutos, por favor intenta de nuevo.',
   },
   table: {
     empty: {

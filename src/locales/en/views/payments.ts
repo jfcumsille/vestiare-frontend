@@ -50,7 +50,10 @@ export default <PaymentsViewLocale>{
     columns: 'Including columns:',
     default: 'Default:',
     exportReady: 'Your export is ready.',
-    downloadAgain: 'If you don\'t see your file you can try downloading it again.',
+    exportReadySubtitle: 'If you don\'t see your file you can try downloading it again.',
+    exportTimeout: 'Your download is being sent to your email.',
+    exportTimeoutSubtitle: 'Please allow for 5-10 minutes for the email to reach you.',
+    exportTimeoutSubtitle2: 'If you have not received anything after 20 minutes please try again.',
   },
   table: {
     empty: {

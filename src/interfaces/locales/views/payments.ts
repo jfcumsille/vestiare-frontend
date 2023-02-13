@@ -48,7 +48,10 @@ export interface PaymentsViewLocale {
     columns: string,
     default: string,
     exportReady: string,
-    downloadAgain: string,
+    exportReadySubtitle: string,
+    exportTimeout: string,
+    exportTimeoutSubtitle: string,
+    exportTimeoutSubtitle2: string,
   },
   table: {
     empty: {

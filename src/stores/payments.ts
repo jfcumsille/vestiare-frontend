@@ -1,11 +1,13 @@
 import { defineStore, acceptHMRUpdate } from 'pinia';
 import * as api from '@/api';
+import { AxiosError } from 'axios';
 import { PaymentIntent } from '@/interfaces/entities/paymentIntents';
 import { PaymentIntentFilter } from '@/interfaces/utilities/table';
 import { hasFilters } from '@/utils/table';
 import { DEFAULT_PAGE_SIZE } from '@/constants/table';
 import { Json } from '@/interfaces/utilities/json';
 import { FileFormat, PaymentIntentFilterType } from '@/interfaces/utilities/enums';
+import { useLocale } from '@/composables/locale';
 import { useConfigStore } from './config';
 
 export const usePaymentsStore = defineStore('payments', {
@@ -21,6 +23,7 @@ export const usePaymentsStore = defineStore('payments', {
     filtersShown: new Set<PaymentIntentFilterType>(),
     filtersOpened: new Set<PaymentIntentFilterType>(),
     exportReady: false,
+    exportTimeout: false,
   }),
   actions: {
     async loadPaymentIntents() {
@@ -42,6 +45,7 @@ export const usePaymentsStore = defineStore('payments', {
     async exportPaymentIntents(fileFormat: FileFormat) {
       this.loading = true;
       this.exportReady = false;
+      this.exportTimeout = false;
       const configStore = useConfigStore();
       const mode = configStore.mode;
       try {
@@ -50,6 +54,15 @@ export const usePaymentsStore = defineStore('payments', {
         });
         window.open(result.url, 'Download');
         this.exportReady = true;
+      } catch (err) {
+        const error = err as AxiosError;
+        if (error.message.includes('timeout')) {
+          this.exportTimeout = true;
+        }
+        const locale = useLocale();
+        await api.payments.sendExportEmail({
+          ...this.allFilters as Json, mode, fileFormat, locale: locale.value,
+        });
       } finally {
         this.loading = false;
       }

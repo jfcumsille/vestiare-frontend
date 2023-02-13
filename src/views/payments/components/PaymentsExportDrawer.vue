@@ -21,6 +21,7 @@ const emit = defineEmits<{ (e: 'close'): void }>();
 
 const close = async () => {
   paymentsStore.exportReady = false;
+  paymentsStore.exportTimeout = false;
   emit('close');
 };
 
@@ -63,6 +64,26 @@ const columnNames = [
 const exportPaymentIntents = async () => {
   await paymentsStore.exportPaymentIntents(fileFormat.value);
 };
+
+const exportTitle = computed(() => {
+  if (paymentsStore.exportReady) {
+    return $t('exportReady');
+  }
+  if (paymentsStore.exportTimeout) {
+    return $t('exportTimeout');
+  }
+  return '';
+});
+
+const exportSubtitle = computed(() => {
+  if (paymentsStore.exportReady) {
+    return $t('exportReadySubtitle');
+  }
+  if (paymentsStore.exportTimeout) {
+    return $t('exportTimeoutSubtitle');
+  }
+  return '';
+});
 </script>
 <template>
   <GenericDrawer
@@ -75,24 +96,25 @@ const exportPaymentIntents = async () => {
     @close="close"
   >
     <div
-      v-if="paymentsStore.exportReady"
+      v-if="paymentsStore.exportReady || paymentsStore.exportTimeout"
       class="space-y-8 max-w-xs"
     >
       <CheckIcon class="w-12 h-12 min-w-12 min-h-12 text-success-main" />
       <div class="font-medium">
-        {{ $t('exportReady') }}
+        {{ exportTitle }}
       </div>
-      <div> {{ $t('downloadAgain') }} </div>
+      <div> {{ exportSubtitle }} </div>
+      <div v-if="paymentsStore.exportTimeout"> {{ $t('exportTimeoutSubtitle2') }} </div>
     </div>
     <div
-      v-if="paymentsStore.loading && !paymentsStore.exportReady"
+      v-if="paymentsStore.loading && !paymentsStore.exportReady && !paymentsStore.exportTimeout"
       class="space-y-8 min-w-xs max-w-xs"
     >
       <LoadingSpinner class="min-w-12 min-h-12" />
       <div> {{ $t('downloadBegun') }} </div>
     </div>
     <div
-      v-if="!paymentsStore.loading && !paymentsStore.exportReady"
+      v-if="!paymentsStore.loading && !paymentsStore.exportReady && !paymentsStore.exportTimeout"
       class="space-y-8 min-w-xs max-w-xs"
     >
       <div class="space-y-4">
