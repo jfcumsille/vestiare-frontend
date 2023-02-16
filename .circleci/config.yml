@@ -5,26 +5,6 @@ commands:
       - run:
           name: Install Doppler CLI
           command: curl -Ls https://cli.doppler.com/install.sh | sudo sh
-  release:
-    parameters:
-      application-name:
-        type: string
-
-    steps:
-      - setup_remote_docker:
-          version: 20.10.11
-      - run:
-          name: Setup Heroku
-          command: curl https://cli-assets.heroku.com/install.sh | sh
-      - run:
-          name: Log in to Heroku Container Registry
-          command: heroku container:login
-      - run:
-          name: Build and push
-          command: heroku container:push --app <<parameters.application-name>> web
-      - run:
-          name: Release
-          command: heroku container:release --app <<parameters.application-name>> web
 
 jobs:
   eslint:
@@ -65,26 +45,6 @@ jobs:
       - run:
           name: Lint with StyleLint
           command: npm run lint:stylelint
-  build:
-    docker:
-      - image: cimg/node:16.14
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - node-modules-cache-{{ checksum "package-lock.json" }}
-          - node-modules-cache-
-      - run:
-          name: Install dependencies
-          command: npm ci
-      - save_cache:
-          key: node-modules-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - install-doppler
-      - run:
-          name: Build the application
-          command: doppler run --token $CI_DOPPLER_TOKEN --config ci -- npm run build
   vitest:
     docker:
       - image: cimg/node:16.14
@@ -94,9 +54,6 @@ jobs:
           keys:
           - node-modules-cache-{{ checksum "package-lock.json" }}
           - node-modules-cache-
-      - run:
-          name: Install dependencies
-          command: npm ci
       - save_cache:
           key: node-modules-cache-{{ checksum "package-lock.json" }}
           paths:
@@ -114,9 +71,18 @@ jobs:
           name: Check absence of fixup commits
           command: |
             ! git log main... | grep 'fixup!'
-  staging-deploy:
+  deploy:
     docker:
       - image: cimg/node:16.14
+    parameters:
+      env:
+        type: string
+      cloudflare_api_token:
+        type: string
+      cloudflare_account_id:
+        type: string
+      doppler_token:
+        type: string
     steps:
       - checkout
       - restore_cache:
@@ -133,57 +99,64 @@ jobs:
       - install-doppler
       - run:
           name: Build the application
-          command: doppler run --token $STG_DOPPLER_TOKEN --config stg -- npm run build
-      - release:
-          application-name: fintoc-stg-dashboard
-  production-deploy:
-    docker:
-      - image: cimg/node:16.14
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-          - node-modules-cache-{{ checksum "package-lock.json" }}
-          - node-modules-cache-
+          command: doppler run --token << parameters.doppler_token >> --config << parameters.env >> -- npm run build
       - run:
-          name: Install dependencies
-          command: npm ci
-      - save_cache:
-          key: node-modules-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - install-doppler
-      - run:
-          name: Build the application
-          command: doppler run --token $PRD_DOPPLER_TOKEN --config prd -- npm run build
-      - release:
-          application-name: fintoc-dashboard
+          name: Upload to Cloudflare Pages
+          command: CLOUDFLARE_API_TOKEN=<< parameters.cloudflare_api_token >> CLOUDFLARE_ACCOUNT_ID=<< parameters.cloudflare_account_id >> npx wrangler pages publish dist --project-name=$CLOUDFLARE_PROJECT_NAME --commit-dirty=true --branch main
 
 workflows:
-  linters:
+  pull_request:
     jobs:
-      - eslint
-      - stylelint
-  build:
+      - eslint:
+          filters:
+            branches:
+              ignore:
+                - main
+                - production
+      - stylelint:
+          filters:
+            branches:
+              ignore:
+                - main
+                - production
+      - vitest:
+          filters:
+            branches:
+              ignore:
+                - main
+                - production
+      - no-fixup-commits:
+          filters:
+            branches:
+              ignore:
+                - main
+                - production
+  main:
     jobs:
-      - build
-  tests:
-    jobs:
-      - vitest
-  tidyness:
-    jobs:
-      - no-fixup-commits
-  staging-deploy:
-    jobs:
-      - staging-deploy:
+      - vitest:
           filters:
             branches:
               only:
                 - main
-  production-deploy:
-    jobs:
-      - production-deploy:
+      - deploy:
+          env: stg
+          cloudflare_api_token: $CLOUDFLARE_STG_API_TOKEN
+          cloudflare_account_id: $CLOUDFLARE_STG_ACCOUNT_ID
+          doppler_token: $STG_DOPPLER_TOKEN
+          context: org-global
+          requires:
+            - vitest
           filters:
             branches:
-              only:
-                - production
+              only: main
+  production:
+    jobs:
+      - deploy:
+          env: prd
+          cloudflare_api_token: $CLOUDFLARE_PRD_API_TOKEN
+          cloudflare_account_id: $CLOUDFLARE_PRD_ACCOUNT_ID
+          doppler_token: $PRD_DOPPLER_TOKEN
+          context: org-global
+          filters:
+            branches:
+              only: production
