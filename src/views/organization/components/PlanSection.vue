@@ -5,7 +5,7 @@ import { useOrganizationStore } from '@/stores/organization';
 import { useLocale } from '@/composables/locale';
 import { Plan, DateStyle, Product } from '@/interfaces/utilities/enums';
 import { formatDate } from '@/utils/date';
-import { EMAIL_ANDRES } from '@/constants/urls';
+import { SALES_EMAIL } from '@/constants/urls';
 import GenericLabel from '@/components/GenericLabel.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
@@ -131,7 +131,7 @@ const subtitle2 = computed(() => {
     <div class="flex justify-end">
       <a
         class="text-primary-main text-right text-sm"
-        :href="EMAIL_ANDRES"
+        :href="SALES_EMAIL"
       >
         {{ $t('callToAction') }}
       </a>

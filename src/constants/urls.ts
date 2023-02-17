@@ -17,4 +17,4 @@ export const DOCS_METADATA = 'https://docs.fintoc.com/reference/metadata';
 export const TERMS_AND_CONDITIONS = 'https://fintoc.com/legal/terminos-y-condiciones-para-desarrolladores#terminos-y-condiciones';
 export const PRIVACY_POLICY = 'https://fintoc.com/legal/politicas-de-privacidad-para-usuarios-finales';
 
-export const EMAIL_ANDRES = 'mailto:andres@fintoc.com';
+export const SALES_EMAIL = 'mailto:sales@fintoc.com';
