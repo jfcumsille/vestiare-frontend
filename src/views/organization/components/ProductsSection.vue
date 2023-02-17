@@ -4,7 +4,7 @@ import { useTranslation } from '@/locales';
 import { useOrganizationStore } from '@/stores/organization';
 import { Nullable } from '@/interfaces/common';
 import { HolderType, Product } from '@/interfaces/utilities/enums';
-import { EMAIL_ANDRES } from '@/constants/urls';
+import { SALES_EMAIL } from '@/constants/urls';
 import GenericLabel from '@/components/GenericLabel.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import { icons } from '@/utils/icons';
@@ -137,7 +137,7 @@ const iconClass = (productCode: Product, holderType: HolderType) => {
     <div class="flex justify-end">
       <a
         class="text-primary-main text-right text-sm"
-        :href="EMAIL_ANDRES"
+        :href="SALES_EMAIL"
       >
         {{ $t('callToAction') }}
       </a>
