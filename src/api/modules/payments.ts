@@ -16,3 +16,8 @@ export const exportPaymentIntents = async (params: Json = {}) => {
   const response = await client.get(`${BASE_PATH}/export_csv_url`, { params });
   return response.data;
 };
+
+export const sendExportEmail = async (params: Json = {}) => {
+  const response = await client.get(`${BASE_PATH}/send_export_email`, { params });
+  return response.data;
+};
