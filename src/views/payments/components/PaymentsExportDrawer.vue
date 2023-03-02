@@ -100,11 +100,21 @@ const exportSubtitle = computed(() => {
       class="space-y-8 max-w-xs"
     >
       <CheckIcon class="w-12 h-12 min-w-12 min-h-12 text-success-main" />
-      <div class="font-medium">
+      <div
+        data-test="title"
+        class="font-medium"
+      >
         {{ exportTitle }}
       </div>
-      <div> {{ exportSubtitle }} </div>
-      <div v-if="paymentsStore.exportTimeout"> {{ $t('exportTimeoutSubtitle2') }} </div>
+      <div data-test="subtitle">
+        {{ exportSubtitle }}
+      </div>
+      <div
+        v-if="paymentsStore.exportTimeout"
+        data-test="subtitle2"
+      >
+        {{ $t('exportTimeoutSubtitle2') }}
+      </div>
     </div>
     <div
       v-if="paymentsStore.loading && !paymentsStore.exportReady && !paymentsStore.exportTimeout"
