@@ -314,7 +314,7 @@ const hasMetadata = computed(() => Object.keys(props.paymentIntent.metadata).len
             <a
               :href="DOCS_PAYMENTS_ERROR_REASONS"
               target="_blank"
-              class="text-primary-main text-sm"
+              class="text-primary-main text-xs"
             >
               {{ props.paymentIntent.fintocErrorReason }} →
             </a>
