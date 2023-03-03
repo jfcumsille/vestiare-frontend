@@ -1,5 +1,5 @@
 import {
-  beforeAll, beforeEach, describe, expect, it, vi,
+  beforeAll, beforeEach, afterEach, describe, expect, it, vi,
 } from 'vitest';
 import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
@@ -10,6 +10,7 @@ import { setupLocales } from '@/locales';
 import { usePaymentsStore } from '@/stores/payments';
 import CheckIcon from '@/assets/svg/CheckIcon.vue';
 import i18next from 'i18next';
+import * as api from '@/api';
 import PaymentsExportDrawer from '../PaymentsExportDrawer.vue';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
@@ -34,6 +35,12 @@ describe('PaymentsExportDrawer', () => {
   beforeEach(() => {
     setActivePinia(testingPinia);
     setupLocales();
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
   });
 
   describe('when exportReady is true', async () => {
@@ -127,6 +134,58 @@ describe('PaymentsExportDrawer', () => {
       const subtitle2 = wrapper.find('[data-test="subtitle2"]');
       expect(subtitle2.exists()).toBe(true);
       expect(subtitle2.text()).toMatch('If you have not received anything after 20 minutes please try again.');
+    });
+  });
+
+  describe('when exportPaymentIntents does not time out', async () => {
+    it('only calls exportPaymentIntents', async () => {
+      const paymentsStore = usePaymentsStore();
+      paymentsStore.exportReady = false;
+      paymentsStore.exportTimeout = false;
+      paymentsStore.loading = false;
+
+      const exportSpy = vi.spyOn(api.payments, 'exportPaymentIntents');
+      const emailSpy = vi.spyOn(api.payments, 'sendExportEmail');
+      const wrapper = getWrapper();
+
+      const button = wrapper.find('[data-test="drawer-done-button"]');
+      expect(button.exists()).toBe(true);
+      await button.trigger('click');
+
+      setImmediate(() => {
+        expect(exportSpy).toHaveBeenCalled();
+        vi.advanceTimersByTime(2000);
+        expect(emailSpy).toHaveBeenCalled();
+      });
+
+      exportSpy.mockRestore();
+      emailSpy.mockRestore();
+    });
+  });
+
+  describe('when exportPaymentIntents times out', async () => {
+    it('calls exportPaymentIntents and then sendExportEmail', async () => {
+      const paymentsStore = usePaymentsStore();
+      paymentsStore.exportReady = false;
+      paymentsStore.exportTimeout = false;
+      paymentsStore.loading = false;
+
+      const exportSpy = vi.spyOn(api.payments, 'exportPaymentIntents');
+      const emailSpy = vi.spyOn(api.payments, 'sendExportEmail');
+      const wrapper = getWrapper();
+
+      const button = wrapper.find('[data-test="drawer-done-button"]');
+      expect(button.exists()).toBe(true);
+      await button.trigger('click');
+
+      setImmediate(() => {
+        expect(exportSpy).toHaveBeenCalled();
+        vi.advanceTimersByTime(4000);
+        expect(emailSpy).toHaveBeenCalled();
+      });
+
+      exportSpy.mockRestore();
+      emailSpy.mockRestore();
     });
   });
 });
