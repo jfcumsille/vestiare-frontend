@@ -3,7 +3,7 @@ import {
 } from 'vitest';
 import { setActivePinia } from 'pinia';
 import { createTestingPinia } from '@pinia/testing';
-import { mount } from '@vue/test-utils';
+import { VueWrapper, mount } from '@vue/test-utils';
 import { setupLocales } from '@/locales';
 import router from '@/router/index';
 import { WEBHOOK_ENDPOINT_CREATED } from '@/constants/analyticsEvents';
@@ -11,6 +11,7 @@ import { expectToTrackWithAnalytics, mockPageAndTrackAnalytics } from '@/utils/t
 import { mockCrypto } from '@/utils/tests/crypto';
 import WebhookEndpointCreationDrawer from '@/views/webhookEndpoints/components/WebhookEndpointCreationDrawer.vue';
 import GenericDrawer from '@/components/GenericDrawer.vue';
+import { WebhookEvent } from '@/interfaces/entities/webhookEndpoints';
 
 const testingPinia = createTestingPinia({ createSpy: vi.fn });
 
@@ -27,6 +28,16 @@ const getWrapper = () => {
     },
   });
   return wrapper;
+};
+
+const expectToClearEverything = (wrapper: VueWrapper<any>) => {
+  expect(wrapper.vm.url).toBe('');
+  expect(wrapper.vm.webhookEndpointName).toBe('');
+  expect(wrapper.vm.description).toBe('');
+  wrapper.vm.events.forEach((event: WebhookEvent) => {
+    expect(event.checked).toBe(false);
+  });
+  expect(wrapper.vm.selectedEvents).toEqual([]);
 };
 
 describe('WebhookEndpointCreationDrawer', () => {
@@ -74,6 +85,7 @@ describe('WebhookEndpointCreationDrawer', () => {
       await wrapper.vm.$forceUpdate();
       const properties = { enabled_events: ['link.credentials_changed', 'payment_intent.succeeded'], origin: 'dashboard' };
       expectToTrackWithAnalytics(analyticsTrackMock, WEBHOOK_ENDPOINT_CREATED, properties);
+      expectToClearEverything(wrapper);
     });
   });
 });

@@ -85,26 +85,6 @@ const getEventNames = (webhookEvents: Array<WebhookEvent>) => (
   webhookEvents.map((event) => event.name)
 );
 
-const createWebhookEndpoint = async () => {
-  const formIsValid = formRef.value?.valid;
-  const eventsAreValid = areValidEvents();
-  if (formIsValid && eventsAreValid) {
-    loading.value = true;
-    const selectedEventNames = getEventNames(selectedEvents.value);
-    await webhookEndpointsStore.createWebhookEndpoint(
-      {
-        url: url.value,
-        name: webhookEndpointName.value,
-        description: description.value.trim() === '' ? undefined : description.value,
-        enabledEvents: selectedEventNames,
-      },
-    );
-    loading.value = false;
-    emit('close');
-    trackWebhookCreated(selectedEventNames);
-  }
-};
-
 watch(() => selectedEvents.value, () => { eventsError.value = ''; });
 
 const productOptions = [
@@ -173,6 +153,52 @@ const handleSelectAllEvents = () => {
     events.value = uncheckedEvents;
   }
 };
+
+const selectDefaultProduct = () => {
+  selectProduct(Product.Movements);
+};
+
+const clearAllChecks = () => {
+  productOptions.forEach((product) => {
+    selectProduct(product);
+    events.value.forEach((event) => {
+      removeSelectedEvent(event);
+    });
+  });
+};
+
+const clearWebhookForm = () => {
+  url.value = '';
+  description.value = '';
+  webhookEndpointName.value = '';
+  clearAllChecks();
+  selectDefaultProduct();
+};
+
+const closeForm = () => {
+  clearWebhookForm();
+  emit('close');
+};
+
+const createWebhookEndpoint = async () => {
+  const formIsValid = formRef.value?.valid;
+  const eventsAreValid = areValidEvents();
+  if (formIsValid && eventsAreValid) {
+    loading.value = true;
+    const selectedEventNames = getEventNames(selectedEvents.value);
+    await webhookEndpointsStore.createWebhookEndpoint(
+      {
+        url: url.value,
+        name: webhookEndpointName.value,
+        description: description.value.trim() === '' ? undefined : description.value,
+        enabledEvents: selectedEventNames,
+      },
+    );
+    loading.value = false;
+    closeForm();
+    trackWebhookCreated(selectedEventNames);
+  }
+};
 </script>
 
 <template>
@@ -180,7 +206,7 @@ const handleSelectAllEvents = () => {
     :title="`${$t('modalTitle')} ${isLive ? 'Live' : 'Test' } Webhook Endpoint`"
     :button-title="$t('buttonText')"
     :open="props.open"
-    @close="emit('close')"
+    @close="closeForm"
     @done="createWebhookEndpoint"
   >
     <GenericForm
