@@ -31,5 +31,3 @@ Ej.
 - Se decidió separar x funcionalidad en dos componentes
 - ¿Les parece bien este nombre para y?
 - Se decidió no incluir el refactor de x en este PR
-
-Closes FIN-*

@@ -1,8 +1,3 @@
-export enum Mode {
-  Live = 'live',
-  Test = 'test',
-}
-
 export enum CountryCode {
   CL = 'cl',
   MX = 'mx',
@@ -11,19 +6,6 @@ export enum CountryCode {
 export enum CountryName {
   Chile = 'Chile',
   Mexico = 'Mexico',
-}
-
-export enum Product {
-  Movements = 'movements',
-  Invoices = 'invoices',
-  Subscriptions = 'subscription',
-  SubscriptionIntents = 'subscriptions',
-  Payments = 'payments',
-  Income = 'income',
-  RefreshIntent = 'refresh_intent',
-  TaxStatements = 'tax_statements',
-  TaxReturns = 'tax_returns',
-  Charges = 'charges',
 }
 
 export enum Plan {
@@ -128,23 +110,8 @@ export enum BadgeStatus {
   Main = 'main',
 }
 
-export enum PaymentStatus {
-  Succeeded = 'succeeded',
-  Rejected = 'rejected',
-  Failed = 'failed',
-  InProgress = 'in_progress',
-}
-
-export enum LinkFilterType {
-  Active = 'active',
-  Password = 'password',
-}
-
-export enum PaymentIntentFilterType {
-  Status = 'status',
-  CreationDate = 'creation date',
-  FintocID = 'fintoc id',
-  SenderHolderID = 'sender holder id'
+export enum DressFilterType {
+  Public = 'public',
 }
 
 export enum FileFormat {

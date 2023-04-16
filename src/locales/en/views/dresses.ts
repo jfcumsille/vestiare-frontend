@@ -1,10 +1,10 @@
-import { LinksViewLocale } from '@/interfaces/locales/views/links';
+import { DressesViewLocale } from '@/interfaces/locales/views/dresses';
 
-export default <LinksViewLocale>{
-  title_one: 'Link',
-  title_other: 'Links',
+export default <DressesViewLocale>{
+  title_one: 'Dress',
+  title_other: 'Dresses',
   learnMore: 'Learn more about Fintoc Links →',
-  createLinkModal: {
+  createDressModal: {
     create: 'Create',
     subtitleTest: 'Create a Link with test credentials to get information about bank or fiscal accounts from the sandbox.',
     learnMoreTest: 'Learn more about test credentials you can use →',
@@ -17,7 +17,7 @@ export default <LinksViewLocale>{
     holderType: 'Account type',
     chooseHolderType: 'Choose account type…',
   },
-  newLinkModal: {
+  newDressModal: {
     title: 'Link created succesfully!',
     warning: 'This Link Token will <b>only be showed once</b>, so make sure to copy and save it.',
     danger: 'Something went wrong. Please request a new Link Token below, no need to restart the process.',
@@ -26,7 +26,7 @@ export default <LinksViewLocale>{
     loading: 'Loading link token...',
     retryButton: 'Request',
   },
-  deleteLinkModal: {
+  deleteDressModal: {
     title: 'Delete Link',
     confirmation: 'Delete Link',
     warning: 'If you delete a Link, it cannot be undone.',
@@ -45,20 +45,12 @@ export default <LinksViewLocale>{
     },
     filters: {
       searchBarPlaceholder: 'Search for a user ID',
-      active: {
-        label: 'Active',
+      public: {
+        label: 'Public',
         labelType: 'Types',
         options: {
-          valid: 'Active',
-          invalid: 'Inactive',
-        },
-      },
-      password: {
-        label: 'Password',
-        labelType: 'Types',
-        options: {
-          valid: 'Valid',
-          invalid: 'Invalid',
+          valid: 'Public',
+          invalid: 'Private',
         },
       },
     },

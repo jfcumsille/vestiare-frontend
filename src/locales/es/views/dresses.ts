@@ -1,10 +1,10 @@
-import { LinksViewLocale } from '@/interfaces/locales/views/links';
+import { DressesViewLocale } from '@/interfaces/locales/views/dresses';
 
-export default <LinksViewLocale>{
-  title_one: 'Link',
-  title_other: 'Links',
-  learnMore: 'Aprende más sobre los Links de Fintoc →',
-  createLinkModal: {
+export default <DressesViewLocale>{
+  title_one: 'Vestido',
+  title_other: 'Vestidos',
+  learnMore: 'Aprende más sobre los Vestidos de Vestiare →',
+  createDressModal: {
     create: 'Crear',
     subtitleTest: 'Crea un Link con credenciales de prueba para obtener información de cuentas bancarias o fiscales desde el sandbox.',
     learnMoreTest: 'Aprende más sobre credenciales de pruebas que puedes utilizar →',
@@ -17,7 +17,7 @@ export default <LinksViewLocale>{
     holderType: 'Tipo de cuenta',
     chooseHolderType: 'Elegir tipo de cuenta…',
   },
-  newLinkModal: {
+  newDressModal: {
     title: 'Link creado exitosamente!',
     warning: 'Este Link Token será mostrado <b>solamente una vez</b>, por lo que debes asegurarte de copiarlo y guardarlo.',
     danger: 'Algo salió mal. Por favor solicita un nuevo Link Token abajo, sin necesidad de volver a empezar el proceso.',
@@ -26,7 +26,7 @@ export default <LinksViewLocale>{
     loading: 'Cargando link token...',
     retryButton: 'Solicitar',
   },
-  deleteLinkModal: {
+  deleteDressModal: {
     title: 'Eliminar link',
     confirmation: 'Eliminar Link',
     warning: 'Esta acción no se puede deshacer.',
@@ -46,20 +46,12 @@ export default <LinksViewLocale>{
     },
     filters: {
       searchBarPlaceholder: 'Buscar por ID de usuario',
-      active: {
-        label: 'Activo',
+      public: {
+        label: 'Público',
         labelType: 'Tipos',
         options: {
-          valid: 'Activo',
-          invalid: 'Inactivo',
-        },
-      },
-      password: {
-        label: 'Contraseña',
-        labelType: 'Tipos',
-        options: {
-          valid: 'Válido',
-          invalid: 'Inválido',
+          valid: 'Público',
+          invalid: 'Privado',
         },
       },
     },

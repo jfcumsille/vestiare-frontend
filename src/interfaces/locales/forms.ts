@@ -5,7 +5,6 @@ export interface FormsLocale {
       password: string,
       name: string,
       lastName: string,
-      company: string,
       country: string,
     },
     placeholders: {
@@ -13,7 +12,6 @@ export interface FormsLocale {
       password: string,
       name: string,
       lastName: string,
-      company: string,
       country: string,
     },
     hints: {

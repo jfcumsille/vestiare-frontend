@@ -48,6 +48,9 @@ module.exports = {
         'warning-pressed': '#BE5C00',
         'warning-focus': '#FBE4CF',
       },
+      inset: {
+        '1/2': '50%',
+      },
       maxWidth: {
         2.5: '0.625rem',
         28: '7rem',

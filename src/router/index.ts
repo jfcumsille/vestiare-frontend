@@ -1,10 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import {
   HOME_ROUTE,
-  API_KEYS_ROUTE,
-  LINKS_ROUTE,
-  WEBHOOK_ENDPOINTS_ROUTE,
-  DETAILED_WEBHOOK_ENDPOINT_VIEW,
+  DRESSES_ROUTE,
   LOGIN_ROUTE,
   SIGNUP_ROUTE,
   PASSWORD_RESET_ROUTE,
@@ -13,19 +10,14 @@ import {
   PROFILE_ROUTE,
   ORGANIZATION_ROUTE,
   INVITATION_ROUTE,
-  PAYMENTS_ROUTE,
 } from '@/constants/router';
 import LogInView from '@/views/login-signup/LogInView.vue';
 import SignUpView from '@/views/login-signup/SignUpView.vue';
 import ResetPasswordView from '@/views/login-signup/ResetPasswordView.vue';
-import ApiKeysView from '@/views/apiKeys/ApiKeysView.vue';
-import LinksView from '@/views/links/LinksView.vue';
-import WebhookEndpointsView from '@/views/webhookEndpoints/WebhookEndpointsView.vue';
-import DetailedWebhookEndpointView from '@/views/webhookEndpoints/DetailedWebhookEndpointView.vue';
 import ProfileView from '@/views/profile/ProfileView.vue';
 import OrganizationView from '@/views/organization/OrganizationView.vue';
 import InvitationView from '@/views/invitation/InvitationView.vue';
-import PaymentsView from '@/views/payments/PaymentsView.vue';
+import DressesView from '@/views/dresses/DressesView.vue';
 
 import { enableLoader, disableLoader } from './loader';
 import {
@@ -35,12 +27,11 @@ import {
   skipSignUpIfAlreadyLoggedIn,
   skipResetPasswordIfAlreadyLoggedIn,
   removeTrailingSlash,
-  paymentsAuthorizedOrgRequired,
 } from './guards';
 import { handleAuth0RedirectCallback } from './handlers';
 
 const routes: RouteRecordRaw[] = [
-  { path: HOME_ROUTE, redirect: () => ({ path: LINKS_ROUTE }) },
+  { path: HOME_ROUTE, redirect: () => ({ path: DRESSES_ROUTE }) },
   {
     path: OAUTH_LOGIN_ROUTE,
     component: LogInView,
@@ -68,19 +59,11 @@ const routes: RouteRecordRaw[] = [
       skipResetPasswordIfAlreadyLoggedIn,
     ],
   },
-  {
-    path: PAYMENTS_ROUTE,
-    component: PaymentsView,
-    beforeEnter: paymentsAuthorizedOrgRequired,
-  },
-  { path: API_KEYS_ROUTE, component: ApiKeysView },
-  { path: LINKS_ROUTE, component: LinksView },
-  { path: WEBHOOK_ENDPOINTS_ROUTE, component: WebhookEndpointsView },
-  { path: DETAILED_WEBHOOK_ENDPOINT_VIEW, component: DetailedWebhookEndpointView },
+  { path: DRESSES_ROUTE, component: DressesView },
   { path: PROFILE_ROUTE, component: ProfileView },
   { path: ORGANIZATION_ROUTE, component: OrganizationView },
   { path: INVITATION_ROUTE, component: InvitationView },
-  { path: '/:pathMatch(.*)*', redirect: () => ({ path: LINKS_ROUTE }) },
+  { path: '/:pathMatch(.*)*', redirect: () => ({ path: DRESSES_ROUTE }) },
 ];
 
 const router = createRouter({

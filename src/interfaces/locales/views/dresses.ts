@@ -1,8 +1,8 @@
-export interface LinksViewLocale {
+export interface DressesViewLocale {
   title_one: string,
   title_other: string,
   learnMore: string,
-  createLinkModal: {
+  createDressModal: {
     create: string,
     subtitleTest: string,
     learnMoreTest: string,
@@ -15,7 +15,7 @@ export interface LinksViewLocale {
     holderType: string,
     chooseHolderType: string,
   },
-  newLinkModal: {
+  newDressModal: {
     title: string,
     warning: string,
     danger: string,
@@ -24,7 +24,7 @@ export interface LinksViewLocale {
     loading: string,
     retryButton: string,
   },
-  deleteLinkModal: {
+  deleteDressModal: {
     title: string,
     confirmation: string,
     warning: string,
@@ -41,15 +41,7 @@ export interface LinksViewLocale {
     },
     filters: {
       searchBarPlaceholder: string,
-      active: {
-        label: string,
-        labelType: string,
-        options: {
-          valid: string,
-          invalid: string
-        },
-      },
-      password: {
+      public: {
         label: string,
         labelType: string,
         options: {

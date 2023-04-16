@@ -3,15 +3,11 @@ import humps from 'humps';
 import {
   MODAL_VIEWED,
   MODAL_CLOSED,
-  LINK_CREATED,
-  LINK_ACTIVE_CHANGED,
-  WEBHOOK_ENDPOINT_CREATED,
-  API_KEY_CREATED,
-  API_KEY_DELETED,
+  DRESS_CREATED,
+  DRESS_PUBLIC_CHANGED,
+  DASHBOARD_ORIGIN,
 } from '@/constants/analyticsEvents';
-import { Link } from '@/interfaces/entities/links';
-import { APIKey } from '@/interfaces/entities/apiKeys';
-import { Product, Mode } from '@/interfaces/utilities/enums';
+import { Dress } from '@/interfaces/entities/dresses';
 
 export const convertRecordKeysToSnakeCase = (
   record: Record<string, unknown>,
@@ -57,52 +53,26 @@ export const trackModal = (opened: boolean, location: string, action: string) =>
   }
 };
 
-export const trackLinkCreated = (link: Link, product: Product) => {
-  track(LINK_CREATED, {
-    mode: link.mode,
-    linkId: link.id,
-    institutionId: link.institution.id,
-    holderType: link.holderType,
-    holderId: link.holderId,
-    username: link.username,
-    createdAt: link.createdAt,
-    product,
-    origin: 'dashboard',
+export const trackDressCreated = (dress: Dress) => {
+  track(DRESS_CREATED, {
+    dressId: dress.id,
+    userId: dress.userId,
+    userName: dress.userName,
+    createdAt: dress.createdAt,
+    origin: DASHBOARD_ORIGIN,
   });
 };
 
-export const trackLinkStatus = (link: Link) => {
-  track(LINK_ACTIVE_CHANGED, {
-    id: link.id,
-    active: link.active,
-  });
-};
-
-export const trackWebhookCreated = (enabledEvents: Array<string>) => {
-  track(WEBHOOK_ENDPOINT_CREATED, {
-    enabledEvents,
-    origin: 'dashboard',
-  });
-};
-
-export const trackAPIKeyCreated = () => {
-  track(API_KEY_CREATED, {
-    mode: Mode.Live,
-    isPublic: 'false',
-  });
-};
-
-export const trackAPIKeyDeleted = (key: APIKey) => {
-  track(API_KEY_DELETED, {
-    id: key.id,
-    mode: key.mode,
-    isPublic: key.isPublic.toString(),
+export const trackDressStatus = (dress: Dress) => {
+  track(DRESS_PUBLIC_CHANGED, {
+    id: dress.id,
+    public: dress.public,
   });
 };
 
 export const trackId = (name: string, id: string) => {
   track(name, {
     id,
-    origin: 'dashboard',
+    origin: DASHBOARD_ORIGIN,
   });
 };

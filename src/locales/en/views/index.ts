@@ -1,7 +1,4 @@
-import apiKeys from './apiKeys';
-import links from './links';
-import webhookEndpoints from './webhookEndpoints';
-import payments from './payments';
+import dresses from './dresses';
 import logIn from './logIn';
 import signUp from './signUp';
 import resetPassword from './resetPassword';
@@ -10,10 +7,7 @@ import organization from './organization';
 import invitations from './invitations';
 
 export {
-  apiKeys,
-  links,
-  webhookEndpoints,
-  payments,
+  dresses,
   logIn,
   signUp,
   resetPassword,

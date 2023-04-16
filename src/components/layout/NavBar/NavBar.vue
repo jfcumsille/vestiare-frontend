@@ -11,7 +11,6 @@ import {
   ORGANIZATION_ROUTE,
   INVITATION_ROUTE_STARTS_WITH,
 } from '@/constants/router';
-import { DOCS } from '@/constants/urls';
 import MenuIcon from '@/assets/svg/MenuIcon.vue';
 import SettingsIcon from '@/assets/svg/SettingsIcon.vue';
 import GenericButton from '@/components/GenericButton.vue';
@@ -32,12 +31,7 @@ const pressMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const navBarLoggedInLinks = [
-  {
-    text: $t('docs'),
-    href: DOCS,
-  },
-];
+const navBarLoggedInLinks: { text: string, href: string}[] = [];
 
 const isInvitationView = computed(() => route.path.includes(INVITATION_ROUTE_STARTS_WITH));
 const isLogInView = computed(() => route.path.includes(LOGIN_ROUTE));
@@ -62,17 +56,6 @@ const signUp = () => {
         v-if="!isLoggedIn && isLargeWidth"
         class="flex gap-4"
       >
-        <a
-          class="
-            text-primary-main hover:text-primary-hover
-            px-5 py-4 h-11 cursor-pointer flex items-center
-          "
-          :href="DOCS"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ $t('docs') }}
-        </a>
         <GenericButton
           v-if="!isLogInView"
           :type="ButtonType.Secondary"
@@ -141,17 +124,6 @@ const signUp = () => {
           text-heading-color font-medium rounded-lg transition-all ease-out duration-500
         "
       >
-        <a
-          class="
-            px-3 py-2 border-b-4 border-primary-main border-opacity-0
-            hover:border-opacity-100 hover:text-primary-main
-          "
-          :href="DOCS"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ $t('docs') }}
-        </a>
         <a
           v-if="!isLogInView"
           class="

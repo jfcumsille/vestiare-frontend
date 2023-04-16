@@ -1,6 +1,3 @@
-import { PaymentStatus } from '@/interfaces/utilities/enums';
-import { Account } from '../entities/account';
-
 export interface FilterOption<T> {
   name: string,
   value: T,
@@ -12,17 +9,7 @@ export interface Filter<T> {
   values: Array<FilterOption<T>>,
   open: boolean,
 }
-export interface PaymentIntentFilter {
-  status?: Array<PaymentStatus>,
-  senderAccount?: Account,
-  since?: string,
-  until?: string,
-  id?: string,
-  senderHolderId?: string,
-}
 
-export interface LinkFilter {
-  active?: Array<boolean>,
-  preventRefresh?: Array<boolean>,
-  rut?: string,
+export interface DressFilter {
+  public?: Array<boolean>,
 }

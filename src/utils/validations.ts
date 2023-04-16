@@ -13,5 +13,3 @@ export const isValidPassword = (password: string) => {
   const validPassword = lengthValidation && (chars >= 3);
   return validPassword;
 };
-
-export const isValidHttpsUrl = (url: string) => !!url.match(/^https:\/\/[^ ".]+\.[^ "]+$/);

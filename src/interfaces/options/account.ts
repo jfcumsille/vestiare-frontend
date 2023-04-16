@@ -10,6 +10,5 @@ export interface SignUpOptions {
   password?: string
   name?: string
   lastName?: string
-  company?: string
   country?: string
 }
